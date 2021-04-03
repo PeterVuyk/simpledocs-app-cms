@@ -6,11 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { useAuth } from '../authentication/context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,19 +24,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const handleChange = (event: any) => {
-    setAuth(event.target.checked);
-  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { currentUser } = useAuth();
+  // const handleChange = (event: any) => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
     setAnchorEl(null);
   };
 
@@ -66,6 +71,9 @@ export default function Header() {
                 onClick={handleMenu}
                 color="inherit"
               >
+                <Typography variant="body2" className={classes.title}>
+                  {currentUser.email}&nbsp;
+                </Typography>
                 <AccountCircle />
               </IconButton>
               <Menu
@@ -83,23 +91,10 @@ export default function Header() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Uitloggen</MenuItem>
               </Menu>
             </div>
           )}
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={auth}
-                  onChange={handleChange}
-                  aria-label="login switch"
-                />
-              }
-              label={auth ? 'Logout' : 'Login'}
-            />
-          </FormGroup>
         </Toolbar>
       </AppBar>
     </div>

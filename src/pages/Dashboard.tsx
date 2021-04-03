@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import Header from '../header/Header';
 import RegulationsTable from '../list/RegulationsTable';
 
-function RootPage() {
+function Dashboard() {
   return (
     <Grid container direction="column">
       <Grid item>
@@ -20,4 +20,4 @@ function RootPage() {
   );
 }
 
-export default RootPage;
+export default Dashboard;
