@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import Dashboard from './pages/Dashboard';
 import Login from './authentication/Login';
-import { AuthProvider } from './authentication/context/AuthContext';
-import PrivateRoute from './route/PrivateRoute';
+import { AuthProvider } from './authentication/AuthContext';
+import PrivateRoute from './authentication/PrivateRoute';
 
-function App() {
+function App(): JSX.Element {
   return (
     <Container>
       <AuthProvider>

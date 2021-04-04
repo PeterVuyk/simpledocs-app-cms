@@ -3,10 +3,9 @@ import { Grid } from '@material-ui/core';
 import Header from '../header/Header';
 import RegulationsTable from '../list/RegulationsTable';
 
-function Dashboard() {
+function Dashboard(): JSX.Element {
   return (
     <Grid container direction="column">
-      {console.log('hii')}
       <Grid item>
         <Header />
       </Grid>

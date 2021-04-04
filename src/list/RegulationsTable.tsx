@@ -32,7 +32,7 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function RegulationsTable() {
+export default function RegulationsTable(): JSX.Element {
   const classes = useStyles();
 
   return (

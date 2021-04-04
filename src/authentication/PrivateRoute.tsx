@@ -1,12 +1,13 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from '../authentication/context/AuthContext';
+import { useAuth } from './AuthContext';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export default function PrivateRoute({ component: Component, ...rest }) {
+export default function PrivateRoute({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
+  component: Component,
+  ...rest
+}): JSX.Element {
   const { currentUser } = useAuth();
 
   return (

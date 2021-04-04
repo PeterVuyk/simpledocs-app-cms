@@ -9,7 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../authentication/context/AuthContext';
+import { useAuth } from '../authentication/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,19 +23,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+export default function Header(): JSX.Element {
   const classes = useStyles();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const { currentUser, logout } = useAuth();
+  const open = Boolean(anchorEl);
   const history = useHistory();
-  // const handleChange = (event: any) => {
-  //   setAuth(event.target.checked);
-  // };
 
   const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -46,7 +39,6 @@ export default function Header() {
   };
 
   async function handleLogout() {
-    console.log('logout');
     setAnchorEl(null);
     await logout();
     history.push('/login');
@@ -54,7 +46,6 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      {console.log('testss')}
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -78,7 +69,7 @@ export default function Header() {
                 color="inherit"
               >
                 <Typography variant="body2" className={classes.title}>
-                  {currentUser.email}&nbsp;
+                  {currentUser?.email}&nbsp;
                 </Typography>
                 <AccountCircle />
               </IconButton>
