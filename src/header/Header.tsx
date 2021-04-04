@@ -45,7 +45,7 @@ export default function Header(): JSX.Element {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Regelgevingen beheer
+            AZN App management
           </Typography>
           {currentUser !== null && (
             <div>

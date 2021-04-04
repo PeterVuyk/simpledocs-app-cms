@@ -8,6 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 import collectRegulations, {
   Regulation,
 } from '../firebase/database/regulations';
@@ -24,6 +27,7 @@ const useStyles = makeStyles({
 export default function RegulationsTable(): JSX.Element {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
   const classes = useStyles();
+  const history = useHistory();
 
   React.useEffect(() => {
     collectRegulations
@@ -34,38 +38,54 @@ export default function RegulationsTable(): JSX.Element {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Hoofdstuk</TableCell>
-            <TableCell>Titel</TableCell>
-            <TableCell>Level</TableCell>
-            <TableCell>Index</TableCell>
-            <TableCell>Icoon</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {regulations.map((row) => (
-            <TableRow key={row.title}>
-              <TableCell component="th" scope="row">
-                {row.chapter}
-              </TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.level}</TableCell>
-              <TableCell>{row.page_index}</TableCell>
-              <TableCell>
-                <Icon>
-                  <img
-                    className={classes.icon}
-                    src={`data:image/png;base64,${row.icon}`}
-                  />
-                </Icon>
-              </TableCell>
+    <div>
+      <div style={{ overflow: 'hidden', marginTop: 10, marginBottom: 10 }}>
+        <div style={{ float: 'left' }}>
+          <Typography variant="h5">Regelgevingen beheer</Typography>
+        </div>
+        <div style={{ float: 'right' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push('/regulations/add')}
+          >
+            Pagina toevoegen
+          </Button>
+        </div>
+      </div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Hoofdstuk</TableCell>
+              <TableCell>Titel</TableCell>
+              <TableCell>Level</TableCell>
+              <TableCell>Index</TableCell>
+              <TableCell>Illustratie</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {regulations.map((row) => (
+              <TableRow key={row.title}>
+                <TableCell component="th" scope="row">
+                  {row.chapter}
+                </TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.level}</TableCell>
+                <TableCell>{row.page_index}</TableCell>
+                <TableCell>
+                  <Icon>
+                    <img
+                      className={classes.icon}
+                      src={`data:image/png;base64,${row.icon}`}
+                    />
+                  </Icon>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
