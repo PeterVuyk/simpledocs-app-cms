@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -6,7 +6,7 @@ import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Image from 'material-ui-image';
+import Icon from '@material-ui/core/Icon';
 import { useAuth } from './AuthContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,9 +16,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  logo: {
+    marginTop: theme.spacing(16),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -37,7 +36,13 @@ function Login(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const classes = useStyles();
+  const { currentUser } = useAuth();
 
+  useEffect(() => {
+    if (currentUser !== null) {
+      history.push('/');
+    }
+  }, [currentUser, history]);
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
     try {
@@ -47,7 +52,6 @@ function Login(): JSX.Element {
         emailRef?.current?.value as string,
         passwordRef?.current?.value as string
       );
-      history.push('/');
     } catch {
       setError(
         'Login mislukt, gebruikersnaam en wachtwoord komt niet overeen.'
@@ -59,11 +63,11 @@ function Login(): JSX.Element {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Image
-        src="https://www.ambulancezorg.nl/public/images/ambulancezorg-nederland-logo.svg"
-        aspectRatio={16 / 5}
-        disableSpinner
-      />
+      <div className={classes.logo}>
+        <Icon>
+          <img src="https://www.ambulancezorg.nl/public/images/ambulancezorg-nederland-logo.svg" />
+        </Icon>
+      </div>
       <div className={classes.paper}>
         {error && <Alert severity="error">{error}</Alert>}
         <form className={classes.form} noValidate>
