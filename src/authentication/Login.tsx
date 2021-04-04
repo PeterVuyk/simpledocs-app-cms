@@ -48,10 +48,10 @@ function Login() {
     try {
       setError('');
       setLoading(true);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      await login(emailRef.current.value, passwordRef.current.value);
-      history.push('/');
+      if (emailRef.current !== undefined && passwordRef.current !== undefined) {
+        await login(emailRef.current.value, passwordRef.current.value);
+        history.push('/');
+      }
     } catch {
       setError(
         'Login mislukt, gebruikersnaam en wachtwoord komt niet overeen.'

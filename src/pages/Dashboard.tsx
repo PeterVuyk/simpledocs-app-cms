@@ -6,6 +6,7 @@ import RegulationsTable from '../list/RegulationsTable';
 function Dashboard() {
   return (
     <Grid container direction="column">
+      {console.log('hii')}
       <Grid item>
         <Header />
       </Grid>

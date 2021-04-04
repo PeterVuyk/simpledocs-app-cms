@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../authentication/context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,8 @@ export default function Header() {
   const open = Boolean(anchorEl);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
+  const history = useHistory();
   // const handleChange = (event: any) => {
   //   setAuth(event.target.checked);
   // };
@@ -43,12 +45,16 @@ export default function Header() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  async function handleLogout() {
+    console.log('logout');
     setAnchorEl(null);
-  };
+    await logout();
+    history.push('/login');
+  }
 
   return (
     <div className={classes.root}>
+      {console.log('testss')}
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -62,7 +68,7 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             Beheer regelgeving pagina&rsquo;s
           </Typography>
-          {auth && (
+          {currentUser !== null && (
             <div>
               <IconButton
                 aria-label="account of current user"

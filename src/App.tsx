@@ -4,6 +4,7 @@ import { Container } from '@material-ui/core';
 import Dashboard from './pages/Dashboard';
 import Login from './authentication/Login';
 import { AuthProvider } from './authentication/context/AuthContext';
+import PrivateRoute from './route/PrivateRoute';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
-            <Route exact path="/" component={Dashboard} />
+            <PrivateRoute exact path="/" component={Dashboard} />
             <Route path="/login" component={Login} />
           </Switch>
         </Router>

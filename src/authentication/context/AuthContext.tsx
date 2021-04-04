@@ -11,7 +11,7 @@ export function useAuth() {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState<firebase.User>();
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>();
   const [loading, setLoading] = useState(true);
 
   function login(
@@ -27,9 +27,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user === null) {
-        return;
-      }
       setCurrentUser(user);
       setLoading(false);
     });
