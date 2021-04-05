@@ -65,7 +65,7 @@ function Login(): JSX.Element {
       <CssBaseline />
       <div className={classes.logo}>
         <Icon>
-          <img src="https://www.ambulancezorg.nl/public/images/ambulancezorg-nederland-logo.svg" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/ambulancezorg-app.appspot.com/o/app-management%2Fazn-logo.svg?alt=media&token=1b2f7054-4df9-49c6-b733-54a7d1d3ec2f" />
         </Icon>
       </div>
       <div className={classes.paper}>
