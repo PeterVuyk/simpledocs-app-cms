@@ -1,38 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
+import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
+import { makeStyles } from '@material-ui/core/styles';
+import FileDropZoneArea from '../component/form/FileDropzoneArea';
 import Layout from '../layout/Layout';
-import FileDropZoneArea from '../component/FileDropzoneArea';
+import TextField from '../component/form/TextField';
+import Select from '../component/form/Select';
+import SubmitButton from '../component/form/SubmitButton';
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  formControl: {
-    minWidth: '100%',
   },
 }));
 
 function Dashboard(): JSX.Element {
-  const classes = useStyles();
+  const [showError, setShowError] = useState<boolean>(false);
+  const formikRef = React.useRef<any>();
   const history = useHistory();
+  const classes = useStyles();
+
+  const INITIAL_FORM_STATE = {
+    chapter: '',
+    title: '',
+    subTitle: '',
+    pageIndex: '',
+    section: '',
+    htmlFile: null,
+    icon: null,
+  };
+
+  const FORM_VALIDATION = Yup.object().shape({
+    chapter: Yup.string().required('Hoofdstuk is een verplicht veld.'),
+    title: Yup.string().required('Titel is een verplicht veld.'),
+    subTitle: Yup.string(),
+    pageIndex: Yup.number()
+      .integer()
+      .required('Pagina index is een verplicht veld.'),
+    section: Yup.string().required('Soort markering is een verplicht veld.'),
+    htmlFile: Yup.mixed().required(
+      'Het uploaden van een html bestand is verplicht veld.'
+    ),
+    icon: Yup.mixed().required(
+      'Het uploaden van een illustratie is verplicht veld.'
+    ),
+  });
 
   return (
     <Layout>
@@ -51,97 +68,92 @@ function Dashboard(): JSX.Element {
           </Button>
         </div>
       </div>
-
-      <form className={classes.form} noValidate>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              name="Hoofdstuk"
-              variant="outlined"
-              required
-              fullWidth
-              id="chapter"
-              label="Hoofdstuk"
-              autoFocus
-            />
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              id="title"
-              label="Titel"
-              name="title"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              id="subTitle"
-              label="Ondertitel"
-              name="Ondertitel"
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              id="pageIndex"
-              label="pagina index"
-              name="pagina index"
-            />
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            {/* https://material-ui.com/components/selects/ */}
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">
-                Age
-              </InputLabel>
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ ...INITIAL_FORM_STATE }}
+        validationSchema={FORM_VALIDATION}
+        onSubmit={(values) => console.log(values)}
+      >
+        <Form>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                showError={showError}
+                id="chapter"
+                label="Hoofdstuk"
+                name="chapter"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <TextField
+                showError={showError}
+                required
+                id="title"
+                label="Titel"
+                name="title"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                id="subTitle"
+                showError={showError}
+                label="Subtitel"
+                name="subTitle"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                type="number"
+                showError={showError}
+                InputProps={{ inputProps: { min: 0 } }}
+                required
+                id="pageIndex"
+                label="Pagina index"
+                name="pageIndex"
+              />
+            </Grid>
+            <Grid item xs={12} sm={8}>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={10}
-                onChange={() => console.log('changed')}
-                label="Age"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+                name="section"
+                label="Soort markering"
+                showError={showError}
+                options={{
+                  section: 'Hoofdstuk',
+                  subSection: 'Paragraaf',
+                  subSubSection: 'Subparagraaf',
+                  attachments: 'Bijlage',
+                  legislation: 'Wetgeving',
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FileDropZoneArea
+                name="htmlFile"
+                formik={formikRef}
+                showError={showError}
+                dropzoneText="Klik hier of sleep het html template bestand hierheen"
+                allowedMimeTypes={['text/html']}
+                initialFile={null}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FileDropZoneArea
+                name="icon"
+                formik={formikRef}
+                showError={showError}
+                dropzoneText="Klik hier of sleep het png illustratie bestand hierheen"
+                allowedMimeTypes={['image/png']}
+                initialFile={null}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FileDropZoneArea
-              dropzoneText="Klik hier of sleep het html template bestand hierheen"
-              allowedMimeTypes={['text/html']}
-              initialFile={null}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FileDropZoneArea
-              dropzoneText="Klik hier of sleep het png illustratie bestand hierheen"
-              allowedMimeTypes={['text/png']}
-              initialFile={null}
-            />
-          </Grid>
-        </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Toevoegen
-        </Button>
-      </form>
+          <div className={classes.submit}>
+            <SubmitButton setShowError={setShowError}>Toevoegen</SubmitButton>
+          </div>
+        </Form>
+      </Formik>
     </Layout>
   );
 }

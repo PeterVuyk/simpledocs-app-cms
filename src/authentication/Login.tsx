@@ -78,8 +78,8 @@ function Login(): JSX.Element {
             required
             fullWidth
             id="email"
-            label="Email Address"
-            name="email"
+            label="E-mailadres"
+            name="E-mailadres"
             autoComplete="email"
             autoFocus
           />
@@ -89,8 +89,8 @@ function Login(): JSX.Element {
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
+            name="Wachtwoord"
+            label="Wachtwoord"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -104,7 +104,7 @@ function Login(): JSX.Element {
             onClick={handleSubmit}
             disabled={loading}
           >
-            Sign In
+            Inloggen
           </Button>
         </form>
       </div>
