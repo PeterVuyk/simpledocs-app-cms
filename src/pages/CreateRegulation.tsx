@@ -5,13 +5,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import FileDropZoneArea from '../component/form/FileDropzoneArea';
 import Layout from '../layout/Layout';
 import TextField from '../component/form/TextField';
 import Select from '../component/form/Select';
 import SubmitButton from '../component/form/SubmitButton';
+import regulationRepository, {
+  Regulation,
+} from '../firebase/database/regulationRepository';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -30,26 +33,73 @@ function Dashboard(): JSX.Element {
     title: '',
     subTitle: '',
     pageIndex: '',
-    section: '',
-    htmlFile: null,
-    icon: null,
+    level: '',
+    htmlFile: '',
+    iconFile: '',
+    searchText: '',
   };
 
+  async function isFieldUnique(
+    fieldName: string,
+    fieldValue: any
+  ): Promise<boolean> {
+    if (fieldValue === undefined) {
+      return true;
+    }
+    const regulations: Regulation[] = await regulationRepository.getRegulationByField(
+      fieldName,
+      fieldValue
+    );
+    return regulations.length === 0;
+  }
+
   const FORM_VALIDATION = Yup.object().shape({
-    chapter: Yup.string().required('Hoofdstuk is een verplicht veld.'),
+    chapter: Yup.string()
+      .required('Hoofdstuk is een verplicht veld.')
+      .test(
+        'chapter',
+        'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
+        async (chapter) => {
+          return isFieldUnique('chapter', chapter);
+        }
+      ),
     title: Yup.string().required('Titel is een verplicht veld.'),
     subTitle: Yup.string(),
     pageIndex: Yup.number()
       .integer()
-      .required('Pagina index is een verplicht veld.'),
-    section: Yup.string().required('Soort markering is een verplicht veld.'),
+      .required('Pagina index is een verplicht veld.')
+      .test(
+        'pageIndex',
+        'De opgegeven pagina index bestaat al en moet uniek zijn',
+        async (chapter) => {
+          return isFieldUnique('pageIndex', chapter);
+        }
+      ),
+    level: Yup.string().required('Soort markering is een verplicht veld.'),
+    searchText: Yup.string().required('Zoektekst is een verplicht veld'),
     htmlFile: Yup.mixed().required(
-      'Het uploaden van een html bestand is verplicht veld.'
+      'Het uploaden van een html bestand is verplicht.'
     ),
-    icon: Yup.mixed().required(
-      'Het uploaden van een illustratie is verplicht veld.'
+    iconFile: Yup.mixed().required(
+      'Het uploaden van een illustratie is verplicht.'
     ),
   });
+
+  const handleSubmit = (values: FormikValues): void => {
+    regulationRepository
+      .createRegulation({
+        pageIndex: values.pageIndex,
+        chapter: values.chapter,
+        level: values.level,
+        title: values.title,
+        subTitle: values.subTitle,
+        searchText: values.searchText,
+        htmlFile: values.htmlFile.data,
+        iconFile: values.iconFile.data,
+      })
+      .then(() => history.push('/'));
+    // TODO: Add success message next page
+  };
 
   return (
     <Layout>
@@ -72,7 +122,7 @@ function Dashboard(): JSX.Element {
         innerRef={formikRef}
         initialValues={{ ...INITIAL_FORM_STATE }}
         validationSchema={FORM_VALIDATION}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
       >
         <Form>
           <Grid container spacing={2}>
@@ -116,7 +166,7 @@ function Dashboard(): JSX.Element {
             </Grid>
             <Grid item xs={12} sm={8}>
               <Select
-                name="section"
+                name="level"
                 label="Soort markering"
                 showError={showError}
                 options={{
@@ -126,6 +176,18 @@ function Dashboard(): JSX.Element {
                   attachments: 'Bijlage',
                   legislation: 'Wetgeving',
                 }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                showError={showError}
+                multiline
+                rows={3}
+                rowsMax={8}
+                required
+                id="searchText"
+                label="Zoektekst"
+                name="searchText"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -140,7 +202,7 @@ function Dashboard(): JSX.Element {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FileDropZoneArea
-                name="icon"
+                name="iconFile"
                 formik={formikRef}
                 showError={showError}
                 dropzoneText="Klik hier of sleep het png illustratie bestand hierheen"

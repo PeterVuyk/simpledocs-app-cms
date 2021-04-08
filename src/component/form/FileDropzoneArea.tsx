@@ -45,7 +45,7 @@ export default function FileDropZoneArea({
     configDropzoneArea.helperText = mata.error;
   }
 
-  const handleAdd = (newFiles: FileObject[]) => {
+  const handleAdd = async (newFiles: FileObject[]) => {
     if (newFiles.length > 1) {
       return;
     }
@@ -53,13 +53,13 @@ export default function FileDropZoneArea({
   };
 
   const handleDelete = () => {
-    formik.current.setFieldValue(name, null);
+    formik.current.setFieldValue(name, '');
   };
 
   const getFileObjects = (): FileObject[] => {
     if (
       formik.current?.values[name] !== undefined &&
-      formik.current?.values[name] !== null
+      formik.current?.values[name] !== ''
     ) {
       return [formik.current.values[name] as FileObject];
     }
@@ -77,6 +77,7 @@ export default function FileDropZoneArea({
         dropzoneText={dropzoneText}
         fileObjects={getFileObjects()}
         acceptedFiles={allowedMimeTypes}
+        // initialFiles={file}
         filesLimit={1}
         onAdd={handleAdd}
         onDelete={handleDelete}

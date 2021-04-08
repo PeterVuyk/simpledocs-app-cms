@@ -11,9 +11,9 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import collectRegulations, {
+import regulationRepository, {
   Regulation,
-} from '../firebase/database/regulations';
+} from '../firebase/database/regulationRepository';
 
 const useStyles = makeStyles({
   table: {
@@ -30,10 +30,10 @@ export default function RegulationsTable(): JSX.Element {
   const history = useHistory();
 
   React.useEffect(() => {
-    collectRegulations
+    regulationRepository
       .getRegulations()
       .then((result) =>
-        setRegulations(result.sort((a, b) => a.page_index - b.page_index))
+        setRegulations(result.sort((a, b) => a.pageIndex - b.pageIndex))
       );
   }, []);
 
@@ -72,12 +72,12 @@ export default function RegulationsTable(): JSX.Element {
                 </TableCell>
                 <TableCell>{row.title}</TableCell>
                 <TableCell>{row.level}</TableCell>
-                <TableCell>{row.page_index}</TableCell>
+                <TableCell>{row.pageIndex}</TableCell>
                 <TableCell>
                   <Icon>
                     <img
                       className={classes.icon}
-                      src={`data:image/png;base64,${row.icon}`}
+                      src={`data:image/png;base64,${row.iconFile}`}
                     />
                   </Icon>
                 </TableCell>
