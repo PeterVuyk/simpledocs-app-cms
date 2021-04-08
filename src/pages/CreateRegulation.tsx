@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dashboard(): JSX.Element {
+const Dashboard: React.FC = () => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = React.useRef<any>();
   const history = useHistory();
@@ -170,10 +170,10 @@ function Dashboard(): JSX.Element {
                 label="Soort markering"
                 showError={showError}
                 options={{
-                  section: 'Hoofdstuk',
-                  subSection: 'Paragraaf',
-                  subSubSection: 'Subparagraaf',
-                  attachments: 'Bijlage',
+                  chapter: 'Hoofdstuk',
+                  section: 'Paragraaf',
+                  subSection: 'Subparagraaf',
+                  attachment: 'Bijlage',
                   legislation: 'Wetgeving',
                 }}
               />
@@ -218,6 +218,6 @@ function Dashboard(): JSX.Element {
       </Formik>
     </Layout>
   );
-}
+};
 
 export default Dashboard;

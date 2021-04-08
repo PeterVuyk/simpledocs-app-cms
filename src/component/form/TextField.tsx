@@ -2,9 +2,17 @@ import React from 'react';
 import { OutlinedTextFieldProps, TextField } from '@material-ui/core';
 import { useField } from 'formik';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const TextfieldWrapper = ({ name, showError, ...otherProps }) => {
+interface Props {
+  name: string;
+  showError: boolean;
+  [x: string]: any;
+}
+
+const TextfieldWrapper: React.FC<Props> = ({
+  name,
+  showError,
+  ...otherProps
+}) => {
   const [field, mata] = useField(name);
 
   const configTextfield: OutlinedTextFieldProps = {

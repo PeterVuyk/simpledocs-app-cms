@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RegulationsTable(): JSX.Element {
+const RegulationsTable: React.FC = () => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
   const classes = useStyles();
   const history = useHistory();
@@ -75,10 +75,7 @@ export default function RegulationsTable(): JSX.Element {
                 <TableCell>{row.pageIndex}</TableCell>
                 <TableCell>
                   <Icon>
-                    <img
-                      className={classes.icon}
-                      src={`data:image/png;base64,${row.iconFile}`}
-                    />
+                    <img className={classes.icon} src={`${row.iconFile}`} />
                   </Icon>
                 </TableCell>
               </TableRow>
@@ -88,4 +85,6 @@ export default function RegulationsTable(): JSX.Element {
       </TableContainer>
     </div>
   );
-}
+};
+
+export default RegulationsTable;

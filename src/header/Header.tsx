@@ -8,7 +8,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../authentication/AuthContext';
+import { useAuth } from '../authentication/AuthProvider';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Header(): JSX.Element {
+const Header: React.FC = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser, logout } = useAuth();
@@ -84,4 +84,6 @@ export default function Header(): JSX.Element {
       </AppBar>
     </div>
   );
-}
+};
+
+export default Header;

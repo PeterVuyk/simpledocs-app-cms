@@ -13,15 +13,17 @@ export type AuthContextType = {
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const AuthContext = React.createContext<AuthContextType>(null);
+const AuthContextProvider = React.createContext<AuthContextType>(null);
 
 export function useAuth(): AuthContextType {
-  return useContext(AuthContext);
+  return useContext(AuthContextProvider);
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export function AuthProvider({ children }): JSX.Element {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<firebase.User | null>();
   const [loading, setLoading] = useState(true);
 
@@ -45,8 +47,8 @@ export function AuthProvider({ children }): JSX.Element {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContextProvider.Provider value={{ currentUser, login, logout }}>
       {!loading && children}
-    </AuthContext.Provider>
+    </AuthContextProvider.Provider>
   );
-}
+};

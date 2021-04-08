@@ -2,15 +2,20 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SubmitButton = ({ children, setShowError, ...otherProps }) => {
+interface Props {
+  children: string;
+  setShowError: (showError: boolean) => void;
+}
+
+const SubmitButton: React.FC<Props> = ({
+  children,
+  setShowError,
+  ...otherProps
+}) => {
   const { submitForm } = useFormikContext();
 
   const handleSubmit = () => {
-    submitForm();
-    setShowError(true);
+    submitForm().then(() => setShowError(true));
   };
 
   const configButton: any = {

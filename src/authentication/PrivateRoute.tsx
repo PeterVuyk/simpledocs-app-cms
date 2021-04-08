@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
 
 export default function PrivateRoute({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

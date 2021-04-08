@@ -2,9 +2,19 @@ import React from 'react';
 import { TextField, MenuItem, OutlinedTextFieldProps } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const SelectWrapper = ({ name, showError, options, ...otherProps }) => {
+interface Props {
+  name: string;
+  showError: boolean;
+  options: any;
+  [x: string]: any;
+}
+
+const SelectWrapper: React.FC<Props> = ({
+  name,
+  showError,
+  options,
+  ...otherProps
+}) => {
   const { setFieldValue } = useFormikContext();
   const [field, mata] = useField(name);
 

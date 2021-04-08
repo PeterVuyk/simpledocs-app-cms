@@ -13,28 +13,22 @@ const ErrorTextTypography = withStyles({
   },
 })(Typography);
 
-export default function FileDropZoneArea({
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+interface Props {
+  name: string;
+  formik: any;
+  showError: boolean;
+  allowedMimeTypes: string[];
+  dropzoneText: string;
+  [x: string]: any;
+}
+
+const SelectWrapper: React.FC<Props> = ({
   name,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   formik,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   showError,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   allowedMimeTypes,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  initialFile,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dropzoneText,
-}): JSX.Element {
+}) => {
   const [field, mata] = useField(name);
 
   const configDropzoneArea: any = {
@@ -85,4 +79,6 @@ export default function FileDropZoneArea({
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>
   );
-}
+};
+
+export default SelectWrapper;

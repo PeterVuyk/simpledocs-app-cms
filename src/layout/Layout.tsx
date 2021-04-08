@@ -11,9 +11,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-function Layout({ children }): JSX.Element {
+interface Props {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<Props> = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -30,6 +32,6 @@ function Layout({ children }): JSX.Element {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Layout;

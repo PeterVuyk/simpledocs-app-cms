@@ -22,7 +22,7 @@ async function getRegulations(): Promise<Regulation[]> {
 
 async function getRegulationsByField(
   fieldName: string,
-  fieldValue: any
+  fieldValue: string | number
 ): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')

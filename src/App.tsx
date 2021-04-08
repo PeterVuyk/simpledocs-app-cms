@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Login from './authentication/Login';
-import { AuthProvider } from './authentication/AuthContext';
+import { AuthProvider } from './authentication/AuthProvider';
 import PrivateRoute from './authentication/PrivateRoute';
 import CreateRegulation from './pages/CreateRegulation';
 
-function App(): JSX.Element {
+const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
@@ -22,6 +22,6 @@ function App(): JSX.Element {
       </Router>
     </AuthProvider>
   );
-}
+};
 
 export default App;

@@ -7,7 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Icon from '@material-ui/core/Icon';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login(): JSX.Element {
+const Login: React.FC = () => {
   const emailRef = useRef<TextFieldProps>();
   const passwordRef = useRef<TextFieldProps>();
   const { login } = useAuth();
@@ -43,7 +43,9 @@ function Login(): JSX.Element {
       history.push('/');
     }
   }, [currentUser, history]);
-  async function handleSubmit(e: any): Promise<void> {
+  async function handleSubmit(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> {
     e.preventDefault();
     try {
       setError('');
@@ -110,6 +112,6 @@ function Login(): JSX.Element {
       </div>
     </Container>
   );
-}
+};
 
 export default Login;
