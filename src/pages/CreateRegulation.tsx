@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import FileDropZoneArea from '../component/form/FileDropzoneArea';
 import Layout from '../layout/Layout';
 import TextField from '../component/form/TextField';
@@ -15,6 +16,9 @@ import SubmitButton from '../component/form/SubmitButton';
 import regulationRepository, {
   Regulation,
 } from '../firebase/database/regulationRepository';
+import notification, {
+  NotificationOptions,
+} from '../redux/actions/notification';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -22,7 +26,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard: React.FC = () => {
+interface Props {
+  setNotification: (notificationOptions: NotificationOptions) => void;
+}
+
+const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = React.useRef<any>();
   const history = useHistory();
@@ -97,8 +105,14 @@ const Dashboard: React.FC = () => {
         htmlFile: values.htmlFile.data,
         iconFile: values.iconFile.data,
       })
-      .then(() => history.push('/'));
-    // TODO: Add success message next page
+      .then(() => history.push('/'))
+      .then(() =>
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage: 'yeeeey!!',
+        })
+      );
   };
 
   return (
@@ -220,4 +234,18 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = (state: any) => {
+  return {
+    notificationOptions: state.notification.notificationOptions,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setNotification: (notificationOptions: NotificationOptions) =>
+      // eslint-disable-next-line import/no-named-as-default-member
+      dispatch(notification.setNotification(notificationOptions)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRegulation);

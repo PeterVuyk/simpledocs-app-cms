@@ -59,7 +59,7 @@ const RegulationsTable: React.FC = () => {
             <TableRow>
               <TableCell>Hoofdstuk</TableCell>
               <TableCell>Titel</TableCell>
-              <TableCell>Level</TableCell>
+              <TableCell>Markering</TableCell>
               <TableCell>Index</TableCell>
               <TableCell>Illustratie</TableCell>
             </TableRow>
