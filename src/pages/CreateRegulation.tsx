@@ -54,7 +54,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
     if (fieldValue === undefined) {
       return true;
     }
-    const regulations: Regulation[] = await regulationRepository.getRegulationByField(
+    const regulations: Regulation[] = await regulationRepository.getRegulationsByField(
       fieldName,
       fieldValue
     );
@@ -110,7 +110,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: 'yeeeey!!',
+          notificationMessage: 'Pagina is toegevoegd.',
         })
       );
   };

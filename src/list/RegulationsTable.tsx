@@ -14,6 +14,7 @@ import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import regulationRepository, {
   Regulation,
 } from '../firebase/database/regulationRepository';
+import RegulationDialog from '../component/RegulationDialog';
 
 const useStyles = makeStyles({
   table: {
@@ -29,13 +30,18 @@ const useStyles = makeStyles({
 
 const RegulationsTable: React.FC = () => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
+  const [openDialog, setOpenDialog] = React.useState<Regulation | null>(null);
   const classes = useStyles();
   const history = useHistory();
 
-  React.useEffect(() => {
+  const updateRegulationState = (): void => {
     regulationRepository
       .getRegulations()
       .then((result) => setRegulations(result));
+  };
+
+  React.useEffect(() => {
+    updateRegulationState();
   }, []);
 
   const getLevel = (level: string): string => {
@@ -49,6 +55,11 @@ const RegulationsTable: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return level in levels ? levels[level] : '';
+  };
+
+  const onDelete = (id: string): void => {
+    regulationRepository.deleteRegulation(id);
+    updateRegulationState();
   };
 
   return (
@@ -103,8 +114,19 @@ const RegulationsTable: React.FC = () => {
                   <DeleteTwoToneIcon
                     color="secondary"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => console.log('Delete!')}
+                    onClick={() => setOpenDialog(row)}
                   />
+                  {openDialog && openDialog.chapter === row.chapter && (
+                    <RegulationDialog
+                      dialogTitle="Weet je zeker dat je dit artikel wilt verwijderen?"
+                      dialogText={`Hoofdstuk: ${row.chapter}\nTitel: ${
+                        row.title
+                      }\nMarkering: ${getLevel(row.level)}`}
+                      openDialog={openDialog}
+                      setOpenDialog={setOpenDialog}
+                      onSubmit={onDelete}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             ))}

@@ -1,6 +1,7 @@
 import { database } from '../firebaseConnection';
 
 export interface Regulation {
+  id?: string;
   pageIndex: number;
   chapter: string;
   level: string;
@@ -15,12 +16,18 @@ async function createRegulation(regulation: Regulation): Promise<void> {
   await database.collection('regulations').add(regulation);
 }
 
+async function deleteRegulation(regulationId: string): Promise<void> {
+  await database.collection('regulations').doc(regulationId).delete();
+}
+
 async function getRegulations(): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')
     .orderBy('pageIndex', 'asc')
     .get();
-  return querySnapshot.docs.map((doc) => doc.data() as Regulation);
+  return querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Regulation;
+  });
 }
 
 async function getRegulationsByField(
@@ -37,7 +44,8 @@ async function getRegulationsByField(
 const regulationRepository = {
   createRegulation,
   getRegulations,
-  getRegulationByField: getRegulationsByField,
+  getRegulationsByField,
+  deleteRegulation,
 };
 
 export default regulationRepository;

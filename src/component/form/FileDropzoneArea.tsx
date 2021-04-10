@@ -64,10 +64,30 @@ const SelectWrapper: React.FC<Props> = ({
     configDropzoneArea.helperText = mata.error;
   }
 
+  const fileAddedMessage = (fileName: string): string => {
+    return `Bestand ${fileName} is toegevoegd.`;
+  };
+
+  const fileRemovedMessage = (fileName: string): string => {
+    return `Bestand ${fileName} is verwijderd.`;
+  };
+
+  const dropRejectMessage = (fileName: string): string => {
+    return `Upload van bestand ${fileName} geweigerd`;
+  };
+
+  const fileLimitExceedMessage = (): string => {
+    return `Maximaal aantal toegestane bestanden overschreden. Slechts 1 bestand is toegestaan`;
+  };
+
   return (
     <div>
       <DropzoneAreaBase
         {...configDropzoneArea}
+        getFileAddedMessage={fileAddedMessage}
+        getFileRemovedMessage={fileRemovedMessage}
+        getDropRejectMessage={dropRejectMessage}
+        getFileLimitExceedMessage={fileLimitExceedMessage}
         dropzoneText={dropzoneText}
         fileObjects={getFileObjects()}
         acceptedFiles={allowedMimeTypes}

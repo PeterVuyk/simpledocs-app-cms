@@ -50,6 +50,7 @@ const SnackbarNotification: React.FC<Props> = ({
   return (
     <div className={classes.root}>
       <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={notificationOpen}
         autoHideDuration={6000}
         onClose={handleClose}
