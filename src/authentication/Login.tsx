@@ -6,7 +6,6 @@ import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Icon from '@material-ui/core/Icon';
 import { useAuth } from './AuthProvider';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,9 +65,7 @@ const Login: React.FC = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.logo}>
-        <Icon>
-          <img src="https://firebasestorage.googleapis.com/v0/b/ambulancezorg-app.appspot.com/o/app-management%2Fazn-logo.svg?alt=media&token=1b2f7054-4df9-49c6-b733-54a7d1d3ec2f" />
-        </Icon>
+        <img src="https://firebasestorage.googleapis.com/v0/b/ambulancezorg-app.appspot.com/o/app-management%2Fazn-logo.svg?alt=media&token=1b2f7054-4df9-49c6-b733-54a7d1d3ec2f" />
       </div>
       <div className={classes.paper}>
         {error && <Alert severity="error">{error}</Alert>}

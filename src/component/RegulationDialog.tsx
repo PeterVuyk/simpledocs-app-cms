@@ -62,10 +62,10 @@ const RegulationDialog: React.FC<Props> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary" variant="contained">
+          <Button onClick={handleClose} color="primary" variant="contained">
             Nee
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
+          <Button onClick={handleSubmit} color="secondary" variant="contained">
             Ja
           </Button>
         </DialogActions>

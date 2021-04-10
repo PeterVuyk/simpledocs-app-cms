@@ -11,10 +11,14 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import { connect } from 'react-redux';
 import regulationRepository, {
   Regulation,
 } from '../firebase/database/regulationRepository';
 import RegulationDialog from '../component/RegulationDialog';
+import notification, {
+  NotificationOptions,
+} from '../redux/actions/notification';
 
 const useStyles = makeStyles({
   table: {
@@ -28,7 +32,11 @@ const useStyles = makeStyles({
   },
 });
 
-const RegulationsTable: React.FC = () => {
+interface Props {
+  setNotification: (notificationOptions: NotificationOptions) => void;
+}
+
+const RegulationsTable: React.FC<Props> = ({ setNotification }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
   const [openDialog, setOpenDialog] = React.useState<Regulation | null>(null);
   const classes = useStyles();
@@ -58,8 +66,16 @@ const RegulationsTable: React.FC = () => {
   };
 
   const onDelete = (id: string): void => {
-    regulationRepository.deleteRegulation(id);
-    updateRegulationState();
+    regulationRepository
+      .deleteRegulation(id)
+      .then(() => updateRegulationState())
+      .then(() =>
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage: 'Pagina is verwijderd.',
+        })
+      );
   };
 
   return (
@@ -137,4 +153,18 @@ const RegulationsTable: React.FC = () => {
   );
 };
 
-export default RegulationsTable;
+const mapStateToProps = (state: any) => {
+  return {
+    notificationOptions: state.notification.notificationOptions,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setNotification: (notificationOptions: NotificationOptions) =>
+      // eslint-disable-next-line import/no-named-as-default-member
+      dispatch(notification.setNotification(notificationOptions)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegulationsTable);
