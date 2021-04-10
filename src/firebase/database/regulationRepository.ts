@@ -16,7 +16,10 @@ async function createRegulation(regulation: Regulation): Promise<void> {
 }
 
 async function getRegulations(): Promise<Regulation[]> {
-  const querySnapshot = await database.collection('regulations').get();
+  const querySnapshot = await database
+    .collection('regulations')
+    .orderBy('pageIndex', 'asc')
+    .get();
   return querySnapshot.docs.map((doc) => doc.data() as Regulation);
 }
 
