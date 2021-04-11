@@ -8,7 +8,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../authentication/AuthProvider';
+import { useAuth } from '../../authentication/AuthProvider';
 
 const useStyles = makeStyles(() => ({
   root: {

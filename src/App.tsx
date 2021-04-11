@@ -3,13 +3,13 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import configureStore from './redux/configureStore';
-import Dashboard from './pages/Dashboard';
 import Login from './authentication/Login';
 import { AuthProvider } from './authentication/AuthProvider';
 import PrivateRoute from './authentication/PrivateRoute';
 import CreateRegulation from './pages/CreateRegulation';
-import SnackbarNotification from './component/SnackbarNotification';
+import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
+import RegulationsList from './pages/regulationList/RegulationsList';
 
 const store = configureStore();
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
           <SnackbarNotification />
           <Router>
             <Switch>
-              <PrivateRoute exact path="/" component={Dashboard} />
+              <PrivateRoute exact path="/" component={RegulationsList} />
               <PrivateRoute
                 exact
                 path="/regulations/add"

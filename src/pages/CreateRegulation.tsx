@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import FileDropZoneArea from '../component/form/FileDropzoneArea';
-import Layout from '../layout/Layout';
-import TextField from '../component/form/TextField';
-import Select from '../component/form/Select';
-import SubmitButton from '../component/form/SubmitButton';
+import FileDropZoneArea from '../components/form/FileDropzoneArea';
+import TextField from '../components/form/TextField';
+import Select from '../components/form/Select';
+import SubmitButton from '../components/form/SubmitButton';
 import regulationRepository, {
   Regulation,
 } from '../firebase/database/regulationRepository';
 import notification, {
   NotificationOptions,
 } from '../redux/actions/notification';
+import PageHeading from '../layout/PageHeading';
+import PageLayout from '../layout/PageLayout';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -116,22 +115,16 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Layout>
-      <CssBaseline />
-      <div style={{ overflow: 'hidden', marginTop: 10, marginBottom: 10 }}>
-        <div style={{ float: 'left' }}>
-          <Typography variant="h5">Pagina toevoegen</Typography>
-        </div>
-        <div style={{ float: 'right' }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => history.push('/')}
-          >
-            Terug
-          </Button>
-        </div>
-      </div>
+    <PageLayout>
+      <PageHeading title="Pagina toevoegen">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => history.push('/')}
+        >
+          Terug
+        </Button>
+      </PageHeading>
       <Formik
         innerRef={formikRef}
         initialValues={{ ...INITIAL_FORM_STATE }}
@@ -230,7 +223,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
           </div>
         </Form>
       </Formik>
-    </Layout>
+    </PageLayout>
   );
 };
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Header from '../header/Header';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Header from '../components/header/Header';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -15,7 +16,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
+const PageLayout: React.FC<Props> = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -26,6 +27,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Grid item container>
         <Grid item sm={false} lg={2} />
         <Grid item sm={12} lg={8}>
+          <CssBaseline />
           <div className={classes.paper}>{children}</div>
         </Grid>
         <Grid item sm={false} lg={2} />
@@ -34,4 +36,4 @@ const Layout: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default PageLayout;

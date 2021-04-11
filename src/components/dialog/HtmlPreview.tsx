@@ -3,7 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Regulation } from '../firebase/database/regulationRepository';
+import { Regulation } from '../../firebase/database/regulationRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
