@@ -199,6 +199,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FileDropZoneArea
+                enableHtmlPreview
                 name="htmlFile"
                 formik={formikRef}
                 showError={showError}
@@ -209,6 +210,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FileDropZoneArea
+                enableHtmlPreview={false}
                 name="iconFile"
                 formik={formikRef}
                 showError={showError}

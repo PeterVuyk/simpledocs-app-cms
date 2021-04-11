@@ -67,6 +67,10 @@ const RegulationListItem: React.FC<Props> = ({
       );
   };
 
+  const closeHtmlPreviewHandle = (): void => {
+    setShowHtmlPreview(null);
+  };
+
   return (
     <TableRow hover key={regulation.title}>
       <TableCell component="th" scope="row">
@@ -95,8 +99,8 @@ const RegulationListItem: React.FC<Props> = ({
         />
         {showHtmlPreview && showHtmlPreview.chapter === regulation.chapter && (
           <HtmlPreview
-            showHtmlPreview={showHtmlPreview}
-            setShowHtmlPreview={setShowHtmlPreview}
+            showHtmlPreview={showHtmlPreview.htmlFile}
+            closeHtmlPreviewHandle={closeHtmlPreviewHandle}
           />
         )}
         {openDeleteDialog &&

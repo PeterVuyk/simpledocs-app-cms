@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Regulation } from '../../firebase/database/regulationRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -14,32 +13,28 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Props {
-  showHtmlPreview: Regulation | null;
-  setShowHtmlPreview: (showHtmlModal: Regulation | null) => void;
+  showHtmlPreview: string;
+  closeHtmlPreviewHandle: () => void;
 }
 
 const RegulationDialog: React.FC<Props> = ({
   showHtmlPreview,
-  setShowHtmlPreview,
+  closeHtmlPreviewHandle,
 }) => {
-  const handleClose = () => {
-    setShowHtmlPreview(null);
-  };
-
   return (
     <div>
       <Dialog
         open={showHtmlPreview !== null}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleClose}
+        onClose={closeHtmlPreviewHandle}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <iframe
           style={{ height: 812, width: 375, border: 'none' }}
-          title={showHtmlPreview?.title}
-          src={showHtmlPreview?.htmlFile}
+          title="preview.html"
+          src={showHtmlPreview}
         />
       </Dialog>
     </div>

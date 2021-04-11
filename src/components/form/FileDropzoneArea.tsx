@@ -3,6 +3,8 @@ import { DropzoneAreaBase, FileObject } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
+import HtmlPreview from '../dialog/HtmlPreview';
 
 const ErrorTextTypography = withStyles({
   root: {
@@ -19,6 +21,7 @@ interface Props {
   showError: boolean;
   allowedMimeTypes: string[];
   dropzoneText: string;
+  enableHtmlPreview: boolean;
   [x: string]: any;
 }
 
@@ -28,7 +31,11 @@ const SelectWrapper: React.FC<Props> = ({
   showError,
   allowedMimeTypes,
   dropzoneText,
+  enableHtmlPreview,
 }) => {
+  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string | null>(
+    null
+  );
   const [field, mata] = useField(name);
 
   const configDropzoneArea: any = {
@@ -44,6 +51,11 @@ const SelectWrapper: React.FC<Props> = ({
       return;
     }
     formik.current.setFieldValue(name, newFiles[0]);
+  };
+
+  const closeHtmlPreviewHandle = (): void => {
+    console.log(showHtmlPreview);
+    setShowHtmlPreview(null);
   };
 
   const handleDelete = () => {
@@ -81,7 +93,7 @@ const SelectWrapper: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <DropzoneAreaBase
         {...configDropzoneArea}
         getFileAddedMessage={fileAddedMessage}
@@ -96,6 +108,23 @@ const SelectWrapper: React.FC<Props> = ({
         onAdd={handleAdd}
         onDelete={handleDelete}
       />
+      {enableHtmlPreview && getFileObjects().length !== 0 && (
+        <div style={{ position: 'absolute', bottom: 0, right: 5 }}>
+          <FindInPageTwoToneIcon
+            color="primary"
+            style={{ cursor: 'pointer', fontSize: '4em' }}
+            onClick={() =>
+              setShowHtmlPreview(getFileObjects()[0].data as string)
+            }
+          />
+        </div>
+      )}
+      {showHtmlPreview && (
+        <HtmlPreview
+          showHtmlPreview={showHtmlPreview}
+          closeHtmlPreviewHandle={closeHtmlPreviewHandle}
+        />
+      )}
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>
   );
