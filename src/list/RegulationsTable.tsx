@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { connect } from 'react-redux';
 import regulationRepository, {
   Regulation,
@@ -19,6 +20,7 @@ import RegulationDialog from '../component/RegulationDialog';
 import notification, {
   NotificationOptions,
 } from '../redux/actions/notification';
+import HtmlPreview from '../component/HtmlPreview';
 
 const useStyles = makeStyles({
   table: {
@@ -38,7 +40,14 @@ interface Props {
 
 const RegulationsTable: React.FC<Props> = ({ setNotification }) => {
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
-  const [openDialog, setOpenDialog] = React.useState<Regulation | null>(null);
+  const [
+    showHtmlPreview,
+    setShowHtmlPreview,
+  ] = React.useState<Regulation | null>(null);
+  const [
+    openDeleteDialog,
+    setOpenDeleteDialog,
+  ] = React.useState<Regulation | null>(null);
   const classes = useStyles();
   const history = useHistory();
 
@@ -127,22 +136,35 @@ const RegulationsTable: React.FC<Props> = ({ setNotification }) => {
                   />
                 </TableCell>
                 <TableCell>
+                  <FindInPageTwoToneIcon
+                    color="primary"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setShowHtmlPreview(row)}
+                  />
                   <DeleteTwoToneIcon
                     color="secondary"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setOpenDialog(row)}
+                    onClick={() => setOpenDeleteDialog(row)}
                   />
-                  {openDialog && openDialog.chapter === row.chapter && (
-                    <RegulationDialog
-                      dialogTitle="Weet je zeker dat je dit artikel wilt verwijderen?"
-                      dialogText={`Hoofdstuk: ${row.chapter}\nTitel: ${
-                        row.title
-                      }\nMarkering: ${getLevel(row.level)}`}
-                      openDialog={openDialog}
-                      setOpenDialog={setOpenDialog}
-                      onSubmit={onDelete}
-                    />
-                  )}
+                  {showHtmlPreview &&
+                    showHtmlPreview.chapter === row.chapter && (
+                      <HtmlPreview
+                        showHtmlPreview={showHtmlPreview}
+                        setShowHtmlPreview={setShowHtmlPreview}
+                      />
+                    )}
+                  {openDeleteDialog &&
+                    openDeleteDialog.chapter === row.chapter && (
+                      <RegulationDialog
+                        dialogTitle="Weet je zeker dat je dit artikel wilt verwijderen?"
+                        dialogText={`Hoofdstuk: ${row.chapter}\nTitel: ${
+                          row.title
+                        }\nMarkering: ${getLevel(row.level)}`}
+                        openDialog={openDeleteDialog}
+                        setOpenDialog={setOpenDeleteDialog}
+                        onSubmit={onDelete}
+                      />
+                    )}
                 </TableCell>
               </TableRow>
             ))}
