@@ -5,6 +5,8 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { connect } from 'react-redux';
+import { EditTwoTone } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 import regulationRepository, {
   Regulation,
 } from '../../firebase/database/regulationRepository';
@@ -40,6 +42,7 @@ const RegulationListItem: React.FC<Props> = ({
     setOpenDeleteDialog,
   ] = React.useState<Regulation | null>(null);
   const classes = useStyles();
+  const history = useHistory();
 
   const getLevel = (level: string): string => {
     const levels = {
@@ -87,6 +90,10 @@ const RegulationListItem: React.FC<Props> = ({
         />
       </TableCell>
       <TableCell>
+        <EditTwoTone
+          style={{ cursor: 'pointer' }}
+          onClick={() => history.push(`/regulations/${regulation.id}`)}
+        />
         <FindInPageTwoToneIcon
           color="primary"
           style={{ cursor: 'pointer' }}

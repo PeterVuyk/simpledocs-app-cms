@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropzoneAreaBase, FileObject } from 'material-ui-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -22,6 +22,7 @@ interface Props {
   allowedMimeTypes: string[];
   dropzoneText: string;
   enableHtmlPreview: boolean;
+  initialFile: string | null;
   [x: string]: any;
 }
 
@@ -32,6 +33,7 @@ const SelectWrapper: React.FC<Props> = ({
   allowedMimeTypes,
   dropzoneText,
   enableHtmlPreview,
+  initialFile,
 }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string | null>(
     null
@@ -40,41 +42,36 @@ const SelectWrapper: React.FC<Props> = ({
 
   const configDropzoneArea: any = {
     ...field,
+    initialFiles: initialFile === null ? undefined : [initialFile],
   };
 
   if (mata && mata.touched && mata.error) {
     configDropzoneArea.helperText = mata.error;
   }
 
-  const handleAdd = async (newFiles: FileObject[]) => {
-    if (newFiles.length > 1) {
-      return;
-    }
-    formik.current.setFieldValue(name, newFiles[0]);
-  };
-
   const closeHtmlPreviewHandle = (): void => {
-    console.log(showHtmlPreview);
     setShowHtmlPreview(null);
-  };
-
-  const handleDelete = () => {
-    formik.current.setFieldValue(name, '');
-  };
-
-  const getFileObjects = (): FileObject[] => {
-    if (
-      formik.current?.values[name] !== undefined &&
-      formik.current?.values[name] !== ''
-    ) {
-      return [formik.current.values[name] as FileObject];
-    }
-    return [];
   };
 
   if (showError && mata.error) {
     configDropzoneArea.helperText = mata.error;
   }
+
+  const handleUploadChange = (files: File[]) => {
+    if (files.length !== 1) {
+      // Remove file
+      formik.current.setFieldValue(name, '');
+      return;
+    }
+
+    // Add uploaded file
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0] as Blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      formik.current.setFieldValue(name, base64data);
+    };
+  };
 
   const fileAddedMessage = (fileName: string): string => {
     return `Bestand ${fileName} is toegevoegd.`;
@@ -84,8 +81,8 @@ const SelectWrapper: React.FC<Props> = ({
     return `Bestand ${fileName} is verwijderd.`;
   };
 
-  const dropRejectMessage = (fileName: string): string => {
-    return `Upload van bestand ${fileName} geweigerd`;
+  const dropRejectMessage = (rejectedFile: File): string => {
+    return `Upload van bestand ${rejectedFile.name} geweigerd`;
   };
 
   const fileLimitExceedMessage = (): string => {
@@ -94,28 +91,23 @@ const SelectWrapper: React.FC<Props> = ({
 
   return (
     <div style={{ position: 'relative' }}>
-      <DropzoneAreaBase
+      <DropzoneArea
         {...configDropzoneArea}
+        dropzoneText={dropzoneText}
+        acceptedFiles={allowedMimeTypes}
+        filesLimit={1}
         getFileAddedMessage={fileAddedMessage}
         getFileRemovedMessage={fileRemovedMessage}
         getDropRejectMessage={dropRejectMessage}
         getFileLimitExceedMessage={fileLimitExceedMessage}
-        dropzoneText={dropzoneText}
-        fileObjects={getFileObjects()}
-        acceptedFiles={allowedMimeTypes}
-        // initialFiles={file}
-        filesLimit={1}
-        onAdd={handleAdd}
-        onDelete={handleDelete}
+        onChange={handleUploadChange}
       />
-      {enableHtmlPreview && getFileObjects().length !== 0 && (
+      {enableHtmlPreview && formik.current?.values[name] !== '' && (
         <div style={{ position: 'absolute', bottom: 0, right: 5 }}>
           <FindInPageTwoToneIcon
             color="primary"
             style={{ cursor: 'pointer', fontSize: '4em' }}
-            onClick={() =>
-              setShowHtmlPreview(getFileObjects()[0].data as string)
-            }
+            onClick={() => setShowHtmlPreview(formik.current?.values[name])}
           />
         </div>
       )}

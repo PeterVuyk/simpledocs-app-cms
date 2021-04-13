@@ -30,6 +30,14 @@ async function getRegulations(): Promise<Regulation[]> {
   });
 }
 
+async function getRegulationsById(id: string): Promise<Regulation> {
+  const documentSnapshot = await database
+    .collection('regulations')
+    .doc(id)
+    .get();
+  return { id: documentSnapshot.id, ...documentSnapshot.data() } as Regulation;
+}
+
 async function getRegulationsByField(
   fieldName: string,
   fieldValue: string | number
@@ -44,6 +52,7 @@ async function getRegulationsByField(
 const regulationRepository = {
   createRegulation,
   getRegulations,
+  getRegulationsById,
   getRegulationsByField,
   deleteRegulation,
 };

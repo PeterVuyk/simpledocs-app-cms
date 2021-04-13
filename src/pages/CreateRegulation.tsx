@@ -101,8 +101,8 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        htmlFile: values.htmlFile.data,
-        iconFile: values.iconFile.data,
+        htmlFile: values.htmlFile,
+        iconFile: values.iconFile,
       })
       .then(() => history.push('/'))
       .then(() =>

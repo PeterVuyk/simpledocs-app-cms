@@ -10,6 +10,7 @@ import CreateRegulation from './pages/CreateRegulation';
 import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
 import RegulationsList from './pages/regulationList/RegulationsList';
+import EditRegulation from './pages/EditRegulation';
 
 const store = configureStore();
 
@@ -26,6 +27,11 @@ const App: React.FC = () => {
                 exact
                 path="/regulations/add"
                 component={CreateRegulation}
+              />
+              <PrivateRoute
+                exact
+                path="/regulations/:regulationId"
+                component={EditRegulation}
               />
               <Route path="/login" component={Login} />
             </Switch>
