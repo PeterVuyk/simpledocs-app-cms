@@ -40,6 +40,8 @@ const SelectWrapper: React.FC<Props> = ({
   );
   const [field, mata] = useField(name);
 
+  const ONE_MB_MAX_FILE_SIZE = 1000000;
+
   const configDropzoneArea: any = {
     ...field,
     initialFiles: initialFile === null ? undefined : [initialFile],
@@ -74,19 +76,19 @@ const SelectWrapper: React.FC<Props> = ({
   };
 
   const fileAddedMessage = (fileName: string): string => {
-    return `Bestand ${fileName} is toegevoegd.`;
+    return `Het bestand ${fileName} is toegevoegd.`;
   };
 
-  const fileRemovedMessage = (fileName: string): string => {
-    return `Bestand ${fileName} is verwijderd.`;
+  const fileRemovedMessage = (): string => {
+    return `Het bestand is verwijderd.`;
   };
 
   const dropRejectMessage = (rejectedFile: File): string => {
-    return `Upload van bestand ${rejectedFile.name} geweigerd`;
+    return `Het uploaden van bestand ${rejectedFile.name} is geweigerd, maximaal 1 MB is toegestaan.`;
   };
 
   const fileLimitExceedMessage = (): string => {
-    return `Maximaal aantal toegestane bestanden overschreden. Slechts 1 bestand is toegestaan`;
+    return `Maximaal aantal toegestane bestanden of grote hiervan is overschreden. Slechts 1 bestand van maximaal 1 MB is toegestaan.`;
   };
 
   return (
@@ -96,6 +98,7 @@ const SelectWrapper: React.FC<Props> = ({
         dropzoneText={dropzoneText}
         acceptedFiles={allowedMimeTypes}
         filesLimit={1}
+        maxFileSize={ONE_MB_MAX_FILE_SIZE}
         getFileAddedMessage={fileAddedMessage}
         getFileRemovedMessage={fileRemovedMessage}
         getDropRejectMessage={dropRejectMessage}

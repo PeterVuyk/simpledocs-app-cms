@@ -20,6 +20,9 @@ const useStyles = makeStyles({
   icon: {
     width: 30,
   },
+  toolBox: {
+    width: 110,
+  },
 });
 
 interface Props {
@@ -89,7 +92,7 @@ const RegulationListItem: React.FC<Props> = ({
           alt={regulation.chapter}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className={classes.toolBox}>
         <EditTwoTone
           style={{ cursor: 'pointer' }}
           onClick={() => history.push(`/regulations/${regulation.id}`)}

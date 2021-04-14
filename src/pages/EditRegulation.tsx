@@ -54,7 +54,10 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
       fieldName,
       fieldValue
     );
-    return regulations.length === 0;
+    return (
+      regulations.length === 0 ||
+      regulations.filter((value) => value.id !== regulation?.id).length === 0
+    );
   }
 
   const FORM_VALIDATION = Yup.object().shape({
@@ -74,7 +77,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
       .required('Pagina index is een verplicht veld.')
       .test(
         'pageIndex',
-        'De opgegeven pagina index bestaat al en moet uniek zijn',
+        'Het opgegeven pagina index bestaat al en moet uniek zijn',
         async (chapter) => {
           return isFieldUnique('pageIndex', chapter);
         }
@@ -90,8 +93,9 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
   });
 
   const handleSubmit = (values: FormikValues): void => {
-    regulationRepository
-      .createRegulation({
+    throw regulationRepository
+      .updateRegulation({
+        id: regulation?.id,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -106,7 +110,14 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: 'Pagina is toegevoegd.',
+          notificationMessage: 'Pagina is gewijzigd.',
+        })
+      )
+      .catch((error) =>
+        setNotification({
+          notificationType: 'error',
+          notificationOpen: true,
+          notificationMessage: `Het wijzigen van de regulatie is mislukt, foutmelding: ${error.message}.`,
         })
       );
   };
@@ -219,7 +230,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
               </Grid>
             </Grid>
             <div className={classes.submit}>
-              <SubmitButton setShowError={setShowError}>Toevoegen</SubmitButton>
+              <SubmitButton setShowError={setShowError}>Wijzigen</SubmitButton>
             </div>
           </Form>
         </Formik>

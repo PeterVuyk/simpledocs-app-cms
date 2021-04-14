@@ -16,6 +16,16 @@ async function createRegulation(regulation: Regulation): Promise<void> {
   await database.collection('regulations').add(regulation);
 }
 
+async function updateRegulation(regulation: Regulation): Promise<void> {
+  const regulationId = regulation.id;
+  const updatedRegulation = regulation;
+  delete updatedRegulation.id;
+  await database
+    .collection('regulations')
+    .doc(regulationId)
+    .set(updatedRegulation);
+}
+
 async function deleteRegulation(regulationId: string): Promise<void> {
   await database.collection('regulations').doc(regulationId).delete();
 }
@@ -46,7 +56,9 @@ async function getRegulationsByField(
     .collection('regulations')
     .where(fieldName, '==', fieldValue)
     .get();
-  return querySnapshot.docs.map((doc) => doc.data() as Regulation);
+  return querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Regulation;
+  });
 }
 
 const regulationRepository = {
@@ -55,6 +67,7 @@ const regulationRepository = {
   getRegulationsById,
   getRegulationsByField,
   deleteRegulation,
+  updateRegulation,
 };
 
 export default regulationRepository;

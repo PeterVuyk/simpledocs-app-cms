@@ -77,7 +77,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
       .required('Pagina index is een verplicht veld.')
       .test(
         'pageIndex',
-        'De opgegeven pagina index bestaat al en moet uniek zijn',
+        'Het opgegeven pagina index bestaat al en moet uniek zijn',
         async (chapter) => {
           return isFieldUnique('pageIndex', chapter);
         }
@@ -110,6 +110,13 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
           notificationType: 'success',
           notificationOpen: true,
           notificationMessage: 'Pagina is toegevoegd.',
+        })
+      )
+      .catch((error) =>
+        setNotification({
+          notificationType: 'error',
+          notificationOpen: true,
+          notificationMessage: `Het toevoegen van de regulatie is mislukt, foutmelding: ${error.message}.`,
         })
       );
   };

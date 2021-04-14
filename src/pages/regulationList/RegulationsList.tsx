@@ -18,7 +18,7 @@ import PageLayout from '../../layout/PageLayout';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    width: '100%',
   },
   head: {
     backgroundColor: '#ddd',
