@@ -9,12 +9,12 @@ import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import regulationRepository, {
   Regulation,
-} from '../../firebase/database/regulationRepository';
-import RegulationDialog from '../../components/dialog/RegulationDialog';
+} from '../../../firebase/database/regulationRepository';
+import RegulationDialog from '../../../components/dialog/RegulationDialog';
 import notification, {
   NotificationOptions,
-} from '../../redux/actions/notification';
-import HtmlPreview from '../../components/dialog/HtmlPreview';
+} from '../../../redux/actions/notification';
+import HtmlPreview from '../../../components/dialog/HtmlPreview';
 
 const useStyles = makeStyles({
   icon: {

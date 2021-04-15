@@ -11,10 +11,10 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import regulationRepository, {
   Regulation,
-} from '../../firebase/database/regulationRepository';
+} from '../../../firebase/database/regulationRepository';
 import RegulationListItem from './RegulationListItem';
-import PageHeading from '../../layout/PageHeading';
-import PageLayout from '../../layout/PageLayout';
+import PageHeading from '../../../layout/PageHeading';
+import PageLayout from '../../../layout/PageLayout';
 
 const useStyles = makeStyles({
   table: {

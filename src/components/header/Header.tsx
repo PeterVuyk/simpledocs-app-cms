@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,13 +8,18 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import { useAuth } from '../../authentication/AuthProvider';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
   },
-  title: {
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  headerItem: {
     flexGrow: 1,
   },
 }));
@@ -42,11 +47,15 @@ const Header: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar elevation={0} position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.headerItem}>
             AZN App management
           </Typography>
+          <Tabs value={0} textColor="inherit" className={classes.headerItem}>
+            <Tab textColor="inherit" label="Regelgevingen" />
+            <Tab textColor="inherit" label="Publicatie" />
+          </Tabs>
           {currentUser !== null && (
             <div>
               <IconButton
@@ -56,7 +65,7 @@ const Header: React.FC = () => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <Typography variant="body2" className={classes.title}>
+                <Typography variant="body2" className={classes.headerItem}>
                   {currentUser?.email}&nbsp;
                 </Typography>
                 <AccountCircle />

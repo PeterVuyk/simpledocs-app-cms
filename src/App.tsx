@@ -6,11 +6,12 @@ import configureStore from './redux/configureStore';
 import Login from './authentication/Login';
 import { AuthProvider } from './authentication/AuthProvider';
 import PrivateRoute from './authentication/PrivateRoute';
-import CreateRegulation from './pages/CreateRegulation';
+import CreateRegulation from './pages/regulations/CreateRegulation';
 import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
-import RegulationsList from './pages/regulationList/RegulationsList';
-import EditRegulation from './pages/EditRegulation';
+import RegulationsList from './pages/regulations/regulationList/RegulationsList';
+import EditRegulation from './pages/regulations/EditRegulation';
+import Publications from './pages/publications/Publications';
 
 const store = configureStore();
 
@@ -23,6 +24,11 @@ const App: React.FC = () => {
           <Router>
             <Switch>
               <PrivateRoute exact path="/" component={RegulationsList} />
+              <PrivateRoute
+                exact
+                path="/publications"
+                component={Publications}
+              />
               <PrivateRoute
                 exact
                 path="/regulations/add"

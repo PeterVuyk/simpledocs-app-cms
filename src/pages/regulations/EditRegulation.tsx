@@ -8,16 +8,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
 import regulationRepository, {
   Regulation,
-} from '../firebase/database/regulationRepository';
-import PageLayout from '../layout/PageLayout';
-import PageHeading from '../layout/PageHeading';
+} from '../../firebase/database/regulationRepository';
+import PageLayout from '../../layout/PageLayout';
+import PageHeading from '../../layout/PageHeading';
 import notification, {
   NotificationOptions,
-} from '../redux/actions/notification';
-import TextField from '../components/form/TextField';
-import Select from '../components/form/Select';
-import FileDropZoneArea from '../components/form/FileDropzoneArea';
-import SubmitButton from '../components/form/SubmitButton';
+} from '../../redux/actions/notification';
+import TextField from '../../components/form/TextField';
+import Select from '../../components/form/Select';
+import FileDropZoneArea from '../../components/form/FileDropzoneArea';
+import SubmitButton from '../../components/form/SubmitButton';
 
 const useStyles = makeStyles((theme) => ({
   submit: {

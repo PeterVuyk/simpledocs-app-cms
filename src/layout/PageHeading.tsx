@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 
 interface Props {
   title: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const PageHeading: React.FC<Props> = ({ title, children }) => {
@@ -12,7 +12,7 @@ const PageHeading: React.FC<Props> = ({ title, children }) => {
       <div style={{ float: 'left' }}>
         <Typography variant="h5">{title}</Typography>
       </div>
-      <div style={{ float: 'right' }}>{children}</div>
+      {children && <div style={{ float: 'right' }}>{children}</div>}
     </div>
   );
 };
