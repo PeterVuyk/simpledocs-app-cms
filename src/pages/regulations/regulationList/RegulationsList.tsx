@@ -14,7 +14,6 @@ import regulationRepository, {
 } from '../../../firebase/database/regulationRepository';
 import RegulationListItem from './RegulationListItem';
 import PageHeading from '../../../layout/PageHeading';
-import PageLayout from '../../../layout/PageLayout';
 
 const useStyles = makeStyles({
   table: {
@@ -41,7 +40,7 @@ const RegulationsList: React.FC = () => {
   }, []);
 
   return (
-    <PageLayout>
+    <>
       <PageHeading title="Regelgevingen beheer">
         <Button
           variant="contained"
@@ -83,7 +82,7 @@ const RegulationsList: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </PageLayout>
+    </>
   );
 };
 

@@ -17,7 +17,7 @@ import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import PageLayout from '../../layout/PageLayout';
+import Navigation from '../Navigation';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -122,7 +122,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <PageLayout>
+    <Navigation>
       <PageHeading title="Pagina toevoegen">
         <Button
           variant="contained"
@@ -232,7 +232,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
           </div>
         </Form>
       </Formik>
-    </PageLayout>
+    </Navigation>
   );
 };
 

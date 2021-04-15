@@ -8,8 +8,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import { useAuth } from '../../authentication/AuthProvider';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,21 +22,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Header: React.FC = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const Header: React.FC<Props> = ({ children }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser, logout } = useAuth();
   const open = Boolean(anchorEl);
   const history = useHistory();
 
-  const handleMenu = (event: any) => {
+  const handleProfileMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleCloseProfile = () => {
     setAnchorEl(null);
   };
-
   async function handleLogout() {
     setAnchorEl(null);
     await logout();
@@ -52,17 +53,14 @@ const Header: React.FC = () => {
           <Typography variant="h6" className={classes.headerItem}>
             AZN App management
           </Typography>
-          <Tabs value={0} textColor="inherit" className={classes.headerItem}>
-            <Tab textColor="inherit" label="Regelgevingen" />
-            <Tab textColor="inherit" label="Publicatie" />
-          </Tabs>
+          <div className={classes.headerItem}>{children}</div>
           {currentUser !== null && (
             <div>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={handleProfileMenu}
                 color="inherit"
               >
                 <Typography variant="body2" className={classes.headerItem}>
@@ -83,7 +81,7 @@ const Header: React.FC = () => {
                   horizontal: 'right',
                 }}
                 open={open}
-                onClose={handleClose}
+                onClose={handleCloseProfile}
               >
                 <MenuItem onClick={handleLogout}>Uitloggen</MenuItem>
               </Menu>

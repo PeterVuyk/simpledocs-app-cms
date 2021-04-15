@@ -1,6 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import configureStore from './redux/configureStore';
 import Login from './authentication/Login';
@@ -9,9 +14,9 @@ import PrivateRoute from './authentication/PrivateRoute';
 import CreateRegulation from './pages/regulations/CreateRegulation';
 import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
-import RegulationsList from './pages/regulations/regulationList/RegulationsList';
 import EditRegulation from './pages/regulations/EditRegulation';
 import Publications from './pages/publications/Publications';
+import Navigation from './pages/Navigation';
 
 const store = configureStore();
 
@@ -23,7 +28,12 @@ const App: React.FC = () => {
           <SnackbarNotification />
           <Router>
             <Switch>
-              <PrivateRoute exact path="/" component={RegulationsList} />
+              <Redirect exact from="/" to="/regulations" />
+              <PrivateRoute
+                exact
+                path="/:page?"
+                component={(props: any) => <Navigation {...props} />}
+              />
               <PrivateRoute
                 exact
                 path="/publications"
@@ -36,7 +46,7 @@ const App: React.FC = () => {
               />
               <PrivateRoute
                 exact
-                path="/regulations/:regulationId"
+                path="/:regulations/:regulationId"
                 component={EditRegulation}
               />
               <Route path="/login" component={Login} />
