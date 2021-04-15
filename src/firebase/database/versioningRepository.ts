@@ -1,20 +1,24 @@
 import { database } from '../firebaseConnection';
 
 export interface Versioning {
-  regulations: string;
+  aggregate: string;
+  version: string;
 }
 
-async function getRegulationVersioning() {
+async function getVersions() {
   const versioning = await database
     .collection('versioning')
     .doc('aggregate')
     .get();
-
-  return versioning.data() as Versioning;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return Object.entries(versioning.data()).map(([key, value]) => {
+    return { aggregate: key, version: value } as Versioning;
+  });
 }
 
 const versioningRepository = {
-  getRegulationVersioning,
+  getVersions,
 };
 
 export default versioningRepository;
