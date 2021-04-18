@@ -17,8 +17,18 @@ async function getVersions() {
   });
 }
 
+async function updateVersion(versioning: Versioning, newVersion: string) {
+  await database
+    .collection('versioning')
+    .doc('aggregate')
+    .update({
+      [versioning.aggregate]: newVersion,
+    });
+}
+
 const versioningRepository = {
   getVersions,
+  updateVersion,
 };
 
 export default versioningRepository;

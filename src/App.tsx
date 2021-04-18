@@ -28,6 +28,7 @@ const App: React.FC = () => {
           <SnackbarNotification />
           <Router>
             <Switch>
+              <Route path="/login" component={Login} />
               <Redirect exact from="/" to="/regulations" />
               <PrivateRoute
                 exact
@@ -49,7 +50,6 @@ const App: React.FC = () => {
                 path="/:regulations/:regulationId"
                 component={EditRegulation}
               />
-              <Route path="/login" component={Login} />
             </Switch>
           </Router>
         </AuthProvider>

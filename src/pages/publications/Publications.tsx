@@ -11,6 +11,7 @@ import PageHeading from '../../layout/PageHeading';
 import versioningRepository, {
   Versioning,
 } from '../../firebase/database/versioningRepository';
+import PublicationItem from './PublicationItem';
 
 const useStyles = makeStyles({
   table: {
@@ -22,16 +23,12 @@ const useStyles = makeStyles({
 });
 
 const Publications: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [versions, setVersions] = React.useState<Versioning[]>([]);
+
   const classes = useStyles();
 
   const reloadPublicationsHandle = (): void => {
-    versioningRepository
-      .getVersions()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      .then((result) => setVersions(result));
+    versioningRepository.getVersions().then((result) => setVersions(result));
   };
 
   React.useEffect(() => {
@@ -49,16 +46,17 @@ const Publications: React.FC = () => {
                 <strong>Onderdeel</strong>
               </TableCell>
               <TableCell>
-                <strong>Uitgebrachte versie</strong>
+                <strong>Huidige versie</strong>
               </TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {versions.map((row) => (
-              <TableRow hover key={row.aggregate}>
-                <TableCell>{row.aggregate}</TableCell>
-                <TableCell>{row.version}</TableCell>
-              </TableRow>
+              <PublicationItem
+                version={row}
+                reloadPublicationsHandle={reloadPublicationsHandle}
+              />
             ))}
           </TableBody>
         </Table>

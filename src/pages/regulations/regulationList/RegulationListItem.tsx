@@ -92,7 +92,7 @@ const RegulationListItem: React.FC<Props> = ({
           alt={regulation.chapter}
         />
       </TableCell>
-      <TableCell className={classes.toolBox}>
+      <TableCell align="right" className={classes.toolBox}>
         <EditTwoTone
           style={{ cursor: 'pointer' }}
           onClick={() => history.push(`/regulations/${regulation.id}`)}
