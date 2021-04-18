@@ -221,8 +221,8 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
                 name="iconFile"
                 formik={formikRef}
                 showError={showError}
-                dropzoneText="Klik hier of sleep het png illustratie bestand hierheen"
-                allowedMimeTypes={['image/png']}
+                dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
+                allowedMimeTypes={['image/svg+xml']}
                 initialFile={null}
               />
             </Grid>

@@ -81,52 +81,50 @@ const PublishDialog: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <Dialog
-        open={openDialog !== null}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            style={{ whiteSpace: 'pre-line' }}
-            id="alert-dialog-slide-description"
-          >
-            {dialogText}
-          </DialogContentText>
-          <TextField
-            inputRef={versionRef}
-            variant="outlined"
-            margin="normal"
-            error={error !== ''}
-            helperText={error}
-            required
-            fullWidth
-            id="version"
-            label="Nieuwe versie"
-            name="version"
-            autoFocus
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            Annuleren
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            color="secondary"
-            variant="contained"
-            disabled={loading}
-          >
-            Publiceren
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={openDialog !== null}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          style={{ whiteSpace: 'pre-line' }}
+          id="alert-dialog-slide-description"
+        >
+          {dialogText}
+        </DialogContentText>
+        <TextField
+          inputRef={versionRef}
+          variant="outlined"
+          margin="normal"
+          error={error !== ''}
+          helperText={error}
+          required
+          fullWidth
+          id="version"
+          label="Nieuwe versie"
+          name="version"
+          autoFocus
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary" variant="contained">
+          Annuleren
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          color="secondary"
+          variant="contained"
+          disabled={loading}
+        >
+          Publiceren
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

@@ -18,7 +18,7 @@ import HtmlPreview from '../../../components/dialog/HtmlPreview';
 
 const useStyles = makeStyles({
   icon: {
-    width: 30,
+    width: 20,
   },
   toolBox: {
     width: 110,
