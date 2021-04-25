@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import RegulationsList from './regulations/regulationList/RegulationsList';
 import Publications from './publications/Publications';
 import Header from '../components/header/Header';
+import DecisionTree from './decisionTree/DecisionTree';
 
 interface Props {
   children: React.ReactNode;
@@ -21,7 +22,8 @@ const Navigation: React.FC<Props> = ({ children }) => {
 
   const getIndexToTabName = {
     regulations: 0,
-    publications: 1,
+    decisionTree: 1,
+    publications: 2,
   };
 
   const [selectedTab, setSelectedTab] = React.useState<number | undefined>(
@@ -34,8 +36,11 @@ const Navigation: React.FC<Props> = ({ children }) => {
     if (page === 'regulations') {
       setSelectedTab(0);
     }
-    if (page === 'publications') {
+    if (page === 'decision-tree') {
       setSelectedTab(1);
+    }
+    if (page === 'publications') {
+      setSelectedTab(2);
     }
   }, [page]);
 
@@ -44,6 +49,9 @@ const Navigation: React.FC<Props> = ({ children }) => {
       history.push('/regulations');
     }
     if (newValue === 1) {
+      history.push('/decision-tree');
+    }
+    if (newValue === 2) {
       history.push('/publications');
     }
   };
@@ -59,6 +67,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
               onChange={handleChange}
             >
               <Tab label="Regelgevingen" />
+              <Tab label="Beslisboom" />
               <Tab label="Publiceren" />
             </Tabs>
           </Header>
@@ -68,7 +77,8 @@ const Navigation: React.FC<Props> = ({ children }) => {
           <Grid item sm={12} lg={8}>
             <CssBaseline />
             {selectedTab === 0 && <RegulationsList />}
-            {selectedTab === 1 && <Publications />}
+            {selectedTab === 1 && <DecisionTree />}
+            {selectedTab === 2 && <Publications />}
             {children && children}
           </Grid>
           <Grid item sm={false} lg={2} />

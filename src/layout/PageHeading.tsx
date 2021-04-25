@@ -8,7 +8,7 @@ interface Props {
 
 const PageHeading: React.FC<Props> = ({ title, children }) => {
   return (
-    <div style={{ overflow: 'hidden', marginTop: 10, marginBottom: 10 }}>
+    <div style={{ overflow: 'hidden', marginTop: 70, marginBottom: 10 }}>
       <div style={{ float: 'left' }}>
         <Typography variant="h5">{title}</Typography>
       </div>

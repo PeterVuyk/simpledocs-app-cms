@@ -48,7 +48,7 @@ const Header: React.FC<Props> = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar elevation={0} position="static">
+      <AppBar elevation={0} position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.headerItem}>
             AZN App management

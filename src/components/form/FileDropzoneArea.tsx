@@ -1,19 +1,9 @@
 import React from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import HtmlPreview from '../dialog/HtmlPreview';
-
-const ErrorTextTypography = withStyles({
-  root: {
-    color: '#f44336',
-    fontSize: '0.8rem',
-    fontFamily: 'Roboto, Helvetica',
-    fontWeight: 400,
-  },
-})(Typography);
+import ErrorTextTypography from '../text/ErrorTextTypography';
 
 interface Props {
   name: string;

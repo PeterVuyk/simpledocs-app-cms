@@ -23,6 +23,8 @@ const Publications: React.FC<Props> = ({
     switch (aggregate) {
       case 'regulations':
         return 'regelgevingen';
+      case 'decisionTree':
+        return 'beslisboom';
       default:
         return 'onbekend';
     }
