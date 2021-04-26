@@ -17,6 +17,7 @@ import theme from './theme';
 import EditRegulation from './pages/regulations/EditRegulation';
 import Publications from './pages/publications/Publications';
 import Navigation from './pages/Navigation';
+import DecisionTree from './pages/decisionTree/DecisionTree';
 
 const store = configureStore();
 
@@ -39,6 +40,11 @@ const App: React.FC = () => {
                 exact
                 path="/publications"
                 component={Publications}
+              />
+              <PrivateRoute
+                exact
+                path="/decision-tree"
+                component={DecisionTree}
               />
               <PrivateRoute
                 exact

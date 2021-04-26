@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,12 +9,15 @@ import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 import { connect } from 'react-redux';
+import Papa from 'papaparse';
 import notification, {
   NotificationOptions,
-} from '../../redux/actions/notification';
+} from '../../../redux/actions/notification';
 import DecisionTreeDropzoneArea from './DecisionTreeDropzoneArea';
-import ErrorTextTypography from '../../components/text/ErrorTextTypography';
-import decisionTreeStepsRepository from '../../firebase/database/decisionTreeRepository';
+import ErrorTextTypography from '../../../components/text/ErrorTextTypography';
+import decisionTreeRepository, {
+  DecisionTreeStep,
+} from '../../../firebase/database/decisionTreeRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -28,20 +31,27 @@ interface Props {
   dialogText: string;
   setOpenUploadDialog: (openUploadDialog: boolean) => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
+  loadDecisionTreeHandle: () => void;
 }
 
 const UploadDecisionTreeDialog: React.FC<Props> = ({
   dialogText,
   setOpenUploadDialog,
   setNotification,
+  loadDecisionTreeHandle,
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const uploadRef = useRef<string>('');
 
-  // useEffect(() => {
-  //   decisionTreeStepsRepository.deleteDecisionTree();
-  // }, []);
+  const readDecisionTreeCSVFile = (csvFile: string): DecisionTreeStep[] => {
+    const base64String = csvFile.split('data:text/csv;base64,')[1];
+    const csv = Papa.parse(atob(base64String), {
+      header: true,
+      dynamicTyping: true,
+    });
+    return csv.data.map((step) => step as DecisionTreeStep);
+  };
 
   const handleClose = () => {
     setOpenUploadDialog(false);
@@ -54,11 +64,21 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
       setLoading(false);
       return;
     }
-    setNotification({
-      notificationType: 'success',
-      notificationOpen: true,
-      notificationMessage: 'beslisboom is gepubliceerd.',
-    });
+    decisionTreeRepository
+      .updateDecisionTreeSteps(readDecisionTreeCSVFile(uploadRef.current))
+      .then(() => {
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage: 'beslisboom is gepubliceerd.',
+        });
+        setOpenUploadDialog(false);
+        loadDecisionTreeHandle();
+      })
+      .catch(() => {
+        setError('Het updaten van de beslisboom is mislukt');
+        setLoading(false);
+      });
   };
 
   return (

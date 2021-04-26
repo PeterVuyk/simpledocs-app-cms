@@ -127,7 +127,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/regulations')}
         >
           Terug
         </Button>

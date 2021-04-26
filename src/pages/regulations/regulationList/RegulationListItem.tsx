@@ -27,13 +27,13 @@ const useStyles = makeStyles({
 
 interface Props {
   regulation: Regulation;
-  reloadRegulationsHandle: () => void;
+  loadRegulationsHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const RegulationListItem: React.FC<Props> = ({
   regulation,
-  reloadRegulationsHandle,
+  loadRegulationsHandle,
   setNotification,
 }) => {
   const [
@@ -63,7 +63,7 @@ const RegulationListItem: React.FC<Props> = ({
   const onDelete = (id: string): void => {
     regulationRepository
       .deleteRegulation(id)
-      .then(() => reloadRegulationsHandle())
+      .then(() => loadRegulationsHandle())
       .then(() =>
         setNotification({
           notificationType: 'success',

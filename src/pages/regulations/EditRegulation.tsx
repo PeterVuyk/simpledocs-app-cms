@@ -105,7 +105,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
         htmlFile: values.htmlFile,
         iconFile: values.iconFile,
       })
-      .then(() => history.push('/'))
+      .then(() => history.push('/regulations'))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -128,7 +128,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/regulations')}
         >
           Terug
         </Button>

@@ -29,14 +29,14 @@ const RegulationsList: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const reloadRegulationsHandle = (): void => {
+  const loadRegulationsHandle = (): void => {
     regulationRepository
       .getRegulations()
       .then((result) => setRegulations(result));
   };
 
   React.useEffect(() => {
-    reloadRegulationsHandle();
+    loadRegulationsHandle();
   }, []);
 
   return (
@@ -76,7 +76,7 @@ const RegulationsList: React.FC = () => {
             {regulations.map((row) => (
               <RegulationListItem
                 regulation={row}
-                reloadRegulationsHandle={reloadRegulationsHandle}
+                loadRegulationsHandle={loadRegulationsHandle}
               />
             ))}
           </TableBody>
