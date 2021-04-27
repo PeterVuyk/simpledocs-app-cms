@@ -11,11 +11,14 @@ import Button from '@material-ui/core/Button';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import PageHeading from '../../layout/PageHeading';
 import UploadDecisionTreeDialog from './uploadCSVFile/UploadDecisionTreeDialog';
 import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../firebase/database/decisionTreeRepository';
+import HtmlPreview from '../../components/dialog/HtmlPreview';
+import regulationRepository from '../../firebase/database/regulationRepository';
 
 const useStyles = makeStyles({
   table: {
@@ -37,6 +40,16 @@ const DecisionTree: React.FC = () => {
   const [openUploadDialog, setOpenUploadDialog] = React.useState<boolean>(
     false
   );
+  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
+  const [htmlFile, setHtmlFile] = React.useState<string | null>();
+
+  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
+
+  useEffect(() => {
+    regulationRepository
+      .getRegulationsByField('chapter', showHtmlPreview.toString())
+      .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
+  }, [showHtmlPreview]);
 
   const exportDecisionTreeCSFile = (): void => {
     const csvString = Papa.unparse({
@@ -50,8 +63,7 @@ const DecisionTree: React.FC = () => {
   const loadDecisionTreeHandle = (): void => {
     decisionTreeRepository
       .getDecisionTreeSteps()
-      .then((steps) => setDecisionTreeSteps(steps))
-      .catch((reason) => console.log(reason));
+      .then((steps) => setDecisionTreeSteps(steps));
   };
 
   useEffect(() => {
@@ -103,7 +115,7 @@ const DecisionTree: React.FC = () => {
                 <strong>Antwoord</strong>
               </TableCell>
               <TableCell>
-                <strong>Link regelgevingen</strong>
+                <strong>Verwijzing</strong>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -116,7 +128,26 @@ const DecisionTree: React.FC = () => {
                 <TableCell>{row.label}</TableCell>
                 <TableCell>{row.parentId}</TableCell>
                 <TableCell>{row.lineLabel}</TableCell>
-                <TableCell>{row.regulationChapter}</TableCell>
+                <TableCell>
+                  {row.regulationChapter}&nbsp;
+                  {row.regulationChapter && (
+                    <FindInPageTwoToneIcon
+                      color="primary"
+                      style={{ cursor: 'pointer', marginBottom: -5 }}
+                      onClick={() =>
+                        setShowHtmlPreview(row.regulationChapter ?? '')
+                      }
+                    />
+                  )}
+                  {showHtmlPreview &&
+                    htmlFile &&
+                    showHtmlPreview === row.regulationChapter && (
+                      <HtmlPreview
+                        showHtmlPreview={htmlFile}
+                        closeHtmlPreviewHandle={closeHtmlPreviewHandle}
+                      />
+                    )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -74,10 +74,12 @@ const RegulationsList: React.FC = () => {
           </TableHead>
           <TableBody>
             {regulations.map((row) => (
-              <RegulationListItem
-                regulation={row}
-                loadRegulationsHandle={loadRegulationsHandle}
-              />
+              <TableRow hover key={row.chapter}>
+                <RegulationListItem
+                  regulation={row}
+                  loadRegulationsHandle={loadRegulationsHandle}
+                />
+              </TableRow>
             ))}
           </TableBody>
         </Table>

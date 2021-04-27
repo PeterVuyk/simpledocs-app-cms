@@ -16,9 +16,9 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: 'arial',
     h6: {
-      fontWeight: 500,
-      fontSize: 26,
-      letterSpacing: 0.5,
+      fontWeight: 400,
+      fontSize: 20,
+      letterSpacing: 0.1,
     },
   },
   shape: {

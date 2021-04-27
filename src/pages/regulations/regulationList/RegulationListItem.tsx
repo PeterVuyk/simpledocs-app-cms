@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { connect } from 'react-redux';
@@ -78,7 +77,7 @@ const RegulationListItem: React.FC<Props> = ({
   };
 
   return (
-    <TableRow hover key={regulation.title}>
+    <>
       <TableCell component="th" scope="row">
         {regulation.chapter}
       </TableCell>
@@ -126,7 +125,7 @@ const RegulationListItem: React.FC<Props> = ({
             />
           )}
       </TableCell>
-    </TableRow>
+    </>
   );
 };
 

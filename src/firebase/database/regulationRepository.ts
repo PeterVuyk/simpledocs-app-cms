@@ -50,7 +50,7 @@ async function getRegulationsById(id: string): Promise<Regulation> {
 
 async function getRegulationsByField(
   fieldName: string,
-  fieldValue: string | number
+  fieldValue: string
 ): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')

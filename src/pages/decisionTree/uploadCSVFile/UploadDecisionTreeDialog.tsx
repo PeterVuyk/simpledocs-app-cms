@@ -50,7 +50,13 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
       header: true,
       dynamicTyping: true,
     });
-    return csv.data.map((step) => step as DecisionTreeStep);
+    return (
+      csv.data
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        .filter((step) => step.id !== null)
+        .map((step) => step as DecisionTreeStep)
+    );
   };
 
   const handleClose = () => {

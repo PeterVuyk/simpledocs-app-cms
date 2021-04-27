@@ -78,8 +78,8 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
       .test(
         'pageIndex',
         'Het opgegeven pagina index bestaat al en moet uniek zijn',
-        async (chapter) => {
-          return isFieldUnique('pageIndex', chapter);
+        async (index) => {
+          return isFieldUnique('pageIndex', index);
         }
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
