@@ -6,6 +6,8 @@ import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { connect } from 'react-redux';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import FileSaver from 'file-saver';
 import regulationRepository, {
   Regulation,
 } from '../../../firebase/database/regulationRepository';
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
     width: 20,
   },
   toolBox: {
-    width: 110,
+    width: 150,
   },
 });
 
@@ -95,6 +97,13 @@ const RegulationListItem: React.FC<Props> = ({
         <EditTwoTone
           style={{ cursor: 'pointer' }}
           onClick={() => history.push(`/regulations/${regulation.id}`)}
+        />
+        <GetAppIcon
+          color="action"
+          style={{ cursor: 'pointer' }}
+          onClick={() =>
+            FileSaver.saveAs(regulation.htmlFile, `${regulation.chapter}.html`)
+          }
         />
         <FindInPageTwoToneIcon
           color="primary"

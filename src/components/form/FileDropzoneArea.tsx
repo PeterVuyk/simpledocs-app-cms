@@ -2,6 +2,8 @@ import React from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import FileSaver from 'file-saver';
 import HtmlPreview from '../dialog/HtmlPreview';
 import ErrorTextTypography from '../text/ErrorTextTypography';
 
@@ -101,6 +103,13 @@ const SelectWrapper: React.FC<Props> = ({
             color="primary"
             style={{ cursor: 'pointer', fontSize: '4em' }}
             onClick={() => setShowHtmlPreview(formik.current?.values[name])}
+          />
+          <GetAppIcon
+            color="action"
+            style={{ cursor: 'pointer', fontSize: '4em' }}
+            onClick={() =>
+              FileSaver.saveAs(formik.current?.values[name], 'regulation.html')
+            }
           />
         </div>
       )}
