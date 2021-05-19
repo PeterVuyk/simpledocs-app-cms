@@ -19,6 +19,7 @@ import decisionTreeRepository, {
 } from '../../firebase/database/decisionTreeRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
 import regulationRepository from '../../firebase/database/regulationRepository';
+import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 
 const useStyles = makeStyles({
   table: {
@@ -40,17 +41,37 @@ const DecisionTree: React.FC = () => {
   const [openUploadDialog, setOpenUploadDialog] = React.useState<boolean>(
     false
   );
-  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
+  const [
+    showHtmlPreview,
+    setShowHtmlPreview,
+  ] = React.useState<DecisionTreeStep>();
   const [htmlFile, setHtmlFile] = React.useState<string | null>();
+  const [menuElement, setMenuElement] = React.useState<null | HTMLElement>(
+    null
+  );
 
-  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
+  const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuElement(event.currentTarget);
+  };
+
+  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
 
   useEffect(() => {
+    if (
+      showHtmlPreview === null ||
+      showHtmlPreview?.regulationChapter === undefined
+    ) {
+      return;
+    }
     regulationRepository
-      .getRegulationsByField('chapter', showHtmlPreview.toString())
+      .getRegulationsByField(
+        'chapter',
+        showHtmlPreview.regulationChapter.toString()
+      )
       .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
   }, [showHtmlPreview]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const exportDecisionTreeCSFile = (): void => {
     const csvString = Papa.unparse({
       fields: ['id', 'label', 'parentId', 'lineLabel', 'regulationChapter'],
@@ -72,16 +93,21 @@ const DecisionTree: React.FC = () => {
 
   return (
     <>
-      <PageHeading title="Beslisboom">
+      <PageHeading title="Beslisbomen">
         {decisionTreeSteps.length !== 0 && (
           <Button
             className={classes.button}
             variant="contained"
-            onClick={() => exportDecisionTreeCSFile()}
+            onClick={openDownloadMenu}
           >
             <GetAppIcon color="action" />
           </Button>
         )}
+        <DownloadDecisionTreeMenu
+          decisionTreeSteps={decisionTreeSteps}
+          menuElement={menuElement}
+          setMenuElement={setMenuElement}
+        />
         <Button
           className={classes.button}
           variant="contained"
@@ -103,6 +129,9 @@ const DecisionTree: React.FC = () => {
           <TableHead>
             <TableRow className={classes.head}>
               <TableCell>
+                <strong>Titel</strong>
+              </TableCell>
+              <TableCell>
                 <strong>ID</strong>
               </TableCell>
               <TableCell>
@@ -121,10 +150,11 @@ const DecisionTree: React.FC = () => {
           </TableHead>
           <TableBody>
             {decisionTreeSteps.map((row) => (
-              <TableRow hover key={row.id}>
+              <TableRow hover key={row.id + row.title}>
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.title}
                 </TableCell>
+                <TableCell>{row.id}</TableCell>
                 <TableCell>{row.label}</TableCell>
                 <TableCell>{row.parentId}</TableCell>
                 <TableCell>{row.lineLabel}</TableCell>
@@ -134,14 +164,14 @@ const DecisionTree: React.FC = () => {
                     <FindInPageTwoToneIcon
                       color="primary"
                       style={{ cursor: 'pointer', marginBottom: -5 }}
-                      onClick={() =>
-                        setShowHtmlPreview(row.regulationChapter ?? '')
-                      }
+                      onClick={() => setShowHtmlPreview(row)}
                     />
                   )}
                   {showHtmlPreview &&
                     htmlFile &&
-                    showHtmlPreview === row.regulationChapter && (
+                    showHtmlPreview.title === row.title &&
+                    showHtmlPreview.regulationChapter ===
+                      row.regulationChapter && (
                       <HtmlPreview
                         showHtmlPreview={htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}

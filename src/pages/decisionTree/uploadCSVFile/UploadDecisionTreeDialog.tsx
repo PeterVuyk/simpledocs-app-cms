@@ -10,11 +10,13 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { connect } from 'react-redux';
 import Papa from 'papaparse';
+import { TextField } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import { TextFieldProps } from '@material-ui/core/TextField';
 import notification, {
   NotificationOptions,
 } from '../../../redux/actions/notification';
 import DecisionTreeDropzoneArea from './DecisionTreeDropzoneArea';
-import ErrorTextTypography from '../../../components/text/ErrorTextTypography';
 import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../../firebase/database/decisionTreeRepository';
@@ -42,9 +44,13 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const titleRef = useRef<TextFieldProps>();
   const uploadRef = useRef<string>('');
 
-  const readDecisionTreeCSVFile = (csvFile: string): DecisionTreeStep[] => {
+  const readDecisionTreeCSVFile = (
+    csvFile: string,
+    title: string
+  ): DecisionTreeStep[] => {
     const base64String = csvFile.split('data:text/csv;base64,')[1];
     const csv = Papa.parse(atob(base64String), {
       header: true,
@@ -55,7 +61,11 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .filter((step) => step.id !== null)
-        .map((step) => step as DecisionTreeStep)
+        .map((step) => {
+          const result = step as DecisionTreeStep;
+          result.title = title;
+          return result;
+        })
     );
   };
 
@@ -65,13 +75,26 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
 
   const handleSubmit = () => {
     setLoading(true);
+    if (
+      titleRef.current?.value === undefined ||
+      titleRef.current?.value === ''
+    ) {
+      setError('Geef een titel voor de beslisboom op');
+      setLoading(false);
+      return;
+    }
     if (uploadRef.current === undefined || uploadRef.current === '') {
       setError('Opslaan is mislukt, upload een correct bestand.');
       setLoading(false);
       return;
     }
     decisionTreeRepository
-      .updateDecisionTreeSteps(readDecisionTreeCSVFile(uploadRef.current))
+      .updateDecisionTreeSteps(
+        readDecisionTreeCSVFile(
+          uploadRef.current,
+          titleRef.current?.value as string
+        )
+      )
       .then(() => {
         setNotification({
           notificationType: 'success',
@@ -104,16 +127,23 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
         >
           {dialogText}
         </DialogContentText>
+        {error && <Alert severity="error">{error}</Alert>}
+        <TextField
+          inputRef={titleRef}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="decisionTreeTitle"
+          label="Naamgeving beslisboom"
+          name="Naamgeving beslisboom"
+          autoFocus
+        />
         <DecisionTreeDropzoneArea
           uploadRef={uploadRef}
           showError={false}
           allowedMimeTypes={['text/csv']}
         />
-        {error !== '' && (
-          <ErrorTextTypography>
-            Upload een csv bestand of klik op annuleren.
-          </ErrorTextTypography>
-        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary" variant="contained">

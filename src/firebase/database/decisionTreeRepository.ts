@@ -1,6 +1,7 @@
 import { database } from '../firebaseConnection';
 
 export interface DecisionTreeStep {
+  title: string;
   id: number;
   label: string;
   parentId?: number;
@@ -19,6 +20,7 @@ async function createDecisionTreeSteps(
 async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
   const querySnapshot = await database
     .collection('decisionTree')
+    .orderBy('title', 'desc')
     .orderBy('id', 'asc')
     .get();
   return querySnapshot.docs.map((doc) => {
@@ -29,7 +31,10 @@ async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
 async function updateDecisionTreeSteps(
   decisionTreeSteps: DecisionTreeStep[]
 ): Promise<void> {
-  const querySnapshot = await database.collection('decisionTree').get();
+  const querySnapshot = await database
+    .collection('decisionTree')
+    .where('title', '==', decisionTreeSteps[0].title)
+    .get();
   createDecisionTreeSteps(decisionTreeSteps).then(() => {
     const batch = database.batch();
     querySnapshot.forEach((documentSnapshot) => {
