@@ -8,10 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Papa from 'papaparse';
-import FileSaver from 'file-saver';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import PageHeading from '../../layout/PageHeading';
 import UploadDecisionTreeDialog from './uploadCSVFile/UploadDecisionTreeDialog';
 import decisionTreeRepository, {
@@ -20,6 +19,7 @@ import decisionTreeRepository, {
 import HtmlPreview from '../../components/dialog/HtmlPreview';
 import regulationRepository from '../../firebase/database/regulationRepository';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
+import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 
 const useStyles = makeStyles({
   table: {
@@ -46,12 +46,21 @@ const DecisionTree: React.FC = () => {
     setShowHtmlPreview,
   ] = React.useState<DecisionTreeStep>();
   const [htmlFile, setHtmlFile] = React.useState<string | null>();
-  const [menuElement, setMenuElement] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [
+    downloadMenuElement,
+    setDownloadMenuElement,
+  ] = React.useState<null | HTMLElement>(null);
+  const [
+    deleteMenuElement,
+    setDeleteMenuElement,
+  ] = React.useState<null | HTMLElement>(null);
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setMenuElement(event.currentTarget);
+    setDownloadMenuElement(event.currentTarget);
+  };
+
+  const openDeleteMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setDeleteMenuElement(event.currentTarget);
   };
 
   const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
@@ -71,16 +80,6 @@ const DecisionTree: React.FC = () => {
       .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
   }, [showHtmlPreview]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const exportDecisionTreeCSFile = (): void => {
-    const csvString = Papa.unparse({
-      fields: ['id', 'label', 'parentId', 'lineLabel', 'regulationChapter'],
-      data: decisionTreeSteps,
-    });
-    const csvFile = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    FileSaver.saveAs(csvFile, 'beslisboom.csv');
-  };
-
   const loadDecisionTreeHandle = (): void => {
     decisionTreeRepository
       .getDecisionTreeSteps()
@@ -93,7 +92,17 @@ const DecisionTree: React.FC = () => {
 
   return (
     <>
-      <PageHeading title="Beslisbomen">
+      <PageHeading title="Beslisboom">
+        {decisionTreeSteps.length !== 0 && (
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={openDeleteMenu}
+          >
+            <DeleteTwoToneIcon />
+          </Button>
+        )}
         {decisionTreeSteps.length !== 0 && (
           <Button
             className={classes.button}
@@ -103,11 +112,6 @@ const DecisionTree: React.FC = () => {
             <GetAppIcon color="action" />
           </Button>
         )}
-        <DownloadDecisionTreeMenu
-          decisionTreeSteps={decisionTreeSteps}
-          menuElement={menuElement}
-          setMenuElement={setMenuElement}
-        />
         <Button
           className={classes.button}
           variant="contained"
@@ -118,11 +122,22 @@ const DecisionTree: React.FC = () => {
         </Button>
         {openUploadDialog && (
           <UploadDecisionTreeDialog
-            dialogText="Vervang de beslisboom met een nieuwe versie door middel van een komma gescheiden csv bestand."
+            dialogText="Voeg een nieuwe beslisboom toe of vervang de bestaande door middel van het overschrijven van de benaming en het uploaden van een komma gescheiden csv bestand."
             setOpenUploadDialog={setOpenUploadDialog}
             loadDecisionTreeHandle={loadDecisionTreeHandle}
           />
         )}
+        <DownloadDecisionTreeMenu
+          decisionTreeSteps={decisionTreeSteps}
+          downloadMenuElement={downloadMenuElement}
+          setDownloadMenuElement={setDownloadMenuElement}
+        />
+        <RemoveDecisionTreeMenu
+          removeMenuElement={deleteMenuElement}
+          setRemoveMenuElement={setDeleteMenuElement}
+          decisionTreeSteps={decisionTreeSteps}
+          onSubmitAction={loadDecisionTreeHandle}
+        />
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">

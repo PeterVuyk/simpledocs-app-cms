@@ -44,9 +44,23 @@ async function updateDecisionTreeSteps(
   });
 }
 
+async function deleteByTitle(title: string): Promise<void> {
+  const querySnapshot = await database
+    .collection('decisionTree')
+    .where('title', '==', title)
+    .get();
+
+  const batch = database.batch();
+  querySnapshot.forEach((documentSnapshot) => {
+    batch.delete(documentSnapshot.ref);
+  });
+  return batch.commit();
+}
+
 const decisionTreeRepository = {
   updateDecisionTreeSteps,
   getDecisionTreeSteps,
+  deleteByTitle,
 };
 
 export default decisionTreeRepository;

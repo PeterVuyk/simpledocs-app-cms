@@ -67,7 +67,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
               onChange={handleChange}
             >
               <Tab label="Regelgevingen" />
-              <Tab label="Beslisbomen" />
+              <Tab label="Beslisboom" />
               <Tab label="Publiceren" />
             </Tabs>
           </Header>

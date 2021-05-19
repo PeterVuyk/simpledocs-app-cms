@@ -6,18 +6,18 @@ import FileSaver from 'file-saver';
 import { DecisionTreeStep } from '../../firebase/database/decisionTreeRepository';
 
 interface Props {
-  menuElement: null | HTMLElement;
-  setMenuElement: (anchorEL: null | HTMLElement) => void;
+  downloadMenuElement: null | HTMLElement;
+  setDownloadMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
 }
 
 const DownloadDecisionTreeMenu: React.FC<Props> = ({
-  menuElement,
-  setMenuElement,
+  downloadMenuElement,
+  setDownloadMenuElement,
   decisionTreeSteps,
 }) => {
   const handleClose = () => {
-    setMenuElement(null);
+    setDownloadMenuElement(null);
   };
 
   const exportDecisionTreeCSVFile = (steps: DecisionTreeStep[]): void => {
@@ -42,9 +42,9 @@ const DownloadDecisionTreeMenu: React.FC<Props> = ({
   return (
     <Menu
       id="simple-menu"
-      anchorEl={menuElement}
+      anchorEl={downloadMenuElement}
       keepMounted
-      open={Boolean(menuElement)}
+      open={Boolean(downloadMenuElement)}
       onClose={handleClose}
     >
       {Array.from(getTitles()).map((title) => (
