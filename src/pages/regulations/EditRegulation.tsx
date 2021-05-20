@@ -13,10 +13,10 @@ import PageHeading from '../../layout/PageHeading';
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
-import TextField from '../../components/form/TextField';
-import Select from '../../components/form/Select';
-import FileDropZoneArea from '../../components/form/FileDropzoneArea';
-import SubmitButton from '../../components/form/SubmitButton';
+import TextField from '../../components/form/formik/TextField';
+import Select from '../../components/form/formik/Select';
+import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
+import SubmitButton from '../../components/form/formik/SubmitButton';
 import Navigation from '../Navigation';
 
 const useStyles = makeStyles((theme) => ({

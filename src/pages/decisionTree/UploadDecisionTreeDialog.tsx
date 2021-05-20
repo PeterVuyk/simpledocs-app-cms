@@ -15,11 +15,11 @@ import Alert from '@material-ui/lab/Alert';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import notification, {
   NotificationOptions,
-} from '../../../redux/actions/notification';
-import DecisionTreeDropzoneArea from './DecisionTreeDropzoneArea';
+} from '../../redux/actions/notification';
+import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import decisionTreeRepository, {
   DecisionTreeStep,
-} from '../../../firebase/database/decisionTreeRepository';
+} from '../../firebase/database/decisionTreeRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -45,7 +45,8 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const titleRef = useRef<TextFieldProps>();
-  const uploadRef = useRef<string>('');
+  const csvUploadRef = useRef<string>('');
+  const iconUploadRef = useRef<string>('');
 
   const readDecisionTreeCSVFile = (
     csvFile: string,
@@ -73,6 +74,12 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
     setOpenUploadDialog(false);
   };
 
+  const addIconToFirstStep = (steps: DecisionTreeStep[]) => {
+    const updatedSteps: DecisionTreeStep[] = steps;
+    updatedSteps[0].iconFile = iconUploadRef.current;
+    return updatedSteps;
+  };
+
   const handleSubmit = () => {
     setLoading(true);
     if (
@@ -83,18 +90,22 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
       setLoading(false);
       return;
     }
-    if (uploadRef.current === undefined || uploadRef.current === '') {
-      setError('Opslaan is mislukt, upload een correct bestand.');
+    if (csvUploadRef.current === undefined || csvUploadRef.current === '') {
+      setError('Opslaan is mislukt, upload een correct csv bestand.');
       setLoading(false);
       return;
     }
+    if (iconUploadRef.current === undefined || iconUploadRef.current === '') {
+      setError('Opslaan is mislukt, upload een correct svg bestand.');
+      setLoading(false);
+      return;
+    }
+    const steps = readDecisionTreeCSVFile(
+      csvUploadRef.current,
+      titleRef.current?.value as string
+    );
     decisionTreeRepository
-      .updateDecisionTreeSteps(
-        readDecisionTreeCSVFile(
-          uploadRef.current,
-          titleRef.current?.value as string
-        )
-      )
+      .updateDecisionTreeSteps(addIconToFirstStep(steps))
       .then(() => {
         setNotification({
           notificationType: 'success',
@@ -139,10 +150,15 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
           name="Naamgeving beslisboom"
           autoFocus
         />
-        <DecisionTreeDropzoneArea
-          uploadRef={uploadRef}
-          showError={false}
+        <FileDropzoneArea
+          uploadRef={csvUploadRef}
           allowedMimeTypes={['text/csv']}
+          allowedExtension="csv"
+        />
+        <FileDropzoneArea
+          uploadRef={iconUploadRef}
+          allowedMimeTypes={['image/svg+xml']}
+          allowedExtension="svg"
         />
       </DialogContent>
       <DialogActions>

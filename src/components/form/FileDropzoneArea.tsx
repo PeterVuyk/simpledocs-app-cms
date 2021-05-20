@@ -1,60 +1,37 @@
 import React from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { useField } from 'formik';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import FileSaver from 'file-saver';
-import HtmlPreview from '../dialog/HtmlPreview';
-import ErrorTextTypography from '../text/ErrorTextTypography';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+const ErrorTextTypography = withStyles({
+  root: {
+    color: '#f44336',
+    fontSize: '0.8rem',
+    fontFamily: 'arial',
+    fontWeight: 400,
+  },
+})(Typography);
 
 interface Props {
-  name: string;
-  formik: any;
-  showError: boolean;
+  uploadRef: any;
   allowedMimeTypes: string[];
-  dropzoneText: string;
-  enableHtmlPreview: boolean;
-  initialFile: string | null;
-  [x: string]: any;
+  allowedExtension: string;
 }
 
-const SelectWrapper: React.FC<Props> = ({
-  name,
-  formik,
-  showError,
+const FileDropzoneArea: React.FC<Props> = ({
+  uploadRef,
   allowedMimeTypes,
-  dropzoneText,
-  enableHtmlPreview,
-  initialFile,
+  allowedExtension,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string | null>(
-    null
-  );
-  const [field, mata] = useField(name);
-
   const ONE_MB_MAX_FILE_SIZE = 1000000;
 
-  const configDropzoneArea: any = {
-    ...field,
-    initialFiles: initialFile === null ? undefined : [initialFile],
-  };
-
-  if (mata && mata.touched && mata.error) {
-    configDropzoneArea.helperText = mata.error;
-  }
-
-  const closeHtmlPreviewHandle = (): void => {
-    setShowHtmlPreview(null);
-  };
-
-  if (showError && mata.error) {
-    configDropzoneArea.helperText = mata.error;
-  }
+  const configDropzoneArea: any = {};
 
   const handleUploadChange = (files: File[]) => {
     if (files.length !== 1) {
       // Remove file
-      formik.current.setFieldValue(name, '');
+      // eslint-disable-next-line no-param-reassign
+      uploadRef.current = '';
       return;
     }
 
@@ -62,8 +39,8 @@ const SelectWrapper: React.FC<Props> = ({
     const reader = new FileReader();
     reader.readAsDataURL(files[0] as Blob);
     reader.onloadend = () => {
-      const base64data = reader.result;
-      formik.current.setFieldValue(name, base64data);
+      // eslint-disable-next-line no-param-reassign
+      uploadRef.current = reader.result;
     };
   };
 
@@ -76,52 +53,34 @@ const SelectWrapper: React.FC<Props> = ({
   };
 
   const dropRejectMessage = (rejectedFile: File): string => {
-    return `Het uploaden van bestand ${rejectedFile.name} is geweigerd, maximaal 1 MB is toegestaan.`;
+    return `Het uploaden van bestand ${rejectedFile.name} is geweigerd, alleen ${allowedExtension} bestanden van maximaal 1 MB is toegestaan.`;
   };
 
   const fileLimitExceedMessage = (): string => {
     return `Maximaal aantal toegestane bestanden of grote hiervan is overschreden. Slechts 1 bestand van maximaal 1 MB is toegestaan.`;
   };
 
+  const getDropzoneText = (): string => {
+    return `Klik hier of sleep het ${allowedExtension} bestand hierheen`;
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ marginBottom: 5, position: 'relative' }}>
       <DropzoneArea
         {...configDropzoneArea}
-        dropzoneText={dropzoneText}
         acceptedFiles={allowedMimeTypes}
         filesLimit={1}
         maxFileSize={ONE_MB_MAX_FILE_SIZE}
+        dropzoneText={getDropzoneText()}
         getFileAddedMessage={fileAddedMessage}
         getFileRemovedMessage={fileRemovedMessage}
         getDropRejectMessage={dropRejectMessage}
         getFileLimitExceedMessage={fileLimitExceedMessage}
         onChange={handleUploadChange}
       />
-      {enableHtmlPreview && formik.current?.values[name] !== '' && (
-        <div style={{ position: 'absolute', bottom: 0, right: 5 }}>
-          <FindInPageTwoToneIcon
-            color="primary"
-            style={{ cursor: 'pointer', fontSize: '4em' }}
-            onClick={() => setShowHtmlPreview(formik.current?.values[name])}
-          />
-          <GetAppIcon
-            color="action"
-            style={{ cursor: 'pointer', fontSize: '4em' }}
-            onClick={() =>
-              FileSaver.saveAs(formik.current?.values[name], 'regulation.html')
-            }
-          />
-        </div>
-      )}
-      {showHtmlPreview && (
-        <HtmlPreview
-          showHtmlPreview={showHtmlPreview}
-          closeHtmlPreviewHandle={closeHtmlPreviewHandle}
-        />
-      )}
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>
   );
 };
 
-export default SelectWrapper;
+export default FileDropzoneArea;

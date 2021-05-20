@@ -12,7 +12,6 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import PageHeading from '../../layout/PageHeading';
-import UploadDecisionTreeDialog from './uploadCSVFile/UploadDecisionTreeDialog';
 import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../firebase/database/decisionTreeRepository';
@@ -20,6 +19,7 @@ import HtmlPreview from '../../components/dialog/HtmlPreview';
 import regulationRepository from '../../firebase/database/regulationRepository';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
+import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
 
 const useStyles = makeStyles({
   table: {
@@ -166,8 +166,12 @@ const DecisionTree: React.FC = () => {
           <TableBody>
             {decisionTreeSteps.map((row) => (
               <TableRow hover key={row.id + row.title}>
+                {console.log(row.iconFile)}
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {row.title}&nbsp;
+                  {row.iconFile && (
+                    <img style={{ width: 30 }} src={`${row.iconFile}`} />
+                  )}
                 </TableCell>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.label}</TableCell>

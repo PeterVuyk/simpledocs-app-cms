@@ -6,10 +6,10 @@ import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import FileDropZoneArea from '../../components/form/FileDropzoneArea';
-import TextField from '../../components/form/TextField';
-import Select from '../../components/form/Select';
-import SubmitButton from '../../components/form/SubmitButton';
+import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
+import TextField from '../../components/form/formik/TextField';
+import Select from '../../components/form/formik/Select';
+import SubmitButton from '../../components/form/formik/SubmitButton';
 import regulationRepository, {
   Regulation,
 } from '../../firebase/database/regulationRepository';

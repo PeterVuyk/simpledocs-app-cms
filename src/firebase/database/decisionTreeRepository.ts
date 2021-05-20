@@ -2,6 +2,7 @@ import { database } from '../firebaseConnection';
 
 export interface DecisionTreeStep {
   title: string;
+  iconFile?: string;
   id: number;
   label: string;
   parentId?: number;
