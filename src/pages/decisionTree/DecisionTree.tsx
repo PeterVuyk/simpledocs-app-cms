@@ -166,7 +166,6 @@ const DecisionTree: React.FC = () => {
           <TableBody>
             {decisionTreeSteps.map((row) => (
               <TableRow hover key={row.id + row.title}>
-                {console.log(row.iconFile)}
                 <TableCell component="th" scope="row">
                   {row.title}&nbsp;
                   {row.iconFile && (

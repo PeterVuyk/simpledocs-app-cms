@@ -29,14 +29,18 @@ const DownloadDecisionTreeMenu: React.FC<Props> = ({
     FileSaver.saveAs(csvFile, `beslisboom-${steps[0].title}.csv`);
   };
 
+  const handleExportSVGFile = (step: DecisionTreeStep): void => {
+    FileSaver.saveAs(step.iconFile as string, `beslisboom-${step.title}.svg`);
+  };
+
   const handleExportCSVFile = (title: string): void => {
     exportDecisionTreeCSVFile(
       decisionTreeSteps.filter((step) => step.title === title)
     );
   };
 
-  const getTitles = (): string[] => {
-    return [...new Set(decisionTreeSteps.map((step) => step.title))];
+  const getTitleWithIcons = (): DecisionTreeStep[] => {
+    return decisionTreeSteps.filter((step) => step.iconFile !== undefined);
   };
 
   return (
@@ -47,8 +51,15 @@ const DownloadDecisionTreeMenu: React.FC<Props> = ({
       open={Boolean(downloadMenuElement)}
       onClose={handleClose}
     >
-      {Array.from(getTitles()).map((title) => (
-        <MenuItem onClick={() => handleExportCSVFile(title)}>{title}</MenuItem>
+      {getTitleWithIcons().map((step) => (
+        <MenuItem onClick={() => handleExportCSVFile(step.title)}>
+          {step.title}.csv
+        </MenuItem>
+      ))}
+      {getTitleWithIcons().map((step) => (
+        <MenuItem onClick={() => handleExportSVGFile(step)}>
+          {step.title}.svg
+        </MenuItem>
       ))}
     </Menu>
   );
