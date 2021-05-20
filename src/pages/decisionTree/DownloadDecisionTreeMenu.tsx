@@ -52,12 +52,18 @@ const DownloadDecisionTreeMenu: React.FC<Props> = ({
       onClose={handleClose}
     >
       {getTitleWithIcons().map((step) => (
-        <MenuItem onClick={() => handleExportCSVFile(step.title)}>
+        <MenuItem
+          key={`${step.title}csv`}
+          onClick={() => handleExportCSVFile(step.title)}
+        >
           {step.title}.csv
         </MenuItem>
       ))}
       {getTitleWithIcons().map((step) => (
-        <MenuItem onClick={() => handleExportSVGFile(step)}>
+        <MenuItem
+          key={`${step.title}svg`}
+          onClick={() => handleExportSVGFile(step)}
+        >
           {step.title}.svg
         </MenuItem>
       ))}

@@ -16,6 +16,7 @@ import versioningRepository, {
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
+import logger from '../../helper/logger';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -75,6 +76,7 @@ const PublishDialog: React.FC<Props> = ({
         });
       })
       .catch(() => {
+        logger.error('Update version in PublishDialog.handleSubmit failed');
         setError('Het updaten van de versie is mislukt');
         setLoading(false);
       });

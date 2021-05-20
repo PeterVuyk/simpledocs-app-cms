@@ -18,6 +18,7 @@ import Select from '../../components/form/formik/Select';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import Navigation from '../Navigation';
+import logger from '../../helper/logger';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -113,13 +114,17 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
           notificationMessage: 'Pagina is gewijzigd.',
         })
       )
-      .catch((error) =>
+      .catch((error) => {
+        logger.errorWithReason(
+          'Edit regulation has failed in EditRegulation.handleSubmit',
+          error
+        );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
           notificationMessage: `Het wijzigen van de regulatie is mislukt, foutmelding: ${error.message}.`,
-        })
-      );
+        });
+      });
   };
 
   return (

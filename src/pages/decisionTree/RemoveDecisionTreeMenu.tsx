@@ -9,6 +9,7 @@ import RemoveConfirmationDialog from '../../components/dialog/RemoveConfirmation
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
+import logger from '../../helper/logger';
 
 interface Props {
   removeMenuElement: null | HTMLElement;
@@ -41,13 +42,16 @@ const RemoveDecisionTreeMenu: React.FC<Props> = ({
         })
       )
       .then(onSubmitAction)
-      .catch(() =>
+      .catch(() => {
+        logger.error(
+          'delete decisionTree by title RemoveDecisionTreeMenu.handleDeleteDecisionTree failed.'
+        );
         setNotification({
           notificationOpen: true,
           notificationType: 'error',
           notificationMessage: `Het verwijderen van beslisboom ${title} is mislukt`,
-        })
-      );
+        });
+      });
   };
 
   const getTitles = (): string[] => {

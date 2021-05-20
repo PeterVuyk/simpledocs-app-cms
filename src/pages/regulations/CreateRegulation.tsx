@@ -18,6 +18,7 @@ import notification, {
 } from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
 import Navigation from '../Navigation';
+import logger from '../../helper/logger';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -112,13 +113,17 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
           notificationMessage: 'Pagina is toegevoegd.',
         })
       )
-      .catch((error) =>
+      .catch((error) => {
+        logger.errorWithReason(
+          'Create regulation has failed in CreateRegulation.handleSubmit',
+          error
+        );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
           notificationMessage: `Het toevoegen van de regulatie is mislukt, foutmelding: ${error.message}.`,
-        })
-      );
+        });
+      });
   };
 
   return (

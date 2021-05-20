@@ -20,6 +20,7 @@ import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../firebase/database/decisionTreeRepository';
+import logger from '../../helper/logger';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -116,6 +117,9 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
         loadDecisionTreeHandle();
       })
       .catch(() => {
+        logger.error(
+          'Uploading decisionTree in UploadDecisionTreeDialog.handleSubmit failed.'
+        );
         setError('Het updaten van de beslisboom is mislukt');
         setLoading(false);
       });
