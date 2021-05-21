@@ -21,6 +21,7 @@ import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../firebase/database/decisionTreeRepository';
 import logger from '../../helper/logger';
+import decisionTreeValidator from '../../validators/decisionTreevalidator';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -105,6 +106,13 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
       csvUploadRef.current,
       titleRef.current?.value as string
     );
+
+    const validationError = decisionTreeValidator.validate(steps);
+    if (validationError !== '') {
+      setError(validationError);
+      setLoading(false);
+      return;
+    }
     decisionTreeRepository
       .updateDecisionTreeSteps(addIconToFirstStep(steps))
       .then(() => {
@@ -142,7 +150,11 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
         >
           {dialogText}
         </DialogContentText>
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && (
+          <Alert style={{ whiteSpace: 'pre-line' }} severity="error">
+            {error}
+          </Alert>
+        )}
         <TextField
           inputRef={titleRef}
           variant="outlined"

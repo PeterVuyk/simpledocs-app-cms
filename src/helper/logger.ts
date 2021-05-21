@@ -6,6 +6,7 @@ const errorWithReason = (errorMessage: string, reason: string) => {
   );
 };
 
+// TODO: add logic if local development then console.error.
 const error = (errorMessage: string) => {
   Bugsnag.notify(new Error(`errorMessage: ${errorMessage}`));
 };
