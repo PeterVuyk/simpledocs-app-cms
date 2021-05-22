@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import Bugsnag from '@bugsnag/js';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository, {
   DecisionTreeStep,
@@ -88,7 +87,6 @@ const DecisionTree: React.FC = () => {
   };
 
   useEffect(() => {
-    Bugsnag.notify(new Error('Test error'));
     loadDecisionTreeHandle();
   }, []);
 

@@ -144,4 +144,3 @@ const decisionTreeValidator = {
 };
 
 export default decisionTreeValidator;
-// TODO: Extra field toevoegen met internalComment

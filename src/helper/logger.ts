@@ -1,13 +1,22 @@
 import Bugsnag from '@bugsnag/js';
 
+const isDevelopmentEnv = (): boolean => process.env.NODE_ENV === 'development';
+
 const errorWithReason = (errorMessage: string, reason: string) => {
+  if (isDevelopmentEnv()) {
+    console.error('errorMessage', errorMessage, 'reason', reason);
+    return;
+  }
   Bugsnag.notify(
     new Error(`errorMessage: ${errorMessage} error reason: ${reason}`)
   );
 };
 
-// TODO: add logic if local development then console.error.
 const error = (errorMessage: string) => {
+  if (isDevelopmentEnv()) {
+    console.error('errorMessage', errorMessage);
+    return;
+  }
   Bugsnag.notify(new Error(`errorMessage: ${errorMessage}`));
 };
 
