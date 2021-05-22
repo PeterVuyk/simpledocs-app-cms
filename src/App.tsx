@@ -19,6 +19,7 @@ import Publications from './pages/publications/Publications';
 import Navigation from './pages/Navigation';
 import DecisionTree from './pages/decisionTree/DecisionTree';
 import BreakingDistance from './pages/breakingDistance/BreakingDistance';
+import EditBreakingDistance from './pages/breakingDistance/EditBreakingDistance';
 
 const store = configureStore();
 
@@ -46,6 +47,11 @@ const App: React.FC = () => {
                 exact
                 path="/breaking-distance"
                 component={BreakingDistance}
+              />
+              <PrivateRoute
+                exact
+                path="/breaking-distance/edit"
+                component={EditBreakingDistance}
               />
               <PrivateRoute
                 exact

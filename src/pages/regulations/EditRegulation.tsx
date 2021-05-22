@@ -122,7 +122,8 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
-          notificationMessage: `Het wijzigen van de regulatie is mislukt, foutmelding: ${error.message}.`,
+          notificationMessage:
+            'Het wijzigen van de regulatie is mislukt, foutmelding: Neem contact op met de beheerder.',
         });
       });
   };

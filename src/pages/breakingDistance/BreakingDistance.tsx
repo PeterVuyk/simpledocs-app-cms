@@ -9,6 +9,8 @@ import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
+import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import breakingDistanceRepository, {
   BreakingDistanceInfo,
@@ -20,6 +22,9 @@ import regulationRepository from '../../firebase/database/regulationRepository';
 const useStyles = makeStyles({
   table: {
     width: '100%',
+  },
+  button: {
+    marginLeft: 8,
   },
   head: {
     backgroundColor: '#ddd',
@@ -36,6 +41,7 @@ const BreakingDistance: React.FC = () => {
   const [htmlFile, setHtmlFile] = React.useState<string | null>();
 
   const classes = useStyles();
+  const history = useHistory();
 
   const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
 
@@ -69,7 +75,16 @@ const BreakingDistance: React.FC = () => {
 
   return (
     <>
-      <PageHeading title="Beslisboom" />
+      <PageHeading title="Remafstand berekenen">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push('/breaking-distance/edit')}
+        >
+          Remafstand updaten
+        </Button>
+      </PageHeading>
       <TableContainer component={Paper}>
         {error && <Alert severity="error">{error}</Alert>}
         <Table className={classes.table} aria-label="simple table">
@@ -79,10 +94,10 @@ const BreakingDistance: React.FC = () => {
                 <strong>Titel</strong>
               </TableCell>
               <TableCell>
-                <strong>Toelichting</strong>
+                <strong>Illustratie</strong>
               </TableCell>
               <TableCell>
-                <strong>Illustratie</strong>
+                <strong>Toelichting</strong>
               </TableCell>
               <TableCell>
                 <strong>Verwijzing regelgeving</strong>
@@ -93,10 +108,13 @@ const BreakingDistance: React.FC = () => {
             {breakingDistanceInfo && (
               <TableRow hover key="1">
                 <TableCell>{breakingDistanceInfo.title}</TableCell>
-                <TableCell>{breakingDistanceInfo.explanation}</TableCell>
                 <TableCell>
-                  <img src={`${breakingDistanceInfo.iconFile}`} />
+                  <img
+                    style={{ width: 30 }}
+                    src={`${breakingDistanceInfo.iconFile}`}
+                  />
                 </TableCell>
+                <TableCell>{breakingDistanceInfo.explanation}</TableCell>
                 <TableCell>
                   {breakingDistanceInfo.regulationChapter}
                   <FindInPageTwoToneIcon
