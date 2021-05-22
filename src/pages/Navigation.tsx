@@ -8,6 +8,7 @@ import RegulationsList from './regulations/regulationList/RegulationsList';
 import Publications from './publications/Publications';
 import Header from '../components/header/Header';
 import DecisionTree from './decisionTree/DecisionTree';
+import BreakingDistance from './breakingDistance/BreakingDistance';
 
 interface Props {
   children: React.ReactNode;
@@ -23,7 +24,8 @@ const Navigation: React.FC<Props> = ({ children }) => {
   const getIndexToTabName = {
     regulations: 0,
     decisionTree: 1,
-    publications: 2,
+    breakingDistance: 2,
+    publications: 3,
   };
 
   const [selectedTab, setSelectedTab] = React.useState<number | undefined>(
@@ -39,8 +41,11 @@ const Navigation: React.FC<Props> = ({ children }) => {
     if (page === 'decision-tree') {
       setSelectedTab(1);
     }
-    if (page === 'publications') {
+    if (page === 'breaking-distance') {
       setSelectedTab(2);
+    }
+    if (page === 'publications') {
+      setSelectedTab(3);
     }
   }, [page]);
 
@@ -52,6 +57,9 @@ const Navigation: React.FC<Props> = ({ children }) => {
       history.push('/decision-tree');
     }
     if (newValue === 2) {
+      history.push('/breaking-distance');
+    }
+    if (newValue === 3) {
       history.push('/publications');
     }
   };
@@ -68,6 +76,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
             >
               <Tab label="Regelgevingen" />
               <Tab label="Beslisboom" />
+              <Tab label="Remafstand" />
               <Tab label="Publiceren" />
             </Tabs>
           </Header>
@@ -78,7 +87,8 @@ const Navigation: React.FC<Props> = ({ children }) => {
             <CssBaseline />
             {selectedTab === 0 && <RegulationsList />}
             {selectedTab === 1 && <DecisionTree />}
-            {selectedTab === 2 && <Publications />}
+            {selectedTab === 2 && <BreakingDistance />}
+            {selectedTab === 3 && <Publications />}
             {children && children}
           </Grid>
           <Grid item sm={false} lg={2} />

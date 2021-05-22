@@ -25,6 +25,8 @@ const Publications: React.FC<Props> = ({
         return 'regelgevingen';
       case 'decisionTree':
         return 'beslisboom';
+      case 'breakingDistance':
+        return 'remafstand';
       default:
         return 'onbekend';
     }
