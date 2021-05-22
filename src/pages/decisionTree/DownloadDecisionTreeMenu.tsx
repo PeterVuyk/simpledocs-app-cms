@@ -22,7 +22,14 @@ const DownloadDecisionTreeMenu: React.FC<Props> = ({
 
   const exportDecisionTreeCSVFile = (steps: DecisionTreeStep[]): void => {
     const csvString = Papa.unparse({
-      fields: ['id', 'label', 'parentId', 'lineLabel', 'regulationChapter'],
+      fields: [
+        'id',
+        'label',
+        'parentId',
+        'lineLabel',
+        'regulationChapter',
+        'internalNote',
+      ],
       data: steps,
     });
     const csvFile = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });

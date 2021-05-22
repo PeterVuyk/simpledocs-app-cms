@@ -150,18 +150,33 @@ const DecisionTree: React.FC = () => {
               </TableCell>
               <TableCell>
                 <strong>ID</strong>
+                <br />
+                id
               </TableCell>
               <TableCell>
                 <strong>Label</strong>
+                <br />
+                label
               </TableCell>
-              <TableCell>
+              <TableCell style={{ whiteSpace: 'nowrap' }}>
                 <strong>Parent ID</strong>
+                <br />
+                parentId
               </TableCell>
               <TableCell>
                 <strong>Antwoord</strong>
+                <br />
+                lineLabel
               </TableCell>
               <TableCell>
                 <strong>Verwijzing</strong>
+                <br />
+                regulationChapter
+              </TableCell>
+              <TableCell>
+                <strong>Interne notitie</strong>
+                <br />
+                internalNote
               </TableCell>
             </TableRow>
           </TableHead>
@@ -198,6 +213,7 @@ const DecisionTree: React.FC = () => {
                       />
                     )}
                 </TableCell>
+                <TableCell>{row.internalNote}</TableCell>
               </TableRow>
             ))}
           </TableBody>

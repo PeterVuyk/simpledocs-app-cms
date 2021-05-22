@@ -8,6 +8,7 @@ export interface DecisionTreeStep {
   parentId?: number;
   lineLabel?: string;
   regulationChapter?: string;
+  internalNote?: string;
 }
 
 async function createDecisionTreeSteps(
