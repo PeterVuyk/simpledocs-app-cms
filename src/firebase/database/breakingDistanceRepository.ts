@@ -4,6 +4,7 @@ export interface BreakingDistanceInfo {
   title: string;
   explanation: string;
   iconFile: string;
+  breakingDistanceImage: string;
   regulationChapter: string;
 }
 

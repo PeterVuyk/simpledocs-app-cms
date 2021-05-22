@@ -136,6 +136,16 @@ const BreakingDistance: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {breakingDistanceInfo && (
+        <div
+          style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}
+        >
+          <img
+            style={{ width: 600 }}
+            src={`${breakingDistanceInfo?.breakingDistanceImage}`}
+          />
+        </div>
+      )}
     </>
   );
 };

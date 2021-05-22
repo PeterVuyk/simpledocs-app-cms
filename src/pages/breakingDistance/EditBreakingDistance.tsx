@@ -57,6 +57,9 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
+    breakingDistanceImage: Yup.mixed().required(
+      'Het uploaden van een afbeelding is verplicht.'
+    ),
   });
 
   const handleSubmit = (values: FormikValues): void => {
@@ -66,6 +69,7 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
         explanation: values.explanation,
         regulationChapter: values.regulationChapter,
         iconFile: values.iconFile,
+        breakingDistanceImage: values.breakingDistanceImage,
       })
       .then(() => history.push('/breaking-distance'))
       .then(() =>
@@ -150,6 +154,17 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
                   allowedMimeTypes={['image/svg+xml']}
                   initialFile={breakingDistanceInfo.iconFile}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FileDropZoneArea
+                  enableHtmlPreview={false}
+                  name="breakingDistanceImage"
+                  formik={formikRef}
+                  showError={showError}
+                  dropzoneText="Klik hier of sleep het jpg/jpeg bestand hierheen"
+                  allowedMimeTypes={['image/jpeg']}
+                  initialFile={breakingDistanceInfo.breakingDistanceImage}
                 />
               </Grid>
             </Grid>
