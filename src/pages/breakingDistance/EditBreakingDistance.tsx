@@ -162,7 +162,7 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   name="breakingDistanceImage"
                   formik={formikRef}
                   showError={showError}
-                  dropzoneText="Klik hier of sleep het jpg/jpeg bestand hierheen"
+                  dropzoneText="Klik hier of sleep het jpg/jpeg remafstand afbeelding hierheen"
                   allowedMimeTypes={['image/jpeg']}
                   initialFile={breakingDistanceInfo.breakingDistanceImage}
                 />

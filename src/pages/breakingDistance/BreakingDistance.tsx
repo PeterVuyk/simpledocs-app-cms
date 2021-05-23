@@ -106,46 +106,51 @@ const BreakingDistance: React.FC = () => {
           </TableHead>
           <TableBody>
             {breakingDistanceInfo && (
-              <TableRow hover key="1">
-                <TableCell>{breakingDistanceInfo.title}</TableCell>
-                <TableCell>
-                  <img
-                    style={{ width: 30 }}
-                    src={`${breakingDistanceInfo.iconFile}`}
-                  />
-                </TableCell>
-                <TableCell>{breakingDistanceInfo.explanation}</TableCell>
-                <TableCell>
-                  {breakingDistanceInfo.regulationChapter}
-                  <FindInPageTwoToneIcon
-                    color="primary"
-                    style={{ cursor: 'pointer', marginBottom: -5 }}
-                    onClick={() =>
-                      setShowHtmlPreview(breakingDistanceInfo.regulationChapter)
-                    }
-                  />
-                  {showHtmlPreview && htmlFile && (
-                    <HtmlPreview
-                      showHtmlPreview={htmlFile}
-                      closeHtmlPreviewHandle={closeHtmlPreviewHandle}
+              <>
+                <TableRow hover key="1">
+                  <TableCell>{breakingDistanceInfo.title}</TableCell>
+                  <TableCell>
+                    <img
+                      style={{ width: 30 }}
+                      src={`${breakingDistanceInfo.iconFile}`}
                     />
-                  )}
-                </TableCell>
-              </TableRow>
+                  </TableCell>
+                  <TableCell>{breakingDistanceInfo.explanation}</TableCell>
+                  <TableCell>
+                    {breakingDistanceInfo.regulationChapter}
+                    <FindInPageTwoToneIcon
+                      color="primary"
+                      style={{ cursor: 'pointer', marginBottom: -5 }}
+                      onClick={() =>
+                        setShowHtmlPreview(
+                          breakingDistanceInfo.regulationChapter
+                        )
+                      }
+                    />
+                    {showHtmlPreview && htmlFile && (
+                      <HtmlPreview
+                        showHtmlPreview={htmlFile}
+                        closeHtmlPreviewHandle={closeHtmlPreviewHandle}
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow hover key="2">
+                  <TableCell className={classes.head}>
+                    <strong>Remafstand afbeelding</strong>
+                  </TableCell>
+                  <TableCell colSpan={3}>
+                    <img
+                      style={{ width: 600 }}
+                      src={`${breakingDistanceInfo?.breakingDistanceImage}`}
+                    />
+                  </TableCell>
+                </TableRow>
+              </>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      {breakingDistanceInfo && (
-        <div
-          style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}
-        >
-          <img
-            style={{ width: 600 }}
-            src={`${breakingDistanceInfo?.breakingDistanceImage}`}
-          />
-        </div>
-      )}
     </>
   );
 };
