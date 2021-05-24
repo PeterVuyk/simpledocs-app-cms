@@ -3,9 +3,10 @@ import { database } from '../firebaseConnection';
 export interface BreakingDistanceInfo {
   title: string;
   explanation: string;
+  regulationButtonText: string;
+  htmlFile: string;
   iconFile: string;
   breakingDistanceImage: string;
-  regulationChapter: string;
 }
 
 async function getBreakingDistanceInfo(): Promise<BreakingDistanceInfo[]> {

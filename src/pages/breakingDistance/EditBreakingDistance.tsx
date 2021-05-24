@@ -50,9 +50,12 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
+    regulationButtonText: Yup.string().required(
+      'Regelgeving knop tekst is een verplicht veld.'
+    ),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    regulationChapter: Yup.string().required(
-      'De verwijzing naar een regelgeving artikel is verplicht'
+    htmlFile: Yup.mixed().required(
+      'Het uploaden van een html template is verplicht.'
     ),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
@@ -66,8 +69,9 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
     throw breakingDistanceRepository
       .updateBreakingDistanceInfo({
         title: values.title,
+        regulationButtonText: values.regulationButtonText,
         explanation: values.explanation,
-        regulationChapter: values.regulationChapter,
+        htmlFile: values.htmlFile,
         iconFile: values.iconFile,
         breakingDistanceImage: values.breakingDistanceImage,
       })
@@ -114,23 +118,22 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
         >
           <Form>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  showError={showError}
-                  id="regulationChapter"
-                  label="Hoofdstuk (Verwijzing regelgeving)"
-                  name="regulationChapter"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   showError={showError}
                   required
                   id="title"
                   label="Titel"
                   name="title"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  showError={showError}
+                  required
+                  id="regulationButtonText"
+                  label="Regelgeving knop tekst"
+                  name="regulationButtonText"
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -145,7 +148,18 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   name="explanation"
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
+                <FileDropZoneArea
+                  enableHtmlPreview
+                  name="htmlFile"
+                  formik={formikRef}
+                  showError={showError}
+                  dropzoneText="Klik hier of sleep het template bestand hierheen"
+                  allowedMimeTypes={['text/html']}
+                  initialFile={breakingDistanceInfo.htmlFile}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <FileDropZoneArea
                   enableHtmlPreview={false}
                   name="iconFile"
@@ -156,7 +170,7 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   initialFile={breakingDistanceInfo.iconFile}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <FileDropZoneArea
                   enableHtmlPreview={false}
                   name="breakingDistanceImage"

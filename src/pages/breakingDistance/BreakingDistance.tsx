@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -17,7 +17,6 @@ import breakingDistanceRepository, {
 } from '../../firebase/database/breakingDistanceRepository';
 import logger from '../../helper/logger';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
-import regulationRepository from '../../firebase/database/regulationRepository';
 
 const useStyles = makeStyles({
   table: {
@@ -38,21 +37,11 @@ const BreakingDistance: React.FC = () => {
     setBreakingDistanceInfo,
   ] = React.useState<BreakingDistanceInfo | null>(null);
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
-  const [htmlFile, setHtmlFile] = React.useState<string | null>();
 
   const classes = useStyles();
   const history = useHistory();
 
   const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
-
-  useEffect(() => {
-    if (showHtmlPreview === '') {
-      return;
-    }
-    regulationRepository
-      .getRegulationsByField('chapter', showHtmlPreview)
-      .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
-  }, [showHtmlPreview]);
 
   const reloadPublicationsHandle = (): void => {
     breakingDistanceRepository.getBreakingDistanceInfo().then((result) => {
@@ -100,7 +89,10 @@ const BreakingDistance: React.FC = () => {
                 <strong>Toelichting</strong>
               </TableCell>
               <TableCell>
-                <strong>Verwijzing regelgeving</strong>
+                <strong>Regelgeving knop tekst</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Regelgeving pagina</strong>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -117,19 +109,19 @@ const BreakingDistance: React.FC = () => {
                   </TableCell>
                   <TableCell>{breakingDistanceInfo.explanation}</TableCell>
                   <TableCell>
-                    {breakingDistanceInfo.regulationChapter}
+                    {breakingDistanceInfo.regulationButtonText}
+                  </TableCell>
+                  <TableCell>
                     <FindInPageTwoToneIcon
                       color="primary"
                       style={{ cursor: 'pointer', marginBottom: -5 }}
                       onClick={() =>
-                        setShowHtmlPreview(
-                          breakingDistanceInfo.regulationChapter
-                        )
+                        setShowHtmlPreview(breakingDistanceInfo.htmlFile)
                       }
                     />
-                    {showHtmlPreview && htmlFile && (
+                    {showHtmlPreview && (
                       <HtmlPreview
-                        showHtmlPreview={htmlFile}
+                        showHtmlPreview={breakingDistanceInfo.htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}
                       />
                     )}
@@ -139,7 +131,7 @@ const BreakingDistance: React.FC = () => {
                   <TableCell className={classes.head}>
                     <strong>Remafstand afbeelding</strong>
                   </TableCell>
-                  <TableCell colSpan={3}>
+                  <TableCell colSpan={4}>
                     <img
                       style={{ width: 600 }}
                       src={`${breakingDistanceInfo?.breakingDistanceImage}`}
