@@ -6,18 +6,19 @@ import { Form, Formik, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
-import PageHeading from '../../layout/PageHeading';
+import PageHeading from '../../../layout/PageHeading';
 import notification, {
   NotificationOptions,
-} from '../../redux/actions/notification';
-import TextField from '../../components/form/formik/TextField';
-import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
-import SubmitButton from '../../components/form/formik/SubmitButton';
-import Navigation from '../Navigation';
-import logger from '../../helper/logger';
-import breakingDistanceRepository, {
-  BreakingDistanceInfo,
-} from '../../firebase/database/breakingDistanceRepository';
+} from '../../../redux/actions/notification';
+import TextField from '../../../components/form/formik/TextField';
+import FileDropZoneArea from '../../../components/form/formik/FileDropzoneArea';
+import SubmitButton from '../../../components/form/formik/SubmitButton';
+import Navigation from '../../navigation/Navigation';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import logger from '../../../helper/logger';
+import calculationsRepository, {
+  CalculationInfo,
+} from '../../../firebase/database/calculationsRepository';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -26,27 +27,41 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
+  calculationType: string;
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
+const EditCalculation: React.FC<Props> = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setNotification,
+  calculationType,
+}) => {
   const [
-    breakingDistanceInfo,
-    setBreakingDistanceInfo,
-  ] = React.useState<BreakingDistanceInfo | null>(null);
+    calculationInfo,
+    setCalculationInfo,
+  ] = React.useState<CalculationInfo | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = React.useRef<any>();
   const history = useHistory();
   const classes = useStyles();
 
   React.useEffect(() => {
-    breakingDistanceRepository.getBreakingDistanceInfo().then((result) => {
-      if (result.length !== 1) {
-        history.push('/breaking-distance');
+    calculationsRepository.getCalculationsInfo().then((result) => {
+      const calculation = result.filter(
+        (value) => value.calculationType === calculationType
+      );
+      if (calculation.length !== 1) {
+        setNotification({
+          notificationType: 'error',
+          notificationOpen: true,
+          notificationMessage: 'Het openen van de wijzigingspagina is mislukt',
+        });
+        history.push('/calculations');
+        return;
       }
-      setBreakingDistanceInfo(result[0]);
+      setCalculationInfo(calculation[0]);
     });
-  }, [history]);
+  }, [calculationType, history, setNotification]);
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
@@ -60,40 +75,40 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
-    breakingDistanceImage: Yup.mixed().required(
+    calculationImage: Yup.mixed().required(
       'Het uploaden van een afbeelding is verplicht.'
     ),
   });
 
   const handleSubmit = (values: FormikValues): void => {
-    throw breakingDistanceRepository
-      .updateBreakingDistanceInfo({
+    throw calculationsRepository
+      .updateCalculationsInfo({
+        calculationType: calculationType.toString(),
         title: values.title,
         regulationButtonText: values.regulationButtonText,
         explanation: values.explanation,
         htmlFile: values.htmlFile,
         iconFile: values.iconFile,
-        breakingDistanceImage: values.breakingDistanceImage,
+        calculationImage: values.calculationImage,
       })
-      .then(() => history.push('/breaking-distance'))
+      .then(() => history.push('/calculations'))
       .then(() =>
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage:
-            'De tekst voor de remafstand pagina is gewijzigd.',
+          notificationMessage: 'De berekening pagina is gewijzigd.',
         })
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit breaking distance has failed in EditBreakingDistance.handleSubmit',
+          'Edit breaking distance has failed in EditCalculation.handleSubmit',
           error
         );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
           notificationMessage:
-            'Het wijzigen van de remafstand pagina is mislukt. Neem contact op met de beheerder.',
+            'Het wijzigen is mislukt. Neem contact op met de beheerder.',
         });
       });
   };
@@ -104,15 +119,15 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.push('/regulations')}
+          onClick={() => history.push('/calculations')}
         >
           Terug
         </Button>
       </PageHeading>
-      {breakingDistanceInfo && (
+      {calculationInfo && (
         <Formik
           innerRef={formikRef}
-          initialValues={{ ...breakingDistanceInfo }}
+          initialValues={{ ...calculationInfo }}
           validationSchema={FORM_VALIDATION}
           onSubmit={handleSubmit}
         >
@@ -156,7 +171,7 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   showError={showError}
                   dropzoneText="Klik hier of sleep het template bestand hierheen"
                   allowedMimeTypes={['text/html']}
-                  initialFile={breakingDistanceInfo.htmlFile}
+                  initialFile={calculationInfo.htmlFile}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -167,18 +182,18 @@ const EditBreakingDistance: React.FC<Props> = ({ setNotification }) => {
                   showError={showError}
                   dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
                   allowedMimeTypes={['image/svg+xml']}
-                  initialFile={breakingDistanceInfo.iconFile}
+                  initialFile={calculationInfo.iconFile}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <FileDropZoneArea
                   enableHtmlPreview={false}
-                  name="breakingDistanceImage"
+                  name="calculationImage"
                   formik={formikRef}
                   showError={showError}
-                  dropzoneText="Klik hier of sleep het jpg/jpeg remafstand afbeelding hierheen"
+                  dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
                   allowedMimeTypes={['image/jpeg']}
-                  initialFile={breakingDistanceInfo.breakingDistanceImage}
+                  initialFile={calculationInfo.calculationImage}
                 />
               </Grid>
             </Grid>
@@ -206,7 +221,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditBreakingDistance);
+export default connect(mapStateToProps, mapDispatchToProps)(EditCalculation);

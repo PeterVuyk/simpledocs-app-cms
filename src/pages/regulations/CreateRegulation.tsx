@@ -17,7 +17,7 @@ import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import Navigation from '../Navigation';
+import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 
 const useStyles = makeStyles((theme) => ({

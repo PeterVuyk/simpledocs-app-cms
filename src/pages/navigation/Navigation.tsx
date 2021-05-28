@@ -4,11 +4,11 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import RegulationsList from './regulations/regulationList/RegulationsList';
-import Publications from './publications/Publications';
-import Header from '../components/header/Header';
-import DecisionTree from './decisionTree/DecisionTree';
-import BreakingDistance from './breakingDistance/BreakingDistance';
+import RegulationsList from '../regulations/regulationList/RegulationsList';
+import Publications from '../publications/Publications';
+import Header from '../../components/header/Header';
+import DecisionTree from '../decisionTree/DecisionTree';
+import Calculations from '../calculations/Calculations';
 
 interface Props {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
   const getIndexToTabName = {
     regulations: 0,
     decisionTree: 1,
-    breakingDistance: 2,
+    calculations: 2,
     publications: 3,
   };
 
@@ -41,7 +41,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
     if (page === 'decision-tree') {
       setSelectedTab(1);
     }
-    if (page === 'breaking-distance') {
+    if (page === 'calculations') {
       setSelectedTab(2);
     }
     if (page === 'publications') {
@@ -57,7 +57,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
       history.push('/decision-tree');
     }
     if (newValue === 2) {
-      history.push('/breaking-distance');
+      history.push('/calculations');
     }
     if (newValue === 3) {
       history.push('/publications');
@@ -76,7 +76,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
             >
               <Tab label="Regelgevingen" />
               <Tab label="Beslisboom" />
-              <Tab label="Remafstand" />
+              <Tab label="Berekeningen" />
               <Tab label="Publiceren" />
             </Tabs>
           </Header>
@@ -87,7 +87,7 @@ const Navigation: React.FC<Props> = ({ children }) => {
             <CssBaseline />
             {selectedTab === 0 && <RegulationsList />}
             {selectedTab === 1 && <DecisionTree />}
-            {selectedTab === 2 && <BreakingDistance />}
+            {selectedTab === 2 && <Calculations />}
             {selectedTab === 3 && <Publications />}
             {children && children}
           </Grid>

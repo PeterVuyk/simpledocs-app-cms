@@ -17,7 +17,7 @@ import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../components/form/formik/SubmitButton';
-import Navigation from '../Navigation';
+import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 
 const useStyles = makeStyles((theme) => ({

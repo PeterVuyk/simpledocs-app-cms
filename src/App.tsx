@@ -16,10 +16,11 @@ import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
 import EditRegulation from './pages/regulations/EditRegulation';
 import Publications from './pages/publications/Publications';
-import Navigation from './pages/Navigation';
+import Navigation from './pages/navigation/Navigation';
 import DecisionTree from './pages/decisionTree/DecisionTree';
-import BreakingDistance from './pages/breakingDistance/BreakingDistance';
-import EditBreakingDistance from './pages/breakingDistance/EditBreakingDistance';
+import Calculations from './pages/calculations/Calculations';
+import EditBreakingDistance from './pages/calculations/edit/EditBreakingDistance';
+import EditOvertakingDistance from './pages/calculations/edit/EditOvertakingDistance';
 
 const store = configureStore();
 
@@ -45,13 +46,18 @@ const App: React.FC = () => {
               />
               <PrivateRoute
                 exact
-                path="/breaking-distance"
-                component={BreakingDistance}
+                path="/calculations"
+                component={Calculations}
               />
               <PrivateRoute
                 exact
-                path="/breaking-distance/edit"
+                path="/calculations/breaking-distance/edit"
                 component={EditBreakingDistance}
+              />
+              <PrivateRoute
+                exact
+                path="/calculations/overtaking-distance/edit"
+                component={EditOvertakingDistance}
               />
               <PrivateRoute
                 exact

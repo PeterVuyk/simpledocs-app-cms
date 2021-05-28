@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -7,15 +7,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
-import PageHeading from '../../layout/PageHeading';
-import breakingDistanceRepository, {
-  BreakingDistanceInfo,
-} from '../../firebase/database/breakingDistanceRepository';
-import logger from '../../helper/logger';
+import { CalculationInfo } from '../../firebase/database/calculationsRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
 
 const useStyles = makeStyles({
@@ -30,55 +23,24 @@ const useStyles = makeStyles({
   },
 });
 
-const BreakingDistance: React.FC = () => {
-  const [error, setError] = useState('');
-  const [
-    breakingDistanceInfo,
-    setBreakingDistanceInfo,
-  ] = React.useState<BreakingDistanceInfo | null>(null);
+interface Props {
+  calculationInfo: CalculationInfo;
+}
+
+const BreakingDistance: React.FC<Props> = ({ calculationInfo }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
 
   const classes = useStyles();
-  const history = useHistory();
 
   const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
 
-  const reloadPublicationsHandle = (): void => {
-    breakingDistanceRepository.getBreakingDistanceInfo().then((result) => {
-      if (result.length !== 1) {
-        setError(
-          'Er is iets misgegaan bij het ophalen van de data. Neem contact op met de beheerder.'
-        );
-        logger.error(
-          `Collected breakingDistanceInfo from database, expected only one row, but ${result.length} rows found`
-        );
-        return;
-      }
-      setBreakingDistanceInfo(result[0]);
-    });
-  };
-
-  React.useEffect(() => {
-    reloadPublicationsHandle();
-  }, []);
-
   return (
     <>
-      <PageHeading title="Remafstand berekenen">
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push('/breaking-distance/edit')}
-        >
-          Remafstand updaten
-        </Button>
-      </PageHeading>
       <TableContainer component={Paper}>
-        {error && <Alert severity="error">{error}</Alert>}
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow className={classes.head}>
+              <TableCell />
               <TableCell>
                 <strong>Titel</strong>
               </TableCell>
@@ -97,31 +59,30 @@ const BreakingDistance: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {breakingDistanceInfo && (
+            {calculationInfo && (
               <>
                 <TableRow hover key="1">
-                  <TableCell>{breakingDistanceInfo.title}</TableCell>
+                  <TableCell className={classes.head} />
+                  <TableCell>{calculationInfo.title}</TableCell>
                   <TableCell>
                     <img
                       style={{ width: 30 }}
-                      src={`${breakingDistanceInfo.iconFile}`}
+                      src={`${calculationInfo.iconFile}`}
                     />
                   </TableCell>
-                  <TableCell>{breakingDistanceInfo.explanation}</TableCell>
-                  <TableCell>
-                    {breakingDistanceInfo.regulationButtonText}
-                  </TableCell>
+                  <TableCell>{calculationInfo.explanation}</TableCell>
+                  <TableCell>{calculationInfo.regulationButtonText}</TableCell>
                   <TableCell>
                     <FindInPageTwoToneIcon
                       color="primary"
                       style={{ cursor: 'pointer', marginBottom: -5 }}
                       onClick={() =>
-                        setShowHtmlPreview(breakingDistanceInfo.htmlFile)
+                        setShowHtmlPreview(calculationInfo.htmlFile)
                       }
                     />
                     {showHtmlPreview && (
                       <HtmlPreview
-                        showHtmlPreview={breakingDistanceInfo.htmlFile}
+                        showHtmlPreview={calculationInfo.htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}
                       />
                     )}
@@ -131,10 +92,10 @@ const BreakingDistance: React.FC = () => {
                   <TableCell className={classes.head}>
                     <strong>Remafstand afbeelding</strong>
                   </TableCell>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5}>
                     <img
                       style={{ width: 600 }}
-                      src={`${breakingDistanceInfo?.breakingDistanceImage}`}
+                      src={`${calculationInfo.calculationImage}`}
                     />
                   </TableCell>
                 </TableRow>
