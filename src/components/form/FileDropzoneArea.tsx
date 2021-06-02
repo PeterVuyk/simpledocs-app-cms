@@ -13,25 +13,29 @@ const ErrorTextTypography = withStyles({
 })(Typography);
 
 interface Props {
-  uploadRef: any;
+  updateFileHandler: (file: any) => void;
   allowedMimeTypes: string[];
   allowedExtension: string;
+  initialFile?: string | null;
 }
 
 const FileDropzoneArea: React.FC<Props> = ({
-  uploadRef,
   allowedMimeTypes,
   allowedExtension,
+  initialFile,
+  updateFileHandler,
 }) => {
   const ONE_MB_MAX_FILE_SIZE = 1000000;
 
-  const configDropzoneArea: any = {};
+  const configDropzoneArea: any = {
+    initialFiles: initialFile === null ? undefined : [initialFile],
+  };
 
   const handleUploadChange = (files: File[]) => {
     if (files.length !== 1) {
       // Remove file
       // eslint-disable-next-line no-param-reassign
-      uploadRef.current = '';
+      updateFileHandler('');
       return;
     }
 
@@ -39,8 +43,7 @@ const FileDropzoneArea: React.FC<Props> = ({
     const reader = new FileReader();
     reader.readAsDataURL(files[0] as Blob);
     reader.onloadend = () => {
-      // eslint-disable-next-line no-param-reassign
-      uploadRef.current = reader.result;
+      updateFileHandler(reader.result);
     };
   };
 
@@ -64,6 +67,7 @@ const FileDropzoneArea: React.FC<Props> = ({
     return `Klik hier of sleep het ${allowedExtension} bestand hierheen`;
   };
 
+  // TODO: Wort deze wel gebruikt? configDropzoneArea.helperText
   return (
     <div style={{ marginBottom: 5, position: 'relative' }}>
       <DropzoneArea

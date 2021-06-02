@@ -19,8 +19,12 @@ import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
+import RegulationEditor from './RegulationEditor';
 
 const useStyles = makeStyles((theme) => ({
+  spacing: {
+    marginBottom: 18,
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -129,7 +133,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Navigation>
+    <Navigation gridWidth="wide">
       <PageHeading title="Pagina bewerken">
         <Button
           variant="contained"
@@ -147,94 +151,103 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
           onSubmit={handleSubmit}
         >
           <Form>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  showError={showError}
-                  id="chapter"
-                  label="Hoofdstuk"
-                  name="chapter"
-                  autoFocus
-                />
+            <Grid
+              container
+              spacing={0}
+              justify="flex-start"
+              alignItems="flex-start"
+            >
+              <Grid container xs={12} sm={6} spacing={0}>
+                <Grid item xs={12} sm={6} className={classes.spacing}>
+                  <TextField
+                    required
+                    showError={showError}
+                    id="chapter"
+                    label="Hoofdstuk"
+                    name="chapter"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} className={classes.spacing}>
+                  <TextField
+                    type="number"
+                    showError={showError}
+                    InputProps={{ inputProps: { min: 0 } }}
+                    required
+                    id="pageIndex"
+                    label="Pagina index"
+                    name="pageIndex"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.spacing}>
+                  <TextField
+                    showError={showError}
+                    required
+                    id="title"
+                    label="Titel"
+                    name="title"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.spacing}>
+                  <TextField
+                    id="subTitle"
+                    showError={showError}
+                    label="Subtitel"
+                    name="subTitle"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.spacing}>
+                  <Select
+                    name="level"
+                    label="Soort markering"
+                    showError={showError}
+                    options={{
+                      chapter: 'Hoofdstuk',
+                      section: 'Paragraaf',
+                      subSection: 'Subparagraaf',
+                      subSubSection: 'Sub-subparagraaf',
+                      subHead: 'Tussenkop',
+                      attachment: 'Bijlage',
+                      legislation: 'Wetgeving',
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.spacing}>
+                  <TextField
+                    showError={showError}
+                    multiline
+                    rows={5}
+                    rowsMax={12}
+                    required
+                    id="searchText"
+                    label="Zoektekst"
+                    name="searchText"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.spacing}>
+                  <FileDropZoneArea
+                    enableHtmlPreview={false}
+                    name="iconFile"
+                    formik={formikRef}
+                    showError={showError}
+                    dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
+                    allowedMimeTypes={['image/svg+xml']}
+                    initialFile={regulation?.iconFile ?? null}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={8}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="title"
-                  label="Titel"
-                  name="title"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  id="subTitle"
-                  showError={showError}
-                  label="Subtitel"
-                  name="subTitle"
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  type="number"
-                  showError={showError}
-                  InputProps={{ inputProps: { min: 0 } }}
-                  required
-                  id="pageIndex"
-                  label="Pagina index"
-                  name="pageIndex"
-                />
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <Select
-                  name="level"
-                  label="Soort markering"
-                  showError={showError}
-                  options={{
-                    chapter: 'Hoofdstuk',
-                    section: 'Paragraaf',
-                    subSection: 'Subparagraaf',
-                    subSubSection: 'Sub-subparagraaf',
-                    subHead: 'Tussenkop',
-                    attachment: 'Bijlage',
-                    legislation: 'Wetgeving',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  showError={showError}
-                  multiline
-                  rows={3}
-                  rowsMax={8}
-                  required
-                  id="searchText"
-                  label="Zoektekst"
-                  name="searchText"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FileDropZoneArea
-                  enableHtmlPreview
-                  name="htmlFile"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het html template bestand hierheen"
-                  allowedMimeTypes={['text/html']}
-                  initialFile={regulation?.htmlFile ?? null}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FileDropZoneArea
-                  enableHtmlPreview={false}
-                  name="iconFile"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                  allowedMimeTypes={['image/svg+xml']}
-                  initialFile={regulation?.iconFile ?? null}
-                />
+              <Grid container xs={12} sm={6} spacing={1}>
+                <Grid
+                  xs={12}
+                  className={classes.spacing}
+                  style={{ marginLeft: 18 }}
+                >
+                  <RegulationEditor
+                    showError={showError}
+                    formik={formikRef}
+                    initialFile={regulation?.htmlFile ?? null}
+                  />
+                </Grid>
               </Grid>
             </Grid>
             <div className={classes.submit}>

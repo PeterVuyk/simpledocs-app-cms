@@ -127,7 +127,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Navigation>
+    <Navigation gridWidth="default">
       <PageHeading title="Pagina toevoegen">
         <Button
           variant="contained"

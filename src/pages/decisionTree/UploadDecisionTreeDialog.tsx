@@ -50,6 +50,14 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
   const csvUploadRef = useRef<string>('');
   const iconUploadRef = useRef<string>('');
 
+  const setCSVUploadRef = (file: string) => {
+    csvUploadRef.current = file;
+  };
+
+  const setIconUploadRef = (file: string) => {
+    iconUploadRef.current = file;
+  };
+
   const readDecisionTreeCSVFile = (
     csvFile: string,
     title: string
@@ -167,12 +175,12 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
           autoFocus
         />
         <FileDropzoneArea
-          uploadRef={csvUploadRef}
+          updateFileHandler={setCSVUploadRef}
           allowedMimeTypes={['text/csv']}
           allowedExtension="csv"
         />
         <FileDropzoneArea
-          uploadRef={iconUploadRef}
+          updateFileHandler={setIconUploadRef}
           allowedMimeTypes={['image/svg+xml']}
           allowedExtension="svg"
         />

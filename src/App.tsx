@@ -37,7 +37,9 @@ const App: React.FC = () => {
               <PrivateRoute
                 exact
                 path="/:page?"
-                component={(props: any) => <Navigation {...props} />}
+                component={(props: any) => (
+                  <Navigation gridWidth="default" {...props} />
+                )}
               />
               <PrivateRoute
                 exact

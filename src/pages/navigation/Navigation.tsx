@@ -12,9 +12,10 @@ import Calculations from '../calculations/Calculations';
 
 interface Props {
   children: React.ReactNode;
+  gridWidth: 'default' | 'wide';
 }
 
-const Navigation: React.FC<Props> = ({ children }) => {
+const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
   const match = useRouteMatch<{ page: string }>();
   const history = useHistory();
 
@@ -64,6 +65,36 @@ const Navigation: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const defaultGridWidth = () => {
+    return (
+      <Grid item container>
+        <Grid item sm={false} lg={2} />
+        <Grid item sm={12} lg={8}>
+          <CssBaseline />
+          {selectedTab === 0 && <RegulationsList />}
+          {selectedTab === 1 && <DecisionTree />}
+          {selectedTab === 2 && <Calculations />}
+          {selectedTab === 3 && <Publications />}
+          {children && children}
+        </Grid>
+        <Grid item sm={false} lg={2} />
+      </Grid>
+    );
+  };
+
+  const wideGridWidth = () => {
+    return (
+      <Grid item container>
+        <Grid item sm={false} lg={1} />
+        <Grid item sm={10} lg={10}>
+          <CssBaseline />
+          {children && children}
+        </Grid>
+        <Grid item sm={false} lg={1} />
+      </Grid>
+    );
+  };
+
   return (
     <>
       <Grid spacing={0} container direction="column">
@@ -81,18 +112,8 @@ const Navigation: React.FC<Props> = ({ children }) => {
             </Tabs>
           </Header>
         </Grid>
-        <Grid item container>
-          <Grid item sm={false} lg={2} />
-          <Grid item sm={12} lg={8}>
-            <CssBaseline />
-            {selectedTab === 0 && <RegulationsList />}
-            {selectedTab === 1 && <DecisionTree />}
-            {selectedTab === 2 && <Calculations />}
-            {selectedTab === 3 && <Publications />}
-            {children && children}
-          </Grid>
-          <Grid item sm={false} lg={2} />
-        </Grid>
+        {gridWidth === 'default' && defaultGridWidth()}
+        {gridWidth === 'wide' && wideGridWidth()}
       </Grid>
     </>
   );

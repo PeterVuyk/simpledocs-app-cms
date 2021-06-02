@@ -114,7 +114,7 @@ const EditCalculation: React.FC<Props> = ({
   };
 
   return (
-    <Navigation>
+    <Navigation gridWidth="default">
       <PageHeading title="Pagina bewerken">
         <Button
           variant="contained"
