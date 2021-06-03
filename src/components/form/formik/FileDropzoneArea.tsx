@@ -18,7 +18,7 @@ interface Props {
   [x: string]: any;
 }
 
-const SelectWrapper: React.FC<Props> = ({
+const FileDropzoneArea: React.FC<Props> = ({
   name,
   formik,
   showError,
@@ -124,4 +124,4 @@ const SelectWrapper: React.FC<Props> = ({
   );
 };
 
-export default SelectWrapper;
+export default FileDropzoneArea;

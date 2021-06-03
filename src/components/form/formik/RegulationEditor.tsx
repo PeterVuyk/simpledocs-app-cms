@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import JoditEditor from 'jodit-react';
-import FileDropzoneArea from '../../components/form/FileDropzoneArea';
+import { useField } from 'formik';
+import FileDropzoneArea from '../FileDropzoneArea';
+import ErrorTextTypography from '../../text/ErrorTextTypography';
 
 interface Props {
   initialFile: string | null;
@@ -11,11 +13,19 @@ interface Props {
 const RegulationEditor: React.FC<Props> = ({
   formik,
   initialFile,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showError,
 }) => {
   const editor = useRef(null);
   const [content, setContent] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [field, mata] = useField('htmlFile');
+
+  const getErrorMessage = (): string => {
+    if (showError && mata.error) {
+      return mata.error;
+    }
+    return '';
+  };
 
   function getHTMLBodyFromBase64(base64HTML: string): string {
     const base64String = base64HTML.split('data:text/html;base64,')[1];
@@ -23,8 +33,8 @@ const RegulationEditor: React.FC<Props> = ({
   }
 
   const updateFileHandler = (file: string) => {
-    setContent(file);
     formik.current.setFieldValue('htmlFile', file);
+    setContent(file);
   };
 
   const updateFileFromBase64Handler = useCallback(
@@ -40,13 +50,19 @@ const RegulationEditor: React.FC<Props> = ({
     if (content === null || content === '') {
       return null;
     }
-    return `data:text/html;base64,${btoa(content)}`;
+    return `data:text/html;base64,${btoa(
+      unescape(encodeURIComponent(content))
+    )}`;
   };
 
   useEffect(() => {
-    formik.current.setFieldValue('htmlFile', initialFile);
-    setContent(initialFile);
-  }, [formik, initialFile, updateFileFromBase64Handler]);
+    let html = initialFile;
+    if (html === null) {
+      html = '';
+    }
+    formik.current.setFieldValue('htmlFile', html);
+    setContent(html);
+  }, [formik, initialFile]);
 
   const config = {
     height: 600,
@@ -55,7 +71,7 @@ const RegulationEditor: React.FC<Props> = ({
 
   return (
     <>
-      {content && (
+      {content !== null && (
         <>
           <JoditEditor
             ref={editor}
@@ -73,6 +89,9 @@ const RegulationEditor: React.FC<Props> = ({
             initialFile={getBase64HtmlFile()}
             updateFileHandler={updateFileFromBase64Handler}
           />
+          {getErrorMessage() !== '' && (
+            <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
+          )}
         </>
       )}
     </>

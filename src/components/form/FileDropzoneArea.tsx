@@ -26,7 +26,6 @@ const FileDropzoneArea: React.FC<Props> = ({
   updateFileHandler,
 }) => {
   const ONE_MB_MAX_FILE_SIZE = 1000000;
-
   const configDropzoneArea: any = {
     initialFiles: initialFile === null ? undefined : [initialFile],
   };
@@ -67,7 +66,6 @@ const FileDropzoneArea: React.FC<Props> = ({
     return `Klik hier of sleep het ${allowedExtension} bestand hierheen`;
   };
 
-  // TODO: Wort deze wel gebruikt? configDropzoneArea.helperText
   return (
     <div style={{ marginBottom: 5, position: 'relative' }}>
       <DropzoneArea

@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { Form, Formik, FormikValues } from 'formik';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import * as Yup from 'yup';
+import { FormikValues } from 'formik';
 import regulationRepository, {
   Regulation,
 } from '../../firebase/database/regulationRepository';
@@ -13,22 +10,9 @@ import PageHeading from '../../layout/PageHeading';
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
-import TextField from '../../components/form/formik/TextField';
-import Select from '../../components/form/formik/Select';
-import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
-import SubmitButton from '../../components/form/formik/SubmitButton';
 import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
-import RegulationEditor from './RegulationEditor';
-
-const useStyles = makeStyles((theme) => ({
-  spacing: {
-    marginBottom: 18,
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import RegulationForm from './RegulationForm';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -36,66 +20,14 @@ interface Props {
 
 const EditRegulation: React.FC<Props> = ({ setNotification }) => {
   const [regulation, setRegulation] = React.useState<Regulation | null>(null);
-  const [showError, setShowError] = useState<boolean>(false);
-  const formikRef = React.useRef<any>();
   const history = useHistory();
   const { regulationId } = useParams<{ regulationId: string }>();
-  const classes = useStyles();
 
   React.useEffect(() => {
     regulationRepository
       .getRegulationsById(regulationId)
       .then((result) => setRegulation(result));
   }, [regulationId]);
-
-  async function isFieldUnique(
-    fieldName: string,
-    fieldValue: any
-  ): Promise<boolean> {
-    if (fieldValue === undefined) {
-      return true;
-    }
-    const regulations: Regulation[] = await regulationRepository.getRegulationsByField(
-      fieldName,
-      fieldValue
-    );
-    return (
-      regulations.length === 0 ||
-      regulations.filter((value) => value.id !== regulation?.id).length === 0
-    );
-  }
-
-  const FORM_VALIDATION = Yup.object().shape({
-    chapter: Yup.string()
-      .required('Hoofdstuk is een verplicht veld.')
-      .test(
-        'chapter',
-        'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
-        async (chapter) => {
-          return isFieldUnique('chapter', chapter);
-        }
-      ),
-    title: Yup.string().required('Titel is een verplicht veld.'),
-    subTitle: Yup.string(),
-    pageIndex: Yup.number()
-      .integer()
-      .required('Pagina index is een verplicht veld.')
-      .test(
-        'pageIndex',
-        'Het opgegeven pagina index bestaat al en moet uniek zijn',
-        async (index) => {
-          return isFieldUnique('pageIndex', index);
-        }
-      ),
-    level: Yup.string().required('Soort markering is een verplicht veld.'),
-    searchText: Yup.string().required('Zoektekst is een verplicht veld'),
-    htmlFile: Yup.mixed().required(
-      'Het uploaden van een html bestand is verplicht.'
-    ),
-    iconFile: Yup.mixed().required(
-      'Het uploaden van een illustratie is verplicht.'
-    ),
-  });
 
   const handleSubmit = (values: FormikValues): void => {
     throw regulationRepository
@@ -134,128 +66,20 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
 
   return (
     <Navigation gridWidth="wide">
-      <PageHeading title="Pagina bewerken">
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => history.push('/regulations')}
-        >
-          Terug
-        </Button>
-      </PageHeading>
-      {regulation && (
-        <Formik
-          innerRef={formikRef}
-          initialValues={{ ...regulation }}
-          validationSchema={FORM_VALIDATION}
-          onSubmit={handleSubmit}
-        >
-          <Form>
-            <Grid
-              container
-              spacing={0}
-              justify="flex-start"
-              alignItems="flex-start"
-            >
-              <Grid container xs={12} sm={6} spacing={0}>
-                <Grid item xs={12} sm={6} className={classes.spacing}>
-                  <TextField
-                    required
-                    showError={showError}
-                    id="chapter"
-                    label="Hoofdstuk"
-                    name="chapter"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} className={classes.spacing}>
-                  <TextField
-                    type="number"
-                    showError={showError}
-                    InputProps={{ inputProps: { min: 0 } }}
-                    required
-                    id="pageIndex"
-                    label="Pagina index"
-                    name="pageIndex"
-                  />
-                </Grid>
-                <Grid item xs={12} className={classes.spacing}>
-                  <TextField
-                    showError={showError}
-                    required
-                    id="title"
-                    label="Titel"
-                    name="title"
-                  />
-                </Grid>
-                <Grid item xs={12} className={classes.spacing}>
-                  <TextField
-                    id="subTitle"
-                    showError={showError}
-                    label="Subtitel"
-                    name="subTitle"
-                  />
-                </Grid>
-                <Grid item xs={12} className={classes.spacing}>
-                  <Select
-                    name="level"
-                    label="Soort markering"
-                    showError={showError}
-                    options={{
-                      chapter: 'Hoofdstuk',
-                      section: 'Paragraaf',
-                      subSection: 'Subparagraaf',
-                      subSubSection: 'Sub-subparagraaf',
-                      subHead: 'Tussenkop',
-                      attachment: 'Bijlage',
-                      legislation: 'Wetgeving',
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} className={classes.spacing}>
-                  <TextField
-                    showError={showError}
-                    multiline
-                    rows={5}
-                    rowsMax={12}
-                    required
-                    id="searchText"
-                    label="Zoektekst"
-                    name="searchText"
-                  />
-                </Grid>
-                <Grid item xs={12} className={classes.spacing}>
-                  <FileDropZoneArea
-                    enableHtmlPreview={false}
-                    name="iconFile"
-                    formik={formikRef}
-                    showError={showError}
-                    dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                    allowedMimeTypes={['image/svg+xml']}
-                    initialFile={regulation?.iconFile ?? null}
-                  />
-                </Grid>
-              </Grid>
-              <Grid container xs={12} sm={6} spacing={1}>
-                <Grid
-                  xs={12}
-                  className={classes.spacing}
-                  style={{ marginLeft: 18 }}
-                >
-                  <RegulationEditor
-                    showError={showError}
-                    formik={formikRef}
-                    initialFile={regulation?.htmlFile ?? null}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <div className={classes.submit}>
-              <SubmitButton setShowError={setShowError}>Wijzigen</SubmitButton>
-            </div>
-          </Form>
-        </Formik>
-      )}
+      <>
+        <PageHeading title="Pagina bewerken" style={{ marginRight: 18 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => history.push('/regulations')}
+          >
+            Terug
+          </Button>
+        </PageHeading>
+        {regulation && (
+          <RegulationForm regulation={regulation} handleSubmit={handleSubmit} />
+        )}
+      </>
     </Navigation>
   );
 };
