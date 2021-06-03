@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -10,6 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { CalculationInfo } from '../../firebase/database/calculationsRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
+import regulationRepository, {
+  Regulation,
+} from '../../firebase/database/regulationRepository';
 
 const useStyles = makeStyles({
   table: {
@@ -29,6 +32,13 @@ interface Props {
 
 const BreakingDistance: React.FC<Props> = ({ calculationInfo }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
+  const [regulation, setRegulation] = React.useState<Regulation | null>(null);
+
+  useEffect(() => {
+    regulationRepository
+      .getRegulationsByField('chapter', calculationInfo.regulationChapter)
+      .then((result) => setRegulation(result.length !== 1 ? null : result[0]));
+  }, [calculationInfo.regulationChapter]);
 
   const classes = useStyles();
 
@@ -73,16 +83,16 @@ const BreakingDistance: React.FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.regulationButtonText}</TableCell>
                   <TableCell>
-                    <FindInPageTwoToneIcon
-                      color="primary"
-                      style={{ cursor: 'pointer', marginBottom: -5 }}
-                      onClick={() =>
-                        setShowHtmlPreview(calculationInfo.htmlFile)
-                      }
-                    />
+                    {regulation && (
+                      <FindInPageTwoToneIcon
+                        color="primary"
+                        style={{ cursor: 'pointer', marginBottom: -5 }}
+                        onClick={() => setShowHtmlPreview(regulation?.chapter)}
+                      />
+                    )}
                     {showHtmlPreview && (
                       <HtmlPreview
-                        showHtmlPreview={calculationInfo.htmlFile}
+                        showHtmlPreview={regulation?.htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}
                       />
                     )}

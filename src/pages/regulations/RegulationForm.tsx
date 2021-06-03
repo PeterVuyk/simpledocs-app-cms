@@ -193,7 +193,6 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
           </Grid>
           <Grid container item sm={6} spacing={0}>
             <Grid item xs={12} style={{ marginLeft: 18 }}>
-              {/* TODO: Is die margin nog nodig? */}
               <RegulationEditor
                 showError={showError}
                 formik={formikRef}

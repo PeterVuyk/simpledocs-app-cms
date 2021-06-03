@@ -3,6 +3,7 @@ import JoditEditor from 'jodit-react';
 import { useField } from 'formik';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
+import fileHelper from '../../../helper/fileHelper';
 
 interface Props {
   initialFile: string | null;
@@ -27,11 +28,6 @@ const RegulationEditor: React.FC<Props> = ({
     return '';
   };
 
-  function getHTMLBodyFromBase64(base64HTML: string): string {
-    const base64String = base64HTML.split('data:text/html;base64,')[1];
-    return Buffer.from(base64String, 'base64').toString('utf-8');
-  }
-
   const updateFileHandler = (file: string) => {
     formik.current.setFieldValue('htmlFile', file);
     setContent(file);
@@ -39,7 +35,7 @@ const RegulationEditor: React.FC<Props> = ({
 
   const updateFileFromBase64Handler = useCallback(
     (file: string | null) => {
-      const html = file ? getHTMLBodyFromBase64(file) : '';
+      const html = file ? fileHelper.getHTMLBodyFromBase64(file) : '';
       formik.current.setFieldValue('htmlFile', html);
       setContent(html);
     },
@@ -50,9 +46,7 @@ const RegulationEditor: React.FC<Props> = ({
     if (content === null || content === '') {
       return null;
     }
-    return `data:text/html;base64,${btoa(
-      unescape(encodeURIComponent(content))
-    )}`;
+    return fileHelper.getBase64FromHtml(content);
   };
 
   useEffect(() => {

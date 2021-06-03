@@ -5,7 +5,7 @@ export interface CalculationInfo {
   title: string;
   explanation: string;
   regulationButtonText: string;
-  htmlFile: string;
+  regulationChapter: string;
   iconFile: string;
   calculationImage: string;
 }

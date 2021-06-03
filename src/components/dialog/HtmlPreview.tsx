@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Props {
-  showHtmlPreview: string;
+  showHtmlPreview?: string;
   closeHtmlPreviewHandle: () => void;
 }
 
@@ -34,7 +34,7 @@ const RegulationDialog: React.FC<Props> = ({
         <iframe
           style={{ height: 812, width: 375, border: 'none' }}
           title="preview.html"
-          src={showHtmlPreview}
+          srcDoc={showHtmlPreview}
         />
       </Dialog>
     </div>

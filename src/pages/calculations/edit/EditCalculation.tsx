@@ -69,8 +69,8 @@ const EditCalculation: React.FC<Props> = ({
       'Regelgeving knop tekst is een verplicht veld.'
     ),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    htmlFile: Yup.mixed().required(
-      'Het uploaden van een html template is verplicht.'
+    regulationChapter: Yup.string().required(
+      'Hoofdstuk regelgeving is een verplicht veld.'
     ),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
@@ -87,7 +87,7 @@ const EditCalculation: React.FC<Props> = ({
         title: values.title,
         regulationButtonText: values.regulationButtonText,
         explanation: values.explanation,
-        htmlFile: values.htmlFile,
+        regulationChapter: values.regulationChapter,
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
       })
@@ -133,7 +133,7 @@ const EditCalculation: React.FC<Props> = ({
         >
           <Form>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={5}>
                 <TextField
                   showError={showError}
                   required
@@ -142,13 +142,23 @@ const EditCalculation: React.FC<Props> = ({
                   name="title"
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={5}>
                 <TextField
                   showError={showError}
                   required
                   id="regulationButtonText"
                   label="Regelgeving knop tekst"
                   name="regulationButtonText"
+                />
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <TextField
+                  showError={showError}
+                  required
+                  id="regulationChapter"
+                  label="Hoofdstuk regelgeving"
+                  name="regulationChapter"
+                  formik={formikRef}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -163,18 +173,7 @@ const EditCalculation: React.FC<Props> = ({
                   name="explanation"
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <FileDropZoneArea
-                  enableHtmlPreview
-                  name="htmlFile"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het template bestand hierheen"
-                  allowedMimeTypes={['text/html']}
-                  initialFile={calculationInfo.htmlFile}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={6}>
                 <FileDropZoneArea
                   enableHtmlPreview={false}
                   name="iconFile"
@@ -185,7 +184,7 @@ const EditCalculation: React.FC<Props> = ({
                   initialFile={calculationInfo.iconFile}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={6}>
                 <FileDropZoneArea
                   enableHtmlPreview={false}
                   name="calculationImage"

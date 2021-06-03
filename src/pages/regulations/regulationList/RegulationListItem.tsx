@@ -16,6 +16,7 @@ import notification, {
   NotificationOptions,
 } from '../../../redux/actions/notification';
 import HtmlPreview from '../../../components/dialog/HtmlPreview';
+import fileHelper from '../../../helper/fileHelper';
 
 const useStyles = makeStyles({
   icon: {
@@ -104,7 +105,10 @@ const RegulationListItem: React.FC<Props> = ({
           color="action"
           style={{ cursor: 'pointer' }}
           onClick={() =>
-            FileSaver.saveAs(regulation.htmlFile, `${regulation.chapter}.html`)
+            FileSaver.saveAs(
+              fileHelper.getBase64FromHtml(regulation.htmlFile),
+              `${regulation.chapter}.html`
+            )
           }
         />
         <FindInPageTwoToneIcon
