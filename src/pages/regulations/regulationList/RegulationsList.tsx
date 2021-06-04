@@ -10,12 +10,15 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import Menu from '@material-ui/core/Menu';
 import regulationRepository, {
   Regulation,
 } from '../../../firebase/database/regulationRepository';
 import RegulationListItem from './RegulationListItem';
 import PageHeading from '../../../layout/PageHeading';
-import RegulationBatchDownloadMenu from '../batch/RegulationBatchDownloadMenu';
+import DownloadRegulationsMenuItem from '../batch/DownloadRegulationsMenuItem';
+import DownloadRegulationsHTMLMenuItem from '../batch/DownloadRegulationsHTMLMenuItem';
+import DownloadRegulationsIconsMenuItem from '../batch/DownloadRegulationsIconsMenuItem';
 
 const useStyles = makeStyles({
   table: {
@@ -72,11 +75,17 @@ const RegulationsList: React.FC = () => {
         >
           Pagina toevoegen
         </Button>
-        <RegulationBatchDownloadMenu
-          regulations={regulations}
-          downloadMenuElement={downloadMenuElement}
-          setDownloadMenuElement={setDownloadMenuElement}
-        />
+        <Menu
+          id="simple-menu"
+          anchorEl={downloadMenuElement}
+          keepMounted
+          open={Boolean(downloadMenuElement)}
+          onClose={() => setDownloadMenuElement(null)}
+        >
+          <DownloadRegulationsMenuItem regulations={regulations} />
+          <DownloadRegulationsHTMLMenuItem regulations={regulations} />
+          <DownloadRegulationsIconsMenuItem regulations={regulations} />
+        </Menu>
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
