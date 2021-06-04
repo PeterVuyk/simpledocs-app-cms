@@ -51,7 +51,7 @@ const Header: React.FC<Props> = ({ children }) => {
       <AppBar elevation={0} position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.headerItem}>
-            AZN App
+            AZN App CMS
           </Typography>
           <div className={classes.headerItem}>{children}</div>
           {currentUser !== null && (

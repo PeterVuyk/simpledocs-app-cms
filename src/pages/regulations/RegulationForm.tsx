@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
@@ -95,119 +96,121 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
   });
 
   return (
-    <Formik
-      innerRef={formikRef}
-      initialValues={{ ...initialFormState() }}
-      validationSchema={formValidation}
-      onSubmit={handleSubmit}
-    >
-      <Form>
-        <Grid
-          container
-          spacing={0}
-          alignItems="flex-start"
-          justify="flex-start"
-          direction="row"
-        >
-          <Grid container item xs={12} sm={6} spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                showError={showError}
-                id="chapter"
-                label="Hoofdstuk"
-                name="chapter"
-                autoFocus
-              />
+    <Paper elevation={0} color="#ddd" style={{ marginRight: 18 }}>
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ ...initialFormState() }}
+        validationSchema={formValidation}
+        onSubmit={handleSubmit}
+      >
+        <Form>
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-start"
+            justify="flex-start"
+            direction="row"
+          >
+            <Grid container item xs={12} sm={6} spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  showError={showError}
+                  id="chapter"
+                  label="Hoofdstuk"
+                  name="chapter"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="number"
+                  showError={showError}
+                  InputProps={{ inputProps: { min: 0 } }}
+                  required
+                  id="pageIndex"
+                  label="Pagina index"
+                  name="pageIndex"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  showError={showError}
+                  required
+                  id="title"
+                  label="Titel"
+                  name="title"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="subTitle"
+                  multiline
+                  rows={3}
+                  rowsMax={3}
+                  showError={showError}
+                  label="Subtitel"
+                  name="subTitle"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  name="level"
+                  label="Soort markering"
+                  showError={showError}
+                  options={{
+                    chapter: 'Hoofdstuk',
+                    section: 'Paragraaf',
+                    subSection: 'Subparagraaf',
+                    subSubSection: 'Sub-subparagraaf',
+                    subHead: 'Tussenkop',
+                    attachment: 'Bijlage',
+                    legislation: 'Wetgeving',
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  showError={showError}
+                  multiline
+                  rows={5}
+                  rowsMax={12}
+                  required
+                  id="searchText"
+                  label="Zoektekst"
+                  name="searchText"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FileDropZoneArea
+                  enableHtmlPreview={false}
+                  name="iconFile"
+                  formik={formikRef}
+                  showError={showError}
+                  dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
+                  allowedMimeTypes={['image/svg+xml']}
+                  initialFile={regulation?.iconFile ?? null}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                type="number"
-                showError={showError}
-                InputProps={{ inputProps: { min: 0 } }}
-                required
-                id="pageIndex"
-                label="Pagina index"
-                name="pageIndex"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                showError={showError}
-                required
-                id="title"
-                label="Titel"
-                name="title"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="subTitle"
-                multiline
-                rows={3}
-                rowsMax={3}
-                showError={showError}
-                label="Subtitel"
-                name="subTitle"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Select
-                name="level"
-                label="Soort markering"
-                showError={showError}
-                options={{
-                  chapter: 'Hoofdstuk',
-                  section: 'Paragraaf',
-                  subSection: 'Subparagraaf',
-                  subSubSection: 'Sub-subparagraaf',
-                  subHead: 'Tussenkop',
-                  attachment: 'Bijlage',
-                  legislation: 'Wetgeving',
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                showError={showError}
-                multiline
-                rows={5}
-                rowsMax={12}
-                required
-                id="searchText"
-                label="Zoektekst"
-                name="searchText"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FileDropZoneArea
-                enableHtmlPreview={false}
-                name="iconFile"
-                formik={formikRef}
-                showError={showError}
-                dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                allowedMimeTypes={['image/svg+xml']}
-                initialFile={regulation?.iconFile ?? null}
-              />
+            <Grid container item sm={6} spacing={0}>
+              <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
+                <RegulationEditor
+                  showError={showError}
+                  formik={formikRef}
+                  initialFile={regulation?.htmlFile ?? null}
+                />
+              </Grid>
             </Grid>
           </Grid>
-          <Grid container item sm={6} spacing={0}>
-            <Grid item xs={12} style={{ marginLeft: 18 }}>
-              <RegulationEditor
-                showError={showError}
-                formik={formikRef}
-                initialFile={regulation?.htmlFile ?? null}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <div className={classes.submit} style={{ marginRight: 18 }}>
-          <SubmitButton setShowError={setShowError}>
-            {regulation === undefined ? 'Toevoegen' : 'Wijzigen'}
-          </SubmitButton>
-        </div>
-      </Form>
-    </Formik>
+          <div className={classes.submit}>
+            <SubmitButton setShowError={setShowError}>
+              {regulation === undefined ? 'Toevoegen' : 'Wijzigen'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Formik>
+    </Paper>
   );
 };
 

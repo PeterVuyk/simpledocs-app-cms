@@ -9,15 +9,20 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import regulationRepository, {
   Regulation,
 } from '../../../firebase/database/regulationRepository';
 import RegulationListItem from './RegulationListItem';
 import PageHeading from '../../../layout/PageHeading';
+import RegulationBatchDownloadMenu from '../batch/RegulationBatchDownloadMenu';
 
 const useStyles = makeStyles({
   table: {
     width: '100%',
+  },
+  button: {
+    marginLeft: 8,
   },
   head: {
     backgroundColor: '#ddd',
@@ -25,9 +30,17 @@ const useStyles = makeStyles({
 });
 
 const RegulationsList: React.FC = () => {
+  const [
+    downloadMenuElement,
+    setDownloadMenuElement,
+  ] = React.useState<null | HTMLElement>(null);
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
   const classes = useStyles();
   const history = useHistory();
+
+  const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setDownloadMenuElement(event.currentTarget);
+  };
 
   const loadRegulationsHandle = (): void => {
     regulationRepository
@@ -42,13 +55,28 @@ const RegulationsList: React.FC = () => {
   return (
     <>
       <PageHeading title="Regelgevingen beheer">
+        {regulations.length !== 0 && (
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={openDownloadMenu}
+          >
+            <GetAppIcon color="action" />
+          </Button>
+        )}
         <Button
+          className={classes.button}
           variant="contained"
           color="primary"
           onClick={() => history.push('/regulations/add')}
         >
           Pagina toevoegen
         </Button>
+        <RegulationBatchDownloadMenu
+          regulations={regulations}
+          downloadMenuElement={downloadMenuElement}
+          setDownloadMenuElement={setDownloadMenuElement}
+        />
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
