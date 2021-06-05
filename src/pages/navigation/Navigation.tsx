@@ -4,7 +4,7 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import RegulationsList from '../regulations/regulationList/RegulationsList';
+import Regulations from '../regulations/list/Regulations';
 import Publications from '../publications/Publications';
 import Header from '../../components/header/Header';
 import DecisionTree from '../decisionTree/DecisionTree';
@@ -71,7 +71,7 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
         <Grid item sm={false} lg={2} />
         <Grid item sm={12} lg={8}>
           <CssBaseline />
-          {selectedTab === 0 && <RegulationsList />}
+          {selectedTab === 0 && <Regulations />}
           {selectedTab === 1 && <DecisionTree />}
           {selectedTab === 2 && <Calculations />}
           {selectedTab === 3 && <Publications />}
