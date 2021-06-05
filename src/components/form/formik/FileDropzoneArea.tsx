@@ -27,9 +27,8 @@ const FileDropzoneArea: React.FC<Props> = ({
   enableHtmlPreview,
   initialFile,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string | null>(
-    null
-  );
+  const [showHtmlPreview, setShowHtmlPreview] =
+    React.useState<string | null>(null);
   const [field, mata] = useField(name);
 
   const ONE_MB_MAX_FILE_SIZE = 1000000;

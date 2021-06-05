@@ -14,10 +14,8 @@ const Publications: React.FC<Props> = ({
   version,
   reloadPublicationsHandle,
 }) => {
-  const [
-    openPublishDialog,
-    setOpenPublishDialog,
-  ] = React.useState<Versioning | null>(null);
+  const [openPublishDialog, setOpenPublishDialog] =
+    React.useState<Versioning | null>(null);
 
   const getAggregate = (aggregate: string): string => {
     switch (aggregate) {

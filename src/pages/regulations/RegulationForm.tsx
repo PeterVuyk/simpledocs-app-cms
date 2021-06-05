@@ -52,10 +52,8 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
     if (fieldValue === undefined) {
       return true;
     }
-    const regulations: Regulation[] = await regulationRepository.getRegulationsByField(
-      fieldName,
-      fieldValue
-    );
+    const regulations: Regulation[] =
+      await regulationRepository.getRegulationsByField(fieldName, fieldValue);
     return (
       regulations.length === 0 ||
       (regulation !== undefined &&

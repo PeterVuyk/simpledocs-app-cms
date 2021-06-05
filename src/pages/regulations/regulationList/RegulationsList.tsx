@@ -33,10 +33,8 @@ const useStyles = makeStyles({
 });
 
 const RegulationsList: React.FC = () => {
-  const [
-    downloadMenuElement,
-    setDownloadMenuElement,
-  ] = React.useState<null | HTMLElement>(null);
+  const [downloadMenuElement, setDownloadMenuElement] =
+    React.useState<null | HTMLElement>(null);
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
   const classes = useStyles();
   const history = useHistory();

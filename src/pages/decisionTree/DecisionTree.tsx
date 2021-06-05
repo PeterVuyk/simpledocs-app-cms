@@ -38,22 +38,15 @@ const DecisionTree: React.FC = () => {
   const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
     DecisionTreeStep[]
   >([]);
-  const [openUploadDialog, setOpenUploadDialog] = React.useState<boolean>(
-    false
-  );
-  const [
-    showHtmlPreview,
-    setShowHtmlPreview,
-  ] = React.useState<DecisionTreeStep>();
+  const [openUploadDialog, setOpenUploadDialog] =
+    React.useState<boolean>(false);
+  const [showHtmlPreview, setShowHtmlPreview] =
+    React.useState<DecisionTreeStep>();
   const [htmlFile, setHtmlFile] = React.useState<string | null>();
-  const [
-    downloadMenuElement,
-    setDownloadMenuElement,
-  ] = React.useState<null | HTMLElement>(null);
-  const [
-    deleteMenuElement,
-    setDeleteMenuElement,
-  ] = React.useState<null | HTMLElement>(null);
+  const [downloadMenuElement, setDownloadMenuElement] =
+    React.useState<null | HTMLElement>(null);
+  const [deleteMenuElement, setDeleteMenuElement] =
+    React.useState<null | HTMLElement>(null);
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDownloadMenuElement(event.currentTarget);

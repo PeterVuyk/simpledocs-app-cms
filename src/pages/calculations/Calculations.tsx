@@ -15,14 +15,10 @@ const useStyles = makeStyles({
 });
 
 const Calculations: React.FC = () => {
-  const [
-    breakingDistanceInfo,
-    setBreakingDistanceInfo,
-  ] = React.useState<CalculationInfo | null>(null);
-  const [
-    overtakingDistanceInfo,
-    setOvertakingDistanceInfo,
-  ] = React.useState<CalculationInfo | null>(null);
+  const [breakingDistanceInfo, setBreakingDistanceInfo] =
+    React.useState<CalculationInfo | null>(null);
+  const [overtakingDistanceInfo, setOvertakingDistanceInfo] =
+    React.useState<CalculationInfo | null>(null);
   const classes = useStyles();
   const history = useHistory();
 

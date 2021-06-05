@@ -36,10 +36,8 @@ const EditCalculation: React.FC<Props> = ({
   setNotification,
   calculationType,
 }) => {
-  const [
-    calculationInfo,
-    setCalculationInfo,
-  ] = React.useState<CalculationInfo | null>(null);
+  const [calculationInfo, setCalculationInfo] =
+    React.useState<CalculationInfo | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = React.useRef<any>();
   const history = useHistory();

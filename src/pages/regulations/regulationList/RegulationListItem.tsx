@@ -38,14 +38,10 @@ const RegulationListItem: React.FC<Props> = ({
   loadRegulationsHandle,
   setNotification,
 }) => {
-  const [
-    showHtmlPreview,
-    setShowHtmlPreview,
-  ] = React.useState<Regulation | null>(null);
-  const [
-    openDeleteDialog,
-    setOpenDeleteDialog,
-  ] = React.useState<Regulation | null>(null);
+  const [showHtmlPreview, setShowHtmlPreview] =
+    React.useState<Regulation | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] =
+    React.useState<Regulation | null>(null);
   const classes = useStyles();
   const history = useHistory();
 
