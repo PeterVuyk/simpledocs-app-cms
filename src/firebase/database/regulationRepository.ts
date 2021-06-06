@@ -10,29 +10,23 @@ export interface Regulation {
   searchText: string;
   htmlFile: string;
   iconFile: string;
+  isDraft: boolean;
 }
 
 async function createRegulation(regulation: Regulation): Promise<void> {
   await database.collection('regulations').add(regulation);
 }
 
-async function updateRegulation(regulation: Regulation): Promise<void> {
-  const regulationId = regulation.id;
-  const updatedRegulation = regulation;
-  delete updatedRegulation.id;
-  await database
-    .collection('regulations')
-    .doc(regulationId)
-    .set(updatedRegulation);
-}
-
 async function deleteRegulation(regulationId: string): Promise<void> {
   await database.collection('regulations').doc(regulationId).delete();
 }
 
-async function getRegulations(): Promise<Regulation[]> {
+async function getRegulations(
+  draftRegulations: boolean
+): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')
+    .where('isDraft', '==', draftRegulations)
     .orderBy('pageIndex', 'asc')
     .get();
   return querySnapshot.docs.map((doc) => {
@@ -59,6 +53,28 @@ async function getRegulationsByField(
   return querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() } as Regulation;
   });
+}
+
+async function updateRegulation(
+  chapter: string,
+  regulation: Regulation
+): Promise<void> {
+  const isDraft = await getRegulationsByField('chapter', chapter).then(
+    (result) => result.some((value) => value.isDraft)
+  );
+
+  const regulationId = regulation.id;
+  const updatedRegulation = regulation;
+  delete updatedRegulation.id;
+
+  if (isDraft) {
+    await database
+      .collection('regulations')
+      .doc(regulationId)
+      .set(updatedRegulation);
+  } else {
+    await createRegulation(updatedRegulation);
+  }
 }
 
 const regulationRepository = {

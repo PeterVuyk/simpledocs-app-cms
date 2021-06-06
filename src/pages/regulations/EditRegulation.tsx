@@ -29,9 +29,9 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
       .then((result) => setRegulation(result));
   }, [regulationId]);
 
-  const handleSubmit = (values: FormikValues): void => {
-    throw regulationRepository
-      .updateRegulation({
+  const handleSubmit = async (values: FormikValues): Promise<void> => {
+    await regulationRepository
+      .updateRegulation(regulation?.chapter ?? '', {
         id: regulation?.id,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
@@ -41,6 +41,7 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
         searchText: values.searchText,
         htmlFile: values.htmlFile,
         iconFile: values.iconFile,
+        isDraft: true,
       })
       .then(() => history.push('/regulations'))
       .then(() =>

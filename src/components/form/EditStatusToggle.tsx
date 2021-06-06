@@ -4,36 +4,38 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import EditIcon from '@material-ui/icons/Edit';
 import PublicIcon from '@material-ui/icons/Public';
 
-const EnvironmentToggle: React.FC = () => {
-  const [alignment, setAlignment] = React.useState<string>('right');
+interface Props {
+  setEditStatus: (editStatus: 'draft' | 'published') => void;
+  editStatus: 'draft' | 'published';
+}
 
-  const handleAlignment = (
+const EditStatusToggle: React.FC<Props> = ({ editStatus, setEditStatus }) => {
+  const handleStatus = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
+    status: string | null
   ) => {
-    if (newAlignment === null) {
-      return;
+    if (status === 'draft' || status === 'published') {
+      setEditStatus(status);
     }
-    setAlignment(newAlignment);
   };
 
   return (
     <ToggleButtonGroup
       style={{ display: 'inline-block' }}
       size="small"
-      value={alignment}
+      value={editStatus}
       exclusive
-      onChange={handleAlignment}
+      onChange={handleStatus}
       aria-label="text alignment"
     >
-      <ToggleButton value="left" aria-label="left aligned">
+      <ToggleButton value="draft" aria-label="left aligned">
         <EditIcon />
       </ToggleButton>
-      <ToggleButton value="right" aria-label="right aligned">
+      <ToggleButton value="published" aria-label="right aligned">
         <PublicIcon />
       </ToggleButton>
     </ToggleButtonGroup>
   );
 };
 
-export default EnvironmentToggle;
+export default EditStatusToggle;

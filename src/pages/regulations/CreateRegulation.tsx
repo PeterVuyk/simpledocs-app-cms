@@ -30,6 +30,7 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
         searchText: values.searchText,
         htmlFile: values.htmlFile,
         iconFile: values.iconFile,
+        isDraft: true,
       })
       .then(() => history.push('/'))
       .then(() =>

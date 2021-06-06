@@ -11,7 +11,7 @@ import PageHeading from '../../../layout/PageHeading';
 import DownloadRegulationsMenuItem from '../batch/DownloadRegulationsMenuItem';
 import DownloadRegulationsHTMLMenuItem from '../batch/DownloadRegulationsHTMLMenuItem';
 import DownloadRegulationsIconsMenuItem from '../batch/DownloadRegulationsIconsMenuItem';
-import EnvironmentToggle from '../../../components/form/EnvironmentToggle';
+import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import RegulationList from './RegulationList';
 
 const useStyles = makeStyles({
@@ -30,6 +30,8 @@ const Regulations: React.FC = () => {
   const [downloadMenuElement, setDownloadMenuElement] =
     React.useState<null | HTMLElement>(null);
   const [regulations, setRegulations] = React.useState<Regulation[]>([]);
+  const [editStatus, setEditStatus] =
+    React.useState<'draft' | 'published'>('draft');
   const classes = useStyles();
   const history = useHistory();
 
@@ -39,26 +41,32 @@ const Regulations: React.FC = () => {
 
   const loadRegulationsHandle = (): void => {
     regulationRepository
-      .getRegulations()
+      .getRegulations(editStatus === 'draft')
       .then((result) => setRegulations(result));
   };
 
   React.useEffect(() => {
-    loadRegulationsHandle();
-  }, []);
+    regulationRepository
+      .getRegulations(editStatus === 'draft')
+      .then((result) => setRegulations(result));
+  }, [editStatus]);
 
   return (
     <>
       <PageHeading title="Regelgevingen beheer">
-        <EnvironmentToggle />
-        <Button
-          disabled={regulations.length !== 0}
-          className={classes.button}
-          variant="contained"
-          onClick={openDownloadMenu}
-        >
-          <GetAppIcon color="action" />
-        </Button>
+        <EditStatusToggle
+          editStatus={editStatus}
+          setEditStatus={setEditStatus}
+        />
+        {regulations.length !== 0 && (
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={openDownloadMenu}
+          >
+            <GetAppIcon color="action" />
+          </Button>
+        )}
         <Button
           className={classes.button}
           variant="contained"
@@ -68,7 +76,7 @@ const Regulations: React.FC = () => {
           Pagina toevoegen
         </Button>
         <Menu
-          id="simple-menu"
+          id="regulation-download-menu"
           anchorEl={downloadMenuElement}
           keepMounted
           open={Boolean(downloadMenuElement)}

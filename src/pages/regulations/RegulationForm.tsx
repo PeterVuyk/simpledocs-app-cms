@@ -68,7 +68,11 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
         'chapter',
         'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
         async (chapter) => {
-          return isFieldUnique('chapter', chapter);
+          const isEditFromDraft =
+            regulation !== undefined &&
+            regulation.isDraft &&
+            regulation.chapter === chapter;
+          return isEditFromDraft || isFieldUnique('chapter', chapter);
         }
       ),
     title: Yup.string().required('Titel is een verplicht veld.'),
@@ -80,7 +84,11 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
         'pageIndex',
         'Het opgegeven pagina index bestaat al en moet uniek zijn',
         async (index) => {
-          return isFieldUnique('pageIndex', index);
+          const isEditFromDraft =
+            regulation !== undefined &&
+            regulation.isDraft &&
+            regulation.pageIndex === index;
+          return isEditFromDraft || isFieldUnique('pageIndex', index);
         }
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
