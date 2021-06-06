@@ -8,6 +8,7 @@ import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
+import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import regulationRepository, {
   Regulation,
 } from '../../../firebase/database/regulationRepository';
@@ -17,6 +18,7 @@ import notification, {
 } from '../../../redux/actions/notification';
 import HtmlPreview from '../../../components/dialog/HtmlPreview';
 import fileHelper from '../../../helper/fileHelper';
+import logger from '../../../helper/logger';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,12 +33,14 @@ interface Props {
   regulation: Regulation;
   loadRegulationsHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
+  editStatus: 'draft' | 'published';
 }
 
 const RegulationListItem: React.FC<Props> = ({
   regulation,
   loadRegulationsHandle,
   setNotification,
+  editStatus,
 }) => {
   const [showHtmlPreview, setShowHtmlPreview] =
     React.useState<Regulation | null>(null);
@@ -61,15 +65,54 @@ const RegulationListItem: React.FC<Props> = ({
   };
 
   const onDelete = (id: string): void => {
+    if (regulation.isDraft) {
+      regulationRepository
+        .deleteRegulation(id)
+        .then(() => loadRegulationsHandle())
+        .then(() =>
+          setNotification({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'Pagina is verwijderd.',
+          })
+        )
+        .catch((reason) =>
+          logger.errorWithReason('Failed deleting regulation', reason)
+        );
+      return;
+    }
     regulationRepository
-      .deleteRegulation(id)
+      .markRegulationForDeletion(id)
       .then(() => loadRegulationsHandle())
       .then(() =>
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: 'Pagina is verwijderd.',
+          notificationMessage: 'Pagina is gemarkeerd voor verwijdering.',
         })
+      )
+      .catch((reason) =>
+        logger.errorWithReason('Failed marking regulation for deletion', reason)
+      );
+  };
+
+  const undoMarkDeletion = () => {
+    regulationRepository
+      .removeMarkForDeletion(regulation.id ?? '')
+      .then(() => loadRegulationsHandle())
+      .then(() =>
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage:
+            'De markering voor het verwijderen van het artikel is ongedaan gemaakt.',
+        })
+      )
+      .catch((reason) =>
+        logger.errorWithReason(
+          `Failed removing the mark for deletion from the regulation id${regulation.id}`,
+          reason
+        )
       );
   };
 
@@ -93,10 +136,12 @@ const RegulationListItem: React.FC<Props> = ({
         />
       </TableCell>
       <TableCell align="right" className={classes.toolBox}>
-        <EditTwoTone
-          style={{ cursor: 'pointer' }}
-          onClick={() => history.push(`/regulations/${regulation.id}`)}
-        />
+        {!regulation.markedForDeletion && (
+          <EditTwoTone
+            style={{ cursor: 'pointer' }}
+            onClick={() => history.push(`/regulations/${regulation.id}`)}
+          />
+        )}
         <GetAppIcon
           color="action"
           style={{ cursor: 'pointer' }}
@@ -112,11 +157,19 @@ const RegulationListItem: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => setShowHtmlPreview(regulation)}
         />
-        <DeleteTwoToneIcon
-          color="secondary"
-          style={{ cursor: 'pointer' }}
-          onClick={() => setOpenDeleteDialog(regulation)}
-        />
+        {regulation.markedForDeletion && editStatus === 'draft' && (
+          <RestoreFromTrashTwoToneIcon
+            style={{ cursor: 'pointer', color: '#099000FF' }}
+            onClick={() => undoMarkDeletion()}
+          />
+        )}
+        {!regulation.markedForDeletion && (
+          <DeleteTwoToneIcon
+            color="secondary"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOpenDeleteDialog(regulation)}
+          />
+        )}
         {showHtmlPreview && showHtmlPreview.chapter === regulation.chapter && (
           <HtmlPreview
             showHtmlPreview={showHtmlPreview.htmlFile}
@@ -126,7 +179,7 @@ const RegulationListItem: React.FC<Props> = ({
         {openDeleteDialog &&
           openDeleteDialog.chapter === regulation.chapter && (
             <RegulationDialog
-              dialogTitle="Weet je zeker dat je dit artikel wilt verwijderen?"
+              dialogTitle="Weet je zeker dat je dit artikel wilt markeren voor verwijdering?"
               dialogText={`Hoofdstuk: ${regulation.chapter}\nTitel: ${
                 regulation.title
               }\nMarkering: ${getLevel(regulation.level)}`}

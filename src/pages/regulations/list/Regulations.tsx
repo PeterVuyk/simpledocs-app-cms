@@ -88,6 +88,7 @@ const Regulations: React.FC = () => {
         </Menu>
       </PageHeading>
       <RegulationList
+        editStatus={editStatus}
         loadRegulationsHandle={loadRegulationsHandle}
         regulations={regulations}
       />

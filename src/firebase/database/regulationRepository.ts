@@ -1,3 +1,4 @@
+import firebase from 'firebase/app';
 import { database } from '../firebaseConnection';
 
 export interface Regulation {
@@ -11,6 +12,7 @@ export interface Regulation {
   htmlFile: string;
   iconFile: string;
   isDraft: boolean;
+  markedForDeletion?: boolean;
 }
 
 async function createRegulation(regulation: Regulation): Promise<void> {
@@ -21,17 +23,37 @@ async function deleteRegulation(regulationId: string): Promise<void> {
   await database.collection('regulations').doc(regulationId).delete();
 }
 
+async function markRegulationForDeletion(regulationId: string): Promise<void> {
+  await database
+    .collection('regulations')
+    .doc(regulationId)
+    .update({ markedForDeletion: true });
+}
+
+async function removeMarkForDeletion(regulationId: string): Promise<void> {
+  const regulationRef = database.collection('regulations').doc(regulationId);
+  return regulationRef.update({
+    markedForDeletion: firebase.firestore.FieldValue.delete(),
+  });
+}
+
 async function getRegulations(
   draftRegulations: boolean
 ): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')
-    .where('isDraft', '==', draftRegulations)
+    // .where('isDraft', '==', draftRegulations)
     .orderBy('pageIndex', 'asc')
     .get();
-  return querySnapshot.docs.map((doc) => {
+  const regulations = querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() } as Regulation;
   });
+  if (draftRegulations) {
+    return regulations.filter(
+      (regulation) => regulation.isDraft || regulation.markedForDeletion
+    );
+  }
+  return regulations.filter((regulation) => !regulation.isDraft);
 }
 
 async function getRegulationsById(id: string): Promise<Regulation> {
@@ -73,7 +95,9 @@ async function updateRegulation(
       .doc(regulationId)
       .set(updatedRegulation);
   } else {
-    await createRegulation(updatedRegulation);
+    await createRegulation(updatedRegulation).then(() =>
+      markRegulationForDeletion(regulationId ?? '')
+    );
   }
 }
 
@@ -83,6 +107,8 @@ const regulationRepository = {
   getRegulationsById,
   getRegulationsByField,
   deleteRegulation,
+  removeMarkForDeletion,
+  markRegulationForDeletion,
   updateRegulation,
 };
 

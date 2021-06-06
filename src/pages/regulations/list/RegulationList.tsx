@@ -22,11 +22,13 @@ const useStyles = makeStyles({
 interface Props {
   regulations: Regulation[];
   loadRegulationsHandle: () => void;
+  editStatus: 'draft' | 'published';
 }
 
 const RegulationList: React.FC<Props> = ({
   regulations,
   loadRegulationsHandle,
+  editStatus,
 }) => {
   const classes = useStyles();
 
@@ -55,8 +57,18 @@ const RegulationList: React.FC<Props> = ({
         </TableHead>
         <TableBody>
           {regulations.map((row) => (
-            <TableRow hover key={row.chapter}>
+            <TableRow
+              style={{
+                backgroundColor:
+                  editStatus === 'draft' && row?.markedForDeletion
+                    ? '#fcb3b3'
+                    : '#fff',
+              }}
+              hover
+              key={row.chapter}
+            >
               <RegulationListItem
+                editStatus={editStatus}
                 regulation={row}
                 loadRegulationsHandle={loadRegulationsHandle}
               />
