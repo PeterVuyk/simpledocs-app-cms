@@ -82,9 +82,18 @@ const Regulations: React.FC = () => {
           open={Boolean(downloadMenuElement)}
           onClose={() => setDownloadMenuElement(null)}
         >
-          <DownloadRegulationsMenuItem regulations={regulations} />
-          <DownloadRegulationsHTMLMenuItem regulations={regulations} />
-          <DownloadRegulationsIconsMenuItem regulations={regulations} />
+          <DownloadRegulationsMenuItem
+            editStatus={editStatus}
+            regulations={regulations}
+          />
+          <DownloadRegulationsHTMLMenuItem
+            editStatus={editStatus}
+            regulations={regulations}
+          />
+          <DownloadRegulationsIconsMenuItem
+            editStatus={editStatus}
+            regulations={regulations}
+          />
         </Menu>
       </PageHeading>
       <RegulationList

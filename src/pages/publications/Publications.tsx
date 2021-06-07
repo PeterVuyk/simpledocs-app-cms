@@ -8,9 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PageHeading from '../../layout/PageHeading';
-import versioningRepository, {
+import publishRepository, {
   Versioning,
-} from '../../firebase/database/versioningRepository';
+} from '../../firebase/database/publishRepository';
 import PublicationItem from './PublicationItem';
 
 const useStyles = makeStyles({
@@ -28,7 +28,7 @@ const Publications: React.FC = () => {
   const classes = useStyles();
 
   const reloadPublicationsHandle = (): void => {
-    versioningRepository.getVersions().then((result) => setVersions(result));
+    publishRepository.getVersions().then((result) => setVersions(result));
   };
 
   React.useEffect(() => {

@@ -5,9 +5,13 @@ import { Regulation } from '../../../firebase/database/regulationRepository';
 
 interface Props {
   regulations: Regulation[];
+  editStatus: 'draft' | 'published';
 }
 
-const DownloadRegulationsIconsMenuItem: React.FC<Props> = ({ regulations }) => {
+const DownloadRegulationsIconsMenuItem: React.FC<Props> = ({
+  editStatus,
+  regulations,
+}) => {
   const handleExportSVGFiles = (): void => {
     const zip = new JSZip();
 
@@ -20,13 +24,13 @@ const DownloadRegulationsIconsMenuItem: React.FC<Props> = ({ regulations }) => {
       });
     });
     zip.generateAsync({ type: 'blob' }).then((blob) => {
-      saveAs(blob, 'regelgevingen-illustraties.zip');
+      saveAs(blob, `regelgevingen-${editStatus}-illustraties.zip`);
     });
   };
 
   return (
     <MenuItem key="svg" onClick={() => handleExportSVGFiles()}>
-      regelgevingen-illustraties.zip
+      regelgevingen-{editStatus}-illustraties.zip
     </MenuItem>
   );
 };

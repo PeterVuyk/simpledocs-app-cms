@@ -2,7 +2,7 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PublishIcon from '@material-ui/icons/Publish';
-import { Versioning } from '../../firebase/database/versioningRepository';
+import { Versioning } from '../../firebase/database/publishRepository';
 import PublishDialog from './PublishDialog';
 
 interface Props {

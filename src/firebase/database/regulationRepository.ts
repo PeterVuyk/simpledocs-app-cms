@@ -42,7 +42,6 @@ async function getRegulations(
 ): Promise<Regulation[]> {
   const querySnapshot = await database
     .collection('regulations')
-    // .where('isDraft', '==', draftRegulations)
     .orderBy('pageIndex', 'asc')
     .get();
   const regulations = querySnapshot.docs.map((doc) => {

@@ -32,9 +32,9 @@ async function updateCalculationsInfo(calculationInfo: CalculationInfo) {
     });
 }
 
-const versioningRepository = {
+const calculationsRepository = {
   getCalculationsInfo,
   updateCalculationsInfo,
 };
 
-export default versioningRepository;
+export default calculationsRepository;

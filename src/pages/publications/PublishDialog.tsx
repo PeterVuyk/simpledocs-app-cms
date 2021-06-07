@@ -10,13 +10,13 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
-import versioningRepository, {
-  Versioning,
-} from '../../firebase/database/versioningRepository';
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
 import logger from '../../helper/logger';
+import publishRepository, {
+  Versioning,
+} from '../../firebase/database/publishRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -61,7 +61,7 @@ const PublishDialog: React.FC<Props> = ({
       return;
     }
 
-    versioningRepository
+    publishRepository
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .updateVersion(openDialog, versionRef.current.value)

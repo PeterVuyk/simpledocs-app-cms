@@ -6,28 +6,37 @@ import { Regulation } from '../../../firebase/database/regulationRepository';
 
 interface Props {
   regulations: Regulation[];
+  editStatus: 'draft' | 'published';
 }
 
-const DownloadRegulationsMenuItem: React.FC<Props> = ({ regulations }) => {
+const DownloadRegulationsMenuItem: React.FC<Props> = ({
+  editStatus,
+  regulations,
+}) => {
   const exportRegulationsCSVFile = (): void => {
+    const fields = [
+      'pageIndex',
+      'chapter',
+      'level',
+      'title',
+      'subTitle',
+      'searchText',
+    ];
+    if (editStatus === 'draft') {
+      fields.push('isDraft');
+      fields.push('markedForDeletion');
+    }
     const csvString = Papa.unparse({
-      fields: [
-        'pageIndex',
-        'chapter',
-        'level',
-        'title',
-        'subTitle',
-        'searchText',
-      ],
+      fields,
       data: regulations,
     });
     const csvFile = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    FileSaver.saveAs(csvFile, 'regelgevingen.csv');
+    FileSaver.saveAs(csvFile, `regelgevingen-${editStatus}.csv`);
   };
 
   return (
     <MenuItem key="csv" onClick={() => exportRegulationsCSVFile()}>
-      regelgevingen.csv
+      regelgevingen-{editStatus}.csv
     </MenuItem>
   );
 };

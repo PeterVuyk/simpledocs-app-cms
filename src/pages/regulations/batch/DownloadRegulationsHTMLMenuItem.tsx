@@ -5,9 +5,13 @@ import { Regulation } from '../../../firebase/database/regulationRepository';
 
 interface Props {
   regulations: Regulation[];
+  editStatus: 'draft' | 'published';
 }
 
-const DownloadRegulationsHTMLMenuItem: React.FC<Props> = ({ regulations }) => {
+const DownloadRegulationsHTMLMenuItem: React.FC<Props> = ({
+  editStatus,
+  regulations,
+}) => {
   const handleExportHTMLFiles = (): void => {
     const zip = new JSZip();
 
@@ -15,13 +19,13 @@ const DownloadRegulationsHTMLMenuItem: React.FC<Props> = ({ regulations }) => {
       zip.file(`${regulation.chapter}.html`, regulation.htmlFile);
     });
     zip.generateAsync({ type: 'blob' }).then((blob) => {
-      saveAs(blob, 'regelgevingen-html.zip');
+      saveAs(blob, `regelgevingen-${editStatus}-html.zip`);
     });
   };
 
   return (
     <MenuItem key="html" onClick={() => handleExportHTMLFiles()}>
-      regelgevingen-html.zip
+      regelgevingen-{editStatus}-html.zip
     </MenuItem>
   );
 };
