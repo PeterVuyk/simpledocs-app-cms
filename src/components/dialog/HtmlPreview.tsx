@@ -17,7 +17,7 @@ interface Props {
   closeHtmlPreviewHandle: () => void;
 }
 
-const RegulationDialog: React.FC<Props> = ({
+const HtmlPreview: React.FC<Props> = ({
   showHtmlPreview,
   closeHtmlPreviewHandle,
 }) => {
@@ -41,4 +41,4 @@ const RegulationDialog: React.FC<Props> = ({
   );
 };
 
-export default RegulationDialog;
+export default HtmlPreview;

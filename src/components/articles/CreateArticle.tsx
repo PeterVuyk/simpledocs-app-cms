@@ -3,25 +3,25 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { FormikValues } from 'formik';
 import { connect } from 'react-redux';
-import regulationRepository from '../../firebase/database/regulationRepository';
+import articleRepository from '../../firebase/database/articleRepository';
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import Navigation from '../navigation/Navigation';
+import Navigation from "../../pages/navigation/Navigation";
 import logger from '../../helper/logger';
-import RegulationForm from './RegulationForm';
+import ArticleForm from './ArticleForm';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
+const CreateArticle: React.FC<Props> = ({ setNotification }) => {
   const history = useHistory();
 
   const handleSubmit = (values: FormikValues): void => {
-    regulationRepository
-      .createRegulation({
+    articleRepository
+      .createArticle({
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -42,13 +42,13 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Create regulation has failed in CreateRegulation.handleSubmit',
+          'Create article has failed in CreateArticle.handleSubmit',
           error
         );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
-          notificationMessage: `Het toevoegen van de regulatie is mislukt, foutmelding: ${error.message}.`,
+          notificationMessage: `Het toevoegen van het artikel is mislukt, foutmelding: ${error.message}.`,
         });
       });
   };
@@ -59,12 +59,12 @@ const CreateRegulation: React.FC<Props> = ({ setNotification }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.push('/regulations')}
+          onClick={() => history.goBack()}
         >
           Terug
         </Button>
       </PageHeading>
-      <RegulationForm handleSubmit={handleSubmit} />
+      <ArticleForm handleSubmit={handleSubmit} />
     </Navigation>
   );
 };
@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRegulation);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateArticle);

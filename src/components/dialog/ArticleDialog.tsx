@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Regulation } from '../../firebase/database/regulationRepository';
+import { Article } from '../../firebase/database/articleRepository';
 
 const Transition = React.forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -21,12 +21,12 @@ const Transition = React.forwardRef(function Transition(
 interface Props {
   dialogTitle: string;
   dialogText: string;
-  openDialog: Regulation | null;
-  setOpenDialog: (regulation: Regulation | null) => void;
+  openDialog: Article | null;
+  setOpenDialog: (article: Article | null) => void;
   onSubmit: (id: string) => void;
 }
 
-const RegulationDialog: React.FC<Props> = ({
+const ArticleDialog: React.FC<Props> = ({
   dialogTitle,
   dialogText,
   openDialog,
@@ -74,4 +74,4 @@ const RegulationDialog: React.FC<Props> = ({
   );
 };
 
-export default RegulationDialog;
+export default ArticleDialog;

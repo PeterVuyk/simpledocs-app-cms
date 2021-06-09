@@ -1,6 +1,6 @@
 # Ambulance App CMS
 
-The purpose of the CMS is to manage the content from the Ambulance app, like the regulations, decision tree and calculation info. 
+The purpose of the CMS is to manage the content from the Ambulance app, like the instruction manual, regulations, decision tree and calculation info. 
 The CMS is build in React and uses the Firestore database from Firebase.
 
 ## Available Scripts

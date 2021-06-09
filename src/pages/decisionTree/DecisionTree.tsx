@@ -16,7 +16,7 @@ import decisionTreeRepository, {
   DecisionTreeStep,
 } from '../../firebase/database/decisionTreeRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
-import regulationRepository from '../../firebase/database/regulationRepository';
+import articleRepository from '../../firebase/database/articleRepository';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
@@ -65,8 +65,8 @@ const DecisionTree: React.FC = () => {
     ) {
       return;
     }
-    regulationRepository
-      .getRegulationsByField(
+    articleRepository
+      .getArticlesByField(
         'chapter',
         showHtmlPreview.regulationChapter.toString()
       )

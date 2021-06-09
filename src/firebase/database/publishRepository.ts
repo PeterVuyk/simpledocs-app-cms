@@ -32,7 +32,7 @@ async function publishUpdatedRegulations(
     [versioning.aggregate]: newVersion,
   });
 
-  // 2: Remove regulations that are marked for deletion:
+  // 2: Remove articles that are marked for deletion:
   const querySnapshotDeletion = await database
     .collection('regulations')
     .where('markedForDeletion', '==', true)

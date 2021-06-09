@@ -4,15 +4,15 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Menu from '@material-ui/core/Menu';
-import regulationRepository, {
-  Regulation,
-} from '../../../firebase/database/regulationRepository';
+import articleRepository, {
+  Article,
+} from '../../../firebase/database/articleRepository';
 import PageHeading from '../../../layout/PageHeading';
-import DownloadRegulationsMenuItem from '../batch/DownloadRegulationsMenuItem';
-import DownloadRegulationsHTMLMenuItem from '../batch/DownloadRegulationsHTMLMenuItem';
-import DownloadRegulationsIconsMenuItem from '../batch/DownloadRegulationsIconsMenuItem';
-import EditStatusToggle from '../../../components/form/EditStatusToggle';
-import RegulationList from './RegulationList';
+import DownloadArticlesMenuItem from '../batch/DownloadArticlesMenuItem';
+import DownloadArticlesHTMLMenuItem from '../batch/DownloadArticlesHTMLMenuItem';
+import DownloadArticlesIconsMenuItem from '../batch/DownloadArticlesIconsMenuItem';
+import EditStatusToggle from '../../form/EditStatusToggle';
+import ArticlesList from './ArticlesList';
 
 const useStyles = makeStyles({
   table: {
@@ -26,10 +26,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Regulations: React.FC = () => {
+const Articles: React.FC = () => {
   const [downloadMenuElement, setDownloadMenuElement] =
     React.useState<null | HTMLElement>(null);
-  const [regulations, setRegulations] = React.useState<Regulation[]>([]);
+  const [articles, setArticles] = React.useState<Article[]>([]);
   const [editStatus, setEditStatus] =
     React.useState<'draft' | 'published'>('draft');
   const classes = useStyles();
@@ -39,16 +39,16 @@ const Regulations: React.FC = () => {
     setDownloadMenuElement(event.currentTarget);
   };
 
-  const loadRegulationsHandle = (): void => {
-    regulationRepository
-      .getRegulations(editStatus === 'draft')
-      .then((result) => setRegulations(result));
+  const loadArticlesHandle = (): void => {
+    articleRepository
+      .getArticles(editStatus === 'draft')
+      .then((result) => setArticles(result));
   };
 
   React.useEffect(() => {
-    regulationRepository
-      .getRegulations(editStatus === 'draft')
-      .then((result) => setRegulations(result));
+    articleRepository
+      .getArticles(editStatus === 'draft')
+      .then((result) => setArticles(result));
   }, [editStatus]);
 
   return (
@@ -58,7 +58,7 @@ const Regulations: React.FC = () => {
           editStatus={editStatus}
           setEditStatus={setEditStatus}
         />
-        {regulations.length !== 0 && (
+        {articles.length !== 0 && (
           <Button
             className={classes.button}
             variant="contained"
@@ -76,33 +76,33 @@ const Regulations: React.FC = () => {
           Pagina toevoegen
         </Button>
         <Menu
-          id="regulation-download-menu"
+          id="article-download-menu"
           anchorEl={downloadMenuElement}
           keepMounted
           open={Boolean(downloadMenuElement)}
           onClose={() => setDownloadMenuElement(null)}
         >
-          <DownloadRegulationsMenuItem
+          <DownloadArticlesMenuItem
             editStatus={editStatus}
-            regulations={regulations}
+            articles={articles}
           />
-          <DownloadRegulationsHTMLMenuItem
+          <DownloadArticlesHTMLMenuItem
             editStatus={editStatus}
-            regulations={regulations}
+            articles={articles}
           />
-          <DownloadRegulationsIconsMenuItem
+          <DownloadArticlesIconsMenuItem
             editStatus={editStatus}
-            regulations={regulations}
+            articles={articles}
           />
         </Menu>
       </PageHeading>
-      <RegulationList
+      <ArticlesList
         editStatus={editStatus}
-        loadRegulationsHandle={loadRegulationsHandle}
-        regulations={regulations}
+        loadArticlesHandle={loadArticlesHandle}
+        articles={articles}
       />
     </>
   );
 };
 
-export default Regulations;
+export default Articles;

@@ -7,8 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Regulation } from '../../../firebase/database/regulationRepository';
-import RegulationListItem from './RegulationListItem';
+import { Article } from '../../../firebase/database/articleRepository';
+import ArticleListItem from './ArticleListItem';
 
 const useStyles = makeStyles({
   table: {
@@ -20,14 +20,14 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  regulations: Regulation[];
-  loadRegulationsHandle: () => void;
+  articles: Article[];
+  loadArticlesHandle: () => void;
   editStatus: 'draft' | 'published';
 }
 
-const RegulationList: React.FC<Props> = ({
-  regulations,
-  loadRegulationsHandle,
+const ArticlesList: React.FC<Props> = ({
+  articles,
+  loadArticlesHandle,
   editStatus,
 }) => {
   const classes = useStyles();
@@ -56,7 +56,7 @@ const RegulationList: React.FC<Props> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {regulations.map((row) => (
+          {articles.map((row) => (
             <TableRow
               style={{
                 backgroundColor:
@@ -67,10 +67,10 @@ const RegulationList: React.FC<Props> = ({
               hover
               key={row.chapter}
             >
-              <RegulationListItem
+              <ArticleListItem
                 editStatus={editStatus}
-                regulation={row}
-                loadRegulationsHandle={loadRegulationsHandle}
+                article={row}
+                loadArticlesHandle={loadArticlesHandle}
               />
             </TableRow>
           ))}
@@ -80,4 +80,4 @@ const RegulationList: React.FC<Props> = ({
   );
 };
 
-export default RegulationList;
+export default ArticlesList;

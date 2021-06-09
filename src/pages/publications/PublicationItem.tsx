@@ -21,6 +21,8 @@ const Publications: React.FC<Props> = ({
     switch (aggregate) {
       case 'regulations':
         return 'regelgevingen';
+      case 'instructionManual':
+        return 'Handleiding';
       case 'decisionTree':
         return 'beslisboom';
       case 'calculations':

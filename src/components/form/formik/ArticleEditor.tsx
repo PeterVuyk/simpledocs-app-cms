@@ -11,11 +11,7 @@ interface Props {
   showError: boolean;
 }
 
-const RegulationEditor: React.FC<Props> = ({
-  formik,
-  initialFile,
-  showError,
-}) => {
+const ArticleEditor: React.FC<Props> = ({ formik, initialFile, showError }) => {
   const editor = useRef(null);
   const [content, setContent] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,4 +88,4 @@ const RegulationEditor: React.FC<Props> = ({
   );
 };
 
-export default RegulationEditor;
+export default ArticleEditor;

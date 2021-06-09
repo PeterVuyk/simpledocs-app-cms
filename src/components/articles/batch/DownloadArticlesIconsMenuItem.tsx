@@ -1,25 +1,25 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import { Regulation } from '../../../firebase/database/regulationRepository';
+import { Article } from '../../../../firebase/database/articleRepository';
 
 interface Props {
-  regulations: Regulation[];
+  articles: Article[];
   editStatus: 'draft' | 'published';
 }
 
-const DownloadRegulationsIconsMenuItem: React.FC<Props> = ({
+const DownloadArticlesIconsMenuItem: React.FC<Props> = ({
   editStatus,
-  regulations,
+  articles,
 }) => {
   const handleExportSVGFiles = (): void => {
     const zip = new JSZip();
 
-    regulations.forEach((regulation) => {
-      const base64String = regulation.iconFile.split(
+    articles.forEach((article) => {
+      const base64String = article.iconFile.split(
         'data:image/svg+xml;base64,'
       )[1];
-      zip.file(`${regulation.chapter}.svg`, base64String, {
+      zip.file(`${article.chapter}.svg`, base64String, {
         base64: true,
       });
     });
@@ -35,4 +35,4 @@ const DownloadRegulationsIconsMenuItem: React.FC<Props> = ({
   );
 };
 
-export default DownloadRegulationsIconsMenuItem;
+export default DownloadArticlesIconsMenuItem;

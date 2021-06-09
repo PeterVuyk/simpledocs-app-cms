@@ -4,14 +4,14 @@ import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
-import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
-import TextField from '../../components/form/formik/TextField';
-import Select from '../../components/form/formik/Select';
-import SubmitButton from '../../components/form/formik/SubmitButton';
-import regulationRepository, {
-  Regulation,
-} from '../../firebase/database/regulationRepository';
-import RegulationEditor from '../../components/form/formik/RegulationEditor';
+import FileDropZoneArea from '../form/formik/FileDropzoneArea';
+import TextField from '../form/formik/TextField';
+import Select from '../form/formik/Select';
+import SubmitButton from '../form/formik/SubmitButton';
+import articleRepository, {
+  Article,
+} from '../../firebase/database/articleRepository';
+import ArticleEditor from '../form/formik/ArticleEditor';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   handleSubmit: (values: FormikValues) => void;
-  regulation?: Regulation;
+  article?: Article;
 }
 
-const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
+const ArticleForm: React.FC<Props> = ({ handleSubmit, article }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = React.useRef<any>();
   const classes = useStyles();
 
   const initialFormState = () => {
-    if (regulation !== undefined) {
-      return regulation;
+    if (article !== undefined) {
+      return article;
     }
     return {
       chapter: '',
@@ -52,12 +52,14 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
     if (fieldValue === undefined) {
       return true;
     }
-    const regulations: Regulation[] =
-      await regulationRepository.getRegulationsByField(fieldName, fieldValue);
+    const articles: Article[] = await articleRepository.getArticlesByField(
+      fieldName,
+      fieldValue
+    );
     return (
-      regulations.length === 0 ||
-      (regulation !== undefined &&
-        regulations.filter((value) => value.id !== regulation.id).length === 0)
+      articles.length === 0 ||
+      (article !== undefined &&
+        articles.filter((value) => value.id !== article.id).length === 0)
     );
   }
 
@@ -69,9 +71,9 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
         'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
         async (chapter) => {
           const isEditFromDraft =
-            regulation !== undefined &&
-            regulation.isDraft &&
-            regulation.chapter === chapter;
+            article !== undefined &&
+            article.isDraft &&
+            article.chapter === chapter;
           return isEditFromDraft || isFieldUnique('chapter', chapter);
         }
       ),
@@ -85,9 +87,9 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
         'Het opgegeven pagina index bestaat al en moet uniek zijn',
         async (index) => {
           const isEditFromDraft =
-            regulation !== undefined &&
-            regulation.isDraft &&
-            regulation.pageIndex === index;
+            article !== undefined &&
+            article.isDraft &&
+            article.pageIndex === index;
           return isEditFromDraft || isFieldUnique('pageIndex', index);
         }
       ),
@@ -195,23 +197,23 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
                   showError={showError}
                   dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
                   allowedMimeTypes={['image/svg+xml']}
-                  initialFile={regulation?.iconFile ?? null}
+                  initialFile={article?.iconFile ?? null}
                 />
               </Grid>
             </Grid>
             <Grid container item sm={6} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
-                <RegulationEditor
+                <ArticleEditor
                   showError={showError}
                   formik={formikRef}
-                  initialFile={regulation?.htmlFile ?? null}
+                  initialFile={article?.htmlFile ?? null}
                 />
               </Grid>
             </Grid>
           </Grid>
           <div className={classes.submit}>
             <SubmitButton setShowError={setShowError}>
-              {regulation === undefined ? 'Toevoegen' : 'Wijzigen'}
+              {article === undefined ? 'Toevoegen' : 'Wijzigen'}
             </SubmitButton>
           </div>
         </Form>
@@ -220,4 +222,4 @@ const RegulationForm: React.FC<Props> = ({ handleSubmit, regulation }) => {
   );
 };
 
-export default RegulationForm;
+export default ArticleForm;

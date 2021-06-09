@@ -3,36 +3,36 @@ import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { FormikValues } from 'formik';
-import regulationRepository, {
-  Regulation,
-} from '../../firebase/database/regulationRepository';
+import articleRepository, {
+  Article,
+} from '../../firebase/database/articleRepository';
 import PageHeading from '../../layout/PageHeading';
 import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
-import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
-import RegulationForm from './RegulationForm';
+import ArticleForm from './ArticleForm';
+import Navigation from "../../pages/navigation/Navigation";
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const EditRegulation: React.FC<Props> = ({ setNotification }) => {
-  const [regulation, setRegulation] = React.useState<Regulation | null>(null);
+const EditArticle: React.FC<Props> = ({ setNotification }) => {
+  const [article, setArticle] = React.useState<Article | null>(null);
   const history = useHistory();
-  const { regulationId } = useParams<{ regulationId: string }>();
+  const { articleId } = useParams<{ articleId: string }>();
 
   React.useEffect(() => {
-    regulationRepository
-      .getRegulationsById(regulationId)
-      .then((result) => setRegulation(result));
-  }, [regulationId]);
+    articleRepository
+      .getArticleById(articleId)
+      .then((result) => setArticle(result));
+  }, [articleId]);
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
-    await regulationRepository
-      .updateRegulation(regulation?.chapter ?? '', {
-        id: regulation?.id,
+    await articleRepository
+      .updateArticle(article?.chapter ?? '', {
+        id: article?.id,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -53,14 +53,14 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit regulation has failed in EditRegulation.handleSubmit',
+          'Edit article has failed in EditArticle.handleSubmit',
           error
         );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
           notificationMessage:
-            'Het wijzigen van de regulatie is mislukt, foutmelding: Neem contact op met de beheerder.',
+            'Het wijzigen van het artikel is mislukt, foutmelding: Neem contact op met de beheerder.',
         });
       });
   };
@@ -72,13 +72,13 @@ const EditRegulation: React.FC<Props> = ({ setNotification }) => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => history.push('/regulations')}
+            onClick={() => history.goBack()}
           >
             Terug
           </Button>
         </PageHeading>
-        {regulation && (
-          <RegulationForm regulation={regulation} handleSubmit={handleSubmit} />
+        {article && (
+          <ArticleForm article={article} handleSubmit={handleSubmit} />
         )}
       </>
     </Navigation>
@@ -99,4 +99,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditRegulation);
+export default connect(mapStateToProps, mapDispatchToProps)(EditArticle);

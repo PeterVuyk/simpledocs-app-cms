@@ -11,10 +11,10 @@ import configureStore from './redux/configureStore';
 import Login from './authentication/Login';
 import { AuthProvider } from './authentication/AuthProvider';
 import PrivateRoute from './authentication/PrivateRoute';
-import CreateRegulation from './pages/regulations/CreateRegulation';
+import CreateArticle from './pages/articles/regulations/CreateArticle';
 import SnackbarNotification from './components/SnackbarNotification';
 import theme from './theme';
-import EditRegulation from './pages/regulations/EditRegulation';
+import EditArticle from './pages/articles/regulations/EditArticle';
 import Publications from './pages/publications/Publications';
 import Navigation from './pages/navigation/Navigation';
 import DecisionTree from './pages/decisionTree/DecisionTree';
@@ -48,6 +48,11 @@ const App: React.FC = () => {
               />
               <PrivateRoute
                 exact
+                path="/instruction-manual"
+                component={Calculations}
+              />
+              <PrivateRoute
+                exact
                 path="/calculations"
                 component={Calculations}
               />
@@ -69,12 +74,12 @@ const App: React.FC = () => {
               <PrivateRoute
                 exact
                 path="/regulations/add"
-                component={CreateRegulation}
+                component={CreateArticle}
               />
               <PrivateRoute
                 exact
-                path="/:regulations/:regulationId"
-                component={EditRegulation}
+                path="/:regulations/:articleId"
+                component={EditArticle}
               />
             </Switch>
           </Router>

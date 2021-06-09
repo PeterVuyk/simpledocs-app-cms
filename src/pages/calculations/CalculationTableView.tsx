@@ -10,9 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { CalculationInfo } from '../../firebase/database/calculationsRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
-import regulationRepository, {
-  Regulation,
-} from '../../firebase/database/regulationRepository';
+import articleRepository, {
+  Article,
+} from '../../firebase/database/articleRepository';
 
 const useStyles = makeStyles({
   table: {
@@ -30,13 +30,13 @@ interface Props {
   calculationInfo: CalculationInfo;
 }
 
-const BreakingDistance: React.FC<Props> = ({ calculationInfo }) => {
+const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
-  const [regulation, setRegulation] = React.useState<Regulation | null>(null);
+  const [regulation, setRegulation] = React.useState<Article | null>(null);
 
   useEffect(() => {
-    regulationRepository
-      .getRegulationsByField('chapter', calculationInfo.regulationChapter)
+    articleRepository
+      .getArticlesByField('chapter', calculationInfo.regulationChapter)
       .then((result) => setRegulation(result.length !== 1 ? null : result[0]));
   }, [calculationInfo.regulationChapter]);
 
@@ -118,4 +118,4 @@ const BreakingDistance: React.FC<Props> = ({ calculationInfo }) => {
   );
 };
 
-export default BreakingDistance;
+export default CalculationTableView;

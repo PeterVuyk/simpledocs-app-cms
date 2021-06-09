@@ -9,14 +9,14 @@ import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import regulationRepository, {
-  Regulation,
-} from '../../../firebase/database/regulationRepository';
-import RegulationDialog from '../../../components/dialog/RegulationDialog';
+import articleRepository, {
+  Article,
+} from '../../../firebase/database/articleRepository';
+import ArticleDialog from '../../dialog/ArticleDialog';
 import notification, {
   NotificationOptions,
 } from '../../../redux/actions/notification';
-import HtmlPreview from '../../../components/dialog/HtmlPreview';
+import HtmlPreview from '../../dialog/HtmlPreview';
 import fileHelper from '../../../helper/fileHelper';
 import logger from '../../../helper/logger';
 
@@ -30,22 +30,22 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  regulation: Regulation;
-  loadRegulationsHandle: () => void;
+  article: Article;
+  loadArticlesHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: 'draft' | 'published';
 }
 
-const RegulationListItem: React.FC<Props> = ({
-  regulation,
-  loadRegulationsHandle,
+const ArticleListItem: React.FC<Props> = ({
+  article,
+  loadArticlesHandle,
   setNotification,
   editStatus,
 }) => {
   const [showHtmlPreview, setShowHtmlPreview] =
-    React.useState<Regulation | null>(null);
+    React.useState<Article | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] =
-    React.useState<Regulation | null>(null);
+    React.useState<Article | null>(null);
   const classes = useStyles();
   const history = useHistory();
 
@@ -65,10 +65,10 @@ const RegulationListItem: React.FC<Props> = ({
   };
 
   const onDelete = (id: string): void => {
-    if (regulation.isDraft) {
-      regulationRepository
-        .deleteRegulation(id)
-        .then(() => loadRegulationsHandle())
+    if (article.isDraft) {
+      articleRepository
+        .deleteArticle(id)
+        .then(() => loadArticlesHandle())
         .then(() =>
           setNotification({
             notificationType: 'success',
@@ -77,13 +77,13 @@ const RegulationListItem: React.FC<Props> = ({
           })
         )
         .catch((reason) =>
-          logger.errorWithReason('Failed deleting regulation', reason)
+          logger.errorWithReason('Failed deleting article', reason)
         );
       return;
     }
-    regulationRepository
-      .markRegulationForDeletion(id)
-      .then(() => loadRegulationsHandle())
+    articleRepository
+      .markArticleForDeletion(id)
+      .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -92,14 +92,14 @@ const RegulationListItem: React.FC<Props> = ({
         })
       )
       .catch((reason) =>
-        logger.errorWithReason('Failed marking regulation for deletion', reason)
+        logger.errorWithReason('Failed marking article for deletion', reason)
       );
   };
 
   const undoMarkDeletion = () => {
-    regulationRepository
-      .removeMarkForDeletion(regulation.id ?? '')
-      .then(() => loadRegulationsHandle())
+    articleRepository
+      .removeMarkForDeletion(article.id ?? '')
+      .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -110,7 +110,7 @@ const RegulationListItem: React.FC<Props> = ({
       )
       .catch((reason) =>
         logger.errorWithReason(
-          `Failed removing the mark for deletion from the regulation id${regulation.id}`,
+          `Failed removing the mark for deletion from the article id${article.id}`,
           reason
         )
       );
@@ -123,23 +123,23 @@ const RegulationListItem: React.FC<Props> = ({
   return (
     <>
       <TableCell component="th" scope="row">
-        {regulation.chapter}
+        {article.chapter}
       </TableCell>
-      <TableCell>{regulation.title}</TableCell>
-      <TableCell>{getLevel(regulation.level)}</TableCell>
-      <TableCell>{regulation.pageIndex}</TableCell>
+      <TableCell>{article.title}</TableCell>
+      <TableCell>{getLevel(article.level)}</TableCell>
+      <TableCell>{article.pageIndex}</TableCell>
       <TableCell>
         <img
           className={classes.icon}
-          src={`${regulation.iconFile}`}
-          alt={regulation.chapter}
+          src={`${article.iconFile}`}
+          alt={article.chapter}
         />
       </TableCell>
       <TableCell align="right" className={classes.toolBox}>
-        {!regulation.markedForDeletion && (
+        {!article.markedForDeletion && (
           <EditTwoTone
             style={{ cursor: 'pointer' }}
-            onClick={() => history.push(`/regulations/${regulation.id}`)}
+            onClick={() => history.push(`/regulations/${article.id}`)}
           />
         )}
         <GetAppIcon
@@ -147,47 +147,46 @@ const RegulationListItem: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() =>
             FileSaver.saveAs(
-              fileHelper.getBase64FromHtml(regulation.htmlFile),
-              `${regulation.chapter}.html`
+              fileHelper.getBase64FromHtml(article.htmlFile),
+              `${article.chapter}.html`
             )
           }
         />
         <FindInPageTwoToneIcon
           color="primary"
           style={{ cursor: 'pointer' }}
-          onClick={() => setShowHtmlPreview(regulation)}
+          onClick={() => setShowHtmlPreview(article)}
         />
-        {regulation.markedForDeletion && editStatus === 'draft' && (
+        {article.markedForDeletion && editStatus === 'draft' && (
           <RestoreFromTrashTwoToneIcon
             style={{ cursor: 'pointer', color: '#099000FF' }}
             onClick={() => undoMarkDeletion()}
           />
         )}
-        {!regulation.markedForDeletion && (
+        {!article.markedForDeletion && (
           <DeleteTwoToneIcon
             color="secondary"
             style={{ cursor: 'pointer' }}
-            onClick={() => setOpenDeleteDialog(regulation)}
+            onClick={() => setOpenDeleteDialog(article)}
           />
         )}
-        {showHtmlPreview && showHtmlPreview.chapter === regulation.chapter && (
+        {showHtmlPreview && showHtmlPreview.chapter === article.chapter && (
           <HtmlPreview
             showHtmlPreview={showHtmlPreview.htmlFile}
             closeHtmlPreviewHandle={closeHtmlPreviewHandle}
           />
         )}
-        {openDeleteDialog &&
-          openDeleteDialog.chapter === regulation.chapter && (
-            <RegulationDialog
-              dialogTitle="Weet je zeker dat je dit artikel wilt markeren voor verwijdering?"
-              dialogText={`Hoofdstuk: ${regulation.chapter}\nTitel: ${
-                regulation.title
-              }\nMarkering: ${getLevel(regulation.level)}`}
-              openDialog={openDeleteDialog}
-              setOpenDialog={setOpenDeleteDialog}
-              onSubmit={onDelete}
-            />
-          )}
+        {openDeleteDialog && openDeleteDialog.chapter === article.chapter && (
+          <ArticleDialog
+            dialogTitle="Weet je zeker dat je dit artikel wilt markeren voor verwijdering?"
+            dialogText={`Hoofdstuk: ${article.chapter}\nTitel: ${
+              article.title
+            }\nMarkering: ${getLevel(article.level)}`}
+            openDialog={openDeleteDialog}
+            setOpenDialog={setOpenDeleteDialog}
+            onSubmit={onDelete}
+          />
+        )}
       </TableCell>
     </>
   );
@@ -207,4 +206,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegulationListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleListItem);

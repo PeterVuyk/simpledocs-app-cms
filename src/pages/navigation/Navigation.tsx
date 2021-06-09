@@ -4,7 +4,7 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Regulations from '../regulations/list/Regulations';
+import Articles from '../articles/regulations/list/Articles';
 import Publications from '../publications/Publications';
 import Header from '../../components/header/Header';
 import DecisionTree from '../decisionTree/DecisionTree';
@@ -23,10 +23,11 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
   const { page } = params;
 
   const getIndexToTabName = {
-    regulations: 0,
-    decisionTree: 1,
-    calculations: 2,
-    publications: 3,
+    instructionManual: 1,
+    regulations: 1,
+    decisionTree: 2,
+    calculations: 3,
+    publications: 4,
   };
 
   const [selectedTab, setSelectedTab] = React.useState<number | undefined>(
@@ -36,31 +37,37 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
   );
 
   useEffect(() => {
-    if (page === 'regulations') {
+    if (page === 'instruction-manual') {
       setSelectedTab(0);
     }
-    if (page === 'decision-tree') {
+    if (page === 'regulations') {
       setSelectedTab(1);
     }
-    if (page === 'calculations') {
+    if (page === 'decision-tree') {
       setSelectedTab(2);
     }
-    if (page === 'publications') {
+    if (page === 'calculations') {
       setSelectedTab(3);
+    }
+    if (page === 'publications') {
+      setSelectedTab(4);
     }
   }, [page]);
 
   const handleChange = (event: any, newValue: number) => {
     if (newValue === 0) {
-      history.push('/regulations');
+      history.push('/instruction-manual');
     }
     if (newValue === 1) {
-      history.push('/decision-tree');
+      history.push('/regulations');
     }
     if (newValue === 2) {
-      history.push('/calculations');
+      history.push('/decision-tree');
     }
     if (newValue === 3) {
+      history.push('/calculations');
+    }
+    if (newValue === 4) {
       history.push('/publications');
     }
   };
@@ -71,10 +78,11 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
         <Grid item sm={false} lg={2} />
         <Grid item sm={12} lg={8}>
           <CssBaseline />
-          {selectedTab === 0 && <Regulations />}
-          {selectedTab === 1 && <DecisionTree />}
-          {selectedTab === 2 && <Calculations />}
-          {selectedTab === 3 && <Publications />}
+          {selectedTab === 0 && <Articles />}
+          {selectedTab === 1 && <Articles />}
+          {selectedTab === 2 && <DecisionTree />}
+          {selectedTab === 3 && <Calculations />}
+          {selectedTab === 4 && <Publications />}
           {children && children}
         </Grid>
         <Grid item sm={false} lg={2} />
@@ -105,6 +113,7 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
               value={selectedTab ?? false}
               onChange={handleChange}
             >
+              <Tab label="Handleiding" />
               <Tab label="Regelgevingen" />
               <Tab label="Beslisboom" />
               <Tab label="Berekeningen" />

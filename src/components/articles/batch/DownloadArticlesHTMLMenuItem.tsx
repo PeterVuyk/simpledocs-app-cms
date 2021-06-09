@@ -1,22 +1,22 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import { Regulation } from '../../../firebase/database/regulationRepository';
+import { Article } from '../../../../firebase/database/articleRepository';
 
 interface Props {
-  regulations: Regulation[];
+  articles: Article[];
   editStatus: 'draft' | 'published';
 }
 
-const DownloadRegulationsHTMLMenuItem: React.FC<Props> = ({
+const DownloadArticlesHTMLMenuItem: React.FC<Props> = ({
   editStatus,
-  regulations,
+  articles,
 }) => {
   const handleExportHTMLFiles = (): void => {
     const zip = new JSZip();
 
-    regulations.forEach((regulation) => {
-      zip.file(`${regulation.chapter}.html`, regulation.htmlFile);
+    articles.forEach((article) => {
+      zip.file(`${article.chapter}.html`, article.htmlFile);
     });
     zip.generateAsync({ type: 'blob' }).then((blob) => {
       saveAs(blob, `regelgevingen-${editStatus}-html.zip`);
@@ -30,4 +30,4 @@ const DownloadRegulationsHTMLMenuItem: React.FC<Props> = ({
   );
 };
 
-export default DownloadRegulationsHTMLMenuItem;
+export default DownloadArticlesHTMLMenuItem;

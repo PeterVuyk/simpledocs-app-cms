@@ -117,7 +117,7 @@ const EditCalculation: React.FC<Props> = ({
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.push('/calculations')}
+          onClick={() => history.goBack()}
         >
           Terug
         </Button>
