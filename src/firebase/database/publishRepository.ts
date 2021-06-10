@@ -17,7 +17,7 @@ async function getVersions(): Promise<Versioning[]> {
   });
 }
 
-async function publishUpdatedRegulations(
+async function publishUpdatedArticles(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
@@ -34,7 +34,7 @@ async function publishUpdatedRegulations(
 
   // 2: Remove articles that are marked for deletion:
   const querySnapshotDeletion = await database
-    .collection('regulations')
+    .collection(versioning.aggregate)
     .where('markedForDeletion', '==', true)
     .get();
   querySnapshotDeletion.forEach((documentSnapshot) => {
@@ -43,7 +43,7 @@ async function publishUpdatedRegulations(
 
   // 3: Publish drafts:
   const querySnapshotToBePublished = await database
-    .collection('regulations')
+    .collection(versioning.aggregate)
     .where('isDraft', '==', true)
     .get();
 
@@ -58,8 +58,11 @@ async function updateVersion(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
-  if (versioning.aggregate === 'regulations') {
-    await publishUpdatedRegulations(versioning, newVersion);
+  if (
+    versioning.aggregate === 'regulations' ||
+    versioning.aggregate === 'instructionManual'
+  ) {
+    await publishUpdatedArticles(versioning, newVersion);
     return;
   }
 
