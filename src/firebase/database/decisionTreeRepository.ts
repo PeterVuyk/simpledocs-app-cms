@@ -7,7 +7,8 @@ export interface DecisionTreeStep {
   label: string;
   parentId?: number;
   lineLabel?: string;
-  regulationChapter?: string;
+  articleType?: string;
+  articleChapter?: string;
   internalNote?: string;
 }
 

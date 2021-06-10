@@ -19,6 +19,7 @@ import logger from '../../../helper/logger';
 import calculationsRepository, {
   CalculationInfo,
 } from '../../../firebase/database/calculationsRepository';
+import Select from '../../../components/form/formik/Select';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -63,11 +64,11 @@ const EditCalculation: React.FC<Props> = ({
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    regulationButtonText: Yup.string().required(
+    articleButtonText: Yup.string().required(
       'Regelgeving knop tekst is een verplicht veld.'
     ),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    regulationChapter: Yup.string().required(
+    articleChapter: Yup.string().required(
       'Hoofdstuk regelgeving is een verplicht veld.'
     ),
     iconFile: Yup.mixed().required(
@@ -76,6 +77,9 @@ const EditCalculation: React.FC<Props> = ({
     calculationImage: Yup.mixed().required(
       'Het uploaden van een afbeelding is verplicht.'
     ),
+    articleType: Yup.string().required(
+      'Verwijzing naar type artikel is een verplicht veld.'
+    ),
   });
 
   const handleSubmit = (values: FormikValues): void => {
@@ -83,11 +87,12 @@ const EditCalculation: React.FC<Props> = ({
       .updateCalculationsInfo({
         calculationType: calculationType.toString(),
         title: values.title,
-        regulationButtonText: values.regulationButtonText,
+        articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        regulationChapter: values.regulationChapter,
+        articleChapter: values.articleChapter,
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
+        articleType: values.articleType,
       })
       .then(() => history.push('/calculations'))
       .then(() =>
@@ -131,7 +136,7 @@ const EditCalculation: React.FC<Props> = ({
         >
           <Form>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={5}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   showError={showError}
                   required
@@ -140,22 +145,33 @@ const EditCalculation: React.FC<Props> = ({
                   name="title"
                 />
               </Grid>
-              <Grid item xs={12} sm={5}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   showError={showError}
                   required
-                  id="regulationButtonText"
+                  id="articleButtonText"
                   label="Regelgeving knop tekst"
-                  name="regulationButtonText"
+                  name="articleButtonText"
+                />
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Select
+                  name="articleType"
+                  label="Verwijzing artikel"
+                  showError={showError}
+                  options={{
+                    regulations: 'Regelgevingen',
+                    instructionManual: 'Handleiding',
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <TextField
                   showError={showError}
                   required
-                  id="regulationChapter"
-                  label="Hoofdstuk regelgeving"
-                  name="regulationChapter"
+                  id="artieChapter"
+                  label="Hoofdstuk"
+                  name="articleChapter"
                   formik={formikRef}
                 />
               </Grid>

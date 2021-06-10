@@ -13,9 +13,9 @@ const validateRootQuestion = (
   if (rootQuestion.lineLabel) {
     errorMessages.push('- De lineLabel van de eerste vraag moet leeg blijven.');
   }
-  if (rootQuestion.regulationChapter) {
+  if (rootQuestion.articleChapter) {
     errorMessages.push(
-      '- De regulationChapter van de eerste vraag moet leeg blijven.'
+      '- De articleChapter van de eerste vraag moet leeg blijven.'
     );
   }
   return errorMessages;
@@ -25,7 +25,6 @@ const ValidateNodes = (
   steps: DecisionTreeStep[],
   errorMessages: string[]
 ): string[] => {
-  steps.find((step) => !step.id);
   if (steps.find((step) => !step.id)) {
     errorMessages.push(
       '- id is een verplicht veld maar is leeg bij tenminste 1 van de stappen.'
@@ -86,14 +85,14 @@ const ValidateLeafNodes = (
   return errorMessages;
 };
 
-const validateOnlyLastLeafHasRegulationChapterLink = (
+const validateOnlyLastLeafHasArticleLink = (
   steps: DecisionTreeStep[],
   errorMessages: string[]
 ): string[] => {
   const parentIds = steps.map((step) => step.parentId);
   const finalStepIds = steps
     .filter((step) => {
-      return step.regulationChapter !== null;
+      return step.articleChapter !== null || step.articleType !== null;
     })
     .map((step) => step.id);
 
@@ -103,12 +102,15 @@ const validateOnlyLastLeafHasRegulationChapterLink = (
     );
   }
 
-  const finalAnswersHasDocumentationLink = steps
+  const finalAnswersHasArticleChapter = steps
     .filter((step) => !parentIds.includes(step.id))
-    .every((step) => step.regulationChapter !== null);
-  if (!finalAnswersHasDocumentationLink) {
+    .every((step) => step.articleChapter !== null);
+  const finalAnswersHasArticleType = steps
+    .filter((step) => !parentIds.includes(step.id))
+    .every((step) => step.articleType !== null);
+  if (!finalAnswersHasArticleChapter || !finalAnswersHasArticleType) {
     errorMessages.push(
-      '- Het laatste antwoord is verplicht om een verwijzing naar de documentatie te maken, deze ontbreek bij 1 of meerdere.'
+      '- Het laatste antwoord is verplicht om een verwijzing naar de documentatie te maken (articleChapter en articleType), deze ontbreek bij 1 of meerdere.'
     );
   }
   return errorMessages;
@@ -129,10 +131,7 @@ const validate = (steps: DecisionTreeStep[]) => {
   errorMessages = validateRootQuestion(rootQuestion, errorMessages);
   errorMessages = ValidateNodes(steps, errorMessages);
   errorMessages = ValidateLeafNodes(steps, errorMessages);
-  errorMessages = validateOnlyLastLeafHasRegulationChapterLink(
-    steps,
-    errorMessages
-  );
+  errorMessages = validateOnlyLastLeafHasArticleLink(steps, errorMessages);
 
   return errorMessages.length === 0
     ? ''

@@ -61,7 +61,7 @@ const DecisionTree: React.FC = () => {
   useEffect(() => {
     if (
       showHtmlPreview === null ||
-      showHtmlPreview?.regulationChapter === undefined
+      showHtmlPreview?.articleChapter === undefined
     ) {
       return;
     }
@@ -70,7 +70,7 @@ const DecisionTree: React.FC = () => {
       .getArticlesByField(
         'calculations',
         'chapter',
-        showHtmlPreview.regulationChapter.toString()
+        showHtmlPreview.articleChapter.toString()
       )
       .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
   }, [showHtmlPreview]);
@@ -162,9 +162,14 @@ const DecisionTree: React.FC = () => {
                 lineLabel
               </TableCell>
               <TableCell>
-                <strong>Verwijzing</strong>
+                <strong>Verwijzing artikel</strong>
                 <br />
-                regulationChapter
+                articleType (regulations / instructionManual)
+              </TableCell>
+              <TableCell>
+                <strong>Verwijzing hoofdstuk</strong>
+                <br />
+                articleChapter
               </TableCell>
               <TableCell>
                 <strong>Interne notitie</strong>
@@ -186,9 +191,10 @@ const DecisionTree: React.FC = () => {
                 <TableCell>{row.label}</TableCell>
                 <TableCell>{row.parentId}</TableCell>
                 <TableCell>{row.lineLabel}</TableCell>
+                <TableCell>{row.articleType}</TableCell>
                 <TableCell>
-                  {row.regulationChapter}&nbsp;
-                  {row.regulationChapter && (
+                  {row.articleChapter}&nbsp;
+                  {row.articleChapter && (
                     <FindInPageTwoToneIcon
                       color="primary"
                       style={{ cursor: 'pointer', marginBottom: -5 }}
@@ -198,8 +204,7 @@ const DecisionTree: React.FC = () => {
                   {showHtmlPreview &&
                     htmlFile &&
                     showHtmlPreview.title === row.title &&
-                    showHtmlPreview.regulationChapter ===
-                      row.regulationChapter && (
+                    showHtmlPreview.articleChapter === row.articleChapter && (
                       <HtmlPreview
                         showHtmlPreview={htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}

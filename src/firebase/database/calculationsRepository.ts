@@ -4,8 +4,9 @@ export interface CalculationInfo {
   calculationType: string;
   title: string;
   explanation: string;
-  regulationButtonText: string;
-  regulationChapter: string;
+  articleButtonText: string;
+  articleType: string;
+  articleChapter: string;
   iconFile: string;
   calculationImage: string;
 }

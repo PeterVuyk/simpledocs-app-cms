@@ -32,18 +32,17 @@ interface Props {
 
 const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
-  const [regulation, setRegulation] = React.useState<Article | null>(null);
+  const [article, setArticle] = React.useState<Article | null>(null);
 
-  // TODO: Update articleType
   useEffect(() => {
     articleRepository
       .getArticlesByField(
-        'calculations',
+        calculationInfo.articleType,
         'chapter',
-        calculationInfo.regulationChapter
+        calculationInfo.articleChapter
       )
-      .then((result) => setRegulation(result.length !== 1 ? null : result[0]));
-  }, [calculationInfo.regulationChapter]);
+      .then((result) => setArticle(result.length !== 1 ? null : result[0]));
+  }, [calculationInfo]);
 
   const classes = useStyles();
 
@@ -66,10 +65,13 @@ const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
                 <strong>Toelichting</strong>
               </TableCell>
               <TableCell>
-                <strong>Regelgeving knop tekst</strong>
+                <strong>Artikel knop tekst</strong>
               </TableCell>
               <TableCell>
-                <strong>Regelgeving pagina</strong>
+                <strong>Verwijzing artikel</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Verwijzing hoofdstuk</strong>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -86,18 +88,24 @@ const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
                     />
                   </TableCell>
                   <TableCell>{calculationInfo.explanation}</TableCell>
-                  <TableCell>{calculationInfo.regulationButtonText}</TableCell>
+                  <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
-                    {regulation && (
+                    {calculationInfo.articleType === 'regulations'
+                      ? 'Regelgevingen'
+                      : 'Handleiding'}
+                  </TableCell>
+                  <TableCell>
+                    {calculationInfo.articleChapter}
+                    {article && (
                       <FindInPageTwoToneIcon
                         color="primary"
                         style={{ cursor: 'pointer', marginBottom: -5 }}
-                        onClick={() => setShowHtmlPreview(regulation?.chapter)}
+                        onClick={() => setShowHtmlPreview(article?.chapter)}
                       />
                     )}
                     {showHtmlPreview && (
                       <HtmlPreview
-                        showHtmlPreview={regulation?.htmlFile}
+                        showHtmlPreview={article?.htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}
                       />
                     )}
@@ -107,7 +115,7 @@ const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
                   <TableCell className={classes.head}>
                     <strong>Remafstand afbeelding</strong>
                   </TableCell>
-                  <TableCell colSpan={5}>
+                  <TableCell colSpan={6}>
                     <img
                       style={{ width: 600 }}
                       src={`${calculationInfo.calculationImage}`}
