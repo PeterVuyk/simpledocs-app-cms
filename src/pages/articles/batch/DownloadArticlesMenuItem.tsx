@@ -2,16 +2,18 @@ import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
-import { Article } from '../../../../firebase/database/articleRepository';
+import { Article } from '../../../firebase/database/articleRepository';
 
 interface Props {
   articles: Article[];
   editStatus: 'draft' | 'published';
+  articleType: 'regulations' | 'instructionManual';
 }
 
 const DownloadArticlesMenuItem: React.FC<Props> = ({
   editStatus,
   articles,
+  articleType,
 }) => {
   const exportArticlesCSVFile = (): void => {
     const fields = [
@@ -31,12 +33,12 @@ const DownloadArticlesMenuItem: React.FC<Props> = ({
       data: articles,
     });
     const csvFile = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    FileSaver.saveAs(csvFile, `regelgevingen-${editStatus}.csv`);
+    FileSaver.saveAs(csvFile, `${articleType}-${editStatus}.csv`);
   };
 
   return (
     <MenuItem key="csv" onClick={() => exportArticlesCSVFile()}>
-      regelgevingen-{editStatus}.csv
+      {articleType}-{editStatus}.csv
     </MenuItem>
   );
 };

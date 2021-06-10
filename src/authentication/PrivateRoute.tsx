@@ -2,17 +2,17 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 
-export default function PrivateRoute({
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  component: Component,
-  ...rest
-}): JSX.Element {
+interface Props {
+  Component: any;
+  [x: string]: any;
+}
+
+const PrivateRoute: React.FC<Props> = ({ Component, ...otherProps }) => {
   const { currentUser } = useAuth();
 
   return (
     <Route
-      {...rest}
+      {...otherProps}
       render={(props) => {
         return currentUser ? (
           <Component {...props} />
@@ -22,4 +22,6 @@ export default function PrivateRoute({
       }}
     />
   );
-}
+};
+
+export default PrivateRoute;

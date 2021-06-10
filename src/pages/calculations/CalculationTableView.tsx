@@ -34,9 +34,14 @@ const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
   const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
   const [regulation, setRegulation] = React.useState<Article | null>(null);
 
+  // TODO: Update articleType
   useEffect(() => {
     articleRepository
-      .getArticlesByField('chapter', calculationInfo.regulationChapter)
+      .getArticlesByField(
+        'calculations',
+        'chapter',
+        calculationInfo.regulationChapter
+      )
       .then((result) => setRegulation(result.length !== 1 ? null : result[0]));
   }, [calculationInfo.regulationChapter]);
 

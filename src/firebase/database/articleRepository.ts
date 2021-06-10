@@ -15,31 +15,46 @@ export interface Article {
   markedForDeletion?: boolean;
 }
 
-async function createArticle(article: Article): Promise<void> {
-  await database.collection('regulations').add(article);
+async function createArticle(
+  articleType: string,
+  article: Article
+): Promise<void> {
+  await database.collection(articleType).add(article);
 }
 
-async function deleteArticle(articleId: string): Promise<void> {
-  await database.collection('regulations').doc(articleId).delete();
+async function deleteArticle(
+  articleType: string,
+  articleId: string
+): Promise<void> {
+  await database.collection(articleType).doc(articleId).delete();
 }
 
-async function markArticleForDeletion(articleId: string): Promise<void> {
+async function markArticleForDeletion(
+  articleType: string,
+  articleId: string
+): Promise<void> {
   await database
-    .collection('regulations')
+    .collection(articleType)
     .doc(articleId)
     .update({ markedForDeletion: true });
 }
 
-async function removeMarkForDeletion(articleId: string): Promise<void> {
-  const articleRef = database.collection('regulations').doc(articleId);
+async function removeMarkForDeletion(
+  articleType: string,
+  articleId: string
+): Promise<void> {
+  const articleRef = database.collection(articleType).doc(articleId);
   return articleRef.update({
     markedForDeletion: firebase.firestore.FieldValue.delete(),
   });
 }
 
-async function getArticles(draftArticles: boolean): Promise<Article[]> {
+async function getArticles(
+  articleType: string,
+  draftArticles: boolean
+): Promise<Article[]> {
   const querySnapshot = await database
-    .collection('regulations')
+    .collection(articleType)
     .orderBy('pageIndex', 'asc')
     .get();
   const articles = querySnapshot.docs.map((doc) => {
@@ -53,20 +68,21 @@ async function getArticles(draftArticles: boolean): Promise<Article[]> {
   return articles.filter((article) => !article.isDraft);
 }
 
-async function getArticleById(id: string): Promise<Article> {
-  const documentSnapshot = await database
-    .collection('regulations')
-    .doc(id)
-    .get();
+async function getArticleById(
+  articleType: string,
+  id: string
+): Promise<Article> {
+  const documentSnapshot = await database.collection(articleType).doc(id).get();
   return { id: documentSnapshot.id, ...documentSnapshot.data() } as Article;
 }
 
 async function getArticlesByField(
+  articleType: string,
   fieldName: string,
   fieldValue: string
 ): Promise<Article[]> {
   const querySnapshot = await database
-    .collection('regulations')
+    .collection(articleType)
     .where(fieldName, '==', fieldValue)
     .get();
   return querySnapshot.docs.map((doc) => {
@@ -74,20 +90,26 @@ async function getArticlesByField(
   });
 }
 
-async function updateArticle(chapter: string, article: Article): Promise<void> {
-  const isDraft = await getArticlesByField('chapter', chapter).then((result) =>
-    result.some((value) => value.isDraft)
-  );
+async function updateArticle(
+  articleType: string,
+  chapter: string,
+  article: Article
+): Promise<void> {
+  const isDraft = await getArticlesByField(
+    articleType,
+    'chapter',
+    chapter
+  ).then((result) => result.some((value) => value.isDraft));
 
   const articleId = article.id;
   const updatedArticle = article;
   delete updatedArticle.id;
 
   if (isDraft) {
-    await database.collection('regulations').doc(articleId).set(updatedArticle);
+    await database.collection(articleType).doc(articleId).set(updatedArticle);
   } else {
-    await createArticle(updatedArticle).then(() =>
-      markArticleForDeletion(articleId ?? '')
+    await createArticle(articleType, updatedArticle).then(() =>
+      markArticleForDeletion(articleType, articleId ?? '')
     );
   }
 }

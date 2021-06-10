@@ -12,11 +12,11 @@ import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoT
 import articleRepository, {
   Article,
 } from '../../../firebase/database/articleRepository';
-import ArticleDialog from '../../dialog/ArticleDialog';
+import ArticleDialog from '../../../components/dialog/ArticleDialog';
 import notification, {
   NotificationOptions,
 } from '../../../redux/actions/notification';
-import HtmlPreview from '../../dialog/HtmlPreview';
+import HtmlPreview from '../../../components/dialog/HtmlPreview';
 import fileHelper from '../../../helper/fileHelper';
 import logger from '../../../helper/logger';
 
@@ -34,6 +34,7 @@ interface Props {
   loadArticlesHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: 'draft' | 'published';
+  articleType: 'regulations' | 'instructionManual';
 }
 
 const ArticleListItem: React.FC<Props> = ({
@@ -41,6 +42,7 @@ const ArticleListItem: React.FC<Props> = ({
   loadArticlesHandle,
   setNotification,
   editStatus,
+  articleType,
 }) => {
   const [showHtmlPreview, setShowHtmlPreview] =
     React.useState<Article | null>(null);
@@ -67,7 +69,7 @@ const ArticleListItem: React.FC<Props> = ({
   const onDelete = (id: string): void => {
     if (article.isDraft) {
       articleRepository
-        .deleteArticle(id)
+        .deleteArticle(articleType, id)
         .then(() => loadArticlesHandle())
         .then(() =>
           setNotification({
@@ -82,7 +84,7 @@ const ArticleListItem: React.FC<Props> = ({
       return;
     }
     articleRepository
-      .markArticleForDeletion(id)
+      .markArticleForDeletion(articleType, id)
       .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
@@ -98,7 +100,7 @@ const ArticleListItem: React.FC<Props> = ({
 
   const undoMarkDeletion = () => {
     articleRepository
-      .removeMarkForDeletion(article.id ?? '')
+      .removeMarkForDeletion(articleType, article.id ?? '')
       .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
@@ -120,6 +122,11 @@ const ArticleListItem: React.FC<Props> = ({
     setShowHtmlPreview(null);
   };
 
+  const getEditUrl = () =>
+    articleType === 'regulations'
+      ? `/article/regulations/${article.id}`
+      : `/article/instruction-manual/${article.id}`;
+
   return (
     <>
       <TableCell component="th" scope="row">
@@ -139,7 +146,7 @@ const ArticleListItem: React.FC<Props> = ({
         {!article.markedForDeletion && (
           <EditTwoTone
             style={{ cursor: 'pointer' }}
-            onClick={() => history.push(`/regulations/${article.id}`)}
+            onClick={() => history.push(getEditUrl())}
           />
         )}
         <GetAppIcon

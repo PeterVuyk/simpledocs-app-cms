@@ -12,7 +12,7 @@ import notification, {
 } from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import Navigation from "../../pages/navigation/Navigation";
+import Navigation from '../navigation/Navigation';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -21,17 +21,20 @@ interface Props {
 const EditArticle: React.FC<Props> = ({ setNotification }) => {
   const [article, setArticle] = React.useState<Article | null>(null);
   const history = useHistory();
-  const { articleId } = useParams<{ articleId: string }>();
+  const { articleId, aggregatePath } =
+    useParams<{ articleId: string; aggregatePath: string }>();
+  const articleType: 'regulations' | 'instructionManual' =
+    aggregatePath === 'regulations' ? 'regulations' : 'instructionManual';
 
   React.useEffect(() => {
     articleRepository
-      .getArticleById(articleId)
+      .getArticleById(articleType, articleId)
       .then((result) => setArticle(result));
-  }, [articleId]);
+  }, [aggregatePath, articleType, articleId]);
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
     await articleRepository
-      .updateArticle(article?.chapter ?? '', {
+      .updateArticle(articleType, article?.chapter ?? '', {
         id: article?.id,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
@@ -43,7 +46,7 @@ const EditArticle: React.FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push('/regulations'))
+      .then(() => history.push(`/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -78,7 +81,11 @@ const EditArticle: React.FC<Props> = ({ setNotification }) => {
           </Button>
         </PageHeading>
         {article && (
-          <ArticleForm article={article} handleSubmit={handleSubmit} />
+          <ArticleForm
+            article={article}
+            handleSubmit={handleSubmit}
+            articleType={articleType}
+          />
         )}
       </>
     </Navigation>

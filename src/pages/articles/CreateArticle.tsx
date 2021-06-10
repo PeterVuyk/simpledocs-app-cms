@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { FormikValues } from 'formik';
 import { connect } from 'react-redux';
 import articleRepository from '../../firebase/database/articleRepository';
@@ -8,7 +8,7 @@ import notification, {
   NotificationOptions,
 } from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import Navigation from "../../pages/navigation/Navigation";
+import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 
@@ -18,10 +18,14 @@ interface Props {
 
 const CreateArticle: React.FC<Props> = ({ setNotification }) => {
   const history = useHistory();
+  const { aggregatePath } = useParams<{ aggregatePath: string }>();
+
+  const articleType: 'regulations' | 'instructionManual' =
+    aggregatePath === 'regulations' ? 'regulations' : 'instructionManual';
 
   const handleSubmit = (values: FormikValues): void => {
     articleRepository
-      .createArticle({
+      .createArticle(articleType, {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -32,7 +36,7 @@ const CreateArticle: React.FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push('/'))
+      .then(() => history.push(`/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -64,7 +68,7 @@ const CreateArticle: React.FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm handleSubmit={handleSubmit} />
+      <ArticleForm handleSubmit={handleSubmit} articleType={articleType} />
     </Navigation>
   );
 };

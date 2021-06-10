@@ -23,12 +23,14 @@ interface Props {
   articles: Article[];
   loadArticlesHandle: () => void;
   editStatus: 'draft' | 'published';
+  articleType: 'regulations' | 'instructionManual';
 }
 
 const ArticlesList: React.FC<Props> = ({
   articles,
   loadArticlesHandle,
   editStatus,
+  articleType,
 }) => {
   const classes = useStyles();
 
@@ -71,6 +73,7 @@ const ArticlesList: React.FC<Props> = ({
                 editStatus={editStatus}
                 article={row}
                 loadArticlesHandle={loadArticlesHandle}
+                articleType={articleType}
               />
             </TableRow>
           ))}

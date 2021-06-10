@@ -11,7 +11,7 @@ import PageHeading from '../../../layout/PageHeading';
 import DownloadArticlesMenuItem from '../batch/DownloadArticlesMenuItem';
 import DownloadArticlesHTMLMenuItem from '../batch/DownloadArticlesHTMLMenuItem';
 import DownloadArticlesIconsMenuItem from '../batch/DownloadArticlesIconsMenuItem';
-import EditStatusToggle from '../../form/EditStatusToggle';
+import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
 
 const useStyles = makeStyles({
@@ -26,7 +26,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Articles: React.FC = () => {
+interface Props {
+  articleType: 'regulations' | 'instructionManual';
+}
+
+const Articles: React.FC<Props> = ({ articleType }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
     React.useState<null | HTMLElement>(null);
   const [articles, setArticles] = React.useState<Article[]>([]);
@@ -41,19 +45,32 @@ const Articles: React.FC = () => {
 
   const loadArticlesHandle = (): void => {
     articleRepository
-      .getArticles(editStatus === 'draft')
+      .getArticles(articleType, editStatus === 'draft')
       .then((result) => setArticles(result));
   };
 
   React.useEffect(() => {
     articleRepository
-      .getArticles(editStatus === 'draft')
+      .getArticles(articleType, editStatus === 'draft')
       .then((result) => setArticles(result));
-  }, [editStatus]);
+  }, [articleType, editStatus]);
+
+  const getTitle = () =>
+    articleType === 'regulations' ? 'Regelgevingen' : 'Handleiding';
+
+  const getAddArticlePath = () => {
+    return {
+      pathname:
+        articleType === 'regulations'
+          ? '/article/regulations/add'
+          : '/article/instruction-manual/add',
+      articleType,
+    };
+  };
 
   return (
     <>
-      <PageHeading title="Regelgevingen beheer">
+      <PageHeading title={getTitle()}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}
@@ -71,7 +88,7 @@ const Articles: React.FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push('/regulations/add')}
+          onClick={() => history.push(getAddArticlePath())}
         >
           Pagina toevoegen
         </Button>
@@ -85,14 +102,17 @@ const Articles: React.FC = () => {
           <DownloadArticlesMenuItem
             editStatus={editStatus}
             articles={articles}
+            articleType={articleType}
           />
           <DownloadArticlesHTMLMenuItem
             editStatus={editStatus}
             articles={articles}
+            articleType={articleType}
           />
           <DownloadArticlesIconsMenuItem
             editStatus={editStatus}
             articles={articles}
+            articleType={articleType}
           />
         </Menu>
       </PageHeading>
@@ -100,6 +120,7 @@ const Articles: React.FC = () => {
         editStatus={editStatus}
         loadArticlesHandle={loadArticlesHandle}
         articles={articles}
+        articleType={articleType}
       />
     </>
   );

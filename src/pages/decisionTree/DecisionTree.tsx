@@ -65,8 +65,10 @@ const DecisionTree: React.FC = () => {
     ) {
       return;
     }
+    // TODO: articleType
     articleRepository
       .getArticlesByField(
+        'calculations',
         'chapter',
         showHtmlPreview.regulationChapter.toString()
       )
