@@ -44,6 +44,7 @@ const Articles: React.FC<Props> = ({ articleType }) => {
   };
 
   const loadArticlesHandle = (): void => {
+    setArticles([]);
     articleRepository
       .getArticles(articleType, editStatus === 'draft')
       .then((result) => setArticles(result));

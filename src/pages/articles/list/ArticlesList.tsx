@@ -67,7 +67,7 @@ const ArticlesList: React.FC<Props> = ({
                     : '#fff',
               }}
               hover
-              key={row.chapter}
+              key={row.id}
             >
               <ArticleListItem
                 editStatus={editStatus}
