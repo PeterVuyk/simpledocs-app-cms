@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { OutlinedTextFieldProps, TextField } from '@material-ui/core';
 import { useField } from 'formik';
 
@@ -8,11 +8,7 @@ interface Props {
   [x: string]: any;
 }
 
-const TextfieldWrapper: React.FC<Props> = ({
-  name,
-  showError,
-  ...otherProps
-}) => {
+const TextfieldWrapper: FC<Props> = ({ name, showError, ...otherProps }) => {
   const [field, mata] = useField(name);
 
   const configTextfield: OutlinedTextFieldProps = {

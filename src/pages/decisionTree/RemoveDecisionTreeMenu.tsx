@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
-import decisionTreeRepository, {
-  DecisionTreeStep,
-} from '../../firebase/database/decisionTreeRepository';
+import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import RemoveConfirmationDialog from '../../components/dialog/RemoveConfirmationDialog';
-import notification, {
-  NotificationOptions,
-} from '../../redux/actions/notification';
+import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { NotificationOptions } from '../../model/NotificationOptions';
 
 interface Props {
   removeMenuElement: null | HTMLElement;
@@ -19,7 +17,7 @@ interface Props {
   onSubmitAction: () => void;
 }
 
-const RemoveDecisionTreeMenu: React.FC<Props> = ({
+const RemoveDecisionTreeMenu: FC<Props> = ({
   removeMenuElement,
   setRemoveMenuElement,
   setNotification,
@@ -29,7 +27,7 @@ const RemoveDecisionTreeMenu: React.FC<Props> = ({
   const handleClose = () => {
     setRemoveMenuElement(null);
   };
-  const [openDialog, setOpenDialog] = React.useState<string>('');
+  const [openDialog, setOpenDialog] = useState<string>('');
 
   const handleDeleteDecisionTree = (title: string): void => {
     decisionTreeRepository

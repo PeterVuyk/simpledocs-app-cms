@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormikValues } from 'formik';
 import { connect } from 'react-redux';
 import articleRepository from '../../firebase/database/articleRepository';
-import notification, {
-  NotificationOptions,
-} from '../../redux/actions/notification';
+import notification from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
 import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
+import {
+  ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ARTICLE_TYPE_REGULATIONS,
+  ArticleType,
+} from '../../model/ArticleType';
+import { NotificationOptions } from '../../model/NotificationOptions';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const CreateArticle: React.FC<Props> = ({ setNotification }) => {
+const CreateArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
 
-  const articleType: 'regulations' | 'instructionManual' =
-    aggregatePath === 'regulations' ? 'regulations' : 'instructionManual';
+  const articleType: ArticleType =
+    aggregatePath === ARTICLE_TYPE_REGULATIONS
+      ? ARTICLE_TYPE_REGULATIONS
+      : ARTICLE_TYPE_INSTRUCTION_MANUAL;
 
   const handleSubmit = (values: FormikValues): void => {
     articleRepository

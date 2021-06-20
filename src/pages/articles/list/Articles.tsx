@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Menu from '@material-ui/core/Menu';
-import articleRepository, {
-  Article,
-} from '../../../firebase/database/articleRepository';
+import articleRepository from '../../../firebase/database/articleRepository';
 import PageHeading from '../../../layout/PageHeading';
 import DownloadArticlesMenuItem from '../batch/DownloadArticlesMenuItem';
 import DownloadArticlesHTMLMenuItem from '../batch/DownloadArticlesHTMLMenuItem';
 import DownloadArticlesIconsMenuItem from '../batch/DownloadArticlesIconsMenuItem';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
+import {
+  EDIT_STATUS_DRAFT,
+  EDIT_STATUS_PUBLISHED,
+  EditStatus,
+} from '../../../model/EditStatus';
+import {
+  ARTICLE_TYPE_REGULATIONS,
+  ArticleType,
+} from '../../../model/ArticleType';
+import { Article } from '../../../model/Article';
 
 const useStyles = makeStyles({
   table: {
@@ -27,15 +35,16 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  articleType: 'regulations' | 'instructionManual';
+  articleType: ArticleType;
 }
 
-const Articles: React.FC<Props> = ({ articleType }) => {
+const Articles: FC<Props> = ({ articleType }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
-    React.useState<null | HTMLElement>(null);
-  const [articles, setArticles] = React.useState<Article[]>([]);
-  const [editStatus, setEditStatus] =
-    React.useState<'draft' | 'published'>('draft');
+    useState<null | HTMLElement>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [editStatus, setEditStatus] = useState<EditStatus>(
+    EDIT_STATUS_PUBLISHED
+  );
   const classes = useStyles();
   const history = useHistory();
 
@@ -46,23 +55,23 @@ const Articles: React.FC<Props> = ({ articleType }) => {
   const loadArticlesHandle = (): void => {
     setArticles([]);
     articleRepository
-      .getArticles(articleType, editStatus === 'draft')
+      .getArticles(articleType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     articleRepository
-      .getArticles(articleType, editStatus === 'draft')
+      .getArticles(articleType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
   }, [articleType, editStatus]);
 
   const getTitle = () =>
-    articleType === 'regulations' ? 'Regelgevingen' : 'Handleiding';
+    articleType === ARTICLE_TYPE_REGULATIONS ? 'Regelgevingen' : 'Handleiding';
 
   const getAddArticlePath = () => {
     return {
       pathname:
-        articleType === 'regulations'
+        articleType === ARTICLE_TYPE_REGULATIONS
           ? '/article/regulations/add'
           : '/article/instruction-manual/add',
       articleType,

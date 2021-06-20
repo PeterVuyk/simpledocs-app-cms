@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -19,7 +19,7 @@ interface Props {
   initialFile?: string | null;
 }
 
-const FileDropzoneArea: React.FC<Props> = ({
+const FileDropzoneArea: FC<Props> = ({
   allowedMimeTypes,
   allowedExtension,
   initialFile,

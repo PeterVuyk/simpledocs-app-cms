@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 
@@ -7,11 +7,7 @@ interface Props {
   setShowError: (showError: boolean) => void;
 }
 
-const SubmitButton: React.FC<Props> = ({
-  children,
-  setShowError,
-  ...otherProps
-}) => {
+const SubmitButton: FC<Props> = ({ children, setShowError, ...otherProps }) => {
   const { submitForm } = useFormikContext();
 
   const handleSubmit = () => {

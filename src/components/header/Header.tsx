@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-const Header: React.FC<Props> = ({ children }) => {
+const Header: FC<Props> = ({ children }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { currentUser, logout } = useAuth();
   const open = Boolean(anchorEl);
   const history = useHistory();

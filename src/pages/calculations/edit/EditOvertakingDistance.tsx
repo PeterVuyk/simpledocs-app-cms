@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import EditCalculation from './EditCalculation';
 
-const EditOvertakingDistance: React.FC = () => {
+const EditOvertakingDistance: FC = () => {
   return <EditCalculation calculationType="overtakingDistance" />;
 };
 

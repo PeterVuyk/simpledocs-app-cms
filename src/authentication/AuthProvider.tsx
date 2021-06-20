@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, ReactNode, FC } from 'react';
 import firebase from 'firebase/app';
 import { auth } from '../firebase/firebaseConnection';
 
@@ -11,7 +11,6 @@ export type AuthContextType = {
   logout: () => Promise<void>;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const AuthContextProvider = React.createContext<AuthContextType>(null);
 
@@ -20,10 +19,10 @@ export function useAuth(): AuthContextType {
 }
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AuthProvider: React.FC<Props> = ({ children }) => {
+export const AuthProvider: FC<Props> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<firebase.User | null>();
   const [loading, setLoading] = useState(true);
 

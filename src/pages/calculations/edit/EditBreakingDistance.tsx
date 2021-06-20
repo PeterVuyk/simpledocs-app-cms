@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import EditCalculation from './EditCalculation';
 
-const EditBreakingDistance: React.FC = () => {
+const EditBreakingDistance: FC = () => {
   return <EditCalculation calculationType="breakingDistance" />;
 };
 

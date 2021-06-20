@@ -1,4 +1,4 @@
-import { DecisionTreeStep } from '../firebase/database/decisionTreeRepository';
+import { DecisionTreeStep } from '../model/DecisionTreeStep';
 
 const validateRootQuestion = (
   rootQuestion: DecisionTreeStep,

@@ -10,7 +10,6 @@ Bugsnag.start({
   plugins: [new BugsnagPluginReact()],
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 

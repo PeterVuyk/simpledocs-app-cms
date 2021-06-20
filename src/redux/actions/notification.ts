@@ -1,11 +1,5 @@
-import { Color } from '@material-ui/lab';
 import reduxTypes from './reduxTypes';
-
-export interface NotificationOptions {
-  notificationOpen: boolean;
-  notificationType: Color;
-  notificationMessage: string;
-}
+import { NotificationOptions } from '../../model/NotificationOptions';
 
 export const setNotification = (notificationOptions: NotificationOptions) => ({
   type: reduxTypes.SET_NOTIFICATION,

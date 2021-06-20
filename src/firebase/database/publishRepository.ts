@@ -1,16 +1,15 @@
 import { database } from '../firebaseConnection';
-
-export interface Versioning {
-  aggregate: string;
-  version: string;
-}
+import {
+  AGGREGATE_INSTRUCTION_MANUAL,
+  AGGREGATE_REGULATIONS,
+} from '../../model/Aggregate';
+import { Versioning } from '../../model/Versioning';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
     .collection('versioning')
     .doc('aggregate')
     .get();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return Object.entries(versioning.data()).map(([key, value]) => {
     return { aggregate: key, version: value } as Versioning;
@@ -59,8 +58,8 @@ async function updateVersion(
   newVersion: string
 ): Promise<void> {
   if (
-    versioning.aggregate === 'regulations' ||
-    versioning.aggregate === 'instructionManual'
+    versioning.aggregate === AGGREGATE_REGULATIONS ||
+    versioning.aggregate === AGGREGATE_INSTRUCTION_MANUAL
   ) {
     await publishUpdatedArticles(versioning, newVersion);
     return;

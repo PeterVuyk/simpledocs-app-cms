@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import { Article } from '../../../firebase/database/articleRepository';
+import { EditStatus } from '../../../model/EditStatus';
+import { ArticleType } from '../../../model/ArticleType';
+import { Article } from '../../../model/Article';
 
 interface Props {
   articles: Article[];
-  editStatus: 'draft' | 'published';
-  articleType: 'regulations' | 'instructionManual';
+  editStatus: EditStatus;
+  articleType: ArticleType;
 }
 
-const DownloadArticlesIconsMenuItem: React.FC<Props> = ({
+const DownloadArticlesIconsMenuItem: FC<Props> = ({
   editStatus,
   articles,
   articleType,

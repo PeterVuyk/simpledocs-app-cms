@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FC, forwardRef, ReactElement, Ref } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
+  props: TransitionProps & { children?: ReactElement<any, any> },
+  ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -17,7 +17,7 @@ interface Props {
   closeHtmlPreviewHandle: () => void;
 }
 
-const HtmlPreview: React.FC<Props> = ({
+const HtmlPreview: FC<Props> = ({
   showHtmlPreview,
   closeHtmlPreviewHandle,
 }) => {

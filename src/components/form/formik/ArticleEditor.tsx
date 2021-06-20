@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import { useField } from 'formik';
 import FileDropzoneArea from '../FileDropzoneArea';
@@ -11,7 +11,7 @@ interface Props {
   showError: boolean;
 }
 
-const ArticleEditor: React.FC<Props> = ({ formik, initialFile, showError }) => {
+const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   const editor = useRef(null);
   const [content, setContent] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,7 +56,7 @@ const ArticleEditor: React.FC<Props> = ({ formik, initialFile, showError }) => {
 
   const config = {
     height: 600,
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    readonly: false, // all options check: https://xdsoft.net/jodit/doc/
   };
 
   return (
@@ -66,10 +66,8 @@ const ArticleEditor: React.FC<Props> = ({ formik, initialFile, showError }) => {
           <JoditEditor
             ref={editor}
             value={content ?? ''}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             config={config}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             onBlur={(newContent) => updateFileHandler(newContent)}
           />

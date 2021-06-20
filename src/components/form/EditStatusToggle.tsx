@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import EditIcon from '@material-ui/icons/Edit';
 import PublicIcon from '@material-ui/icons/Public';
+import {
+  EDIT_STATUS_DRAFT,
+  EDIT_STATUS_PUBLISHED,
+  EditStatus,
+} from '../../model/EditStatus';
 
 interface Props {
-  setEditStatus: (editStatus: 'draft' | 'published') => void;
-  editStatus: 'draft' | 'published';
+  setEditStatus: (editStatus: EditStatus) => void;
+  editStatus: EditStatus;
 }
 
-const EditStatusToggle: React.FC<Props> = ({ editStatus, setEditStatus }) => {
+const EditStatusToggle: FC<Props> = ({ editStatus, setEditStatus }) => {
   const handleStatus = (
     event: React.MouseEvent<HTMLElement>,
     status: string | null
   ) => {
-    if (status === 'draft' || status === 'published') {
+    if (status === EDIT_STATUS_DRAFT || status === EDIT_STATUS_PUBLISHED) {
       setEditStatus(status);
     }
   };

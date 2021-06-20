@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,8 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Article } from '../../../firebase/database/articleRepository';
 import ArticleListItem from './ArticleListItem';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import { ArticleType } from '../../../model/ArticleType';
+import { Article } from '../../../model/Article';
 
 const useStyles = makeStyles({
   table: {
@@ -22,11 +24,11 @@ const useStyles = makeStyles({
 interface Props {
   articles: Article[];
   loadArticlesHandle: () => void;
-  editStatus: 'draft' | 'published';
-  articleType: 'regulations' | 'instructionManual';
+  editStatus: EditStatus;
+  articleType: ArticleType;
 }
 
-const ArticlesList: React.FC<Props> = ({
+const ArticlesList: FC<Props> = ({
   articles,
   loadArticlesHandle,
   editStatus,
@@ -62,7 +64,7 @@ const ArticlesList: React.FC<Props> = ({
             <TableRow
               style={{
                 backgroundColor:
-                  editStatus === 'draft' && row?.markedForDeletion
+                  editStatus === EDIT_STATUS_DRAFT && row?.markedForDeletion
                     ? '#fcb3b3'
                     : '#fff',
               }}

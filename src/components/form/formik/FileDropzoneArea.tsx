@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
@@ -18,7 +18,7 @@ interface Props {
   [x: string]: any;
 }
 
-const FileDropzoneArea: React.FC<Props> = ({
+const FileDropzoneArea: FC<Props> = ({
   name,
   formik,
   showError,
@@ -27,8 +27,7 @@ const FileDropzoneArea: React.FC<Props> = ({
   enableHtmlPreview,
   initialFile,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] =
-    React.useState<string | null>(null);
+  const [showHtmlPreview, setShowHtmlPreview] = useState<string | null>(null);
   const [field, mata] = useField(name);
 
   const ONE_MB_MAX_FILE_SIZE = 1000000;

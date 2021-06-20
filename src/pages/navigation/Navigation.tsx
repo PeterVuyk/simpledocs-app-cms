@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { Tabs, Tab, Grid } from '@material-ui/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useRouteMatch } from 'react-router';
@@ -9,13 +9,17 @@ import Header from '../../components/header/Header';
 import DecisionTree from '../decisionTree/DecisionTree';
 import Calculations from '../calculations/Calculations';
 import Articles from '../articles/list/Articles';
+import {
+  ARTICLE_TYPE_INSTRUCTION_MANUAL,
+  ARTICLE_TYPE_REGULATIONS,
+} from '../../model/ArticleType';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   gridWidth: 'default' | 'wide';
 }
 
-const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
+const Navigation: FC<Props> = ({ children, gridWidth }) => {
   const match = useRouteMatch<{ page: string }>();
   const history = useHistory();
 
@@ -30,8 +34,7 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
     publications: 4,
   };
 
-  const [selectedTab, setSelectedTab] = React.useState<number | undefined>(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  const [selectedTab, setSelectedTab] = useState<number | undefined>(
     // @ts-ignore
     getIndexToTabName[page]
   );
@@ -78,8 +81,12 @@ const Navigation: React.FC<Props> = ({ children, gridWidth }) => {
         <Grid item sm={false} lg={2} />
         <Grid item sm={12} lg={8}>
           <CssBaseline />
-          {selectedTab === 0 && <Articles articleType="regulations" />}
-          {selectedTab === 1 && <Articles articleType="instructionManual" />}
+          {selectedTab === 0 && (
+            <Articles articleType={ARTICLE_TYPE_REGULATIONS} />
+          )}
+          {selectedTab === 1 && (
+            <Articles articleType={ARTICLE_TYPE_INSTRUCTION_MANUAL} />
+          )}
           {selectedTab === 2 && <DecisionTree />}
           {selectedTab === 3 && <Calculations />}
           {selectedTab === 4 && <Publications />}

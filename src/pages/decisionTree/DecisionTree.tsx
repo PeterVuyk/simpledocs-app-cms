@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,14 +12,13 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import PageHeading from '../../layout/PageHeading';
-import decisionTreeRepository, {
-  DecisionTreeStep,
-} from '../../firebase/database/decisionTreeRepository';
+import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
 import articleRepository from '../../firebase/database/articleRepository';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 
 const useStyles = makeStyles({
   table: {
@@ -33,20 +32,18 @@ const useStyles = makeStyles({
   },
 });
 
-const DecisionTree: React.FC = () => {
+const DecisionTree: FC = () => {
   const classes = useStyles();
-  const [decisionTreeSteps, setDecisionTreeSteps] = React.useState<
+  const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[]
   >([]);
-  const [openUploadDialog, setOpenUploadDialog] =
-    React.useState<boolean>(false);
-  const [showHtmlPreview, setShowHtmlPreview] =
-    React.useState<DecisionTreeStep>();
-  const [htmlFile, setHtmlFile] = React.useState<string | null>();
+  const [openUploadDialog, setOpenUploadDialog] = useState<boolean>(false);
+  const [showHtmlPreview, setShowHtmlPreview] = useState<DecisionTreeStep>();
+  const [htmlFile, setHtmlFile] = useState<string | null>();
   const [downloadMenuElement, setDownloadMenuElement] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
   const [deleteMenuElement, setDeleteMenuElement] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDownloadMenuElement(event.currentTarget);
@@ -61,14 +58,14 @@ const DecisionTree: React.FC = () => {
   useEffect(() => {
     if (
       showHtmlPreview === null ||
-      showHtmlPreview?.articleChapter === undefined
+      showHtmlPreview?.articleChapter === undefined ||
+      showHtmlPreview?.articleType === undefined
     ) {
       return;
     }
-    // TODO: articleType
     articleRepository
       .getArticlesByField(
-        'calculations',
+        showHtmlPreview.articleType,
         'chapter',
         showHtmlPreview.articleChapter.toString()
       )

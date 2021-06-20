@@ -1,4 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  FC,
+  forwardRef,
+  ReactElement,
+  Ref,
+  useRef,
+  useState,
+} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,20 +20,18 @@ import Papa from 'papaparse';
 import { TextField } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { TextFieldProps } from '@material-ui/core/TextField';
-import notification, {
-  NotificationOptions,
-} from '../../redux/actions/notification';
+import notification from '../../redux/actions/notification';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
-import decisionTreeRepository, {
-  DecisionTreeStep,
-} from '../../firebase/database/decisionTreeRepository';
+import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import logger from '../../helper/logger';
 import decisionTreeValidator from '../../validators/decisionTreevalidator';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { NotificationOptions } from '../../model/NotificationOptions';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
+  props: TransitionProps & { children?: ReactElement<any, any> },
+  ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -38,7 +43,7 @@ interface Props {
   loadDecisionTreeHandle: () => void;
 }
 
-const UploadDecisionTreeDialog: React.FC<Props> = ({
+const UploadDecisionTreeDialog: FC<Props> = ({
   dialogText,
   setOpenUploadDialog,
   setNotification,
@@ -69,7 +74,6 @@ const UploadDecisionTreeDialog: React.FC<Props> = ({
     });
     return (
       csv.data
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .filter((step) => step.id !== null)
         .map((step) => {

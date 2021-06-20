@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -7,19 +7,16 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
 import PageHeading from '../../../layout/PageHeading';
-import notification, {
-  NotificationOptions,
-} from '../../../redux/actions/notification';
+import notification from '../../../redux/actions/notification';
 import TextField from '../../../components/form/formik/TextField';
 import FileDropZoneArea from '../../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../../components/form/formik/SubmitButton';
 import Navigation from '../../navigation/Navigation';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import logger from '../../../helper/logger';
-import calculationsRepository, {
-  CalculationInfo,
-} from '../../../firebase/database/calculationsRepository';
+import calculationsRepository from '../../../firebase/database/calculationsRepository';
 import Select from '../../../components/form/formik/Select';
+import { NotificationOptions } from '../../../model/NotificationOptions';
+import { CalculationInfo } from '../../../model/CalculationInfo';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -32,19 +29,19 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const EditCalculation: React.FC<Props> = ({
+const EditCalculation: FC<Props> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setNotification,
   calculationType,
 }) => {
   const [calculationInfo, setCalculationInfo] =
-    React.useState<CalculationInfo | null>(null);
+    useState<CalculationInfo | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
-  const formikRef = React.useRef<any>();
+  const formikRef = useRef<any>();
   const history = useHistory();
   const classes = useStyles();
 
-  React.useEffect(() => {
+  useEffect(() => {
     calculationsRepository.getCalculationsInfo().then((result) => {
       const calculation = result.filter(
         (value) => value.calculationType === calculationType

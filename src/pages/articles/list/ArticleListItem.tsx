@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
@@ -9,16 +9,19 @@ import { useHistory } from 'react-router-dom';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import articleRepository, {
-  Article,
-} from '../../../firebase/database/articleRepository';
+import articleRepository from '../../../firebase/database/articleRepository';
 import ArticleDialog from '../../../components/dialog/ArticleDialog';
-import notification, {
-  NotificationOptions,
-} from '../../../redux/actions/notification';
+import notification from '../../../redux/actions/notification';
 import HtmlPreview from '../../../components/dialog/HtmlPreview';
 import fileHelper from '../../../helper/fileHelper';
 import logger from '../../../helper/logger';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import {
+  ARTICLE_TYPE_REGULATIONS,
+  ArticleType,
+} from '../../../model/ArticleType';
+import { Article } from '../../../model/Article';
+import { NotificationOptions } from '../../../model/NotificationOptions';
 
 const useStyles = makeStyles({
   icon: {
@@ -33,21 +36,21 @@ interface Props {
   article: Article;
   loadArticlesHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
-  editStatus: 'draft' | 'published';
-  articleType: 'regulations' | 'instructionManual';
+  editStatus: EditStatus;
+  articleType: ArticleType;
 }
 
-const ArticleListItem: React.FC<Props> = ({
+const ArticleListItem: FC<Props> = ({
   article,
   loadArticlesHandle,
   setNotification,
   editStatus,
   articleType,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] =
-    React.useState<Article | null>(null);
-  const [openDeleteDialog, setOpenDeleteDialog] =
-    React.useState<Article | null>(null);
+  const [showHtmlPreview, setShowHtmlPreview] = useState<Article | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<Article | null>(
+    null
+  );
   const classes = useStyles();
   const history = useHistory();
 
@@ -61,7 +64,6 @@ const ArticleListItem: React.FC<Props> = ({
       attachment: 'Bijlage',
       legislation: 'Wetgeving',
     };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return level in levels ? levels[level] : '';
   };
@@ -123,7 +125,7 @@ const ArticleListItem: React.FC<Props> = ({
   };
 
   const getEditUrl = () =>
-    articleType === 'regulations'
+    articleType === ARTICLE_TYPE_REGULATIONS
       ? `/article/regulations/${article.id}`
       : `/article/instruction-manual/${article.id}`;
 
@@ -164,7 +166,7 @@ const ArticleListItem: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => setShowHtmlPreview(article)}
         />
-        {article.markedForDeletion && editStatus === 'draft' && (
+        {article.markedForDeletion && editStatus === EDIT_STATUS_DRAFT && (
           <RestoreFromTrashTwoToneIcon
             style={{ cursor: 'pointer', color: '#099000FF' }}
             onClick={() => undoMarkDeletion()}

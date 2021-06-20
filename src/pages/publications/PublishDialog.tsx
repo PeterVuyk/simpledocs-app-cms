@@ -1,4 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  FC,
+  forwardRef,
+  ReactElement,
+  Ref,
+  useRef,
+  useState,
+} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,18 +17,17 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
-import notification, {
-  NotificationOptions,
-} from '../../redux/actions/notification';
+import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
-import publishRepository, {
-  Versioning,
-} from '../../firebase/database/publishRepository';
+import publishRepository from '../../firebase/database/publishRepository';
+import { Versioning } from '../../model/Versioning';
+import { NotificationOptions } from '../../model/NotificationOptions';
+import translationHelper from '../../helper/translationHelper';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
+  props: TransitionProps & { children?: ReactElement<any, any> },
+  ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -35,7 +41,7 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const PublishDialog: React.FC<Props> = ({
+const PublishDialog: FC<Props> = ({
   dialogTitle,
   dialogText,
   openDialog,
@@ -62,7 +68,6 @@ const PublishDialog: React.FC<Props> = ({
     }
 
     publishRepository
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .updateVersion(openDialog, versionRef.current.value)
       .then(() => {
@@ -72,7 +77,9 @@ const PublishDialog: React.FC<Props> = ({
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: `${openDialog?.aggregate} is gepubliceerd.`,
+          notificationMessage: `${translationHelper.getTranslatedAggregate(
+            openDialog?.aggregate ?? ''
+          )} is gepubliceerd.`,
         });
       })
       .catch(() => {

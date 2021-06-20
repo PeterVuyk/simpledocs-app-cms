@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import notification, {
-  NotificationOptions,
-} from '../redux/actions/notification';
+import notification from '../redux/actions/notification';
+import { NotificationOptions } from '../model/NotificationOptions';
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -25,7 +24,7 @@ interface Props {
   notificationOptions: NotificationOptions;
 }
 
-const SnackbarNotification: React.FC<Props> = ({
+const SnackbarNotification: FC<Props> = ({
   setNotification,
   notificationOptions,
 }) => {
@@ -33,7 +32,7 @@ const SnackbarNotification: React.FC<Props> = ({
   const { notificationMessage, notificationType, notificationOpen } =
     notificationOptions;
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { CSSProperties, FC, ReactNode } from 'react';
 import Typography from '@material-ui/core/Typography';
 
 interface Props {
   title: string;
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
+  children?: ReactNode;
+  style?: CSSProperties;
 }
 
-const PageHeading: React.FC<Props> = ({ title, children, style }) => {
+const PageHeading: FC<Props> = ({ title, children, style }) => {
   return (
     <div style={style}>
       <div style={{ overflow: 'hidden', marginTop: 70, marginBottom: 10 }}>

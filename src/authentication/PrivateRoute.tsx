@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 
@@ -7,7 +7,7 @@ interface Props {
   [x: string]: any;
 }
 
-const PrivateRoute: React.FC<Props> = ({ Component, ...otherProps }) => {
+const PrivateRoute: FC<Props> = ({ Component, ...otherProps }) => {
   const { currentUser } = useAuth();
 
   return (

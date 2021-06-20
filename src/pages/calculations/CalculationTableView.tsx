@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -8,11 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import { CalculationInfo } from '../../firebase/database/calculationsRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
-import articleRepository, {
-  Article,
-} from '../../firebase/database/articleRepository';
+import articleRepository from '../../firebase/database/articleRepository';
+import { ARTICLE_TYPE_REGULATIONS } from '../../model/ArticleType';
+import { Article } from '../../model/Article';
+import { CalculationInfo } from '../../model/CalculationInfo';
 
 const useStyles = makeStyles({
   table: {
@@ -30,9 +30,9 @@ interface Props {
   calculationInfo: CalculationInfo;
 }
 
-const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = React.useState<string>('');
-  const [article, setArticle] = React.useState<Article | null>(null);
+const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
+  const [showHtmlPreview, setShowHtmlPreview] = useState<string>('');
+  const [article, setArticle] = useState<Article | null>(null);
 
   useEffect(() => {
     articleRepository
@@ -90,7 +90,7 @@ const CalculationTableView: React.FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
-                    {calculationInfo.articleType === 'regulations'
+                    {calculationInfo.articleType === ARTICLE_TYPE_REGULATIONS
                       ? 'Regelgevingen'
                       : 'Handleiding'}
                   </TableCell>

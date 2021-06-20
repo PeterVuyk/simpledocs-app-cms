@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import configureStore from './redux/configureStore';
@@ -7,7 +7,7 @@ import AppRouter from './route/AppRouter';
 
 const store = configureStore();
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

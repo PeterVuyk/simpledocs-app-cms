@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import calculationsRepository, {
-  CalculationInfo,
-} from '../../firebase/database/calculationsRepository';
+import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationTableView from './CalculationTableView';
 import PageHeading from '../../layout/PageHeading';
+import { CalculationInfo } from '../../model/CalculationInfo';
 
 const useStyles = makeStyles({
   button: {
@@ -14,11 +13,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Calculations: React.FC = () => {
+const Calculations: FC = () => {
   const [breakingDistanceInfo, setBreakingDistanceInfo] =
-    React.useState<CalculationInfo | null>(null);
+    useState<CalculationInfo | null>(null);
   const [overtakingDistanceInfo, setOvertakingDistanceInfo] =
-    React.useState<CalculationInfo | null>(null);
+    useState<CalculationInfo | null>(null);
   const classes = useStyles();
   const history = useHistory();
 
@@ -35,7 +34,7 @@ const Calculations: React.FC = () => {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     reloadPublicationsHandle();
   }, []);
 

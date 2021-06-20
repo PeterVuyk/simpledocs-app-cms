@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
-import { Article } from '../../../firebase/database/articleRepository';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import { ArticleType } from '../../../model/ArticleType';
+import { Article } from '../../../model/Article';
 
 interface Props {
   articles: Article[];
-  editStatus: 'draft' | 'published';
-  articleType: 'regulations' | 'instructionManual';
+  editStatus: EditStatus;
+  articleType: ArticleType;
 }
 
-const DownloadArticlesMenuItem: React.FC<Props> = ({
+const DownloadArticlesMenuItem: FC<Props> = ({
   editStatus,
   articles,
   articleType,
@@ -24,7 +26,7 @@ const DownloadArticlesMenuItem: React.FC<Props> = ({
       'subTitle',
       'searchText',
     ];
-    if (editStatus === 'draft') {
+    if (editStatus === EDIT_STATUS_DRAFT) {
       fields.push('isDraft');
       fields.push('markedForDeletion');
     }

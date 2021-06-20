@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
-import { DecisionTreeStep } from '../../firebase/database/decisionTreeRepository';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 
 interface Props {
   downloadMenuElement: null | HTMLElement;
@@ -11,7 +11,7 @@ interface Props {
   decisionTreeSteps: DecisionTreeStep[];
 }
 
-const DownloadDecisionTreeMenu: React.FC<Props> = ({
+const DownloadDecisionTreeMenu: FC<Props> = ({
   downloadMenuElement,
   setDownloadMenuElement,
   decisionTreeSteps,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { TextField, MenuItem, OutlinedTextFieldProps } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 
@@ -9,7 +9,7 @@ interface Props {
   [x: string]: any;
 }
 
-const SelectWrapper: React.FC<Props> = ({
+const SelectWrapper: FC<Props> = ({
   name,
   showError,
   options,

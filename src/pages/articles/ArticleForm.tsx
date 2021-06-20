@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
@@ -8,10 +8,10 @@ import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
-import articleRepository, {
-  Article,
-} from '../../firebase/database/articleRepository';
+import articleRepository from '../../firebase/database/articleRepository';
 import ArticleEditor from '../../components/form/formik/ArticleEditor';
+import { ArticleType } from '../../model/ArticleType';
+import { Article } from '../../model/Article';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -22,16 +22,12 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   handleSubmit: (values: FormikValues) => void;
   article?: Article;
-  articleType: 'regulations' | 'instructionManual';
+  articleType: ArticleType;
 }
 
-const ArticleForm: React.FC<Props> = ({
-  handleSubmit,
-  article,
-  articleType,
-}) => {
+const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
   const [showError, setShowError] = useState<boolean>(false);
-  const formikRef = React.useRef<any>();
+  const formikRef = useRef<any>();
   const classes = useStyles();
 
   const initialFormState = () => {

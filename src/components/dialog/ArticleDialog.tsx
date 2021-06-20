@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, forwardRef, ReactElement, Ref } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,12 +8,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Article } from '../../firebase/database/articleRepository';
+import { Article } from '../../model/Article';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
+  props: TransitionProps & { children?: ReactElement<any, any> },
+  ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -26,7 +26,7 @@ interface Props {
   onSubmit: (id: string) => void;
 }
 
-const ArticleDialog: React.FC<Props> = ({
+const ArticleDialog: FC<Props> = ({
   dialogTitle,
   dialogText,
   openDialog,

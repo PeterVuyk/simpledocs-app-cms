@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,10 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PageHeading from '../../layout/PageHeading';
-import publishRepository, {
-  Versioning,
-} from '../../firebase/database/publishRepository';
+import publishRepository from '../../firebase/database/publishRepository';
 import PublicationItem from './PublicationItem';
+import { Versioning } from '../../model/Versioning';
 
 const useStyles = makeStyles({
   table: {
@@ -22,8 +21,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Publications: React.FC = () => {
-  const [versions, setVersions] = React.useState<Versioning[]>([]);
+const Publications: FC = () => {
+  const [versions, setVersions] = useState<Versioning[]>([]);
 
   const classes = useStyles();
 
@@ -31,7 +30,7 @@ const Publications: React.FC = () => {
     publishRepository.getVersions().then((result) => setVersions(result));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     reloadPublicationsHandle();
   }, []);
 

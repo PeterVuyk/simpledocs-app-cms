@@ -1,47 +1,36 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PublishIcon from '@material-ui/icons/Publish';
-import { Versioning } from '../../firebase/database/publishRepository';
 import PublishDialog from './PublishDialog';
+import { Versioning } from '../../model/Versioning';
+import translationHelper from '../../helper/translationHelper';
 
 interface Props {
   version: Versioning;
   reloadPublicationsHandle: () => void;
 }
 
-const Publications: React.FC<Props> = ({
-  version,
-  reloadPublicationsHandle,
-}) => {
-  const [openPublishDialog, setOpenPublishDialog] =
-    React.useState<Versioning | null>(null);
-
-  const getAggregate = (aggregate: string): string => {
-    switch (aggregate) {
-      case 'regulations':
-        return 'regelgevingen';
-      case 'instructionManual':
-        return 'Handleiding';
-      case 'decisionTree':
-        return 'beslisboom';
-      case 'calculations':
-        return 'berekeningen';
-      default:
-        return 'onbekend';
-    }
-  };
+const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
+  const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
+    null
+  );
 
   const getDialogTitle = (dialogVersion: Versioning): string => {
     return `${
-      getAggregate(dialogVersion.aggregate).charAt(0).toUpperCase() +
-      getAggregate(dialogVersion.aggregate).slice(1)
+      translationHelper
+        .getTranslatedAggregate(dialogVersion.aggregate)
+        .charAt(0)
+        .toUpperCase() +
+      translationHelper.getTranslatedAggregate(dialogVersion.aggregate).slice(1)
     } publiceren`;
   };
 
   return (
     <TableRow hover key={version.aggregate}>
-      <TableCell>{getAggregate(version.aggregate)}</TableCell>
+      <TableCell>
+        {translationHelper.getTranslatedAggregate(version.aggregate)}
+      </TableCell>
       <TableCell>{version.version}</TableCell>
       <TableCell align="right">
         <PublishIcon
@@ -64,4 +53,4 @@ const Publications: React.FC<Props> = ({
   );
 };
 
-export default Publications;
+export default PublicationItem;

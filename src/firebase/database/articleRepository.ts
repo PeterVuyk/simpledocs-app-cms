@@ -1,36 +1,24 @@
 import firebase from 'firebase/app';
 import { database } from '../firebaseConnection';
-
-export interface Article {
-  id?: string;
-  pageIndex: number;
-  chapter: string;
-  level: string;
-  title: string;
-  subTitle: string;
-  searchText: string;
-  htmlFile: string;
-  iconFile: string;
-  isDraft: boolean;
-  markedForDeletion?: boolean;
-}
+import { ArticleType } from '../../model/ArticleType';
+import { Article } from '../../model/Article';
 
 async function createArticle(
-  articleType: string,
+  articleType: ArticleType,
   article: Article
 ): Promise<void> {
   await database.collection(articleType).add(article);
 }
 
 async function deleteArticle(
-  articleType: string,
+  articleType: ArticleType,
   articleId: string
 ): Promise<void> {
   await database.collection(articleType).doc(articleId).delete();
 }
 
 async function markArticleForDeletion(
-  articleType: string,
+  articleType: ArticleType,
   articleId: string
 ): Promise<void> {
   await database
@@ -40,7 +28,7 @@ async function markArticleForDeletion(
 }
 
 async function removeMarkForDeletion(
-  articleType: string,
+  articleType: ArticleType,
   articleId: string
 ): Promise<void> {
   const articleRef = database.collection(articleType).doc(articleId);
@@ -50,7 +38,7 @@ async function removeMarkForDeletion(
 }
 
 async function getArticles(
-  articleType: string,
+  articleType: ArticleType,
   draftArticles: boolean
 ): Promise<Article[]> {
   const querySnapshot = await database
@@ -69,7 +57,7 @@ async function getArticles(
 }
 
 async function getArticleById(
-  articleType: string,
+  articleType: ArticleType,
   id: string
 ): Promise<Article> {
   const documentSnapshot = await database.collection(articleType).doc(id).get();
@@ -77,7 +65,7 @@ async function getArticleById(
 }
 
 async function getArticlesByField(
-  articleType: string,
+  articleType: ArticleType,
   fieldName: string,
   fieldValue: string
 ): Promise<Article[]> {
@@ -91,7 +79,7 @@ async function getArticlesByField(
 }
 
 async function updateArticle(
-  articleType: string,
+  articleType: ArticleType,
   chapter: string,
   article: Article
 ): Promise<void> {

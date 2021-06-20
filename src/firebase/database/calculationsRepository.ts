@@ -1,28 +1,21 @@
 import { database } from '../firebaseConnection';
-
-export interface CalculationInfo {
-  calculationType: string;
-  title: string;
-  explanation: string;
-  articleButtonText: string;
-  articleType: string;
-  articleChapter: string;
-  iconFile: string;
-  calculationImage: string;
-}
+import { AGGREGATE_CALCULATIONS } from '../../model/Aggregate';
+import { CalculationInfo } from '../../model/CalculationInfo';
 
 async function getCalculationsInfo(): Promise<CalculationInfo[]> {
-  const querySnapshot = await database.collection('calculations').get();
+  const querySnapshot = await database.collection(AGGREGATE_CALCULATIONS).get();
   return querySnapshot.docs.map((result) => result.data() as CalculationInfo);
 }
 
-async function updateCalculationsInfo(calculationInfo: CalculationInfo) {
+async function updateCalculationsInfo(
+  calculationInfo: CalculationInfo
+): Promise<void> {
   const querySnapshot = await database
-    .collection('calculations')
+    .collection(AGGREGATE_CALCULATIONS)
     .where('calculationType', '==', calculationInfo.calculationType)
     .get();
   await database
-    .collection('calculations')
+    .collection(AGGREGATE_CALCULATIONS)
     .add(calculationInfo)
     .then(() => {
       const batch = database.batch();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,8 +18,9 @@ import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDis
 import Articles from '../pages/articles/list/Articles';
 import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
+import { ARTICLE_TYPE_REGULATIONS } from '../model/ArticleType';
 
-const AppRouter: React.FC = () => {
+const AppRouter: FC = () => {
   return (
     <AuthProvider>
       <SnackbarNotification />
@@ -52,7 +53,7 @@ const AppRouter: React.FC = () => {
             exact
             path="/:regulations/:articleId"
             Component={EditArticle}
-            articleType="regulations"
+            articleType={ARTICLE_TYPE_REGULATIONS}
           />
           <PrivateRoute
             exact
