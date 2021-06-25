@@ -8,9 +8,9 @@ import {
 const getTranslatedAggregate = (aggregate: string): string => {
   switch (aggregate) {
     case AGGREGATE_REGULATIONS:
-      return 'regelgevingen';
+      return 'regelgeving';
     case AGGREGATE_INSTRUCTION_MANUAL:
-      return 'Handleiding';
+      return 'handboek';
     case AGGREGATE_DECISION_TREE:
       return 'beslisboom';
     case AGGREGATE_CALCULATIONS:

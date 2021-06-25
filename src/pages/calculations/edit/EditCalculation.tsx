@@ -157,8 +157,8 @@ const EditCalculation: FC<Props> = ({
                   label="Verwijzing artikel"
                   showError={showError}
                   options={{
-                    regulations: 'Regelgevingen',
-                    instructionManual: 'Handleiding',
+                    regulations: 'Regelgeving',
+                    instructionManual: 'Handboek',
                   }}
                 />
               </Grid>

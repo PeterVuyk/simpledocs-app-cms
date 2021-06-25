@@ -120,8 +120,8 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
               value={selectedTab ?? false}
               onChange={handleChange}
             >
-              <Tab label="Regelgevingen" />
-              <Tab label="Handleiding" />
+              <Tab label="Regelgeving" />
+              <Tab label="Handboek" />
               <Tab label="Beslisboom" />
               <Tab label="Berekeningen" />
               <Tab label="Publiceren" />

@@ -11,11 +11,7 @@ import DownloadArticlesHTMLMenuItem from '../batch/DownloadArticlesHTMLMenuItem'
 import DownloadArticlesIconsMenuItem from '../batch/DownloadArticlesIconsMenuItem';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
-import {
-  EDIT_STATUS_DRAFT,
-  EDIT_STATUS_PUBLISHED,
-  EditStatus,
-} from '../../../model/EditStatus';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import {
   ARTICLE_TYPE_REGULATIONS,
   ArticleType,
@@ -42,9 +38,7 @@ const Articles: FC<Props> = ({ articleType }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
     useState<null | HTMLElement>(null);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [editStatus, setEditStatus] = useState<EditStatus>(
-    EDIT_STATUS_PUBLISHED
-  );
+  const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
   const classes = useStyles();
   const history = useHistory();
 
@@ -66,7 +60,7 @@ const Articles: FC<Props> = ({ articleType }) => {
   }, [articleType, editStatus]);
 
   const getTitle = () =>
-    articleType === ARTICLE_TYPE_REGULATIONS ? 'Regelgevingen' : 'Handleiding';
+    articleType === ARTICLE_TYPE_REGULATIONS ? 'Regelgeving' : 'Handboek';
 
   const getAddArticlePath = () => {
     return {

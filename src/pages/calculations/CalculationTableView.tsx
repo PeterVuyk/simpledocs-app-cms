@@ -91,8 +91,8 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
                     {calculationInfo.articleType === ARTICLE_TYPE_REGULATIONS
-                      ? 'Regelgevingen'
-                      : 'Handleiding'}
+                      ? 'Regelgeving'
+                      : 'Handboek'}
                   </TableCell>
                   <TableCell>
                     {calculationInfo.articleChapter}
