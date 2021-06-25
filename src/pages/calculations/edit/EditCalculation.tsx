@@ -17,6 +17,7 @@ import calculationsRepository from '../../../firebase/database/calculationsRepos
 import Select from '../../../components/form/formik/Select';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
+import { CalculationType } from '../../../model/CalculationType';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  calculationType: string;
+  calculationType: CalculationType;
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
@@ -64,6 +65,9 @@ const EditCalculation: FC<Props> = ({
     articleButtonText: Yup.string().required(
       'Regelgeving knop tekst is een verplicht veld.'
     ),
+    listIndex: Yup.number()
+      .integer()
+      .required('Lijst index is een verplicht veld.'),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
     articleChapter: Yup.string().required(
       'Hoofdstuk regelgeving is een verplicht veld.'
@@ -90,6 +94,7 @@ const EditCalculation: FC<Props> = ({
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         articleType: values.articleType,
+        listIndex: values.listIndex,
       })
       .then(() => history.push('/calculations'))
       .then(() =>
@@ -101,7 +106,7 @@ const EditCalculation: FC<Props> = ({
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit breaking distance has failed in EditCalculation.handleSubmit',
+          'Edit stopping distance has failed in EditCalculation.handleSubmit',
           error
         );
         setNotification({
@@ -142,13 +147,22 @@ const EditCalculation: FC<Props> = ({
                   name="title"
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <TextField
                   showError={showError}
                   required
                   id="articleButtonText"
                   label="Regelgeving knop tekst"
                   name="articleButtonText"
+                />
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <TextField
+                  showError={showError}
+                  required
+                  id="listIndex"
+                  label="Lijst index"
+                  name="listIndex"
                 />
               </Grid>
               <Grid item xs={12} sm={2}>

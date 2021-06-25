@@ -13,12 +13,14 @@ import Publications from '../pages/publications/Publications';
 import Navigation from '../pages/navigation/Navigation';
 import DecisionTree from '../pages/decisionTree/DecisionTree';
 import Calculations from '../pages/calculations/Calculations';
-import EditBreakingDistance from '../pages/calculations/edit/EditBreakingDistance';
+import EditStoppingDistance from '../pages/calculations/edit/EditStoppingDistance';
 import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDistance';
 import Articles from '../pages/articles/list/Articles';
 import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
 import { ARTICLE_TYPE_REGULATIONS } from '../model/ArticleType';
+import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance';
+import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
 
 const AppRouter: FC = () => {
   return (
@@ -40,13 +42,23 @@ const AppRouter: FC = () => {
           <PrivateRoute exact path="/calculations" Component={Calculations} />
           <PrivateRoute
             exact
-            path="/calculations/breaking-distance/edit"
-            Component={EditBreakingDistance}
+            path="/calculations/stopping-distance/edit"
+            Component={EditStoppingDistance}
           />
           <PrivateRoute
             exact
             path="/calculations/overtaking-distance/edit"
             Component={EditOvertakingDistance}
+          />
+          <PrivateRoute
+            exact
+            path="/calculations/braking-distance/edit"
+            Component={EditBrakingDistance}
+          />
+          <PrivateRoute
+            exact
+            path="/calculations/reaction-path-distance/edit"
+            Component={EditReactionPathDistance}
           />
           <PrivateRoute exact path="/decision-tree" Component={DecisionTree} />
           <PrivateRoute

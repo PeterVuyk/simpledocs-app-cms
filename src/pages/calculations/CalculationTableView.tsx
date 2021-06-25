@@ -56,6 +56,9 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
             <TableRow className={classes.head}>
               <TableCell />
               <TableCell>
+                <strong>Lijst index</strong>
+              </TableCell>
+              <TableCell>
                 <strong>Titel</strong>
               </TableCell>
               <TableCell>
@@ -80,6 +83,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
               <>
                 <TableRow hover key="1">
                   <TableCell className={classes.head} />
+                  <TableCell>{calculationInfo.listIndex}</TableCell>
                   <TableCell>{calculationInfo.title}</TableCell>
                   <TableCell>
                     <img
@@ -113,9 +117,11 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                 </TableRow>
                 <TableRow hover key="2">
                   <TableCell className={classes.head}>
-                    <strong>Remafstand afbeelding</strong>
+                    <strong>Stopafstand afbeelding</strong>
+                    <br />
+                    Aspect ratio app: 4 / 3
                   </TableCell>
-                  <TableCell colSpan={6}>
+                  <TableCell colSpan={7}>
                     <img
                       style={{ width: 600 }}
                       src={`${calculationInfo.calculationImage}`}
