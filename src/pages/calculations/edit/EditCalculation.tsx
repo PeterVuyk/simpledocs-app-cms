@@ -14,10 +14,10 @@ import SubmitButton from '../../../components/form/formik/SubmitButton';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../../helper/logger';
 import calculationsRepository from '../../../firebase/database/calculationsRepository';
-import Select from '../../../components/form/formik/Select';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
+import ArticleEditor from '../../../components/form/formik/ArticleEditor';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -67,19 +67,17 @@ const EditCalculation: FC<Props> = ({
     ),
     listIndex: Yup.number()
       .integer()
-      .required('Lijst index is een verplicht veld.'),
+      .required('Lijst index is een verplicht veld.')
+      .positive(),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    articleChapter: Yup.string().required(
-      'Hoofdstuk regelgeving is een verplicht veld.'
+    htmlFile: Yup.mixed().required(
+      'Het uploaden van een html bestand is verplicht.'
     ),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
     calculationImage: Yup.mixed().required(
       'Het uploaden van een afbeelding is verplicht.'
-    ),
-    articleType: Yup.string().required(
-      'Verwijzing naar type artikel is een verplicht veld.'
     ),
   });
 
@@ -90,10 +88,9 @@ const EditCalculation: FC<Props> = ({
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        articleChapter: values.articleChapter,
+        htmlFile: values.htmlFile,
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
-        articleType: values.articleType,
         listIndex: values.listIndex,
       })
       .then(() => history.push('/calculations'))
@@ -119,7 +116,7 @@ const EditCalculation: FC<Props> = ({
   };
 
   return (
-    <Navigation gridWidth="default">
+    <Navigation gridWidth="wide">
       <PageHeading title="Pagina bewerken">
         <Button
           variant="contained"
@@ -137,88 +134,84 @@ const EditCalculation: FC<Props> = ({
           onSubmit={handleSubmit}
         >
           <Form>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="title"
-                  label="Titel"
-                  name="title"
-                />
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-start"
+              justify="flex-start"
+              direction="row"
+            >
+              <Grid container item xs={12} sm={6} spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    showError={showError}
+                    required
+                    id="title"
+                    label="Titel"
+                    name="title"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    showError={showError}
+                    required
+                    id="articleButtonText"
+                    label="Regelgeving knop tekst"
+                    name="articleButtonText"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    showError={showError}
+                    required
+                    id="listIndex"
+                    label="Lijst index"
+                    name="listIndex"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    showError={showError}
+                    multiline
+                    rows={3}
+                    rowsMax={8}
+                    required
+                    id="explanation"
+                    label="Toelichting"
+                    name="explanation"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FileDropZoneArea
+                    enableHtmlPreview={false}
+                    name="iconFile"
+                    formik={formikRef}
+                    showError={showError}
+                    dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
+                    allowedMimeTypes={['image/svg+xml']}
+                    initialFile={calculationInfo.iconFile}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FileDropZoneArea
+                    enableHtmlPreview={false}
+                    name="calculationImage"
+                    formik={formikRef}
+                    showError={showError}
+                    dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
+                    allowedMimeTypes={['image/jpeg']}
+                    initialFile={calculationInfo.calculationImage}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={3}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="articleButtonText"
-                  label="Regelgeving knop tekst"
-                  name="articleButtonText"
-                />
-              </Grid>
-              <Grid item xs={12} sm={1}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="listIndex"
-                  label="Lijst index"
-                  name="listIndex"
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Select
-                  name="articleType"
-                  label="Verwijzing artikel"
-                  showError={showError}
-                  options={{
-                    regulations: 'Regelgeving',
-                    instructionManual: 'Handboek',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="artieChapter"
-                  label="Hoofdstuk"
-                  name="articleChapter"
-                  formik={formikRef}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  showError={showError}
-                  multiline
-                  rows={3}
-                  rowsMax={8}
-                  required
-                  id="explanation"
-                  label="Toelichting"
-                  name="explanation"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FileDropZoneArea
-                  enableHtmlPreview={false}
-                  name="iconFile"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                  allowedMimeTypes={['image/svg+xml']}
-                  initialFile={calculationInfo.iconFile}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FileDropZoneArea
-                  enableHtmlPreview={false}
-                  name="calculationImage"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
-                  allowedMimeTypes={['image/jpeg']}
-                  initialFile={calculationInfo.calculationImage}
-                />
+              <Grid container item sm={6} spacing={0}>
+                <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
+                  <ArticleEditor
+                    showError={showError}
+                    formik={formikRef}
+                    initialFile={calculationInfo.htmlFile}
+                  />
+                </Grid>
               </Grid>
             </Grid>
             <div className={classes.submit}>

@@ -69,6 +69,17 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
     chapter: Yup.string()
       .required('Hoofdstuk is een verplicht veld.')
       .test(
+        'title',
+        'De titel mag geen spaties of slash (/) bevatten.',
+        async (title) => {
+          if (title === undefined) {
+            return true;
+          }
+          const includeInvalidChar = title.includes(' ') || title.includes('/');
+          return !includeInvalidChar;
+        }
+      )
+      .test(
         'chapter',
         'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
         async (chapter) => {
@@ -83,6 +94,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
     subTitle: Yup.string(),
     pageIndex: Yup.number()
       .integer()
+      .positive()
       .required('Pagina index is een verplicht veld.')
       .test(
         'pageIndex',

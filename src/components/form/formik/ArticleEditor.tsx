@@ -68,7 +68,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
             value={content ?? ''}
             // @ts-ignore
             config={config}
-            onChange={(newContent) => updateFileHandler(newContent)}
+            onBlur={(newContent) => updateFileHandler(newContent)}
           />
           <FileDropzoneArea
             allowedExtension=".html"
