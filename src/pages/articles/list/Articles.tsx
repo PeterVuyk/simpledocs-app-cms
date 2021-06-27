@@ -12,11 +12,9 @@ import DownloadArticlesIconsMenuItem from '../batch/DownloadArticlesIconsMenuIte
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import {
-  ARTICLE_TYPE_REGULATIONS,
-  ArticleType,
-} from '../../../model/ArticleType';
+import { ArticleType } from '../../../model/ArticleType';
 import { Article } from '../../../model/Article';
+import articleTypeHelper from '../../../helper/articleTypeHelper';
 
 const useStyles = makeStyles({
   table: {
@@ -59,22 +57,18 @@ const Articles: FC<Props> = ({ articleType }) => {
       .then((result) => setArticles(result));
   }, [articleType, editStatus]);
 
-  const getTitle = () =>
-    articleType === ARTICLE_TYPE_REGULATIONS ? 'Regelgeving' : 'Handboek';
-
   const getAddArticlePath = () => {
     return {
-      pathname:
-        articleType === ARTICLE_TYPE_REGULATIONS
-          ? '/article/regulations/add'
-          : '/article/instruction-manual/add',
+      pathname: `/article/${articleTypeHelper.articleTypeToDashedPath(
+        articleType
+      )}/add`,
       articleType,
     };
   };
 
   return (
     <>
-      <PageHeading title={getTitle()}>
+      <PageHeading title={articleTypeHelper.getTitleByArticleType(articleType)}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}

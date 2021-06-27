@@ -9,10 +9,9 @@ import Header from '../../components/header/Header';
 import DecisionTree from '../decisionTree/DecisionTree';
 import Calculations from '../calculations/Calculations';
 import Articles from '../articles/list/Articles';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_REGULATIONS,
-} from '../../model/ArticleType';
+import { AT_INSTRUCTION_MANUAL } from '../../model/ArticleType';
+import RegulationNavigationMenu from './RegulationNavigationMenu';
+import articleTypeHelper from '../../helper/articleTypeHelper';
 
 interface Props {
   children: ReactNode;
@@ -20,6 +19,9 @@ interface Props {
 }
 
 const Navigation: FC<Props> = ({ children, gridWidth }) => {
+  const [regulationsMenu, setRegulationsMenu] = useState<null | HTMLElement>(
+    null
+  );
   const match = useRouteMatch<{ page: string }>();
   const history = useHistory();
 
@@ -27,8 +29,8 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
   const { page } = params;
 
   const getIndexToTabName = {
-    regulations: 0,
-    instructionManual: 1,
+    instructionManual: 0,
+    regulations: 1,
     decisionTree: 2,
     calculations: 3,
     publications: 4,
@@ -40,10 +42,15 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
   );
 
   useEffect(() => {
-    if (page === 'regulations') {
+    if (page === 'instruction-manual') {
       setSelectedTab(0);
     }
-    if (page === 'instruction-manual') {
+    if (
+      page === 'rvv-1990' ||
+      page === 'brancherichtlijn-medische-hulpverlening' ||
+      page === 'regeling-ogs-2009' ||
+      page === 'ontheffing-goede-taakuitoefening'
+    ) {
       setSelectedTab(1);
     }
     if (page === 'decision-tree') {
@@ -59,10 +66,10 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
 
   const handleChange = (event: any, newValue: number) => {
     if (newValue === 0) {
-      history.push('/regulations');
+      history.push('/article/instruction-manual');
     }
     if (newValue === 1) {
-      history.push('/instruction-manual');
+      setRegulationsMenu(event.currentTarget);
     }
     if (newValue === 2) {
       history.push('/decision-tree');
@@ -82,10 +89,12 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
         <Grid item sm={12} lg={8}>
           <CssBaseline />
           {selectedTab === 0 && (
-            <Articles articleType={ARTICLE_TYPE_REGULATIONS} />
+            <Articles articleType={AT_INSTRUCTION_MANUAL} />
           )}
-          {selectedTab === 1 && (
-            <Articles articleType={ARTICLE_TYPE_INSTRUCTION_MANUAL} />
+          {selectedTab === 1 && page !== '' && (
+            <Articles
+              articleType={articleTypeHelper.dashedPathToArticleType(page)}
+            />
           )}
           {selectedTab === 2 && <DecisionTree />}
           {selectedTab === 3 && <Calculations />}
@@ -120,12 +129,16 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
               value={selectedTab ?? false}
               onChange={handleChange}
             >
-              <Tab label="Regelgeving" />
               <Tab label="Handboek" />
+              <Tab label="Regelgeving" />
               <Tab label="Beslisboom" />
               <Tab label="Berekeningen" />
               <Tab label="Publiceren" />
             </Tabs>
+            <RegulationNavigationMenu
+              regulationsMenu={regulationsMenu}
+              setRegulationsMenu={setRegulationsMenu}
+            />
           </Header>
         </Grid>
         {gridWidth === 'default' && defaultGridWidth()}

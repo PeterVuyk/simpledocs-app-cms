@@ -36,7 +36,7 @@ const Publications: FC = () => {
 
   return (
     <>
-      <PageHeading title="Publicatie beheer" />
+      <PageHeading title="Publiceren" />
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

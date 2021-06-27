@@ -16,12 +16,10 @@ import HtmlPreview from '../../../components/dialog/HtmlPreview';
 import fileHelper from '../../../helper/fileHelper';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import {
-  ARTICLE_TYPE_REGULATIONS,
-  ArticleType,
-} from '../../../model/ArticleType';
+import { ArticleType } from '../../../model/ArticleType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
+import articleTypeHelper from '../../../helper/articleTypeHelper';
 
 const useStyles = makeStyles({
   icon: {
@@ -125,9 +123,9 @@ const ArticleListItem: FC<Props> = ({
   };
 
   const getEditUrl = () =>
-    articleType === ARTICLE_TYPE_REGULATIONS
-      ? `/article/regulations/${article.id}`
-      : `/article/instruction-manual/${article.id}`;
+    `/article/${articleTypeHelper.articleTypeToDashedPath(articleType)}/${
+      article.id
+    }`;
 
   return (
     <>

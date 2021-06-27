@@ -9,13 +9,10 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import Navigation from '../navigation/Navigation';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_REGULATIONS,
-  ArticleType,
-} from '../../model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import articleTypeHelper from '../../helper/articleTypeHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -27,9 +24,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
   const articleType: ArticleType =
-    aggregatePath === ARTICLE_TYPE_REGULATIONS
-      ? ARTICLE_TYPE_REGULATIONS
-      : ARTICLE_TYPE_INSTRUCTION_MANUAL;
+    articleTypeHelper.dashedPathToArticleType(aggregatePath);
 
   useEffect(() => {
     articleRepository
@@ -51,7 +46,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push(`/${aggregatePath}`))
+      .then(() => history.push(`/article/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',

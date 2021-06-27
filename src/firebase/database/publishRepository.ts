@@ -1,7 +1,10 @@
 import { database } from '../firebaseConnection';
 import {
   AGGREGATE_INSTRUCTION_MANUAL,
-  AGGREGATE_REGULATIONS,
+  AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
+  AGGREGATE_REGULATION_OGS_2009,
+  AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING,
+  AGGREGATE_REGULATION_RVV_1990,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
 
@@ -58,7 +61,12 @@ async function updateVersion(
   newVersion: string
 ): Promise<void> {
   if (
-    versioning.aggregate === AGGREGATE_REGULATIONS ||
+    versioning.aggregate ===
+      AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING ||
+    versioning.aggregate ===
+      AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING ||
+    versioning.aggregate === AGGREGATE_REGULATION_OGS_2009 ||
+    versioning.aggregate === AGGREGATE_REGULATION_RVV_1990 ||
     versioning.aggregate === AGGREGATE_INSTRUCTION_MANUAL
   ) {
     await publishUpdatedArticles(versioning, newVersion);

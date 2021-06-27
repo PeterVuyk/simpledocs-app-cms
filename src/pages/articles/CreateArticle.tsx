@@ -9,12 +9,9 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import {
-  ARTICLE_TYPE_INSTRUCTION_MANUAL,
-  ARTICLE_TYPE_REGULATIONS,
-  ArticleType,
-} from '../../model/ArticleType';
+import { ArticleType } from '../../model/ArticleType';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import articleTypeHelper from '../../helper/articleTypeHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -25,9 +22,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
 
   const articleType: ArticleType =
-    aggregatePath === ARTICLE_TYPE_REGULATIONS
-      ? ARTICLE_TYPE_REGULATIONS
-      : ARTICLE_TYPE_INSTRUCTION_MANUAL;
+    articleTypeHelper.dashedPathToArticleType(aggregatePath);
 
   const handleSubmit = (values: FormikValues): void => {
     articleRepository
@@ -42,7 +37,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push(`/${aggregatePath}`))
+      .then(() => history.push(`/article/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',
