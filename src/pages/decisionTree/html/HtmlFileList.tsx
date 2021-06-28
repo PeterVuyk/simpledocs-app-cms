@@ -10,9 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import HtmlPreview from '../../components/dialog/HtmlPreview';
-import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
-import { DecisionTreeHtmlFile } from '../../model/DecisionTreeHtmlFile';
+import HtmlPreview from '../../../components/dialog/HtmlPreview';
+import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
+import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
 
 const useStyles = makeStyles({
   table: {

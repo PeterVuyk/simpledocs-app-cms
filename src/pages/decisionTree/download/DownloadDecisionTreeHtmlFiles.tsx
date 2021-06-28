@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
+import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
 
 const DownloadDecisionTreeHtmlFiles: FC = () => {
   const handleExportHTMLFiles = (): void => {

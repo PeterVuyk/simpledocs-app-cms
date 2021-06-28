@@ -13,10 +13,8 @@ const validateRootQuestion = (
   if (rootQuestion.lineLabel) {
     errorMessages.push('- De lineLabel van de eerste vraag moet leeg blijven.');
   }
-  if (rootQuestion.articleChapter) {
-    errorMessages.push(
-      '- De articleChapter van de eerste vraag moet leeg blijven.'
-    );
+  if (rootQuestion.htmlFileId) {
+    errorMessages.push('- htmlFileId van de eerste vraag moet leeg blijven.');
   }
   return errorMessages;
 };
@@ -85,32 +83,29 @@ const ValidateLeafNodes = (
   return errorMessages;
 };
 
-const validateOnlyLastLeafHasArticleLink = (
+const validateOnlyLastLeafHasHtmlFileId = (
   steps: DecisionTreeStep[],
   errorMessages: string[]
 ): string[] => {
   const parentIds = steps.map((step) => step.parentId);
   const finalStepIds = steps
     .filter((step) => {
-      return step.articleChapter !== null || step.articleType !== null;
+      return step.htmlFileId !== null;
     })
     .map((step) => step.id);
 
   if (!finalStepIds.every((id) => !parentIds.includes(id))) {
     errorMessages.push(
-      '- Alleen de laatste en niet de tussenliggende antwoorden/vragen mag een verwijzing naar de documentatie hebben.'
+      '- Alleen de laatste en niet de tussenliggende antwoorden/vragen mag een htmlFileId hebben.'
     );
   }
 
-  const finalAnswersHasArticleChapter = steps
+  const finalAnswersHasHtmlFileId = steps
     .filter((step) => !parentIds.includes(step.id))
-    .every((step) => step.articleChapter !== null);
-  const finalAnswersHasArticleType = steps
-    .filter((step) => !parentIds.includes(step.id))
-    .every((step) => step.articleType !== null);
-  if (!finalAnswersHasArticleChapter || !finalAnswersHasArticleType) {
+    .every((step) => step.htmlFileId !== null);
+  if (!finalAnswersHasHtmlFileId) {
     errorMessages.push(
-      '- Het laatste antwoord is verplicht om een verwijzing naar de documentatie te maken (articleChapter en articleType), deze ontbreek bij 1 of meerdere.'
+      '- Het laatste antwoord is verplicht om een htmlFileId te hebben, deze ontbreek bij 1 of meerdere.'
     );
   }
   return errorMessages;
@@ -131,7 +126,7 @@ const validate = (steps: DecisionTreeStep[]) => {
   errorMessages = validateRootQuestion(rootQuestion, errorMessages);
   errorMessages = ValidateNodes(steps, errorMessages);
   errorMessages = ValidateLeafNodes(steps, errorMessages);
-  errorMessages = validateOnlyLastLeafHasArticleLink(steps, errorMessages);
+  errorMessages = validateOnlyLastLeafHasHtmlFileId(steps, errorMessages);
 
   return errorMessages.length === 0
     ? ''

@@ -3,7 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import DownloadDecisionTreeHtmlFiles from './DownloadDecisionTreeHtmlFiles';
 
 interface Props {
@@ -28,8 +28,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
         'label',
         'parentId',
         'lineLabel',
-        'articleType',
-        'articleChapter',
+        'htmlFileId',
         'internalNote',
       ],
       data: steps,

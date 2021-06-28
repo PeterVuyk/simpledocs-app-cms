@@ -4,10 +4,10 @@ import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
-import TextField from '../../components/form/formik/TextField';
-import SubmitButton from '../../components/form/formik/SubmitButton';
-import ArticleEditor from '../../components/form/formik/ArticleEditor';
-import { DecisionTreeHtmlFile } from '../../model/DecisionTreeHtmlFile';
+import TextField from '../../../components/form/formik/TextField';
+import SubmitButton from '../../../components/form/formik/SubmitButton';
+import ArticleEditor from '../../../components/form/formik/ArticleEditor';
+import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
 
 const useStyles = makeStyles((theme) => ({
   submit: {

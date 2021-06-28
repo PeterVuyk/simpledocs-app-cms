@@ -3,14 +3,14 @@ import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { FormikValues } from 'formik';
-import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
-import { DecisionTreeHtmlFile } from '../../model/DecisionTreeHtmlFile';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import Navigation from '../navigation/Navigation';
-import PageHeading from '../../layout/PageHeading';
-import notification from '../../redux/actions/notification';
+import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
+import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
+import { NotificationOptions } from '../../../model/NotificationOptions';
+import Navigation from '../../navigation/Navigation';
+import PageHeading from '../../../layout/PageHeading';
+import notification from '../../../redux/actions/notification';
 import HtmlPageForm from './HtmlPageForm';
-import logger from '../../helper/logger';
+import logger from '../../../helper/logger';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;

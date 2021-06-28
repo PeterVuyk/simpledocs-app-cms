@@ -1,5 +1,3 @@
-import { ArticleType } from './ArticleType';
-
 export interface DecisionTreeStep {
   title: string;
   iconFile?: string;
@@ -7,7 +5,6 @@ export interface DecisionTreeStep {
   label: string;
   parentId?: number;
   lineLabel?: string;
-  articleType?: ArticleType;
-  articleChapter?: string;
+  htmlFileId?: string;
   internalNote?: string;
 }

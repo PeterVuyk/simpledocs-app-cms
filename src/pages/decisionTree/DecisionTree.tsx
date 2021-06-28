@@ -15,12 +15,12 @@ import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
-import articleRepository from '../../firebase/database/articleRepository';
-import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import HtmlFileList from './HtmlFileList';
+import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
+import DownloadDecisionTreeMenu from './download/DownloadDecisionTreeMenu';
+import HtmlFileList from './html/HtmlFileList';
 
 const useStyles = makeStyles({
   table: {
@@ -59,20 +59,12 @@ const DecisionTree: FC = () => {
   const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
 
   useEffect(() => {
-    if (
-      showHtmlPreview === null ||
-      showHtmlPreview?.articleChapter === undefined ||
-      showHtmlPreview?.articleType === undefined
-    ) {
+    if (showHtmlPreview === null || showHtmlPreview?.htmlFileId === undefined) {
       return;
     }
-    articleRepository
-      .getArticlesByField(
-        showHtmlPreview.articleType,
-        'chapter',
-        showHtmlPreview.articleChapter.toString()
-      )
-      .then((result) => setHtmlFile(result.shift()?.htmlFile ?? null));
+    decisionTreeHtmlFilesRepository
+      .getHtmlFileById(showHtmlPreview.htmlFileId)
+      .then((result) => setHtmlFile(result.htmlFile));
   }, [showHtmlPreview]);
 
   const loadDecisionTreeHandle = (): void => {
@@ -170,14 +162,9 @@ const DecisionTree: FC = () => {
                 lineLabel
               </TableCell>
               <TableCell>
-                <strong>Verwijzing artikel</strong>
+                <strong>HTML bestand ID</strong>
                 <br />
-                articleType (regulations / instructionManual)
-              </TableCell>
-              <TableCell>
-                <strong>Verwijzing hoofdstuk</strong>
-                <br />
-                articleChapter
+                htmlFileId
               </TableCell>
               <TableCell>
                 <strong>Interne notitie</strong>
@@ -192,17 +179,20 @@ const DecisionTree: FC = () => {
                 <TableCell component="th" scope="row">
                   {row.title}&nbsp;
                   {row.iconFile && (
-                    <img style={{ width: 30 }} src={`${row.iconFile}`} />
+                    <img
+                      style={{ width: 30 }}
+                      src={`${row.iconFile}`}
+                      alt={row.title}
+                    />
                   )}
                 </TableCell>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.label}</TableCell>
                 <TableCell>{row.parentId}</TableCell>
                 <TableCell>{row.lineLabel}</TableCell>
-                <TableCell>{row.articleType}</TableCell>
                 <TableCell>
-                  {row.articleChapter}&nbsp;
-                  {row.articleChapter && (
+                  {row.htmlFileId}&nbsp;
+                  {row.htmlFileId && (
                     <FindInPageTwoToneIcon
                       color="primary"
                       style={{ cursor: 'pointer', marginBottom: -5 }}
@@ -211,8 +201,7 @@ const DecisionTree: FC = () => {
                   )}
                   {showHtmlPreview &&
                     htmlFile &&
-                    showHtmlPreview.title === row.title &&
-                    showHtmlPreview.articleChapter === row.articleChapter && (
+                    showHtmlPreview.htmlFileId === row.htmlFileId && (
                       <HtmlPreview
                         showHtmlPreview={htmlFile}
                         closeHtmlPreviewHandle={closeHtmlPreviewHandle}
