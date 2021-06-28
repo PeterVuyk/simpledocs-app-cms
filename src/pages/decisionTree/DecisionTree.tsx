@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
@@ -19,6 +20,7 @@ import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import HtmlFileList from './HtmlFileList';
 
 const useStyles = makeStyles({
   table: {
@@ -44,6 +46,7 @@ const DecisionTree: FC = () => {
     useState<null | HTMLElement>(null);
   const [deleteMenuElement, setDeleteMenuElement] =
     useState<null | HTMLElement>(null);
+  const history = useHistory();
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDownloadMenuElement(event.currentTarget);
@@ -104,6 +107,14 @@ const DecisionTree: FC = () => {
             <GetAppIcon color="action" />
           </Button>
         )}
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/decision-tree/html/add`)}
+        >
+          HTML bestand uploaden
+        </Button>
         <Button
           className={classes.button}
           variant="contained"
@@ -214,6 +225,7 @@ const DecisionTree: FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <HtmlFileList />
     </>
   );
 };

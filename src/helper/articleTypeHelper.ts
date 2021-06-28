@@ -29,7 +29,7 @@ const dashedPathToArticleType = (path: string): ArticleType => {
       return AT_INSTRUCTION_MANUAL;
     case 'regeling-ogs-2009':
       return AT_REGULATIONS_REGELING_OGS_2009;
-    case 'ontheffing-goede-taak-uitoefening':
+    case 'ontheffing-goede-taakuitoefening':
       return AT_REGULATIONS_ONTHEFFING_GOEDE_TAAKUITVOERING;
     case 'brancherichtlijn-medische-hulpverlening':
       return AT_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING;
@@ -44,7 +44,7 @@ const articleTypeToDashedPath = (articleType: ArticleType): string => {
     case AT_REGULATIONS_REGELING_OGS_2009:
       return 'regeling-ogs-2009';
     case AT_REGULATIONS_ONTHEFFING_GOEDE_TAAKUITVOERING:
-      return 'ontheffing-goede-taak-uitoefening';
+      return 'ontheffing-goede-taakuitoefening';
     case AT_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING:
       return 'brancherichtlijn-medische-hulpverlening';
     case AT_REGULATIONS_RVV_1990:

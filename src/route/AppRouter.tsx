@@ -16,6 +16,7 @@ import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
 import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance';
 import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
+import DecisionTreeHtmlFileEditor from '../pages/decisionTree/DecisionTreeHtmlFileEditor';
 
 const AppRouter: FC = () => {
   return (
@@ -66,8 +67,13 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/:regulations/:aggregatePath/:articleId"
-            Component={EditArticle}
+            path="/decision-tree/html/add"
+            Component={DecisionTreeHtmlFileEditor}
+          />
+          <PrivateRoute
+            exact
+            path="/decision-tree/html/:htmlFileId"
+            Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute
             exact

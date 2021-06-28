@@ -63,7 +63,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
           notificationType: 'error',
           notificationOpen: true,
           notificationMessage:
-            'Het wijzigen van het artikel is mislukt, foutmelding: Neem contact op met de beheerder.',
+            'Het wijzigen van het artikel is mislukt, neem contact op met de beheerder.',
         });
       });
   };
