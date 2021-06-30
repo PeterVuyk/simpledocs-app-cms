@@ -79,6 +79,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
         .map((step) => {
           const result = step as DecisionTreeStep;
           result.title = title;
+          result.isDraft = true;
           return result;
         })
     );

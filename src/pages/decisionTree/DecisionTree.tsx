@@ -1,47 +1,33 @@
 import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
-import HtmlPreview from '../../components/dialog/HtmlPreview';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import UploadDecisionTreeDialog from './UploadDecisionTreeDialog';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
 import DownloadDecisionTreeMenu from './download/DownloadDecisionTreeMenu';
 import HtmlFileList from './html/HtmlFileList';
+import DecisionTreeStepsList from './DecisionTreeStepsList';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import EditStatusToggle from '../../components/form/EditStatusToggle';
 
 const useStyles = makeStyles({
-  table: {
-    width: '100%',
-  },
   button: {
     marginLeft: 8,
-  },
-  head: {
-    backgroundColor: '#ddd',
   },
 });
 
 const DecisionTree: FC = () => {
   const classes = useStyles();
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
-    DecisionTreeStep[]
-  >([]);
+    DecisionTreeStep[] | null
+  >();
   const [openUploadDialog, setOpenUploadDialog] = useState<boolean>(false);
-  const [showHtmlPreview, setShowHtmlPreview] = useState<DecisionTreeStep>();
-  const [htmlFile, setHtmlFile] = useState<string | null>();
+  const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
   const [downloadMenuElement, setDownloadMenuElement] =
     useState<null | HTMLElement>(null);
   const [deleteMenuElement, setDeleteMenuElement] =
@@ -56,48 +42,63 @@ const DecisionTree: FC = () => {
     setDeleteMenuElement(event.currentTarget);
   };
 
-  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
-
-  useEffect(() => {
-    if (showHtmlPreview === null || showHtmlPreview?.htmlFileId === undefined) {
-      return;
-    }
-    decisionTreeHtmlFilesRepository
-      .getHtmlFileById(showHtmlPreview.htmlFileId)
-      .then((result) => setHtmlFile(result.htmlFile));
-  }, [showHtmlPreview]);
-
   const loadDecisionTreeHandle = (): void => {
     decisionTreeRepository
-      .getDecisionTreeSteps()
+      .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
       .then((steps) => setDecisionTreeSteps(steps));
   };
 
   useEffect(() => {
-    loadDecisionTreeHandle();
-  }, []);
+    decisionTreeRepository
+      .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
+      .then((steps) => setDecisionTreeSteps(steps));
+  }, [editStatus]);
+
+  const hasDecisionTreeSteps = (steps: DecisionTreeStep[]): boolean => {
+    return (
+      steps.filter(
+        (step) => step.isDraft === (editStatus === EDIT_STATUS_DRAFT)
+      ).length > 0
+    );
+  };
 
   return (
     <>
       <PageHeading title="Beslisboom">
-        {decisionTreeSteps.length !== 0 && (
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="secondary"
-            onClick={openDeleteMenu}
-          >
-            <DeleteTwoToneIcon />
-          </Button>
-        )}
-        {decisionTreeSteps.length !== 0 && (
-          <Button
-            className={classes.button}
-            variant="contained"
-            onClick={openDownloadMenu}
-          >
-            <GetAppIcon color="action" />
-          </Button>
+        <EditStatusToggle
+          editStatus={editStatus}
+          setEditStatus={setEditStatus}
+        />
+        {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
+          <>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="secondary"
+              onClick={openDeleteMenu}
+            >
+              <DeleteTwoToneIcon />
+            </Button>
+            <Button
+              className={classes.button}
+              variant="contained"
+              onClick={openDownloadMenu}
+            >
+              <GetAppIcon color="action" />
+            </Button>
+            <DownloadDecisionTreeMenu
+              decisionTreeSteps={decisionTreeSteps}
+              downloadMenuElement={downloadMenuElement}
+              setDownloadMenuElement={setDownloadMenuElement}
+            />
+            <RemoveDecisionTreeMenu
+              editStatus={editStatus}
+              removeMenuElement={deleteMenuElement}
+              setRemoveMenuElement={setDeleteMenuElement}
+              decisionTreeSteps={decisionTreeSteps}
+              onSubmitAction={loadDecisionTreeHandle}
+            />
+          </>
         )}
         <Button
           className={classes.button}
@@ -122,99 +123,14 @@ const DecisionTree: FC = () => {
             loadDecisionTreeHandle={loadDecisionTreeHandle}
           />
         )}
-        <DownloadDecisionTreeMenu
-          decisionTreeSteps={decisionTreeSteps}
-          downloadMenuElement={downloadMenuElement}
-          setDownloadMenuElement={setDownloadMenuElement}
-        />
-        <RemoveDecisionTreeMenu
-          removeMenuElement={deleteMenuElement}
-          setRemoveMenuElement={setDeleteMenuElement}
-          decisionTreeSteps={decisionTreeSteps}
-          onSubmitAction={loadDecisionTreeHandle}
-        />
       </PageHeading>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow className={classes.head}>
-              <TableCell>
-                <strong>Titel</strong>
-              </TableCell>
-              <TableCell>
-                <strong>ID</strong>
-                <br />
-                id
-              </TableCell>
-              <TableCell>
-                <strong>Label</strong>
-                <br />
-                label
-              </TableCell>
-              <TableCell style={{ whiteSpace: 'nowrap' }}>
-                <strong>Parent ID</strong>
-                <br />
-                parentId
-              </TableCell>
-              <TableCell>
-                <strong>Antwoord</strong>
-                <br />
-                lineLabel
-              </TableCell>
-              <TableCell>
-                <strong>HTML bestand ID</strong>
-                <br />
-                htmlFileId
-              </TableCell>
-              <TableCell>
-                <strong>Interne notitie</strong>
-                <br />
-                internalNote
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {decisionTreeSteps.map((row) => (
-              <TableRow hover key={row.id + row.title}>
-                <TableCell component="th" scope="row">
-                  {row.title}&nbsp;
-                  {row.iconFile && (
-                    <img
-                      style={{ width: 30 }}
-                      src={`${row.iconFile}`}
-                      alt={row.title}
-                    />
-                  )}
-                </TableCell>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.label}</TableCell>
-                <TableCell>{row.parentId}</TableCell>
-                <TableCell>{row.lineLabel}</TableCell>
-                <TableCell>
-                  {row.htmlFileId}&nbsp;
-                  {row.htmlFileId && (
-                    <FindInPageTwoToneIcon
-                      color="primary"
-                      style={{ cursor: 'pointer', marginBottom: -5 }}
-                      onClick={() => setShowHtmlPreview(row)}
-                    />
-                  )}
-                  {showHtmlPreview &&
-                    htmlFile &&
-                    showHtmlPreview.htmlFileId === row.htmlFileId && (
-                      <HtmlPreview
-                        showHtmlPreview={htmlFile}
-                        closeHtmlPreviewHandle={closeHtmlPreviewHandle}
-                      />
-                    )}
-                </TableCell>
-                <TableCell>{row.internalNote}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <HtmlFileList />
+      {decisionTreeSteps && (
+        <DecisionTreeStepsList
+          editStatus={editStatus}
+          decisionTreeSteps={decisionTreeSteps}
+        />
+      )}
+      {editStatus === EDIT_STATUS_DRAFT && <HtmlFileList />}
     </>
   );
 };

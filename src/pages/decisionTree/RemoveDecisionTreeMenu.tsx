@@ -8,8 +8,10 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 
 interface Props {
+  editStatus: EditStatus;
   removeMenuElement: null | HTMLElement;
   setRemoveMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const RemoveDecisionTreeMenu: FC<Props> = ({
+  editStatus,
   removeMenuElement,
   setRemoveMenuElement,
   setNotification,
@@ -29,14 +32,29 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   };
   const [openDialog, setOpenDialog] = useState<string>('');
 
+  const getDialogTitle =
+    editStatus === EDIT_STATUS_DRAFT
+      ? 'Weet je zeker dat je deze beslisboom wilt verwijderen?'
+      : 'Weet je zeker dat je deze beslisboom wilt markeren voor verwijdering?';
+
+  const notificationFailureMessage =
+    editStatus === EDIT_STATUS_DRAFT
+      ? `Het verwijderen van de beslisboom is mislukt`
+      : `Het markeren voor verwijdering is mislukt`;
+
+  const notificationSuccessMessage =
+    editStatus === EDIT_STATUS_DRAFT
+      ? `Het verwijderen van de beslisboom is gelukt`
+      : `Het markeren voor verwijdering is gelukt`;
+
   const handleDeleteDecisionTree = (title: string): void => {
     decisionTreeRepository
-      .deleteByTitle(title)
+      .deleteByTitle(title, editStatus)
       .then(() =>
         setNotification({
           notificationOpen: true,
           notificationType: 'success',
-          notificationMessage: `Beslisboom ${title} is verwijderd`,
+          notificationMessage: notificationSuccessMessage,
         })
       )
       .then(onSubmitAction)
@@ -47,13 +65,19 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
         setNotification({
           notificationOpen: true,
           notificationType: 'error',
-          notificationMessage: `Het verwijderen van beslisboom ${title} is mislukt`,
+          notificationMessage: notificationFailureMessage,
         });
       });
   };
 
   const getTitles = (): string[] => {
-    return [...new Set(decisionTreeSteps.map((step) => step.title))];
+    return [
+      ...new Set(
+        decisionTreeSteps
+          .filter((step) => step.isDraft)
+          .map((step) => step.title)
+      ),
+    ];
   };
 
   const getConfirmationDialogText = (title: string): string => {
@@ -80,7 +104,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
           openDialog={openDialog}
           dialogText={getConfirmationDialogText(openDialog)}
           setOpenDialog={setOpenDialog}
-          dialogTitle="Weet je zeker dat je deze beslisboom wilt verwijderen?"
+          dialogTitle={getDialogTitle}
           onSubmit={handleDeleteDecisionTree}
           onClose={handleClose}
         />

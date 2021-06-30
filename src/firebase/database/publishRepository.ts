@@ -1,5 +1,6 @@
 import { database } from '../firebaseConnection';
 import {
+  AGGREGATE_DECISION_TREE,
   AGGREGATE_INSTRUCTION_MANUAL,
   AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
   AGGREGATE_REGULATION_OGS_2009,
@@ -7,6 +8,8 @@ import {
   AGGREGATE_REGULATION_RVV_1990,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
+import decisionTreeHtmlFilesRepository from './decisionTreeHtmlFilesRepository';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -17,6 +20,94 @@ async function getVersions(): Promise<Versioning[]> {
   return Object.entries(versioning.data()).map(([key, value]) => {
     return { aggregate: key, version: value } as Versioning;
   });
+}
+
+async function publishDecisionTree(
+  versioning: Versioning,
+  newVersion: string
+): Promise<void> {
+  const batch = database.batch();
+
+  // 1: Update version
+  const DocumentSnapshotAggregate = await database
+    .collection('versioning')
+    .doc('aggregate')
+    .get();
+  batch.update(DocumentSnapshotAggregate.ref, {
+    [versioning.aggregate]: newVersion,
+  });
+
+  // 2: Remove markedForDeletion steps
+  const querySnapshot = await database.collection(versioning.aggregate).get();
+  querySnapshot.forEach((documentSnapshot) => {
+    if ((documentSnapshot.data() as DecisionTreeStep).markedForDeletion)
+      batch.delete(documentSnapshot.ref);
+  });
+
+  // 3: Remove published decision tree with updated decision tree
+  // A: Get all decisionTreeSteps:
+  const decisionTreeSteps = querySnapshot.docs.map(
+    (queryDocumentSnapshot) => queryDocumentSnapshot.data() as DecisionTreeStep
+  );
+  // B: Get all unique titles (draft en published)
+  const draftTitles = new Set(
+    decisionTreeSteps.filter((step) => step.isDraft).map((step) => step.title)
+  );
+  const publishedTitles = new Set(
+    decisionTreeSteps.filter((step) => !step.isDraft).map((step) => step.title)
+  );
+
+  const updatedTitles: string[] = [];
+  draftTitles.forEach((draftTitle) => {
+    if (publishedTitles.has(draftTitle)) {
+      updatedTitles.push(draftTitle);
+    }
+  });
+
+  // C: Als title beide published en draft is? Dan alle steps published verwijderen
+  if (updatedTitles.length !== 0) {
+    const querySnapshotUpdatedTitles = await database
+      .collection(AGGREGATE_DECISION_TREE)
+      .where('isDraft', '==', false)
+      .where('title', 'in', updatedTitles)
+      .get();
+    querySnapshotUpdatedTitles.forEach((documentSnapshot) => {
+      batch.delete(documentSnapshot.ref);
+    });
+  }
+
+  // 4: Replace htmlFileId reference with htmlFile
+  const querySnapshotWithHtmlFileIdReference = await database
+    .collection(versioning.aggregate)
+    .where('isDraft', '==', true)
+    .get();
+
+  querySnapshotWithHtmlFileIdReference.forEach((documentSnapshot) => {
+    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
+    if (!decisionTreeStep.htmlFileId) {
+      return;
+    }
+    batch.update(documentSnapshot.ref, { htmlFileId: null });
+    decisionTreeHtmlFilesRepository
+      .getHtmlFileById(decisionTreeStep.htmlFileId)
+      .then((value) => {
+        batch.update(documentSnapshot.ref, {
+          htmlFile: value.htmlFile,
+        });
+      });
+  });
+
+  // 5: Update draft true to false
+  const querySnapshotToBePublished = await database
+    .collection(versioning.aggregate)
+    .where('isDraft', '==', true)
+    .get();
+
+  querySnapshotToBePublished.forEach((documentSnapshot) => {
+    batch.update(documentSnapshot.ref, { isDraft: false });
+  });
+
+  return batch.commit();
 }
 
 async function publishUpdatedArticles(
@@ -60,6 +151,10 @@ async function updateVersion(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
+  if (versioning.aggregate === AGGREGATE_DECISION_TREE) {
+    await publishDecisionTree(versioning, newVersion);
+    return;
+  }
   if (
     versioning.aggregate ===
       AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING ||

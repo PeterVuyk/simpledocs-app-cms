@@ -1,6 +1,11 @@
 import { database } from '../firebaseConnection';
 import { AGGREGATE_DECISION_TREE } from '../../model/Aggregate';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import {
+  EDIT_STATUS_DRAFT,
+  EDIT_STATUS_PUBLISHED,
+  EditStatus,
+} from '../../model/EditStatus';
 
 async function createDecisionTreeSteps(
   decisionTreeSteps: DecisionTreeStep[]
@@ -11,15 +16,21 @@ async function createDecisionTreeSteps(
   );
 }
 
-async function getDecisionTreeSteps(): Promise<DecisionTreeStep[]> {
+async function getDecisionTreeSteps(
+  draftArticles: boolean
+): Promise<DecisionTreeStep[]> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
     .orderBy('title', 'desc')
     .orderBy('id', 'asc')
     .get();
-  return querySnapshot.docs.map((doc) => {
+  const steps = querySnapshot.docs.map((doc) => {
     return doc.data() as DecisionTreeStep;
   });
+  if (draftArticles) {
+    return steps.filter((step) => step.isDraft || step.markedForDeletion);
+  }
+  return steps.filter((step) => !step.isDraft);
 }
 
 async function updateDecisionTreeSteps(
@@ -27,6 +38,7 @@ async function updateDecisionTreeSteps(
 ): Promise<void> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
+    .where('isDraft', '==', true)
     .where('title', '==', decisionTreeSteps[0].title)
     .get();
   createDecisionTreeSteps(decisionTreeSteps).then(() => {
@@ -38,7 +50,10 @@ async function updateDecisionTreeSteps(
   });
 }
 
-async function deleteByTitle(title: string): Promise<void> {
+async function deleteByTitle(
+  title: string,
+  editStatus: EditStatus
+): Promise<void> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
     .where('title', '==', title)
@@ -46,7 +61,13 @@ async function deleteByTitle(title: string): Promise<void> {
 
   const batch = database.batch();
   querySnapshot.forEach((documentSnapshot) => {
-    batch.delete(documentSnapshot.ref);
+    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
+    if (editStatus === EDIT_STATUS_DRAFT && decisionTreeStep.isDraft) {
+      batch.delete(documentSnapshot.ref);
+    }
+    if (editStatus === EDIT_STATUS_PUBLISHED && !decisionTreeStep.isDraft) {
+      batch.update(documentSnapshot.ref, { markedForDeletion: true });
+    }
   });
   return batch.commit();
 }

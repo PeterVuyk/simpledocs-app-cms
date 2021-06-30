@@ -75,7 +75,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
           {step.title}.svg
         </MenuItem>
       ))}
-      <DownloadDecisionTreeHtmlFiles />
+      <DownloadDecisionTreeHtmlFiles decisionTreeSteps={decisionTreeSteps} />
     </Menu>
   );
 };
