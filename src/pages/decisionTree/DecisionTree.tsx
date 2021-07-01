@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { useHistory } from 'react-router-dom';
+import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
@@ -14,6 +15,7 @@ import HtmlFileList from './html/HtmlFileList';
 import DecisionTreeStepsList from './DecisionTreeStepsList';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
+import UndoMarkForDeletionDecisionTreeMenu from './UndoMarkForDeletionDecisionTreeMenu';
 
 const useStyles = makeStyles({
   button: {
@@ -32,6 +34,8 @@ const DecisionTree: FC = () => {
     useState<null | HTMLElement>(null);
   const [deleteMenuElement, setDeleteMenuElement] =
     useState<null | HTMLElement>(null);
+  const [removeMarkForDeleteMenuElement, setRemoveMarkForDeleteMenuElement] =
+    useState<null | HTMLElement>(null);
   const history = useHistory();
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,6 +44,12 @@ const DecisionTree: FC = () => {
 
   const openDeleteMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDeleteMenuElement(event.currentTarget);
+  };
+
+  const openRemoveMarkForDeletionMenu = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setRemoveMarkForDeleteMenuElement(event.currentTarget);
   };
 
   const loadDecisionTreeHandle = (): void => {
@@ -51,7 +61,9 @@ const DecisionTree: FC = () => {
   useEffect(() => {
     decisionTreeRepository
       .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
-      .then((steps) => setDecisionTreeSteps(steps));
+      .then((steps) => {
+        setDecisionTreeSteps(steps);
+      });
   }, [editStatus]);
 
   const hasDecisionTreeSteps = (steps: DecisionTreeStep[]): boolean => {
@@ -62,6 +74,10 @@ const DecisionTree: FC = () => {
     );
   };
 
+  const hasMarkedForDeletionTitles = (steps: DecisionTreeStep[]): boolean => {
+    return steps.filter((step) => step.markedForDeletion).length > 0;
+  };
+
   return (
     <>
       <PageHeading title="Beslisboom">
@@ -69,6 +85,28 @@ const DecisionTree: FC = () => {
           editStatus={editStatus}
           setEditStatus={setEditStatus}
         />
+        {decisionTreeSteps && hasMarkedForDeletionTitles(decisionTreeSteps) && (
+          <>
+            <Button
+              className={classes.button}
+              variant="contained"
+              style={{ backgroundColor: '#099000FF' }}
+              onClick={openRemoveMarkForDeletionMenu}
+            >
+              <RestoreFromTrashTwoToneIcon
+                style={{ cursor: 'pointer', color: 'white' }}
+              />
+            </Button>
+            <UndoMarkForDeletionDecisionTreeMenu
+              removeMarkForDeleteMenuElement={removeMarkForDeleteMenuElement}
+              setRemoveMarkForDeleteMenuElement={
+                setRemoveMarkForDeleteMenuElement
+              }
+              decisionTreeSteps={decisionTreeSteps}
+              onSubmitAction={loadDecisionTreeHandle}
+            />
+          </>
+        )}
         {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
           <>
             <Button

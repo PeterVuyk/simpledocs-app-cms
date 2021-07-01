@@ -8,64 +8,47 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 
 interface Props {
-  editStatus: EditStatus;
-  removeMenuElement: null | HTMLElement;
-  setRemoveMenuElement: (anchorEL: null | HTMLElement) => void;
+  removeMarkForDeleteMenuElement: null | HTMLElement;
+  setRemoveMarkForDeleteMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
   setNotification: (notificationOptions: NotificationOptions) => void;
   onSubmitAction: () => void;
 }
 
-const RemoveDecisionTreeMenu: FC<Props> = ({
-  editStatus,
-  removeMenuElement,
-  setRemoveMenuElement,
+const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
+  removeMarkForDeleteMenuElement,
+  setRemoveMarkForDeleteMenuElement,
   setNotification,
   decisionTreeSteps,
   onSubmitAction,
 }) => {
   const handleClose = () => {
-    setRemoveMenuElement(null);
+    setRemoveMarkForDeleteMenuElement(null);
   };
   const [openDialog, setOpenDialog] = useState<string>('');
 
-  const getDialogTitle =
-    editStatus === EDIT_STATUS_DRAFT
-      ? 'Weet je zeker dat je deze beslisboom wilt verwijderen?'
-      : 'Weet je zeker dat je deze beslisboom wilt markeren voor verwijdering?';
-
-  const notificationFailureMessage =
-    editStatus === EDIT_STATUS_DRAFT
-      ? `Het verwijderen van de beslisboom is mislukt`
-      : `Het markeren voor verwijdering is mislukt`;
-
-  const notificationSuccessMessage =
-    editStatus === EDIT_STATUS_DRAFT
-      ? `Het verwijderen van de beslisboom is gelukt`
-      : `Het markeren voor verwijdering is gelukt`;
-
   const handleDeleteDecisionTree = (title: string): void => {
     decisionTreeRepository
-      .deleteByTitle(title, editStatus)
+      .removeMarkForDeletion(title)
       .then(() =>
         setNotification({
           notificationOpen: true,
           notificationType: 'success',
-          notificationMessage: notificationSuccessMessage,
+          notificationMessage: 'De markering voor verwijdering is verwijderd.',
         })
       )
       .then(onSubmitAction)
       .catch(() => {
         logger.error(
-          'delete decisionTree by title RemoveDecisionTreeMenu.handleDeleteDecisionTree failed.'
+          'delete decisionTree by title UndoMarkForDeletionDecisionTreeMenu.handleDeleteDecisionTree failed.'
         );
         setNotification({
           notificationOpen: true,
           notificationType: 'error',
-          notificationMessage: notificationFailureMessage,
+          notificationMessage:
+            'Het verwijderen van de markering voor verwijdering is mislukt',
         });
       });
   };
@@ -74,7 +57,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
     return [
       ...new Set(
         decisionTreeSteps
-          .filter((step) => step.isDraft === (EDIT_STATUS_DRAFT === editStatus))
+          .filter((step) => step.markedForDeletion)
           .map((step) => step.title)
       ),
     ];
@@ -88,9 +71,9 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
     <>
       <Menu
         id="simple-menu"
-        anchorEl={removeMenuElement}
+        anchorEl={removeMarkForDeleteMenuElement}
         keepMounted
-        open={Boolean(removeMenuElement)}
+        open={Boolean(removeMarkForDeleteMenuElement)}
         onClose={handleClose}
       >
         {Array.from(getTitles()).map((title) => (
@@ -104,7 +87,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
           openDialog={openDialog}
           dialogText={getConfirmationDialogText(openDialog)}
           setOpenDialog={setOpenDialog}
-          dialogTitle={getDialogTitle}
+          dialogTitle="Weet je zeker dat je markering voor verwijdering voor deze beslisboom wilt opheffen?"
           onSubmit={handleDeleteDecisionTree}
           onClose={handleClose}
         />
@@ -130,4 +113,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RemoveDecisionTreeMenu);
+)(UndoMarkForDeletionDecisionTreeMenu);

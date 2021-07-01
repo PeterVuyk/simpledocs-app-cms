@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import HtmlPreview from '../../components/dialog/HtmlPreview';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
@@ -55,6 +56,7 @@ const DecisionTreeStepsList: FC<Props> = ({
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.head}>
+            <TableCell />
             <TableCell>
               <strong>Titel</strong>
             </TableCell>
@@ -99,14 +101,13 @@ const DecisionTreeStepsList: FC<Props> = ({
             </TableRow>
           )}
           {decisionTreeSteps.map((row) => (
-            <TableRow
-              hover
-              key={row.id + row.title + row?.markedForDeletion}
-              style={{
-                backgroundColor: row?.markedForDeletion ? '#fcb3b3' : '#fff',
-              }}
-            >
+            <TableRow hover key={row.id + row.title + row?.markedForDeletion}>
               <TableCell component="th" scope="row">
+                {row?.markedForDeletion && (
+                  <RemoveCircleOutlineIcon color="secondary" />
+                )}
+              </TableCell>
+              <TableCell>
                 {row.title}&nbsp;
                 {row.iconFile && (
                   <img

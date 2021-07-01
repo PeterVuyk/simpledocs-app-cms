@@ -7,15 +7,6 @@ import {
   EditStatus,
 } from '../../model/EditStatus';
 
-async function createDecisionTreeSteps(
-  decisionTreeSteps: DecisionTreeStep[]
-): Promise<void> {
-  // TODO... await heeft hier geen zin.
-  await decisionTreeSteps.forEach((decisionTreeStep) =>
-    database.collection(AGGREGATE_DECISION_TREE).add(decisionTreeStep)
-  );
-}
-
 async function getDecisionTreeSteps(
   draftArticles: boolean
 ): Promise<DecisionTreeStep[]> {
@@ -38,16 +29,24 @@ async function updateDecisionTreeSteps(
 ): Promise<void> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
-    .where('isDraft', '==', true)
     .where('title', '==', decisionTreeSteps[0].title)
     .get();
-  createDecisionTreeSteps(decisionTreeSteps).then(() => {
-    const batch = database.batch();
-    querySnapshot.forEach((documentSnapshot) => {
+
+  const batch = database.batch();
+  querySnapshot.forEach((documentSnapshot) => {
+    const step = documentSnapshot.data() as DecisionTreeStep;
+    if (step.isDraft) {
       batch.delete(documentSnapshot.ref);
-    });
-    return batch.commit();
+    } else {
+      batch.update(documentSnapshot.ref, { markedForDeletion: true });
+    }
   });
+
+  decisionTreeSteps.forEach((decisionTreeStep) =>
+    database.collection(AGGREGATE_DECISION_TREE).add(decisionTreeStep)
+  );
+
+  return batch.commit();
 }
 
 async function deleteByTitle(
@@ -72,10 +71,29 @@ async function deleteByTitle(
   return batch.commit();
 }
 
+async function removeMarkForDeletion(title: string): Promise<void> {
+  const querySnapshot = await database
+    .collection(AGGREGATE_DECISION_TREE)
+    .where('title', '==', title)
+    .get();
+
+  const batch = database.batch();
+  querySnapshot.forEach((documentSnapshot) => {
+    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
+    if (decisionTreeStep.isDraft) {
+      batch.delete(documentSnapshot.ref);
+    } else {
+      batch.update(documentSnapshot.ref, { markedForDeletion: false });
+    }
+  });
+  return batch.commit();
+}
+
 const decisionTreeRepository = {
   updateDecisionTreeSteps,
   getDecisionTreeSteps,
   deleteByTitle,
+  removeMarkForDeletion,
 };
 
 export default decisionTreeRepository;
