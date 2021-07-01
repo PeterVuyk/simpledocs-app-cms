@@ -17,9 +17,11 @@ async function getVersions(): Promise<Versioning[]> {
     .doc('aggregate')
     .get();
   // @ts-ignore
-  return Object.entries(versioning.data()).map(([key, value]) => {
-    return { aggregate: key, version: value } as Versioning;
-  });
+  return Object.entries(versioning.data())
+    .map(([key, value]) => {
+      return { aggregate: key, version: value } as Versioning;
+    })
+    .sort((a, b) => a.aggregate.localeCompare(b.aggregate));
 }
 
 async function publishDecisionTree(
