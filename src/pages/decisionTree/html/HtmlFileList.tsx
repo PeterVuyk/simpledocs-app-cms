@@ -7,12 +7,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import HtmlPreview from '../../../components/dialog/HtmlPreview';
 import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
 import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
+import DownloadHtmlFileAction from '../../../components/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../../components/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   table: {
@@ -27,11 +27,9 @@ const useStyles = makeStyles({
 });
 
 const HtmlFileList: FC = () => {
-  const [showHtmlPreview, setShowHtmlPreview] = useState<string | undefined>();
   const [decisionTreeHtmlFiles, setDecisionTreeHtmlFiles] = useState<
     DecisionTreeHtmlFile[]
   >([]);
-  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
   const classes = useStyles();
   const history = useHistory();
 
@@ -70,17 +68,11 @@ const HtmlFileList: FC = () => {
                       history.push(`/decision-tree/html/${row.id}`)
                     }
                   />
-                  <FindInPageTwoToneIcon
-                    color="primary"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setShowHtmlPreview(row.htmlFile)}
+                  <DownloadHtmlFileAction
+                    htmlFile={row.htmlFile}
+                    fileName={row.title}
                   />
-                  {showHtmlPreview && (
-                    <HtmlPreview
-                      showHtmlPreview={showHtmlPreview}
-                      closeHtmlPreviewHandle={closeHtmlPreviewHandle}
-                    />
-                  )}
+                  <ViewHTMLFileAction htmlFile={row.htmlFile} />
                 </TableCell>
               </TableRow>
             ))}

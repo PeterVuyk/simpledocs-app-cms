@@ -1,11 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import FileSaver from 'file-saver';
-import HtmlPreview from '../../dialog/HtmlPreview';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
+import DownloadHtmlFileAction from '../../DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../ViewHTMLFileAction';
 
 interface Props {
   name: string;
@@ -27,7 +25,6 @@ const FileDropzoneArea: FC<Props> = ({
   enableHtmlPreview,
   initialFile,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = useState<string | null>(null);
   const [field, mata] = useField(name);
 
   const ONE_MB_MAX_FILE_SIZE = 1000000;
@@ -40,10 +37,6 @@ const FileDropzoneArea: FC<Props> = ({
   if (mata && mata.touched && mata.error) {
     configDropzoneArea.helperText = mata.error;
   }
-
-  const closeHtmlPreviewHandle = (): void => {
-    setShowHtmlPreview(null);
-  };
 
   if (showError && mata.error) {
     configDropzoneArea.helperText = mata.error;
@@ -97,25 +90,15 @@ const FileDropzoneArea: FC<Props> = ({
       />
       {enableHtmlPreview && formik.current?.values[name] !== '' && (
         <div style={{ position: 'absolute', bottom: 0, right: 5 }}>
-          <FindInPageTwoToneIcon
-            color="primary"
-            style={{ cursor: 'pointer', fontSize: '4em' }}
-            onClick={() => setShowHtmlPreview(formik.current?.values[name])}
+          <ViewHTMLFileAction
+            htmlFile={formik.current?.values[name]}
+            iconStyle={{ fontSize: '4em' }}
           />
-          <GetAppIcon
-            color="action"
-            style={{ cursor: 'pointer', fontSize: '4em' }}
-            onClick={() =>
-              FileSaver.saveAs(formik.current?.values[name], 'regulation.html')
-            }
+          <DownloadHtmlFileAction
+            htmlFile={formik.current?.values[name]}
+            fileName="regulation.html"
           />
         </div>
-      )}
-      {showHtmlPreview && (
-        <HtmlPreview
-          showHtmlPreview={showHtmlPreview}
-          closeHtmlPreviewHandle={closeHtmlPreviewHandle}
-        />
       )}
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>

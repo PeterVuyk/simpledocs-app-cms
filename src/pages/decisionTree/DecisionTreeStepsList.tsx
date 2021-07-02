@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,12 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import HtmlPreview from '../../components/dialog/HtmlPreview';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import decisionTreeHtmlFilesRepository from '../../firebase/database/decisionTreeHtmlFilesRepository';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import DownloadHtmlFileAction from '../../components/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../components/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   table: {
@@ -33,23 +32,6 @@ const DecisionTreeStepsList: FC<Props> = ({
   editStatus,
 }) => {
   const classes = useStyles();
-  const [showHtmlPreview, setShowHtmlPreview] = useState<DecisionTreeStep>();
-  const [htmlFile, setHtmlFile] = useState<string | null>();
-
-  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview(undefined);
-
-  useEffect(() => {
-    if (showHtmlPreview?.htmlFile !== undefined) {
-      setHtmlFile(showHtmlPreview.htmlFile);
-      return;
-    }
-    if (showHtmlPreview?.htmlFileId === undefined) {
-      return;
-    }
-    decisionTreeHtmlFilesRepository
-      .getHtmlFileById(showHtmlPreview.htmlFileId)
-      .then((result) => setHtmlFile(result.htmlFile));
-  }, [showHtmlPreview]);
 
   return (
     <TableContainer component={Paper}>
@@ -123,21 +105,15 @@ const DecisionTreeStepsList: FC<Props> = ({
               <TableCell>{row.lineLabel}</TableCell>
               <TableCell>
                 {editStatus === EDIT_STATUS_DRAFT && row.htmlFileId}&nbsp;
-                {(row.htmlFileId || row.htmlFile) && (
-                  <FindInPageTwoToneIcon
-                    color="primary"
-                    style={{ cursor: 'pointer', marginBottom: -5 }}
-                    onClick={() => setShowHtmlPreview(row)}
-                  />
-                )}
-                {showHtmlPreview &&
-                  htmlFile &&
-                  showHtmlPreview.id === row.id && (
-                    <HtmlPreview
-                      showHtmlPreview={htmlFile}
-                      closeHtmlPreviewHandle={closeHtmlPreviewHandle}
+                {row.htmlFile && (
+                  <>
+                    <DownloadHtmlFileAction
+                      htmlFile={row.htmlFile}
+                      fileName={row.title}
                     />
-                  )}
+                    <ViewHTMLFileAction htmlFile={row.htmlFile} />
+                  </>
+                )}
               </TableCell>
               <TableCell>{row.internalNote}</TableCell>
             </TableRow>

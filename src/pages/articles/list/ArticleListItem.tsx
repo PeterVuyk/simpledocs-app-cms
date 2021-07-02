@@ -2,24 +2,21 @@ import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { connect } from 'react-redux';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import FileSaver from 'file-saver';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import articleRepository from '../../../firebase/database/articleRepository';
 import ArticleDialog from '../../../components/dialog/ArticleDialog';
 import notification from '../../../redux/actions/notification';
-import HtmlPreview from '../../../components/dialog/HtmlPreview';
-import fileHelper from '../../../helper/fileHelper';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { ArticleType } from '../../../model/ArticleType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import articleTypeHelper from '../../../helper/articleTypeHelper';
+import DownloadHtmlFileAction from '../../../components/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../../components/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   icon: {
@@ -45,7 +42,6 @@ const ArticleListItem: FC<Props> = ({
   editStatus,
   articleType,
 }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = useState<Article | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<Article | null>(
     null
   );
@@ -118,10 +114,6 @@ const ArticleListItem: FC<Props> = ({
       );
   };
 
-  const closeHtmlPreviewHandle = (): void => {
-    setShowHtmlPreview(null);
-  };
-
   const getEditUrl = () =>
     `/article/${articleTypeHelper.articleTypeToDashedPath(articleType)}/${
       article.id
@@ -149,21 +141,11 @@ const ArticleListItem: FC<Props> = ({
             onClick={() => history.push(getEditUrl())}
           />
         )}
-        <GetAppIcon
-          color="action"
-          style={{ cursor: 'pointer' }}
-          onClick={() =>
-            FileSaver.saveAs(
-              fileHelper.getBase64FromHtml(article.htmlFile),
-              `${article.chapter}.html`
-            )
-          }
+        <DownloadHtmlFileAction
+          htmlFile={article.htmlFile}
+          fileName={article.chapter}
         />
-        <FindInPageTwoToneIcon
-          color="primary"
-          style={{ cursor: 'pointer' }}
-          onClick={() => setShowHtmlPreview(article)}
-        />
+        <ViewHTMLFileAction htmlFile={article.htmlFile} />
         {article.markedForDeletion && editStatus === EDIT_STATUS_DRAFT && (
           <RestoreFromTrashTwoToneIcon
             style={{ cursor: 'pointer', color: '#099000FF' }}
@@ -175,12 +157,6 @@ const ArticleListItem: FC<Props> = ({
             color="secondary"
             style={{ cursor: 'pointer' }}
             onClick={() => setOpenDeleteDialog(article)}
-          />
-        )}
-        {showHtmlPreview && showHtmlPreview.chapter === article.chapter && (
-          <HtmlPreview
-            showHtmlPreview={showHtmlPreview.htmlFile}
-            closeHtmlPreviewHandle={closeHtmlPreviewHandle}
           />
         )}
         {openDeleteDialog && openDeleteDialog.chapter === article.chapter && (

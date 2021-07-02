@@ -2,53 +2,70 @@ import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
-import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
-import RemoveConfirmationDialog from '../../components/dialog/RemoveConfirmationDialog';
-import notification from '../../redux/actions/notification';
-import logger from '../../helper/logger';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import { NotificationOptions } from '../../model/NotificationOptions';
+import decisionTreeRepository from '../../../firebase/database/decisionTreeRepository';
+import RemoveConfirmationDialog from '../../../components/dialog/RemoveConfirmationDialog';
+import notification from '../../../redux/actions/notification';
+import logger from '../../../helper/logger';
+import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { NotificationOptions } from '../../../model/NotificationOptions';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 
 interface Props {
-  removeMarkForDeleteMenuElement: null | HTMLElement;
-  setRemoveMarkForDeleteMenuElement: (anchorEL: null | HTMLElement) => void;
+  editStatus: EditStatus;
+  removeMenuElement: null | HTMLElement;
+  setRemoveMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
   setNotification: (notificationOptions: NotificationOptions) => void;
   onSubmitAction: () => void;
 }
 
-const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
-  removeMarkForDeleteMenuElement,
-  setRemoveMarkForDeleteMenuElement,
+const RemoveDecisionTreeMenu: FC<Props> = ({
+  editStatus,
+  removeMenuElement,
+  setRemoveMenuElement,
   setNotification,
   decisionTreeSteps,
   onSubmitAction,
 }) => {
   const handleClose = () => {
-    setRemoveMarkForDeleteMenuElement(null);
+    setRemoveMenuElement(null);
   };
   const [openDialog, setOpenDialog] = useState<string>('');
 
+  const getDialogTitle =
+    editStatus === EDIT_STATUS_DRAFT
+      ? 'Weet je zeker dat je deze beslisboom wilt verwijderen?'
+      : 'Weet je zeker dat je deze beslisboom wilt markeren voor verwijdering?';
+
+  const notificationFailureMessage =
+    editStatus === EDIT_STATUS_DRAFT
+      ? `Het verwijderen van de beslisboom is mislukt`
+      : `Het markeren voor verwijdering is mislukt`;
+
+  const notificationSuccessMessage =
+    editStatus === EDIT_STATUS_DRAFT
+      ? `Het verwijderen van de beslisboom is gelukt`
+      : `Het markeren voor verwijdering is gelukt`;
+
   const handleDeleteDecisionTree = (title: string): void => {
     decisionTreeRepository
-      .removeMarkForDeletion(title)
+      .deleteByTitle(title, editStatus)
       .then(() =>
         setNotification({
           notificationOpen: true,
           notificationType: 'success',
-          notificationMessage: 'De markering voor verwijdering is verwijderd.',
+          notificationMessage: notificationSuccessMessage,
         })
       )
       .then(onSubmitAction)
       .catch(() => {
         logger.error(
-          'delete decisionTree by title UndoMarkForDeletionDecisionTreeMenu.handleDeleteDecisionTree failed.'
+          'delete decisionTree by title RemoveDecisionTreeMenu.handleDeleteDecisionTree failed.'
         );
         setNotification({
           notificationOpen: true,
           notificationType: 'error',
-          notificationMessage:
-            'Het verwijderen van de markering voor verwijdering is mislukt',
+          notificationMessage: notificationFailureMessage,
         });
       });
   };
@@ -57,7 +74,7 @@ const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
     return [
       ...new Set(
         decisionTreeSteps
-          .filter((step) => step.markedForDeletion)
+          .filter((step) => step.isDraft === (EDIT_STATUS_DRAFT === editStatus))
           .map((step) => step.title)
       ),
     ];
@@ -71,9 +88,9 @@ const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
     <>
       <Menu
         id="simple-menu"
-        anchorEl={removeMarkForDeleteMenuElement}
+        anchorEl={removeMenuElement}
         keepMounted
-        open={Boolean(removeMarkForDeleteMenuElement)}
+        open={Boolean(removeMenuElement)}
         onClose={handleClose}
       >
         {Array.from(getTitles()).map((title) => (
@@ -87,7 +104,7 @@ const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
           openDialog={openDialog}
           dialogText={getConfirmationDialogText(openDialog)}
           setOpenDialog={setOpenDialog}
-          dialogTitle="Weet je zeker dat je markering voor verwijdering voor deze beslisboom wilt opheffen?"
+          dialogTitle={getDialogTitle}
           onSubmit={handleDeleteDecisionTree}
           onClose={handleClose}
         />
@@ -113,4 +130,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UndoMarkForDeletionDecisionTreeMenu);
+)(RemoveDecisionTreeMenu);

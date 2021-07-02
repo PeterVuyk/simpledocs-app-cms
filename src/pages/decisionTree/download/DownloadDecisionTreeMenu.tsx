@@ -5,14 +5,17 @@ import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import DownloadDecisionTreeHtmlFiles from './DownloadDecisionTreeHtmlFiles';
+import { EditStatus } from '../../../model/EditStatus';
 
 interface Props {
+  editStatus: EditStatus;
   downloadMenuElement: null | HTMLElement;
   setDownloadMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
 }
 
 const DownloadDecisionTreeMenu: FC<Props> = ({
+  editStatus,
   downloadMenuElement,
   setDownloadMenuElement,
   decisionTreeSteps,
@@ -75,7 +78,10 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
           {step.title}.svg
         </MenuItem>
       ))}
-      <DownloadDecisionTreeHtmlFiles decisionTreeSteps={decisionTreeSteps} />
+      <DownloadDecisionTreeHtmlFiles
+        editStatus={editStatus}
+        decisionTreeSteps={decisionTreeSteps}
+      />
     </Menu>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -7,9 +7,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import HtmlPreview from '../../components/dialog/HtmlPreview';
 import { CalculationInfo } from '../../model/CalculationInfo';
+import ViewHTMLFileAction from '../../components/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   table: {
@@ -28,11 +27,7 @@ interface Props {
 }
 
 const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
-  const [showHtmlPreview, setShowHtmlPreview] = useState<string>('');
   const classes = useStyles();
-
-  const closeHtmlPreviewHandle = (): void => setShowHtmlPreview('');
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -76,19 +71,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
-                    <FindInPageTwoToneIcon
-                      color="primary"
-                      style={{ cursor: 'pointer', marginBottom: -5 }}
-                      onClick={() =>
-                        setShowHtmlPreview(calculationInfo.htmlFile)
-                      }
-                    />
-                    {showHtmlPreview && (
-                      <HtmlPreview
-                        showHtmlPreview={calculationInfo.htmlFile}
-                        closeHtmlPreviewHandle={closeHtmlPreviewHandle}
-                      />
-                    )}
+                    <ViewHTMLFileAction htmlFile={calculationInfo.htmlFile} />
                   </TableCell>
                 </TableRow>
                 <TableRow hover key="2">
