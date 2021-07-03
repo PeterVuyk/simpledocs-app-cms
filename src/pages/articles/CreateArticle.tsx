@@ -12,6 +12,7 @@ import ArticleForm from './ArticleForm';
 import { ArticleType } from '../../model/ArticleType';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import articleTypeHelper from '../../helper/articleTypeHelper';
+import htmlFileHelper from '../../helper/htmlFileHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -33,7 +34,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        htmlFile: values.htmlFile,
+        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
         iconFile: values.iconFile,
         isDraft: true,
       })

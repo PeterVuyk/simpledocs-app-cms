@@ -43,34 +43,32 @@ const ArticleDialog: FC<Props> = ({
   };
 
   return (
-    <div>
-      <Dialog
-        open={openDialog !== null}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            style={{ whiteSpace: 'pre-line' }}
-            id="alert-dialog-slide-description"
-          >
-            {dialogText}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            Nee
-          </Button>
-          <Button onClick={handleSubmit} color="secondary" variant="contained">
-            Ja
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={openDialog !== null}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          style={{ whiteSpace: 'pre-line' }}
+          id="alert-dialog-slide-description"
+        >
+          {dialogText}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary" variant="contained">
+          Nee
+        </Button>
+        <Button onClick={handleSubmit} color="secondary" variant="contained">
+          Ja
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

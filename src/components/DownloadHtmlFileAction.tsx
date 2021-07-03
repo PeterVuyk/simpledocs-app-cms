@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
-import fileHelper from '../helper/fileHelper';
+import htmlFileHelper from '../helper/htmlFileHelper';
 
 interface Props {
   htmlFile: string;
@@ -15,7 +15,7 @@ const DownloadHtmlFileAction: FC<Props> = ({ htmlFile, fileName }) => {
       style={{ cursor: 'pointer' }}
       onClick={() =>
         FileSaver.saveAs(
-          fileHelper.getBase64FromHtml(htmlFile),
+          htmlFileHelper.getBase64FromHtml(htmlFile),
           `${fileName}.html`
         )
       }

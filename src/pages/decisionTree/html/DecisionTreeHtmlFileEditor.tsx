@@ -11,6 +11,7 @@ import PageHeading from '../../../layout/PageHeading';
 import notification from '../../../redux/actions/notification';
 import HtmlPageForm from './HtmlPageForm';
 import logger from '../../../helper/logger';
+import htmlFileHelper from '../../../helper/htmlFileHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -44,7 +45,7 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
       .updateHtmlFile({
         id: decisionTreeHtmlFile?.id,
         title: values.title,
-        htmlFile: values.htmlFile,
+        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
       })
       .then(() => history.push(`/decision-tree`))
       .then(() =>

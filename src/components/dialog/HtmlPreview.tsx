@@ -22,22 +22,20 @@ const HtmlPreview: FC<Props> = ({
   closeHtmlPreviewHandle,
 }) => {
   return (
-    <div>
-      <Dialog
-        open={showHtmlPreview !== null}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={closeHtmlPreviewHandle}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <iframe
-          style={{ height: 812, width: 375, border: 'none' }}
-          title="preview.html"
-          srcDoc={showHtmlPreview}
-        />
-      </Dialog>
-    </div>
+    <Dialog
+      open={showHtmlPreview !== null}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={closeHtmlPreviewHandle}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <iframe
+        style={{ height: 812, width: 375, border: 'none' }}
+        title="preview.html"
+        srcDoc={showHtmlPreview}
+      />
+    </Dialog>
   );
 };
 

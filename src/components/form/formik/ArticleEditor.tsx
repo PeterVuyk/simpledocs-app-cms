@@ -3,7 +3,7 @@ import JoditEditor from 'jodit-react';
 import { useField } from 'formik';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
-import fileHelper from '../../../helper/fileHelper';
+import htmlFileHelper from '../../../helper/htmlFileHelper';
 
 interface Props {
   initialFile: string | null;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
-  const editor = useRef(null);
+  const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, mata] = useField('htmlFile');
@@ -31,7 +31,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
 
   const updateFileFromBase64Handler = useCallback(
     (file: string | null) => {
-      const html = file ? fileHelper.getHTMLBodyFromBase64(file) : '';
+      const html = file ? htmlFileHelper.getHTMLBodyFromBase64(file) : '';
       formik.current.setFieldValue('htmlFile', html);
       setContent(html);
     },
@@ -42,13 +42,15 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     if (content === null || content === '') {
       return null;
     }
-    return fileHelper.getBase64FromHtml(content);
+    return htmlFileHelper.getBase64FromHtml(content);
   };
 
   useEffect(() => {
     let html = initialFile;
-    if (html === null) {
-      html = '';
+    if (html) {
+      html = htmlFileHelper.stripMetaTags(html);
+    } else {
+      html = htmlFileHelper.getDefaultHtmlTemplate();
     }
     formik.current.setFieldValue('htmlFile', html);
     setContent(html);
@@ -57,6 +59,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   const config = {
     height: 600,
     readonly: false, // all options check: https://xdsoft.net/jodit/doc/
+    useSplitMode: true,
   };
 
   return (

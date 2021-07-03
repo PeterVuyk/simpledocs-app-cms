@@ -18,6 +18,7 @@ import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
 import ArticleEditor from '../../../components/form/formik/ArticleEditor';
+import htmlFileHelper from '../../../helper/htmlFileHelper';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -88,7 +89,7 @@ const EditCalculation: FC<Props> = ({
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        htmlFile: values.htmlFile,
+        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,
