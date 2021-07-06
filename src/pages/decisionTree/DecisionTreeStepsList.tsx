@@ -10,8 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
-import DownloadHtmlFileAction from '../../components/DownloadHtmlFileAction';
-import ViewHTMLFileAction from '../../components/ViewHTMLFileAction';
+import DownloadHtmlFileAction from '../../components/ItemAction/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   table: {

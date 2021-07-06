@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
-import DownloadHtmlFileAction from '../../DownloadHtmlFileAction';
-import ViewHTMLFileAction from '../../ViewHTMLFileAction';
+import DownloadHtmlFileAction from '../../ItemAction/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../ItemAction/ViewHTMLFileAction';
 
 interface Props {
   name: string;

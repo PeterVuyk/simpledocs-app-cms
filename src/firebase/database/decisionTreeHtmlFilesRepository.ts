@@ -34,10 +34,15 @@ async function updateHtmlFile(
   await database.collection('decisionTreeHtmlFiles').add(decisionTreeHtmlFile);
 }
 
+async function deleteHtmlFile(itemId: string): Promise<void> {
+  await database.collection('decisionTreeHtmlFiles').doc(itemId).delete();
+}
+
 const decisionTreeHtmlFilesRepository = {
   getHtmlFiles,
   getHtmlFileById,
   updateHtmlFile,
+  deleteHtmlFile,
 };
 
 export default decisionTreeHtmlFilesRepository;

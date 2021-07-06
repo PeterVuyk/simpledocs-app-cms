@@ -1,13 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { connect } from 'react-redux';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import articleRepository from '../../../firebase/database/articleRepository';
-import ArticleDialog from '../../../components/dialog/ArticleDialog';
 import notification from '../../../redux/actions/notification';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
@@ -15,8 +13,9 @@ import { ArticleType } from '../../../model/ArticleType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import articleTypeHelper from '../../../helper/articleTypeHelper';
-import DownloadHtmlFileAction from '../../../components/DownloadHtmlFileAction';
-import ViewHTMLFileAction from '../../../components/ViewHTMLFileAction';
+import DownloadHtmlFileAction from '../../../components/ItemAction/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
+import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 
 const useStyles = makeStyles({
   icon: {
@@ -42,9 +41,6 @@ const ArticleListItem: FC<Props> = ({
   editStatus,
   articleType,
 }) => {
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<Article | null>(
-    null
-  );
   const classes = useStyles();
   const history = useHistory();
 
@@ -119,6 +115,12 @@ const ArticleListItem: FC<Props> = ({
       article.id
     }`;
 
+  const getDeleteTitle = () => {
+    return editStatus === EDIT_STATUS_DRAFT
+      ? 'Weet je zeker dat je dit artikel wilt verwijderen?'
+      : 'Weet je zeker dat je dit artikel wilt markeren voor verwijdering?';
+  };
+
   return (
     <>
       <TableCell component="th" scope="row">
@@ -152,22 +154,14 @@ const ArticleListItem: FC<Props> = ({
             onClick={() => undoMarkDeletion()}
           />
         )}
-        {!article.markedForDeletion && (
-          <DeleteTwoToneIcon
-            color="secondary"
-            style={{ cursor: 'pointer' }}
-            onClick={() => setOpenDeleteDialog(article)}
-          />
-        )}
-        {openDeleteDialog && openDeleteDialog.chapter === article.chapter && (
-          <ArticleDialog
-            dialogTitle="Weet je zeker dat je dit artikel wilt markeren voor verwijdering?"
+        {!article.markedForDeletion && article.id && (
+          <DeleteItemAction
+            title={getDeleteTitle()}
             dialogText={`Hoofdstuk: ${article.chapter}\nTitel: ${
               article.title
             }\nMarkering: ${getLevel(article.level)}`}
-            openDialog={openDeleteDialog}
-            setOpenDialog={setOpenDeleteDialog}
             onSubmit={onDelete}
+            itemId={article.id}
           />
         )}
       </TableCell>

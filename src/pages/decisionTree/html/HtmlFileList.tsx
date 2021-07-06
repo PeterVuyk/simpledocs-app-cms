@@ -9,10 +9,15 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
 import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
-import DownloadHtmlFileAction from '../../../components/DownloadHtmlFileAction';
-import ViewHTMLFileAction from '../../../components/ViewHTMLFileAction';
+import DownloadHtmlFileAction from '../../../components/ItemAction/DownloadHtmlFileAction';
+import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
+import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
+import logger from '../../../helper/logger';
+import { NotificationOptions } from '../../../model/NotificationOptions';
+import notification from '../../../redux/actions/notification';
 
 const useStyles = makeStyles({
   table: {
@@ -26,18 +31,46 @@ const useStyles = makeStyles({
   },
 });
 
-const HtmlFileList: FC = () => {
+interface Props {
+  setNotification: (notificationOptions: NotificationOptions) => void;
+}
+
+const HtmlFileList: FC<Props> = ({ setNotification }) => {
   const [decisionTreeHtmlFiles, setDecisionTreeHtmlFiles] = useState<
     DecisionTreeHtmlFile[]
   >([]);
   const classes = useStyles();
   const history = useHistory();
 
-  useEffect(() => {
+  const loadHtmlFiles = () => {
     decisionTreeHtmlFilesRepository
       .getHtmlFiles()
       .then((result) => setDecisionTreeHtmlFiles(result));
+  };
+
+  useEffect(() => {
+    loadHtmlFiles();
   }, []);
+
+  const onDelete = (itemId: string) => {
+    decisionTreeHtmlFilesRepository
+      .deleteHtmlFile(itemId)
+      .then(() => {
+        setDecisionTreeHtmlFiles([]);
+        loadHtmlFiles();
+      })
+      .catch(() => {
+        logger.error(
+          `Failed removing the html file from the decision tree ${itemId}`
+        );
+        setNotification({
+          notificationOpen: true,
+          notificationType: 'error',
+          notificationMessage:
+            'Het verwijderen van het html bestand is mislukt',
+        });
+      });
+  };
 
   return (
     <>
@@ -73,6 +106,12 @@ const HtmlFileList: FC = () => {
                     fileName={row.title}
                   />
                   <ViewHTMLFileAction htmlFile={row.htmlFile} />
+                  <DeleteItemAction
+                    title="Weet je zeker dat je dit html bestand wilt verwijderen?"
+                    dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
+                    onSubmit={onDelete}
+                    itemId={row.id!}
+                  />
                 </TableCell>
               </TableRow>
             ))}
@@ -83,4 +122,18 @@ const HtmlFileList: FC = () => {
   );
 };
 
-export default HtmlFileList;
+const mapStateToProps = (state: any) => {
+  return {
+    notificationOptions: state.notification.notificationOptions,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setNotification: (notificationOptions: NotificationOptions) =>
+      // eslint-disable-next-line import/no-named-as-default-member
+      dispatch(notification.setNotification(notificationOptions)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HtmlFileList);

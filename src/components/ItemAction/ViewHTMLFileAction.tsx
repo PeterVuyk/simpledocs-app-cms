@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import HtmlPreview from './dialog/HtmlPreview';
+import HtmlPreview from '../dialog/HtmlPreview';
 
 interface Props {
   htmlFile: string;

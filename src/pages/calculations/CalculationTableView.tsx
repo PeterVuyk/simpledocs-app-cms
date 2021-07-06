@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import { CalculationInfo } from '../../model/CalculationInfo';
-import ViewHTMLFileAction from '../../components/ViewHTMLFileAction';
+import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
   table: {

@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Article } from '../../model/Article';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -21,30 +20,32 @@ const Transition = forwardRef(function Transition(
 interface Props {
   dialogTitle: string;
   dialogText: string;
-  openDialog: Article | null;
-  setOpenDialog: (article: Article | null) => void;
-  onSubmit: (id: string) => void;
+  openDialog: boolean;
+  setOpenDialog: (showDialog: boolean) => void;
+  onSubmit: (itemId: string) => void;
+  itemId: string;
 }
 
-const ArticleDialog: FC<Props> = ({
+const ConfirmationDialog: FC<Props> = ({
   dialogTitle,
   dialogText,
   openDialog,
   setOpenDialog,
   onSubmit,
+  itemId,
 }) => {
   const handleClose = () => {
-    setOpenDialog(null);
+    setOpenDialog(false);
   };
 
   const handleSubmit = () => {
-    onSubmit(openDialog?.id ?? '');
-    setOpenDialog(null);
+    onSubmit(itemId);
+    handleClose();
   };
 
   return (
     <Dialog
-      open={openDialog !== null}
+      open={openDialog}
       TransitionComponent={Transition}
       keepMounted
       onClose={handleClose}
@@ -72,4 +73,4 @@ const ArticleDialog: FC<Props> = ({
   );
 };
 
-export default ArticleDialog;
+export default ConfirmationDialog;

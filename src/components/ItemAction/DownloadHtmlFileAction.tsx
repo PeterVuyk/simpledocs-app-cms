@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
-import htmlFileHelper from '../helper/htmlFileHelper';
+import htmlFileHelper from '../../helper/htmlFileHelper';
 
 interface Props {
   htmlFile: string;
