@@ -27,7 +27,7 @@ const FileDropzoneArea: FC<Props> = ({
 }) => {
   const ONE_MB_MAX_FILE_SIZE = 1000000;
   const configDropzoneArea: any = {
-    initialFiles: initialFile === null ? undefined : [initialFile],
+    initialFiles: initialFile === undefined ? [] : [initialFile],
   };
 
   const handleUploadChange = (files: File[]) => {

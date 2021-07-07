@@ -38,9 +38,9 @@ const Publications: FC = () => {
     <>
       <PageHeading title="Publiceren" />
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table} aria-label="publications table">
           <TableHead>
-            <TableRow className={classes.head}>
+            <TableRow className={classes.head} key="tableRow">
               <TableCell>
                 <strong>Onderdeel</strong>
               </TableCell>
@@ -52,10 +52,12 @@ const Publications: FC = () => {
           </TableHead>
           <TableBody>
             {versions.map((row) => (
-              <PublicationItem
-                version={row}
-                reloadPublicationsHandle={reloadPublicationsHandle}
-              />
+              <TableRow hover key={row.aggregate.toString()}>
+                <PublicationItem
+                  version={row}
+                  reloadPublicationsHandle={reloadPublicationsHandle}
+                />
+              </TableRow>
             ))}
           </TableBody>
         </Table>

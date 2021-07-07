@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import { useField } from 'formik';
+import SaveIcon from '@material-ui/icons/Save';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
@@ -14,6 +15,7 @@ interface Props {
 const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
+  const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, mata] = useField('htmlFile');
 
@@ -24,7 +26,15 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     return '';
   };
 
+  const showSaveButtonHandle = () => {
+    setShowSaveButton(true);
+    setTimeout(() => {
+      setShowSaveButton(false);
+    }, 5000);
+  };
+
   const updateFileHandler = (file: string) => {
+    showSaveButtonHandle();
     formik.current.setFieldValue('htmlFile', file);
     setContent(file);
   };
@@ -57,15 +67,29 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   }, [formik, initialFile]);
 
   const config = {
+    // all options check: https://xdsoft.net/jodit/doc/
     height: 600,
-    readonly: false, // all options check: https://xdsoft.net/jodit/doc/
+    readonly: false,
     useSplitMode: true,
   };
 
   return (
     <>
       {content !== null && (
-        <>
+        <div style={{ position: 'relative' }}>
+          {showSaveButton && (
+            <SaveIcon
+              style={{
+                position: 'absolute',
+                zIndex: 1000,
+                right: 50,
+                top: 50,
+                backgroundColor: '#fff',
+                color: '#099000FF',
+                fontSize: 'xxx-large',
+              }}
+            />
+          )}
           <JoditEditor
             ref={editor}
             value={content ?? ''}
@@ -82,7 +106,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
           {getErrorMessage() !== '' && (
             <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
           )}
-        </>
+        </div>
       )}
     </>
   );

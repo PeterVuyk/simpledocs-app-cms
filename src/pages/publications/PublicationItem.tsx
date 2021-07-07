@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import PublishIcon from '@material-ui/icons/Publish';
 import PublishDialog from './PublishDialog';
 import { Versioning } from '../../model/Versioning';
@@ -27,7 +26,7 @@ const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
   };
 
   return (
-    <TableRow hover key={version.aggregate}>
+    <>
       <TableCell>
         {translationHelper.getTranslatedAggregate(version.aggregate)}
       </TableCell>
@@ -49,7 +48,7 @@ const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
             />
           )}
       </TableCell>
-    </TableRow>
+    </>
   );
 };
 
