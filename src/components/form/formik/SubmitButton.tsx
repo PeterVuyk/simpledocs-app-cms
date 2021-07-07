@@ -5,12 +5,21 @@ import { useFormikContext } from 'formik';
 interface Props {
   children: string;
   setShowError: (showError: boolean) => void;
+  submitButtonDisabled: boolean;
+  setSubmitButtonDisabled: (disabled: boolean) => void;
 }
 
-const SubmitButton: FC<Props> = ({ children, setShowError, ...otherProps }) => {
+const SubmitButton: FC<Props> = ({
+  children,
+  setShowError,
+  submitButtonDisabled,
+  setSubmitButtonDisabled,
+  ...otherProps
+}) => {
   const { submitForm } = useFormikContext();
 
   const handleSubmit = () => {
+    setSubmitButtonDisabled(true);
     submitForm().then(() => setShowError(true));
   };
 
@@ -19,6 +28,7 @@ const SubmitButton: FC<Props> = ({ children, setShowError, ...otherProps }) => {
     variant: 'contained',
     color: 'primary',
     fullWidth: true,
+    disabled: submitButtonDisabled,
     onClick: handleSubmit,
   };
 

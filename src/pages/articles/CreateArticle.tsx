@@ -26,6 +26,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
     articleTypeHelper.dashedPathToArticleType(aggregatePath);
 
   const handleSubmit = (values: FormikValues): void => {
+    // TODO: Disable submit button eerst. Dan hieronder.
     articleRepository
       .createArticle(articleType, {
         pageIndex: values.pageIndex,

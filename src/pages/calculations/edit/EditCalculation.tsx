@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { Form, Formik, FormikValues } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
@@ -39,6 +39,7 @@ const EditCalculation: FC<Props> = ({
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const formikRef = useRef<any>();
   const history = useHistory();
   const classes = useStyles();
@@ -82,7 +83,11 @@ const EditCalculation: FC<Props> = ({
     ),
   });
 
-  const handleSubmit = (values: FormikValues): void => {
+  const handleSubmit = (
+    values: FormikValues,
+    formik: FormikHelpers<any>
+  ): void => {
+    formik.setSubmitting(false);
     throw calculationsRepository
       .updateCalculationsInfo({
         calculationType: calculationType.toString(),
@@ -107,6 +112,7 @@ const EditCalculation: FC<Props> = ({
           'Edit stopping distance has failed in EditCalculation.handleSubmit',
           error
         );
+        setSubmitButtonDisabled(false);
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
@@ -216,7 +222,13 @@ const EditCalculation: FC<Props> = ({
               </Grid>
             </Grid>
             <div className={classes.submit}>
-              <SubmitButton setShowError={setShowError}>Wijzigen</SubmitButton>
+              <SubmitButton
+                submitButtonDisabled={submitButtonDisabled}
+                setSubmitButtonDisabled={setSubmitButtonDisabled}
+                setShowError={setShowError}
+              >
+                Wijzigen
+              </SubmitButton>
             </div>
           </Form>
         </Formik>

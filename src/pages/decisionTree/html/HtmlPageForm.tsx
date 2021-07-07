@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues } from 'formik';
+import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import TextField from '../../../components/form/formik/TextField';
@@ -27,8 +27,18 @@ const HtmlPageForm: FC<Props> = ({
   isNewHtmlFile,
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
+
+  const handleSubmitForm = (
+    values: FormikValues,
+    formik: FormikHelpers<any>
+  ) => {
+    formik.setSubmitting(false);
+    handleSubmit(values);
+    setSubmitButtonDisabled(false);
+  };
 
   const initialFormState = () => {
     if (decisionTreeHtmlFile !== undefined) {
@@ -53,7 +63,7 @@ const HtmlPageForm: FC<Props> = ({
         innerRef={formikRef}
         initialValues={{ ...initialFormState() }}
         validationSchema={formValidation}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitForm}
       >
         <Form>
           <Grid
@@ -81,7 +91,11 @@ const HtmlPageForm: FC<Props> = ({
             </Grid>
           </Grid>
           <div className={classes.submit}>
-            <SubmitButton setShowError={setShowError}>
+            <SubmitButton
+              submitButtonDisabled={submitButtonDisabled}
+              setSubmitButtonDisabled={setSubmitButtonDisabled}
+              setShowError={setShowError}
+            >
               {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
             </SubmitButton>
           </div>

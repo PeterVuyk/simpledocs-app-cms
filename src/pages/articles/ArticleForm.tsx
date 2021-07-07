@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues } from 'formik';
+import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
@@ -27,8 +27,18 @@ interface Props {
 
 const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
   const [showError, setShowError] = useState<boolean>(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
+
+  const handleSubmitForm = (
+    values: FormikValues,
+    formik: FormikHelpers<any>
+  ) => {
+    formik.setSubmitting(false);
+    handleSubmit(values);
+    setSubmitButtonDisabled(false);
+  };
 
   const initialFormState = () => {
     if (article !== undefined) {
@@ -123,7 +133,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
         innerRef={formikRef}
         initialValues={{ ...initialFormState() }}
         validationSchema={formValidation}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitForm}
       >
         <Form>
           <Grid
@@ -226,7 +236,11 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
             </Grid>
           </Grid>
           <div className={classes.submit}>
-            <SubmitButton setShowError={setShowError}>
+            <SubmitButton
+              setShowError={setShowError}
+              submitButtonDisabled={submitButtonDisabled}
+              setSubmitButtonDisabled={setSubmitButtonDisabled}
+            >
               {article === undefined ? 'Toevoegen' : 'Wijzigen'}
             </SubmitButton>
           </div>
