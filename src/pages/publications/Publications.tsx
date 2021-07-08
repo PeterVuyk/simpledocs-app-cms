@@ -52,7 +52,7 @@ const Publications: FC = () => {
           </TableHead>
           <TableBody>
             {versions.map((row) => (
-              <TableRow hover key={row.aggregate.toString()}>
+              <TableRow key={row.aggregate.toString()}>
                 <PublicationItem
                   version={row}
                   reloadPublicationsHandle={reloadPublicationsHandle}

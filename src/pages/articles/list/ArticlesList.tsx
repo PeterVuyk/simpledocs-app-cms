@@ -65,10 +65,9 @@ const ArticlesList: FC<Props> = ({
               style={{
                 backgroundColor:
                   editStatus === EDIT_STATUS_DRAFT && row?.markedForDeletion
-                    ? '#fcb3b3'
+                    ? '#FCC1C1B5'
                     : '#fff',
               }}
-              hover
               key={row.id}
             >
               <ArticleListItem

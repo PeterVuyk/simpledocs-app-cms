@@ -89,7 +89,7 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
           </TableHead>
           <TableBody>
             {decisionTreeHtmlFiles.map((row) => (
-              <TableRow hover key={row.id}>
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>

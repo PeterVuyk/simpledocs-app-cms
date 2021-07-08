@@ -7,7 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 import DownloadHtmlFileAction from '../../components/ItemAction/DownloadHtmlFileAction';
@@ -38,7 +37,6 @@ const DecisionTreeStepsList: FC<Props> = ({
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.head}>
-            <TableCell />
             <TableCell>
               <strong>Titel</strong>
             </TableCell>
@@ -76,20 +74,20 @@ const DecisionTreeStepsList: FC<Props> = ({
         </TableHead>
         <TableBody>
           {decisionTreeSteps.length === 0 && (
-            <TableRow hover key="no-result">
+            <TableRow key="no-result">
               <TableCell component="th" scope="row" colSpan={7}>
                 Geen resultaten.
               </TableCell>
             </TableRow>
           )}
           {decisionTreeSteps.map((row) => (
-            <TableRow hover key={row.id + row.title + row?.markedForDeletion}>
+            <TableRow
+              key={row.id + row.title + row?.markedForDeletion}
+              style={{
+                backgroundColor: row.markedForDeletion ? '#FCC1C1B5' : '#fff',
+              }}
+            >
               <TableCell component="th" scope="row">
-                {row?.markedForDeletion && (
-                  <RemoveCircleOutlineIcon color="secondary" />
-                )}
-              </TableCell>
-              <TableCell>
                 {row.title}&nbsp;
                 {row.iconFile && (
                   <img

@@ -65,51 +65,54 @@ const HtmlPageForm: FC<Props> = ({
   });
 
   return (
-    <Paper elevation={0} color="#ddd" style={{ marginRight: 18 }}>
-      <Formik
-        innerRef={formikRef}
-        initialValues={{ ...initialFormState() }}
-        validationSchema={formValidation}
-        onSubmit={handleSubmitForm}
-      >
-        {({ isSubmitting, dirty }) => (
-          <Form>
-            <Grid
-              container
-              spacing={2}
-              alignItems="flex-start"
-              justify="flex-start"
-              direction="row"
-            >
-              <Grid item xs={12}>
-                <TextField
-                  showError={showError}
-                  required
-                  id="title"
-                  label="Titel"
-                  name="title"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <ArticleEditor
-                  showError={showError}
-                  formik={formikRef}
-                  initialFile={decisionTreeHtmlFile?.htmlFile ?? null}
-                />
-              </Grid>
-            </Grid>
-            <div className={classes.submit}>
-              <SubmitButton
-                setShowError={setShowError}
-                disabled={isSubmitting || !dirty}
+    <>
+      <Paper elevation={0} color="#ddd" style={{ marginRight: 18 }}>
+        <Formik
+          innerRef={formikRef}
+          initialValues={{ ...initialFormState() }}
+          validationSchema={formValidation}
+          onSubmit={handleSubmitForm}
+        >
+          {({ isSubmitting, dirty }) => (
+            <Form>
+              <Grid
+                container
+                spacing={2}
+                alignItems="flex-start"
+                justify="flex-start"
+                direction="row"
               >
-                {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
-              </SubmitButton>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </Paper>
+                <Grid item xs={12}>
+                  <TextField
+                    showError={showError}
+                    required
+                    id="title"
+                    label="Titel"
+                    name="title"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <ArticleEditor
+                    showError={showError}
+                    formik={formikRef}
+                    initialFile={decisionTreeHtmlFile?.htmlFile ?? null}
+                  />
+                </Grid>
+              </Grid>
+              <div className={classes.submit}>
+                <SubmitButton
+                  setShowError={setShowError}
+                  disabled={isSubmitting || !dirty}
+                >
+                  {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
+                </SubmitButton>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+      <div style={{ height: 100 }} />
+    </>
   );
 };
 

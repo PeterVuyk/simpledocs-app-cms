@@ -58,7 +58,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
           <TableBody>
             {calculationInfo && (
               <>
-                <TableRow hover key="1">
+                <TableRow key="1">
                   <TableCell className={classes.head} />
                   <TableCell>{calculationInfo.listIndex}</TableCell>
                   <TableCell>{calculationInfo.title}</TableCell>
@@ -74,7 +74,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                     <ViewHTMLFileAction htmlFile={calculationInfo.htmlFile} />
                   </TableCell>
                 </TableRow>
-                <TableRow hover key="2">
+                <TableRow key="2">
                   <TableCell className={classes.head}>
                     <strong>Stopafstand afbeelding</strong>
                     <br />

@@ -130,122 +130,125 @@ const EditCalculation: FC<Props> = ({
   };
 
   return (
-    <Navigation gridWidth="wide">
-      <PageHeading title="Pagina bewerken">
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => history.goBack()}
-        >
-          Terug
-        </Button>
-      </PageHeading>
-      {calculationInfo && (
-        <Formik
-          innerRef={formikRef}
-          initialValues={{ ...calculationInfo }}
-          validationSchema={FORM_VALIDATION}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting, dirty }) => (
-            <Form>
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-start"
-                justify="flex-start"
-                direction="row"
-              >
-                <Grid container item xs={12} sm={6} spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      required
-                      id="title"
-                      label="Titel"
-                      name="title"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      required
-                      id="articleButtonText"
-                      label="Regelgeving knop tekst"
-                      name="articleButtonText"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      required
-                      id="listIndex"
-                      label="Lijst index"
-                      name="listIndex"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      multiline
-                      rows={3}
-                      rowsMax={8}
-                      required
-                      id="explanation"
-                      label="Toelichting"
-                      name="explanation"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FileDropZoneArea
-                      enableHtmlPreview={false}
-                      name="iconFile"
-                      formik={formikRef}
-                      showError={showError}
-                      dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                      allowedMimeTypes={['image/svg+xml']}
-                      initialFile={calculationInfo.iconFile}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FileDropZoneArea
-                      enableHtmlPreview={false}
-                      name="calculationImage"
-                      formik={formikRef}
-                      showError={showError}
-                      dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
-                      allowedMimeTypes={['image/jpeg']}
-                      initialFile={calculationInfo.calculationImage}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item sm={6} spacing={0}>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{ marginLeft: 18, marginRight: -18 }}
-                  >
-                    <ArticleEditor
-                      showError={showError}
-                      formik={formikRef}
-                      initialFile={calculationInfo.htmlFile}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <div className={classes.submit}>
-                <SubmitButton
-                  setShowError={setShowError}
-                  disabled={isSubmitting || !dirty}
+    <>
+      <Navigation gridWidth="wide">
+        <PageHeading title="Pagina bewerken">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => history.goBack()}
+          >
+            Terug
+          </Button>
+        </PageHeading>
+        {calculationInfo && (
+          <Formik
+            innerRef={formikRef}
+            initialValues={{ ...calculationInfo }}
+            validationSchema={FORM_VALIDATION}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, dirty }) => (
+              <Form>
+                <Grid
+                  container
+                  spacing={0}
+                  alignItems="flex-start"
+                  justify="flex-start"
+                  direction="row"
                 >
-                  Wijzigen
-                </SubmitButton>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      )}
-    </Navigation>
+                  <Grid container item xs={12} sm={6} spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        showError={showError}
+                        required
+                        id="title"
+                        label="Titel"
+                        name="title"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        showError={showError}
+                        required
+                        id="articleButtonText"
+                        label="Regelgeving knop tekst"
+                        name="articleButtonText"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        showError={showError}
+                        required
+                        id="listIndex"
+                        label="Lijst index"
+                        name="listIndex"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        showError={showError}
+                        multiline
+                        rows={3}
+                        rowsMax={8}
+                        required
+                        id="explanation"
+                        label="Toelichting"
+                        name="explanation"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FileDropZoneArea
+                        enableHtmlPreview={false}
+                        name="iconFile"
+                        formik={formikRef}
+                        showError={showError}
+                        dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
+                        allowedMimeTypes={['image/svg+xml']}
+                        initialFile={calculationInfo.iconFile}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FileDropZoneArea
+                        enableHtmlPreview={false}
+                        name="calculationImage"
+                        formik={formikRef}
+                        showError={showError}
+                        dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
+                        allowedMimeTypes={['image/jpeg']}
+                        initialFile={calculationInfo.calculationImage}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item sm={6} spacing={0}>
+                    <Grid
+                      item
+                      xs={12}
+                      style={{ marginLeft: 18, marginRight: -18 }}
+                    >
+                      <ArticleEditor
+                        showError={showError}
+                        formik={formikRef}
+                        initialFile={calculationInfo.htmlFile}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <div className={classes.submit}>
+                  <SubmitButton
+                    setShowError={setShowError}
+                    disabled={isSubmitting || !dirty}
+                  >
+                    Wijzigen
+                  </SubmitButton>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        )}
+      </Navigation>
+      <div style={{ height: 100 }} />
+    </>
   );
 };
 
