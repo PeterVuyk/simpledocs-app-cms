@@ -84,12 +84,12 @@ function getDefaultHtmlTemplate(): string {
               color: white;
           }
       </style>
-      <Article>
+      <article>
         <div>
             <h3>Titel</h3>
             <p>Paragraaf.</p>
         </div>
-      </Article>
+      </article>
       <div style="margin-top:50px"><br></div>
       `;
 }

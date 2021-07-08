@@ -77,6 +77,9 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     <>
       {content !== null && (
         <div style={{ position: 'relative' }}>
+          {getErrorMessage() !== '' && (
+            <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
+          )}
           {showSaveButton && (
             <SaveIcon
               style={{
@@ -103,9 +106,6 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
             initialFile={getBase64HtmlFile()}
             updateFileHandler={updateFileFromBase64Handler}
           />
-          {getErrorMessage() !== '' && (
-            <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
-          )}
         </div>
       )}
     </>

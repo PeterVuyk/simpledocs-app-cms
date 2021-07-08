@@ -27,7 +27,6 @@ const HtmlPageForm: FC<Props> = ({
   isNewHtmlFile,
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
 
@@ -37,7 +36,6 @@ const HtmlPageForm: FC<Props> = ({
   ) => {
     formik.setSubmitting(false);
     handleSubmit(values);
-    setSubmitButtonDisabled(false);
   };
 
   const initialFormState = () => {
@@ -52,9 +50,18 @@ const HtmlPageForm: FC<Props> = ({
 
   const formValidation = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    htmlFile: Yup.mixed().required(
-      'Het toevoegen van een html bestand is verplicht.'
-    ),
+    htmlFile: Yup.string()
+      .required('Het toevoegen van een html bestand is verplicht.')
+      .test(
+        'htmlFile',
+        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
+        async (htmlFile) => {
+          return (
+            (htmlFile as string).includes('<article>') &&
+            (htmlFile as string).includes('</article>')
+          );
+        }
+      ),
   });
 
   return (
@@ -65,41 +72,42 @@ const HtmlPageForm: FC<Props> = ({
         validationSchema={formValidation}
         onSubmit={handleSubmitForm}
       >
-        <Form>
-          <Grid
-            container
-            spacing={2}
-            alignItems="flex-start"
-            justify="flex-start"
-            direction="row"
-          >
-            <Grid item xs={12}>
-              <TextField
-                showError={showError}
-                required
-                id="title"
-                label="Titel"
-                name="title"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ArticleEditor
-                showError={showError}
-                formik={formikRef}
-                initialFile={decisionTreeHtmlFile?.htmlFile ?? null}
-              />
-            </Grid>
-          </Grid>
-          <div className={classes.submit}>
-            <SubmitButton
-              submitButtonDisabled={submitButtonDisabled}
-              setSubmitButtonDisabled={setSubmitButtonDisabled}
-              setShowError={setShowError}
+        {({ isSubmitting, dirty }) => (
+          <Form>
+            <Grid
+              container
+              spacing={2}
+              alignItems="flex-start"
+              justify="flex-start"
+              direction="row"
             >
-              {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
-            </SubmitButton>
-          </div>
-        </Form>
+              <Grid item xs={12}>
+                <TextField
+                  showError={showError}
+                  required
+                  id="title"
+                  label="Titel"
+                  name="title"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ArticleEditor
+                  showError={showError}
+                  formik={formikRef}
+                  initialFile={decisionTreeHtmlFile?.htmlFile ?? null}
+                />
+              </Grid>
+            </Grid>
+            <div className={classes.submit}>
+              <SubmitButton
+                setShowError={setShowError}
+                disabled={isSubmitting || !dirty}
+              >
+                {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
+              </SubmitButton>
+            </div>
+          </Form>
+        )}
       </Formik>
     </Paper>
   );
