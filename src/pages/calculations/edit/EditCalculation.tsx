@@ -131,7 +131,7 @@ const EditCalculation: FC<Props> = ({
 
   return (
     <>
-      <Navigation gridWidth="wide">
+      <Navigation>
         <PageHeading title="Pagina bewerken">
           <Button
             variant="contained"

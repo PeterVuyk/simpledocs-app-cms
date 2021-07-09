@@ -15,10 +15,9 @@ import articleTypeHelper from '../../helper/articleTypeHelper';
 
 interface Props {
   children: ReactNode;
-  gridWidth: 'default' | 'wide';
 }
 
-const Navigation: FC<Props> = ({ children, gridWidth }) => {
+const Navigation: FC<Props> = ({ children }) => {
   const [regulationsMenu, setRegulationsMenu] = useState<null | HTMLElement>(
     null
   );
@@ -82,43 +81,6 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
     }
   };
 
-  const defaultGridWidth = () => {
-    return (
-      <Grid item container>
-        <Grid item sm={false} lg={2} />
-        <Grid item sm={12} lg={8}>
-          <CssBaseline />
-          {selectedTab === 0 && (
-            <Articles articleType={AT_INSTRUCTION_MANUAL} />
-          )}
-          {selectedTab === 1 && page !== '' && (
-            <Articles
-              articleType={articleTypeHelper.dashedPathToArticleType(page)}
-            />
-          )}
-          {selectedTab === 2 && <DecisionTree />}
-          {selectedTab === 3 && <Calculations />}
-          {selectedTab === 4 && <Publications />}
-          {children && children}
-        </Grid>
-        <Grid item sm={false} lg={2} />
-      </Grid>
-    );
-  };
-
-  const wideGridWidth = () => {
-    return (
-      <Grid item container>
-        <Grid item sm={false} lg={1} />
-        <Grid item sm={10} lg={10}>
-          <CssBaseline />
-          {children && children}
-        </Grid>
-        <Grid item sm={false} lg={1} />
-      </Grid>
-    );
-  };
-
   return (
     <>
       <Grid spacing={0} container direction="column">
@@ -141,8 +103,25 @@ const Navigation: FC<Props> = ({ children, gridWidth }) => {
             />
           </Header>
         </Grid>
-        {gridWidth === 'default' && defaultGridWidth()}
-        {gridWidth === 'wide' && wideGridWidth()}
+        <Grid item container>
+          <Grid item sm={false} lg={1} />
+          <Grid item sm={10} lg={10}>
+            <CssBaseline />
+            {selectedTab === 0 && (
+              <Articles articleType={AT_INSTRUCTION_MANUAL} />
+            )}
+            {selectedTab === 1 && page !== '' && (
+              <Articles
+                articleType={articleTypeHelper.dashedPathToArticleType(page)}
+              />
+            )}
+            {selectedTab === 2 && <DecisionTree />}
+            {selectedTab === 3 && <Calculations />}
+            {selectedTab === 4 && <Publications />}
+            {children && children}
+          </Grid>
+          <Grid item sm={false} lg={1} />
+        </Grid>
       </Grid>
     </>
   );

@@ -70,7 +70,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Navigation gridWidth="wide">
+    <Navigation>
       <>
         <PageHeading title="Pagina bewerken" style={{ marginRight: 18 }}>
           <Button

@@ -61,7 +61,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Navigation gridWidth="wide">
+    <Navigation>
       <PageHeading title="Pagina toevoegen" style={{ marginRight: 18 }}>
         <Button
           variant="contained"

@@ -29,16 +29,12 @@ const AppRouter: FC = () => {
           <PrivateRoute
             exact
             path="/article/:page?"
-            Component={(props: any) => (
-              <Navigation gridWidth="default" {...props} />
-            )}
+            Component={(props: any) => <Navigation {...props} />}
           />
           <PrivateRoute
             exact
             path="/:page?"
-            Component={(props: any) => (
-              <Navigation gridWidth="default" {...props} />
-            )}
+            Component={(props: any) => <Navigation {...props} />}
           />
           <PrivateRoute
             exact

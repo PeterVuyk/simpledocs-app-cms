@@ -69,7 +69,7 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <Navigation gridWidth="wide">
+    <Navigation>
       <>
         <PageHeading
           title={`HTML bestand ${isNewHtmlFile ? 'toevoegen' : 'wijzigen'}`}
