@@ -78,6 +78,7 @@ const EditCalculation: FC<Props> = ({
         'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
         async (htmlFile) => {
           return (
+            htmlFile !== undefined &&
             (htmlFile as string).includes('<article>') &&
             (htmlFile as string).includes('</article>')
           );

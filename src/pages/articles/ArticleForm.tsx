@@ -11,6 +11,7 @@ import articleRepository from '../../firebase/database/articleRepository';
 import ArticleEditor from '../../components/form/formik/ArticleEditor';
 import { ArticleType } from '../../model/ArticleType';
 import { Article } from '../../model/Article';
+import SearchTextField from '../../components/form/formik/SearchTextField';
 
 interface Props {
   handleSubmit: (values: FormikValues) => void;
@@ -116,6 +117,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
         'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
         async (htmlFile) => {
           return (
+            htmlFile !== undefined &&
             (htmlFile as string).includes('<article>') &&
             (htmlFile as string).includes('</article>')
           );
@@ -203,16 +205,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      multiline
-                      rows={5}
-                      rowsMax={12}
-                      required
-                      id="searchText"
-                      label="Zoektekst"
-                      name="searchText"
-                    />
+                    <SearchTextField showError={showError} />
                   </Grid>
                   <Grid item xs={12}>
                     <FileDropZoneArea
