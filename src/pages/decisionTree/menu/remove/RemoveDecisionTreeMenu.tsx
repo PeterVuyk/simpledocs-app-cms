@@ -2,13 +2,13 @@ import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
-import decisionTreeRepository from '../../../firebase/database/decisionTreeRepository';
-import RemoveConfirmationDialog from '../../../components/dialog/RemoveConfirmationDialog';
-import notification from '../../../redux/actions/notification';
-import logger from '../../../helper/logger';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-import { NotificationOptions } from '../../../model/NotificationOptions';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
+import RemoveConfirmationDialog from '../../../../components/dialog/RemoveConfirmationDialog';
+import notification from '../../../../redux/actions/notification';
+import logger from '../../../../helper/logger';
+import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
+import { NotificationOptions } from '../../../../model/NotificationOptions';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 
 interface Props {
   editStatus: EditStatus;

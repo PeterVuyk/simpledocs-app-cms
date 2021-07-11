@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import decisionTreeHtmlFilesRepository from '../../../../firebase/database/decisionTreeHtmlFilesRepository';
+import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 
 interface Props {
   editStatus: EditStatus;

@@ -76,9 +76,9 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                 </TableRow>
                 <TableRow key="2">
                   <TableCell className={classes.head}>
-                    <strong>Stopafstand afbeelding</strong>
+                    <strong>Afbeelding</strong>
                     <br />
-                    Beeldverhouding app: 4 / 3
+                    Beeldverhouding: 4 / 3
                   </TableCell>
                   <TableCell colSpan={6}>
                     <img

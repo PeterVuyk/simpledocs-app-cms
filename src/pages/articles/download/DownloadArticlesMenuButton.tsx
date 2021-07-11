@@ -3,12 +3,11 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 import { EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
 import { ArticleType } from '../../../model/ArticleType';
-import DownloadArticlesIconsMenuItem from './DownloadArticlesIconsMenuItem';
-import DownloadArticlesHTMLMenuItem from './DownloadArticlesHTMLMenuItem';
-import DownloadArticlesMenuItem from './DownloadArticlesMenuItem';
+import exportArticles from './exportArticles';
 
 const useStyles = makeStyles({
   button: {
@@ -32,8 +31,27 @@ const DownloadArticlesMenuButton: FC<Props> = ({
   const openDownloadMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDownloadMenuElement(event.currentTarget);
   };
-
   const classes = useStyles();
+
+  const exportCsvFile = () => {
+    exportArticles.csvFile(
+      articles,
+      editStatus,
+      `${articleType}-${editStatus}.csv`
+    );
+  };
+
+  const exportHTMLFiles = () => {
+    exportArticles.htmlFiles(articles, `${articleType}-${editStatus}-html.zip`);
+  };
+
+  const exportIcons = () => {
+    exportArticles.icons(
+      articles,
+      `${articleType}-${editStatus}--illustraties.zip`
+    );
+  };
+
   return (
     <>
       <Button
@@ -50,21 +68,15 @@ const DownloadArticlesMenuButton: FC<Props> = ({
         open={Boolean(downloadMenuElement)}
         onClose={() => setDownloadMenuElement(null)}
       >
-        <DownloadArticlesMenuItem
-          editStatus={editStatus}
-          articles={articles}
-          articleType={articleType}
-        />
-        <DownloadArticlesHTMLMenuItem
-          editStatus={editStatus}
-          articles={articles}
-          articleType={articleType}
-        />
-        <DownloadArticlesIconsMenuItem
-          editStatus={editStatus}
-          articles={articles}
-          articleType={articleType}
-        />
+        <MenuItem key="csv" onClick={exportCsvFile}>
+          {articleType}-{editStatus}.csv
+        </MenuItem>
+        <MenuItem key="html" onClick={exportHTMLFiles}>
+          {articleType}-{editStatus}-html.zip
+        </MenuItem>
+        <MenuItem key="icon" onClick={exportIcons}>
+          {articleType}-{editStatus}-illustraties.zip
+        </MenuItem>
       </Menu>
     </>
   );

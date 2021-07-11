@@ -200,7 +200,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
           variant="contained"
           disabled={loading}
         >
-          Beslisboom updaten
+          Beslisboom uploaden
         </Button>
       </DialogActions>
     </Dialog>

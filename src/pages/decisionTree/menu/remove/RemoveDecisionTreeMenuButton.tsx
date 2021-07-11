@@ -2,9 +2,9 @@ import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
-import { EditStatus } from '../../../model/EditStatus';
+import { EditStatus } from '../../../../model/EditStatus';
 
 const useStyles = makeStyles({
   button: {

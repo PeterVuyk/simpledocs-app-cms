@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import { makeStyles } from '@material-ui/core/styles';
 import UndoMarkForDeletionDecisionTreeMenu from './UndoMarkForDeletionDecisionTreeMenu';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 
 const useStyles = makeStyles({
   button: {

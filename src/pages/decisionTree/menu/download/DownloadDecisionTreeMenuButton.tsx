@@ -2,9 +2,9 @@ import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
+import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
-import { EditStatus } from '../../../model/EditStatus';
+import { EditStatus } from '../../../../model/EditStatus';
 
 const useStyles = makeStyles({
   button: {
