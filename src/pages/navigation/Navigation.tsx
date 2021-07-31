@@ -12,6 +12,7 @@ import Articles from '../articles/list/Articles';
 import { AT_INSTRUCTION_MANUAL } from '../../model/ArticleType';
 import RegulationNavigationMenu from './RegulationNavigationMenu';
 import articleTypeHelper from '../../helper/articleTypeHelper';
+import Configurations from '../configurations/Configurations';
 
 interface Props {
   children: ReactNode;
@@ -32,7 +33,8 @@ const Navigation: FC<Props> = ({ children }) => {
     regulations: 1,
     decisionTree: 2,
     calculations: 3,
-    publications: 4,
+    configurations: 4,
+    publications: 5,
   };
 
   const [selectedTab, setSelectedTab] = useState<number | undefined>(
@@ -58,8 +60,11 @@ const Navigation: FC<Props> = ({ children }) => {
     if (page === 'calculations') {
       setSelectedTab(3);
     }
-    if (page === 'publications') {
+    if (page === 'configurations') {
       setSelectedTab(4);
+    }
+    if (page === 'publications') {
+      setSelectedTab(5);
     }
   }, [page]);
 
@@ -77,6 +82,9 @@ const Navigation: FC<Props> = ({ children }) => {
       history.push('/calculations');
     }
     if (newValue === 4) {
+      history.push('/configurations');
+    }
+    if (newValue === 5) {
       history.push('/publications');
     }
   };
@@ -95,6 +103,7 @@ const Navigation: FC<Props> = ({ children }) => {
               <Tab label="Regelgeving" />
               <Tab label="Beslisboom" />
               <Tab label="Berekeningen" />
+              <Tab label="Configuratie" />
               <Tab label="Publiceren" />
             </Tabs>
             <RegulationNavigationMenu
@@ -117,7 +126,8 @@ const Navigation: FC<Props> = ({ children }) => {
             )}
             {selectedTab === 2 && <DecisionTree />}
             {selectedTab === 3 && <Calculations />}
-            {selectedTab === 4 && <Publications />}
+            {selectedTab === 4 && <Configurations />}
+            {selectedTab === 5 && <Publications />}
             {children && children}
           </Grid>
           <Grid item sm={false} lg={1} />

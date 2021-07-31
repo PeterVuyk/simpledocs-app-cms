@@ -119,11 +119,11 @@ async function publishUpdatedArticles(
   const batch = database.batch();
 
   // 1: Update version:
-  const DocumentSnapshotAggregate = await database
+  const documentSnapshotAggregate = await database
     .collection('versioning')
     .doc('aggregate')
     .get();
-  batch.update(DocumentSnapshotAggregate.ref, {
+  batch.update(documentSnapshotAggregate.ref, {
     [versioning.aggregate]: newVersion,
   });
 

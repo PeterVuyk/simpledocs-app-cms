@@ -1,4 +1,5 @@
 import {
+  AGGREGATE_APP_CONFIG,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   AGGREGATE_INSTRUCTION_MANUAL,
@@ -24,6 +25,8 @@ const getTranslatedAggregate = (aggregate: string): string => {
       return 'Beslisboom';
     case AGGREGATE_CALCULATIONS:
       return 'Berekeningen';
+    case AGGREGATE_APP_CONFIG:
+      return 'Configuratie app';
     default:
       return 'Onbekend';
   }

@@ -23,7 +23,7 @@ interface Props {
   openDialog: boolean;
   setOpenDialog: (showDialog: boolean) => void;
   onSubmit: (itemId: string) => void;
-  itemId: string;
+  itemId?: string;
 }
 
 const ConfirmationDialog: FC<Props> = ({
@@ -39,7 +39,7 @@ const ConfirmationDialog: FC<Props> = ({
   };
 
   const handleSubmit = () => {
-    onSubmit(itemId);
+    onSubmit(itemId ?? '');
     handleClose();
   };
 
