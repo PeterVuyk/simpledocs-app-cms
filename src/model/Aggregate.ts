@@ -8,3 +8,4 @@ export const AGGREGATE_INSTRUCTION_MANUAL = 'instructionManual';
 export const AGGREGATE_DECISION_TREE = 'decisionTree';
 export const AGGREGATE_CALCULATIONS = 'calculations';
 export const AGGREGATE_APP_CONFIG = 'appConfig';
+export const AGGREGATE_APP_CONFIG_DRAFT = 'appConfigDraft';
