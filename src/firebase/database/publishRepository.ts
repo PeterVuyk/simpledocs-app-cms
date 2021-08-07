@@ -1,5 +1,7 @@
 import { database } from '../firebaseConnection';
 import {
+  AGGREGATE_APP_CONFIG,
+  AGGREGATE_APP_CONFIG_DRAFT,
   AGGREGATE_DECISION_TREE,
   AGGREGATE_INSTRUCTION_MANUAL,
   AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
@@ -112,6 +114,43 @@ async function publishDecisionTree(
   return batch.commit();
 }
 
+async function publishUpdatedAppConfig(
+  versioning: Versioning,
+  newVersion: string
+): Promise<void> {
+  const batch = database.batch();
+
+  // 1: Update version
+  const DocumentSnapshotAggregate = await database
+    .collection('versioning')
+    .doc('aggregate')
+    .get();
+  batch.update(DocumentSnapshotAggregate.ref, {
+    [versioning.aggregate]: newVersion,
+  });
+
+  // 2: if a draft from the appConfig does not exist, return
+  const draftConfigurationRef = database
+    .collection('config')
+    .doc(AGGREGATE_APP_CONFIG_DRAFT);
+  const docSnapshot = await draftConfigurationRef.get();
+  if (!docSnapshot.exists) {
+    return batch.commit();
+  }
+
+  // 3: remove draft
+  const draftConfig = await draftConfigurationRef.get();
+  batch.delete(draftConfigurationRef);
+
+  // 4: overwrite published met draft
+  const publishedConfigurationRef = database
+    .collection('config')
+    .doc(AGGREGATE_APP_CONFIG);
+  batch.set(publishedConfigurationRef, draftConfig.data());
+
+  return batch.commit();
+}
+
 async function publishUpdatedArticles(
   versioning: Versioning,
   newVersion: string
@@ -167,6 +206,11 @@ async function updateVersion(
     versioning.aggregate === AGGREGATE_INSTRUCTION_MANUAL
   ) {
     await publishUpdatedArticles(versioning, newVersion);
+    return;
+  }
+
+  if (versioning.aggregate === AGGREGATE_APP_CONFIG) {
+    await publishUpdatedAppConfig(versioning, newVersion);
     return;
   }
 

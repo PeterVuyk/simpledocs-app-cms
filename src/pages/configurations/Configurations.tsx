@@ -1,27 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 // @ts-ignore
 import { JsonEditor as Editor } from 'jsoneditor-react';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
 import { ConfigInfo } from '../../model/ConfigInfo';
 import configurationRepository from '../../firebase/database/configurationRepository';
-import ConfirmationDialog from '../../components/dialog/ConfirmationDialog';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
 import {
   EDIT_STATUS_DRAFT,
   EDIT_STATUS_PUBLISHED,
   EditStatus,
 } from '../../model/EditStatus';
-import logger from '../../helper/logger';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
+import RemoveConfigurationButton from './RemoveConfigurationButton';
+import EditConfigurationButton from './EditConfigurationButton';
 
 const Configurations: FC = () => {
   const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
@@ -30,9 +21,6 @@ const Configurations: FC = () => {
     useState<ConfigInfo | null | void>();
   const [showEditor, setShowEditor] = useState<boolean>(false);
   const [appConfig, setAppConfig] = useState<ConfigInfo | null | void>(null);
-  const [openConfirmationDialog, setOpenConfirmationDialog] =
-    useState<boolean>(false);
-  const classes = useStyles();
 
   useEffect(() => {
     configurationRepository
@@ -54,15 +42,6 @@ const Configurations: FC = () => {
       setHasDraft(true);
       setAppConfig(null);
     });
-  };
-
-  const removeConfigDraft = () => {
-    configurationRepository
-      .removeConfigurationDraft()
-      .then(() => window.location.reload())
-      .catch((reason) =>
-        logger.errorWithReason('Failed to remove configuration draft', reason)
-      );
   };
 
   const toggleEditStatus = () => {
@@ -90,40 +69,16 @@ const Configurations: FC = () => {
           setEditStatus={toggleEditStatus}
         />
         {editStatus === EDIT_STATUS_DRAFT && initialAppConfig && (
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="secondary"
-            onClick={removeConfigDraft}
-          >
-            <DeleteTwoToneIcon />
-          </Button>
+          <RemoveConfigurationButton />
         )}
         {showEditButton() && (
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            disabled={appConfig === null}
-            onClick={() => appConfig && setOpenConfirmationDialog(true)}
-          >
-            Wijzigingen opslaan
-          </Button>
+          <EditConfigurationButton appConfig={appConfig!} onSubmit={onSubmit} />
         )}
       </PageHeading>
       {showEditor && initialAppConfig && (
         <Editor value={initialAppConfig} onChange={setAppConfig} />
       )}
       {showEditor && !initialAppConfig && <p>Geen wijzigingen.</p>}
-      {openConfirmationDialog && (
-        <ConfirmationDialog
-          dialogTitle="Aanpassing bevestiging"
-          dialogText="Weet je zeker dat je de aangebrachte wijzigingen wilt opslaan?"
-          openDialog={openConfirmationDialog}
-          setOpenDialog={setOpenConfirmationDialog}
-          onSubmit={() => onSubmit('')}
-        />
-      )}
     </>
   );
 };
