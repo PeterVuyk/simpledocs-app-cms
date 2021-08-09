@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     backgroundColor: '#fff',
-    zIndex: 100000,
+    zIndex: theme.zIndex.drawer - 1,
     borderTopWidth: 1,
     borderTopColor: '#898989',
   },

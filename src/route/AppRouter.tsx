@@ -25,10 +25,10 @@ const AppRouter: FC = () => {
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
-          <Redirect exact from="/" to="/article/instruction-manual" />
+          <Redirect exact from="/" to="/books/instruction-manual" />
           <PrivateRoute
             exact
-            path="/article/:page?"
+            path="/books/:page?"
             Component={(props: any) => <Navigation {...props} />}
           />
           <PrivateRoute
@@ -58,7 +58,7 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/article/:aggregatePath/add"
+            path="/books/:aggregatePath/add"
             Component={CreateArticle}
           />
           <PrivateRoute
@@ -73,7 +73,7 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/article/:aggregatePath/:articleId"
+            path="/books/:aggregatePath/:articleId"
             Component={EditArticle}
           />
         </Switch>

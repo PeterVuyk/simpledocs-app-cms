@@ -6,9 +6,9 @@ export interface BottomTab {
   title: string;
 }
 
-export interface ArticleInfo {
+export interface BookInfo {
   index: number;
-  articleType: string;
+  bookType: string;
   title: string;
   showLevelsInList: string[];
   showLevelsInIntermediateList: string[];
@@ -25,7 +25,7 @@ export interface DecisionsTab {
 
 export interface TabInfo {
   bottomTab: BottomTab;
-  articleTypes: ArticleInfo[];
+  bookTypes: BookInfo[];
   title?: string;
   subTitle?: string;
 }
@@ -34,5 +34,5 @@ export interface ConfigInfo {
   firstTab: TabInfo;
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;
-  defaultArticleTypeSearch: string;
+  defaultBookTypeSearch: string;
 }

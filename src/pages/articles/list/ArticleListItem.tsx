@@ -9,10 +9,10 @@ import articleRepository from '../../../firebase/database/articleRepository';
 import notification from '../../../redux/actions/notification';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { ArticleType } from '../../../model/ArticleType';
+import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
-import articleTypeHelper from '../../../helper/articleTypeHelper';
+import bookTypeHelper from '../../../helper/bookTypeHelper';
 import DownloadHtmlFileAction from '../../../components/ItemAction/DownloadHtmlFileAction';
 import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
@@ -31,7 +31,7 @@ interface Props {
   loadArticlesHandle: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: EditStatus;
-  articleType: ArticleType;
+  bookType: BookType;
 }
 
 const ArticleListItem: FC<Props> = ({
@@ -39,7 +39,7 @@ const ArticleListItem: FC<Props> = ({
   loadArticlesHandle,
   setNotification,
   editStatus,
-  articleType,
+  bookType,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -61,7 +61,7 @@ const ArticleListItem: FC<Props> = ({
   const onDelete = (id: string): void => {
     if (article.isDraft) {
       articleRepository
-        .deleteArticle(articleType, id)
+        .deleteArticle(bookType, id)
         .then(() => loadArticlesHandle())
         .then(() =>
           setNotification({
@@ -76,7 +76,7 @@ const ArticleListItem: FC<Props> = ({
       return;
     }
     articleRepository
-      .markArticleForDeletion(articleType, id)
+      .markArticleForDeletion(bookType, id)
       .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
@@ -92,7 +92,7 @@ const ArticleListItem: FC<Props> = ({
 
   const undoMarkDeletion = () => {
     articleRepository
-      .removeMarkForDeletion(articleType, article.id ?? '')
+      .removeMarkForDeletion(bookType, article.id ?? '')
       .then(() => loadArticlesHandle())
       .then(() =>
         setNotification({
@@ -111,9 +111,7 @@ const ArticleListItem: FC<Props> = ({
   };
 
   const getEditUrl = () =>
-    `/article/${articleTypeHelper.articleTypeToDashedPath(articleType)}/${
-      article.id
-    }`;
+    `/books/${bookTypeHelper.bookTypeToDashedPath(bookType)}/${article.id}`;
 
   const getDeleteTitle = () => {
     return editStatus === EDIT_STATUS_DRAFT

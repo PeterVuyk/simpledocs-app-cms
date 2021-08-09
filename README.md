@@ -9,7 +9,7 @@ Make sure you are using node 12, we recommend you to use node version manager (n
 
 In the project directory, you can run:
 
-    `npm start`
+    npm start
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -22,11 +22,11 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
-    `npm run build`
+    npm run build
 
 Finaly deploy your hosting content and config to the live channel
 
-    `firebase deploy`
+    firebase deploy
 
 ## User management
 

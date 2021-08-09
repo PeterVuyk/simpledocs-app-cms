@@ -1,48 +1,48 @@
 import firebase from 'firebase/app';
 import { database } from '../firebaseConnection';
-import { ArticleType } from '../../model/ArticleType';
+import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 
 async function createArticle(
-  articleType: ArticleType,
+  bookType: BookType,
   article: Article
 ): Promise<void> {
-  await database.collection(articleType).add(article);
+  await database.collection(bookType).add(article);
 }
 
 async function deleteArticle(
-  articleType: ArticleType,
+  bookType: BookType,
   articleId: string
 ): Promise<void> {
-  await database.collection(articleType).doc(articleId).delete();
+  await database.collection(bookType).doc(articleId).delete();
 }
 
 async function markArticleForDeletion(
-  articleType: ArticleType,
+  bookType: BookType,
   articleId: string
 ): Promise<void> {
   await database
-    .collection(articleType)
+    .collection(bookType)
     .doc(articleId)
     .update({ markedForDeletion: true });
 }
 
 async function removeMarkForDeletion(
-  articleType: ArticleType,
+  bookType: BookType,
   articleId: string
 ): Promise<void> {
-  const articleRef = database.collection(articleType).doc(articleId);
+  const articleRef = database.collection(bookType).doc(articleId);
   return articleRef.update({
     markedForDeletion: firebase.firestore.FieldValue.delete(),
   });
 }
 
 async function getArticles(
-  articleType: ArticleType,
+  bookType: BookType,
   draftArticles: boolean
 ): Promise<Article[]> {
   const querySnapshot = await database
-    .collection(articleType)
+    .collection(bookType)
     .orderBy('pageIndex', 'asc')
     .get();
   const articles = querySnapshot.docs.map((doc) => {
@@ -57,20 +57,20 @@ async function getArticles(
 }
 
 async function getArticleById(
-  articleType: ArticleType,
+  bookType: BookType,
   id: string
 ): Promise<Article> {
-  const documentSnapshot = await database.collection(articleType).doc(id).get();
+  const documentSnapshot = await database.collection(bookType).doc(id).get();
   return { id: documentSnapshot.id, ...documentSnapshot.data() } as Article;
 }
 
 async function getArticlesByField(
-  articleType: ArticleType,
+  bookType: BookType,
   fieldName: string,
   fieldValue: string
 ): Promise<Article[]> {
   const querySnapshot = await database
-    .collection(articleType)
+    .collection(bookType)
     .where(fieldName, '==', fieldValue)
     .get();
   return querySnapshot.docs.map((doc) => {
@@ -79,25 +79,23 @@ async function getArticlesByField(
 }
 
 async function updateArticle(
-  articleType: ArticleType,
+  bookType: BookType,
   chapter: string,
   article: Article
 ): Promise<void> {
-  const isDraft = await getArticlesByField(
-    articleType,
-    'chapter',
-    chapter
-  ).then((result) => result.some((value) => value.isDraft));
+  const isDraft = await getArticlesByField(bookType, 'chapter', chapter).then(
+    (result) => result.some((value) => value.isDraft)
+  );
 
   const articleId = article.id;
   const updatedArticle = article;
   delete updatedArticle.id;
 
   if (isDraft) {
-    await database.collection(articleType).doc(articleId).set(updatedArticle);
+    await database.collection(bookType).doc(articleId).set(updatedArticle);
   } else {
-    await createArticle(articleType, updatedArticle).then(() =>
-      markArticleForDeletion(articleType, articleId ?? '')
+    await createArticle(bookType, updatedArticle).then(() =>
+      markArticleForDeletion(bookType, articleId ?? '')
     );
   }
 }

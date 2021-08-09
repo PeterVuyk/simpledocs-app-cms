@@ -27,7 +27,7 @@ const RegulationNavigationMenu: FC<Props> = ({
 
   const onClick = (path: string) => {
     handleClose();
-    history.push(`/article/${path}`);
+    history.push(`/books/${path}`);
   };
 
   return (

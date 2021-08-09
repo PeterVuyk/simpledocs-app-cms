@@ -13,6 +13,9 @@ const cmsTheme = createMuiTheme({
       dark: '#b20000',
     },
   },
+  zIndex: {
+    drawer: 1000,
+  },
   typography: {
     h5: {
       fontWeight: 500,

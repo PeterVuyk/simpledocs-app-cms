@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
-import { ArticleType } from '../../../model/ArticleType';
+import { BookType } from '../../../model/BookType';
 import exportArticles from './exportArticles';
 
 const useStyles = makeStyles({
@@ -18,13 +18,13 @@ const useStyles = makeStyles({
 interface Props {
   editStatus: EditStatus;
   articles: Article[];
-  articleType: ArticleType;
+  bookType: BookType;
 }
 
 const DownloadArticlesMenuButton: FC<Props> = ({
   editStatus,
   articles,
-  articleType,
+  bookType,
 }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
     useState<null | HTMLElement>(null);
@@ -37,18 +37,18 @@ const DownloadArticlesMenuButton: FC<Props> = ({
     exportArticles.csvFile(
       articles,
       editStatus,
-      `${articleType}-${editStatus}.csv`
+      `${bookType}-${editStatus}.csv`
     );
   };
 
   const exportHTMLFiles = () => {
-    exportArticles.htmlFiles(articles, `${articleType}-${editStatus}-html.zip`);
+    exportArticles.htmlFiles(articles, `${bookType}-${editStatus}-html.zip`);
   };
 
   const exportIcons = () => {
     exportArticles.icons(
       articles,
-      `${articleType}-${editStatus}--illustraties.zip`
+      `${bookType}-${editStatus}--illustraties.zip`
     );
   };
 
@@ -69,13 +69,13 @@ const DownloadArticlesMenuButton: FC<Props> = ({
         onClose={() => setDownloadMenuElement(null)}
       >
         <MenuItem key="csv" onClick={exportCsvFile}>
-          {articleType}-{editStatus}.csv
+          {bookType}-{editStatus}.csv
         </MenuItem>
         <MenuItem key="html" onClick={exportHTMLFiles}>
-          {articleType}-{editStatus}-html.zip
+          {bookType}-{editStatus}-html.zip
         </MenuItem>
         <MenuItem key="icon" onClick={exportIcons}>
-          {articleType}-{editStatus}-illustraties.zip
+          {bookType}-{editStatus}-illustraties.zip
         </MenuItem>
       </Menu>
     </>

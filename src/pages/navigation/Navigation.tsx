@@ -64,21 +64,21 @@ const Navigation: FC<Props> = (props: Props) => {
   const getPage = () => {
     switch (page) {
       case 'instruction-manual':
-        return <Articles articleType={AGGREGATE_INSTRUCTION_MANUAL} />;
+        return <Articles bookType={AGGREGATE_INSTRUCTION_MANUAL} />;
       case 'rvv-1990':
-        return <Articles articleType={AGGREGATE_REGULATION_RVV_1990} />;
+        return <Articles bookType={AGGREGATE_REGULATION_RVV_1990} />;
       case 'regeling-ogs-2009':
-        return <Articles articleType={AGGREGATE_REGULATION_OGS_2009} />;
+        return <Articles bookType={AGGREGATE_REGULATION_OGS_2009} />;
       case 'ontheffing-goede-taakuitoefening':
         return (
           <Articles
-            articleType={AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING}
+            bookType={AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING}
           />
         );
       case 'brancherichtlijn-medische-hulpverlening':
         return (
           <Articles
-            articleType={
+            bookType={
               AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING
             }
           />

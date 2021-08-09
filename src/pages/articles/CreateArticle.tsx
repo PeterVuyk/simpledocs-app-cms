@@ -9,9 +9,9 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import { ArticleType } from '../../model/ArticleType';
+import { BookType } from '../../model/BookType';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import articleTypeHelper from '../../helper/articleTypeHelper';
+import bookTypeHelper from '../../helper/bookTypeHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
 
 interface Props {
@@ -22,13 +22,12 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
 
-  const articleType: ArticleType =
-    articleTypeHelper.dashedPathToArticleType(aggregatePath);
+  const bookType: BookType = bookTypeHelper.dashedPathToBookType(aggregatePath);
 
   const handleSubmit = (values: FormikValues): void => {
     // TODO: Disable submit button eerst. Dan hieronder.
     articleRepository
-      .createArticle(articleType, {
+      .createArticle(bookType, {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -39,7 +38,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push(`/article/${aggregatePath}`))
+      .then(() => history.push(`/books/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -71,7 +70,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm handleSubmit={handleSubmit} articleType={articleType} />
+      <ArticleForm handleSubmit={handleSubmit} bookType={bookType} />
     </Navigation>
   );
 };

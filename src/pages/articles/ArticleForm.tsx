@@ -8,17 +8,17 @@ import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import articleRepository from '../../firebase/database/articleRepository';
 import ArticleEditor from '../../components/form/formik/ArticleEditor';
-import { ArticleType } from '../../model/ArticleType';
+import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
 
 interface Props {
   handleSubmit: (values: FormikValues) => void;
   article?: Article;
-  articleType: ArticleType;
+  bookType: BookType;
 }
 
-const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
+const ArticleForm: FC<Props> = ({ handleSubmit, article, bookType }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
 
@@ -54,7 +54,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, articleType }) => {
       return true;
     }
     const articles: Article[] = await articleRepository.getArticlesByField(
-      articleType,
+      bookType,
       fieldName,
       fieldValue
     );

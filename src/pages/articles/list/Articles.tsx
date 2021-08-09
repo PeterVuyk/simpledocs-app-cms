@@ -7,9 +7,9 @@ import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { ArticleType } from '../../../model/ArticleType';
+import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
-import articleTypeHelper from '../../../helper/articleTypeHelper';
+import bookTypeHelper from '../../../helper/bookTypeHelper';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 
 const useStyles = makeStyles({
@@ -25,10 +25,10 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  articleType: ArticleType;
+  bookType: BookType;
 }
 
-const Articles: FC<Props> = ({ articleType }) => {
+const Articles: FC<Props> = ({ bookType }) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
   const classes = useStyles();
@@ -37,28 +37,26 @@ const Articles: FC<Props> = ({ articleType }) => {
   const loadArticlesHandle = (): void => {
     setArticles([]);
     articleRepository
-      .getArticles(articleType, editStatus === EDIT_STATUS_DRAFT)
+      .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
   };
 
   useEffect(() => {
     articleRepository
-      .getArticles(articleType, editStatus === EDIT_STATUS_DRAFT)
+      .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
-  }, [articleType, editStatus]);
+  }, [bookType, editStatus]);
 
   const getAddArticlePath = () => {
     return {
-      pathname: `/article/${articleTypeHelper.articleTypeToDashedPath(
-        articleType
-      )}/add`,
-      articleType,
+      pathname: `/books/${bookTypeHelper.bookTypeToDashedPath(bookType)}/add`,
+      bookType,
     };
   };
 
   return (
     <>
-      <PageHeading title={articleTypeHelper.getTitleByArticleType(articleType)}>
+      <PageHeading title={bookTypeHelper.getTitleByBookType(bookType)}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}
@@ -66,7 +64,7 @@ const Articles: FC<Props> = ({ articleType }) => {
         {articles.length !== 0 && (
           <DownloadArticlesMenuButton
             articles={articles}
-            articleType={articleType}
+            bookType={bookType}
             editStatus={editStatus}
           />
         )}
@@ -83,7 +81,7 @@ const Articles: FC<Props> = ({ articleType }) => {
         editStatus={editStatus}
         loadArticlesHandle={loadArticlesHandle}
         articles={articles}
-        articleType={articleType}
+        bookType={bookType}
       />
     </>
   );

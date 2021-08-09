@@ -168,7 +168,7 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
     }
 
     if (id === 'Boeken') {
-      history.push(`/article/${urlSlug}`);
+      history.push(`/books/${urlSlug}`);
     } else {
       history.push(`/${urlSlug}`);
     }

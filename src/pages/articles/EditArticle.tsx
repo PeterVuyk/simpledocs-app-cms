@@ -9,10 +9,10 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import Navigation from '../navigation/Navigation';
-import { ArticleType } from '../../model/ArticleType';
+import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import articleTypeHelper from '../../helper/articleTypeHelper';
+import bookTypeHelper from '../../helper/bookTypeHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
 
 interface Props {
@@ -24,18 +24,17 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
-  const articleType: ArticleType =
-    articleTypeHelper.dashedPathToArticleType(aggregatePath);
+  const bookType: BookType = bookTypeHelper.dashedPathToBookType(aggregatePath);
 
   useEffect(() => {
     articleRepository
-      .getArticleById(articleType, articleId)
+      .getArticleById(bookType, articleId)
       .then((result) => setArticle(result));
-  }, [aggregatePath, articleType, articleId]);
+  }, [aggregatePath, bookType, articleId]);
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
     await articleRepository
-      .updateArticle(articleType, article?.chapter ?? '', {
+      .updateArticle(bookType, article?.chapter ?? '', {
         id: article?.id,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
@@ -47,7 +46,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         iconFile: values.iconFile,
         isDraft: true,
       })
-      .then(() => history.push(`/article/${aggregatePath}`))
+      .then(() => history.push(`/books/${aggregatePath}`))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -84,7 +83,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         <ArticleForm
           article={article}
           handleSubmit={handleSubmit}
-          articleType={articleType}
+          bookType={bookType}
         />
       )}
     </Navigation>
