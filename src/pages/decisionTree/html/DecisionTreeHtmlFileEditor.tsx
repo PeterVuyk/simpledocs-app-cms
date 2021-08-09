@@ -70,27 +70,25 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
 
   return (
     <Navigation>
-      <>
-        <PageHeading
-          title={`HTML bestand ${isNewHtmlFile ? 'toevoegen' : 'wijzigen'}`}
-          style={{ marginRight: 18 }}
+      <PageHeading
+        title={`HTML bestand ${isNewHtmlFile ? 'toevoegen' : 'wijzigen'}`}
+        style={{ marginRight: 18 }}
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => history.goBack()}
         >
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => history.goBack()}
-          >
-            Terug
-          </Button>
-        </PageHeading>
-        {decisionTreeHtmlFile && (
-          <HtmlPageForm
-            isNewHtmlFile={isNewHtmlFile}
-            handleSubmit={handleSubmit}
-            decisionTreeHtmlFile={decisionTreeHtmlFile}
-          />
-        )}
-      </>
+          Terug
+        </Button>
+      </PageHeading>
+      {decisionTreeHtmlFile && (
+        <HtmlPageForm
+          isNewHtmlFile={isNewHtmlFile}
+          handleSubmit={handleSubmit}
+          decisionTreeHtmlFile={decisionTreeHtmlFile}
+        />
+      )}
     </Navigation>
   );
 };

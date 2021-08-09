@@ -1,96 +1,70 @@
-import React, { FC, ReactNode, useState } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import React, { ReactNode } from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../authentication/AuthProvider';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import {
+  createStyles,
+  Theme,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core/styles';
+import UserProfile from './UserProfile';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  headerItem: {
-    flexGrow: 1,
-  },
-}));
+const styles = (theme: Theme) =>
+  createStyles({
+    menuButton: {
+      marginLeft: -theme.spacing(1),
+    },
+    app: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    main: {
+      flex: 1,
+      padding: theme.spacing(0, 4),
+      background: '#fff',
+    },
+  });
 
-interface Props {
+interface HeaderProps extends WithStyles<typeof styles> {
+  onDrawerToggle: () => void;
   children: ReactNode;
 }
 
-const Header: FC<Props> = ({ children }) => {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const { currentUser, logout } = useAuth();
-  const open = Boolean(anchorEl);
-  const history = useHistory();
-
-  const handleProfileMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseProfile = () => {
-    setAnchorEl(null);
-  };
-  async function handleLogout() {
-    setAnchorEl(null);
-    await logout();
-    history.push('/login');
-  }
+function Header(props: HeaderProps) {
+  const { classes, onDrawerToggle, children } = props;
 
   return (
-    <div className={classes.root}>
-      <AppBar elevation={0} position="fixed">
+    <div className={classes.app}>
+      <AppBar color="primary" position="sticky" elevation={0}>
         <Toolbar>
-          <Typography variant="h6" className={classes.headerItem}>
-            AZN App CMS
-          </Typography>
-          <div className={classes.headerItem}>{children}</div>
-          {currentUser !== null && (
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleProfileMenu}
-                color="inherit"
-              >
-                <Typography variant="body2" className={classes.headerItem}>
-                  {currentUser?.email}&nbsp;
-                </Typography>
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleCloseProfile}
-              >
-                <MenuItem onClick={handleLogout}>Uitloggen</MenuItem>
-              </Menu>
-            </div>
-          )}
+          <Grid container spacing={1} alignItems="center">
+            <Hidden smUp>
+              <Grid item>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={onDrawerToggle}
+                  className={classes.menuButton}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Grid>
+            </Hidden>
+            <Grid item xs />
+            <Grid item>
+              <UserProfile />
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
+      <main className={classes.main}>{children}</main>
     </div>
   );
-};
+}
 
-export default Header;
+export default withStyles(styles)(Header);

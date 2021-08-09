@@ -71,24 +71,22 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
 
   return (
     <Navigation>
-      <>
-        <PageHeading title="Pagina bewerken" style={{ marginRight: 18 }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => history.goBack()}
-          >
-            Terug
-          </Button>
-        </PageHeading>
-        {article && (
-          <ArticleForm
-            article={article}
-            handleSubmit={handleSubmit}
-            articleType={articleType}
-          />
-        )}
-      </>
+      <PageHeading title="Pagina bewerken" style={{ marginRight: 18 }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => history.goBack()}
+        >
+          Terug
+        </Button>
+      </PageHeading>
+      {article && (
+        <ArticleForm
+          article={article}
+          handleSubmit={handleSubmit}
+          articleType={articleType}
+        />
+      )}
     </Navigation>
   );
 };

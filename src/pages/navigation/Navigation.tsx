@@ -1,140 +1,126 @@
-import React, { FC, ReactNode, useEffect, useState } from 'react';
-import { Tabs, Tab, Grid } from '@material-ui/core';
+import React, { FC, ReactNode } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useRouteMatch } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import {
+  createStyles,
+  withStyles,
+  WithStyles,
+  Theme,
+} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Publications from '../publications/Publications';
+import Hidden from '@material-ui/core/Hidden';
 import Header from '../../components/header/Header';
+import NavigationDrawer from './NavigationDrawer';
+import Articles from '../articles/list/Articles';
+import {
+  AGGREGATE_INSTRUCTION_MANUAL,
+  AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
+  AGGREGATE_REGULATION_OGS_2009,
+  AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING,
+  AGGREGATE_REGULATION_RVV_1990,
+} from '../../model/Aggregate';
 import DecisionTree from '../decisionTree/DecisionTree';
 import Calculations from '../calculations/Calculations';
-import Articles from '../articles/list/Articles';
-import { AT_INSTRUCTION_MANUAL } from '../../model/ArticleType';
-import RegulationNavigationMenu from './RegulationNavigationMenu';
-import articleTypeHelper from '../../helper/articleTypeHelper';
 import Configurations from '../configurations/Configurations';
+import Publications from '../publications/Publications';
 
-interface Props {
+const drawerWidth = 240;
+
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      minHeight: '100vh',
+    },
+    drawer: {
+      [theme.breakpoints.up('sm')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+    },
+    // TODO
+    footer: {
+      padding: theme.spacing(2),
+      background: '#fff',
+    },
+  });
+
+interface Props extends WithStyles<typeof styles> {
   children: ReactNode;
 }
 
-const Navigation: FC<Props> = ({ children }) => {
-  const [regulationsMenu, setRegulationsMenu] = useState<null | HTMLElement>(
-    null
-  );
-  const match = useRouteMatch<{ page: string }>();
-  const history = useHistory();
+const Navigation: FC<Props> = (props: Props) => {
+  const { classes, children } = props;
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const match = useRouteMatch<{ page: string }>();
   const { params } = match;
   const { page } = params;
 
-  const getIndexToTabName = {
-    instructionManual: 0,
-    regulations: 1,
-    decisionTree: 2,
-    calculations: 3,
-    configurations: 4,
-    publications: 5,
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
-  const [selectedTab, setSelectedTab] = useState<number | undefined>(
-    // @ts-ignore
-    getIndexToTabName[page]
-  );
-
-  useEffect(() => {
-    if (page === 'instruction-manual') {
-      setSelectedTab(0);
-    }
-    if (
-      page === 'rvv-1990' ||
-      page === 'brancherichtlijn-medische-hulpverlening' ||
-      page === 'regeling-ogs-2009' ||
-      page === 'ontheffing-goede-taakuitoefening'
-    ) {
-      setSelectedTab(1);
-    }
-    if (page === 'decision-tree') {
-      setSelectedTab(2);
-    }
-    if (page === 'calculations') {
-      setSelectedTab(3);
-    }
-    if (page === 'configurations') {
-      setSelectedTab(4);
-    }
-    if (page === 'publications') {
-      setSelectedTab(5);
-    }
-  }, [page]);
-
-  const handleChange = (event: any, newValue: number) => {
-    if (newValue === 0) {
-      history.push('/article/instruction-manual');
-    }
-    if (newValue === 1) {
-      setRegulationsMenu(event.currentTarget);
-    }
-    if (newValue === 2) {
-      history.push('/decision-tree');
-    }
-    if (newValue === 3) {
-      history.push('/calculations');
-    }
-    if (newValue === 4) {
-      history.push('/configurations');
-    }
-    if (newValue === 5) {
-      history.push('/publications');
+  const getPage = () => {
+    switch (page) {
+      case 'instruction-manual':
+        return <Articles articleType={AGGREGATE_INSTRUCTION_MANUAL} />;
+      case 'rvv-1990':
+        return <Articles articleType={AGGREGATE_REGULATION_RVV_1990} />;
+      case 'regeling-ogs-2009':
+        return <Articles articleType={AGGREGATE_REGULATION_OGS_2009} />;
+      case 'ontheffing-goede-taakuitoefening':
+        return (
+          <Articles
+            articleType={AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING}
+          />
+        );
+      case 'brancherichtlijn-medische-hulpverlening':
+        return (
+          <Articles
+            articleType={
+              AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING
+            }
+          />
+        );
+      case 'decision-tree':
+        return <DecisionTree />;
+      case 'calculations':
+        return <Calculations />;
+      case 'configurations':
+        return <Configurations />;
+      case 'publications':
+      default:
+        return <Publications />;
     }
   };
 
   return (
-    <>
-      <Grid spacing={0} container direction="column">
-        <Grid item container>
-          <Header>
-            <Tabs
-              textColor="inherit"
-              value={selectedTab ?? false}
-              onChange={handleChange}
-            >
-              <Tab label="Handboek" />
-              <Tab label="Regelgeving" />
-              <Tab label="Beslisboom" />
-              <Tab label="Berekeningen" />
-              <Tab label="Configuratie" />
-              <Tab label="Publiceren" />
-            </Tabs>
-            <RegulationNavigationMenu
-              regulationsMenu={regulationsMenu}
-              setRegulationsMenu={setRegulationsMenu}
-            />
-          </Header>
-        </Grid>
-        <Grid item container>
-          <Grid item sm={false} lg={1} />
-          <Grid item sm={10} lg={10}>
-            <CssBaseline />
-            {selectedTab === 0 && (
-              <Articles articleType={AT_INSTRUCTION_MANUAL} />
-            )}
-            {selectedTab === 1 && page !== '' && (
-              <Articles
-                articleType={articleTypeHelper.dashedPathToArticleType(page)}
-              />
-            )}
-            {selectedTab === 2 && <DecisionTree />}
-            {selectedTab === 3 && <Calculations />}
-            {selectedTab === 4 && <Configurations />}
-            {selectedTab === 5 && <Publications />}
-            {children && children}
-          </Grid>
-          <Grid item sm={false} lg={1} />
-        </Grid>
-      </Grid>
-    </>
+    <div className={classes.root}>
+      <CssBaseline />
+      <nav className={classes.drawer}>
+        <Hidden smUp implementation="js">
+          <NavigationDrawer
+            PaperProps={{ style: { width: drawerWidth } }}
+            variant="temporary"
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+            currentPage={page}
+          />
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <NavigationDrawer
+            currentPage={page}
+            PaperProps={{ style: { width: drawerWidth } }}
+          />
+        </Hidden>
+      </nav>
+      <Header onDrawerToggle={handleDrawerToggle}>
+        {page && getPage()}
+        {!page && children && children}
+      </Header>
+    </div>
   );
 };
 
-export default Navigation;
+export default withStyles(styles)(Navigation);

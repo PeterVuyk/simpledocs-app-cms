@@ -71,6 +71,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     height: 600,
     readonly: false,
     useSplitMode: true,
+    iframe: true,
   };
 
   return (

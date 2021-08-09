@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const cmsTheme = createMuiTheme({
   palette: {
     primary: {
       light: '#0091ea',
@@ -14,36 +14,34 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: 'arial',
-    h6: {
-      fontWeight: 400,
-      fontSize: 20,
-      letterSpacing: 0.1,
+    h5: {
+      fontWeight: 500,
+      fontSize: 26,
+      letterSpacing: 0.5,
     },
   },
   shape: {
-    borderRadius: 0,
+    borderRadius: 3,
   },
+  props: {
+    MuiTab: {
+      disableRipple: true,
+    },
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 48,
+    },
+  },
+});
+
+// @ts-ignore
+const theme = {
+  ...cmsTheme,
   overrides: {
     MuiDrawer: {
       paper: {
-        backgroundColor: '#052b69',
-      },
-    },
-    MuiTabs: {
-      indicator: {
-        height: 3,
-        borderTopLeftRadius: 3,
-        borderTopRightRadius: 3,
-        backgroundColor: '#eaeff1',
-      },
-    },
-    MuiTab: {
-      root: {
-        textTransform: 'none',
-        margin: '0 16px',
-        minWidth: 0,
-        padding: 0,
+        backgroundColor: '#18202c',
       },
     },
     MuiButton: {
@@ -57,17 +55,65 @@ const theme = createMuiTheme({
         },
       },
     },
-  },
-  mixins: {
-    toolbar: {
-      minHeight: 48,
+    MuiTabs: {
+      root: {
+        marginLeft: cmsTheme.spacing(1),
+      },
+      indicator: {
+        height: 3,
+        borderTopLeftRadius: 3,
+        borderTopRightRadius: 3,
+        backgroundColor: cmsTheme.palette.common.white,
+      },
     },
-  },
-  props: {
     MuiTab: {
-      disableRipple: true,
+      root: {
+        textTransform: 'none',
+        margin: '0 16px',
+        minWidth: 0,
+        padding: 0,
+        [cmsTheme.breakpoints.up('md')]: {
+          padding: 0,
+          minWidth: 0,
+        },
+      },
+    },
+    MuiIconButton: {
+      root: {
+        padding: cmsTheme.spacing(1),
+      },
+    },
+    MuiTooltip: {
+      tooltip: {
+        borderRadius: 4,
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: '#404854',
+      },
+    },
+    MuiListItemText: {
+      primary: {
+        fontWeight: cmsTheme.typography.fontWeightMedium,
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: 'inherit',
+        marginRight: 0,
+        '& svg': {
+          fontSize: 20,
+        },
+      },
+    },
+    MuiAvatar: {
+      root: {
+        width: 32,
+        height: 32,
+      },
     },
   },
-});
+};
 
 export default theme;
