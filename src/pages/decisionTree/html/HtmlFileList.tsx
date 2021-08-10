@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Tooltip } from '@material-ui/core';
 import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
 import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
 import DownloadHtmlFileAction from '../../../components/ItemAction/DownloadHtmlFileAction';
@@ -95,12 +96,14 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
                 </TableCell>
                 <TableCell>{row.title}</TableCell>
                 <TableCell align="right" className={classes.toolBox}>
-                  <EditTwoTone
-                    style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      history.push(`/decision-tree/html/${row.id}`)
-                    }
-                  />
+                  <Tooltip title="Wijzigen">
+                    <EditTwoTone
+                      style={{ cursor: 'pointer' }}
+                      onClick={() =>
+                        history.push(`/decision-tree/html/${row.id}`)
+                      }
+                    />
+                  </Tooltip>
                   <DownloadHtmlFileAction
                     htmlFile={row.htmlFile}
                     fileName={row.title}

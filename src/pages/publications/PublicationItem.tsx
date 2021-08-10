@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import PublishIcon from '@material-ui/icons/Publish';
+import { Tooltip } from '@material-ui/core';
 import PublishDialog from './PublishDialog';
 import { Versioning } from '../../model/Versioning';
 import translationHelper from '../../helper/translationHelper';
@@ -32,11 +33,13 @@ const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
       </TableCell>
       <TableCell>{version.version}</TableCell>
       <TableCell align="right">
-        <PublishIcon
-          color="primary"
-          style={{ cursor: 'pointer' }}
-          onClick={() => setOpenPublishDialog(version)}
-        />
+        <Tooltip title="Publiceren">
+          <PublishIcon
+            color="primary"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOpenPublishDialog(version)}
+          />
+        </Tooltip>
         {openPublishDialog &&
           openPublishDialog.aggregate === version.aggregate && (
             <PublishDialog

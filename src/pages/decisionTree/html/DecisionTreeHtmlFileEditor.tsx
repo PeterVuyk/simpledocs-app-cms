@@ -72,7 +72,6 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
     <Navigation>
       <PageHeading
         title={`HTML bestand ${isNewHtmlFile ? 'toevoegen' : 'wijzigen'}`}
-        style={{ marginRight: 18 }}
       >
         <Button
           variant="contained"

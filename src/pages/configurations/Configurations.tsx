@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 // @ts-ignore
 import { JsonEditor as Editor } from 'jsoneditor-react';
+import { connect } from 'react-redux';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
 import { ConfigInfo } from '../../model/ConfigInfo';
@@ -13,8 +14,15 @@ import {
 } from '../../model/EditStatus';
 import RemoveConfigurationButton from './RemoveConfigurationButton';
 import EditConfigurationButton from './EditConfigurationButton';
+import { NotificationOptions } from '../../model/NotificationOptions';
+import notification from '../../redux/actions/notification';
+import logger from '../../helper/logger';
 
-const Configurations: FC = () => {
+interface Props {
+  setNotification: (notificationOptions: NotificationOptions) => void;
+}
+
+const Configurations: FC<Props> = ({ setNotification }) => {
   const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [initialAppConfig, setInitialAppConfig] =
@@ -38,10 +46,31 @@ const Configurations: FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (val: string) => {
-    configurationRepository.updateAppConfig(appConfig!).then(() => {
-      setHasDraft(true);
-      setAppConfig(null);
-    });
+    configurationRepository
+      .updateAppConfig(appConfig!)
+      .then(() => {
+        setHasDraft(true);
+        setAppConfig(null);
+      })
+      .then(() =>
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage: 'Configuratie gewijzigd.',
+        })
+      )
+      .catch((error) => {
+        logger.errorWithReason(
+          'Edit configuration has failed in Configurations.onSubmit',
+          error
+        );
+        setNotification({
+          notificationType: 'error',
+          notificationOpen: true,
+          notificationMessage:
+            'Het wijzigen van de configuratie is mislukt, neem contact op met de beheerder.',
+        });
+      });
   };
 
   const toggleEditStatus = () => {
@@ -83,4 +112,18 @@ const Configurations: FC = () => {
   );
 };
 
-export default Configurations;
+const mapStateToProps = (state: any) => {
+  return {
+    notificationOptions: state.notification.notificationOptions,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setNotification: (notificationOptions: NotificationOptions) =>
+      // eslint-disable-next-line import/no-named-as-default-member
+      dispatch(notification.setNotification(notificationOptions)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Configurations);

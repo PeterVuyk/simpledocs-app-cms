@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import { Tooltip } from '@material-ui/core';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
@@ -34,14 +35,16 @@ const RemoveDecisionTreeMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="secondary"
-        onClick={openDeleteMenu}
-      >
-        <DeleteTwoToneIcon />
-      </Button>
+      <Tooltip title="Verwijder beslisboom">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="secondary"
+          onClick={openDeleteMenu}
+        >
+          <DeleteTwoToneIcon />
+        </Button>
+      </Tooltip>
       <RemoveDecisionTreeMenu
         editStatus={editStatus}
         removeMenuElement={deleteMenuElement}

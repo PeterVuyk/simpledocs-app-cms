@@ -25,6 +25,7 @@ import DialpadIcon from '@material-ui/icons/Dialpad';
 import LooksOneIcon from '@material-ui/icons/LooksOne';
 import LooksTwoIcon from '@material-ui/icons/LooksTwo';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 
 const categories = [
   {
@@ -72,6 +73,7 @@ const categories = [
       { id: 'Bestanden', urlSlug: null, icon: <Folder /> },
       { id: 'Logging', urlSlug: null, icon: <ErrorOutline /> },
       { id: 'Gebruikersbeheer', urlSlug: null, icon: <Person /> },
+      { id: 'Cloud kosten', urlSlug: null, icon: <EuroSymbolIcon /> },
     ],
   },
 ];
@@ -159,6 +161,12 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
         case 'Gebruikersbeheer':
           window.open(
             'https://console.firebase.google.com/u/0/project/ambulancezorg-app/authentication/users',
+            '_blank'
+          );
+          return;
+        case 'Cloud kosten':
+          window.open(
+            'https://console.firebase.google.com/u/0/project/ambulancezorg-app/usage',
             '_blank'
           );
           return;

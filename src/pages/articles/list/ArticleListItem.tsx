@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
+import { Tooltip } from '@material-ui/core';
 import articleRepository from '../../../firebase/database/articleRepository';
 import notification from '../../../redux/actions/notification';
 import logger from '../../../helper/logger';
@@ -136,10 +137,12 @@ const ArticleListItem: FC<Props> = ({
       </TableCell>
       <TableCell align="right" className={classes.toolBox}>
         {!article.markedForDeletion && (
-          <EditTwoTone
-            style={{ cursor: 'pointer' }}
-            onClick={() => history.push(getEditUrl())}
-          />
+          <Tooltip title="Wijzigen">
+            <EditTwoTone
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push(getEditUrl())}
+            />
+          </Tooltip>
         )}
         <DownloadHtmlFileAction
           htmlFile={article.htmlFile}
@@ -147,10 +150,12 @@ const ArticleListItem: FC<Props> = ({
         />
         <ViewHTMLFileAction htmlFile={article.htmlFile} />
         {article.markedForDeletion && editStatus === EDIT_STATUS_DRAFT && (
-          <RestoreFromTrashTwoToneIcon
-            style={{ cursor: 'pointer', color: '#099000FF' }}
-            onClick={() => undoMarkDeletion()}
-          />
+          <Tooltip title="Markering voor verwijdering opheffen">
+            <RestoreFromTrashTwoToneIcon
+              style={{ cursor: 'pointer', color: '#099000FF' }}
+              onClick={() => undoMarkDeletion()}
+            />
+          </Tooltip>
         )}
         {!article.markedForDeletion && article.id && (
           <DeleteItemAction

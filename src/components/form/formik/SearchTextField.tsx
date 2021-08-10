@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import { useField, useFormikContext } from 'formik';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import CodeIcon from '@material-ui/icons/Code';
+import { Tooltip } from '@material-ui/core';
 import TextField from './TextField';
 
 interface Props {
@@ -65,29 +66,33 @@ const SearchTextField: FC<Props> = ({ showError }) => {
 
   return (
     <>
-      <Button
-        disableElevation
-        style={{
-          marginLeft: 8,
-          float: 'right',
-          marginBottom: 5,
-        }}
-        variant="contained"
-        onClick={importHtmlFileValue}
-      >
-        <CodeIcon color="inherit" />
-      </Button>
-      <Button
-        disableElevation
-        style={{
-          float: 'right',
-          marginBottom: 5,
-        }}
-        variant="contained"
-        onClick={() => removeIndentation(searchTextField.value as string)}
-      >
-        <FormatIndentDecreaseIcon color="inherit" />
-      </Button>
+      <Tooltip title="Html in zoektekst plaatsen">
+        <Button
+          disableElevation
+          style={{
+            marginLeft: 8,
+            float: 'right',
+            marginBottom: 5,
+          }}
+          variant="contained"
+          onClick={importHtmlFileValue}
+        >
+          <CodeIcon color="inherit" />
+        </Button>
+      </Tooltip>
+      <Tooltip title="Inspringing verwijderen">
+        <Button
+          disableElevation
+          style={{
+            float: 'right',
+            marginBottom: 5,
+          }}
+          variant="contained"
+          onClick={() => removeIndentation(searchTextField.value as string)}
+        >
+          <FormatIndentDecreaseIcon color="inherit" />
+        </Button>
+      </Tooltip>
       <TextField
         multiline
         // @ts-ignore

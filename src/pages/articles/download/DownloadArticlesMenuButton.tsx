@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Tooltip } from '@material-ui/core';
 import { EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
 import { BookType } from '../../../model/BookType';
@@ -54,13 +55,15 @@ const DownloadArticlesMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Button
-        className={classes.button}
-        variant="contained"
-        onClick={openDownloadMenu}
-      >
-        <GetAppIcon color="action" />
-      </Button>
+      <Tooltip title="Batch download">
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={openDownloadMenu}
+        >
+          <GetAppIcon color="action" />
+        </Button>
+      </Tooltip>
       <Menu
         id="article-download-menu"
         anchorEl={downloadMenuElement}
