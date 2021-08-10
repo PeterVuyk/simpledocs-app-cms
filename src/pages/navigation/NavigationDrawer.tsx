@@ -27,6 +27,7 @@ import LooksTwoIcon from '@material-ui/icons/LooksTwo';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 
+// TODO: make generic
 const categories = [
   {
     id: 'Boeken',

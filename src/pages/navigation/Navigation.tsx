@@ -38,11 +38,6 @@ const styles = (theme: Theme) =>
         flexShrink: 0,
       },
     },
-    // TODO
-    footer: {
-      padding: theme.spacing(2),
-      background: '#fff',
-    },
   });
 
 interface Props extends WithStyles<typeof styles> {

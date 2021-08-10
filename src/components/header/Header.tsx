@@ -12,6 +12,7 @@ import {
   WithStyles,
 } from '@material-ui/core/styles';
 import UserProfile from './UserProfile';
+import Copyright from '../Copyright';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,6 +27,10 @@ const styles = (theme: Theme) =>
     main: {
       flex: 1,
       padding: theme.spacing(0, 4),
+      background: '#fff',
+    },
+    footer: {
+      padding: theme.spacing(2),
       background: '#fff',
     },
   });
@@ -63,6 +68,9 @@ function Header(props: HeaderProps) {
         </Toolbar>
       </AppBar>
       <main className={classes.main}>{children}</main>
+      <footer className={classes.footer}>
+        <Copyright />
+      </footer>
     </div>
   );
 }
