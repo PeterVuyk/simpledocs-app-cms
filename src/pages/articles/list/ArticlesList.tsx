@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  articles: Article[];
+  articles?: Article[] | null;
   loadArticlesHandle: () => void;
   editStatus: EditStatus;
   bookType: BookType;
@@ -60,24 +60,32 @@ const ArticlesList: FC<Props> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {articles.map((row) => (
-            <TableRow
-              style={{
-                backgroundColor:
-                  editStatus === EDIT_STATUS_DRAFT && row?.markedForDeletion
-                    ? '#FCC1C1B5'
-                    : '#fff',
-              }}
-              key={row.id}
-            >
-              <ArticleListItem
-                editStatus={editStatus}
-                article={row}
-                loadArticlesHandle={loadArticlesHandle}
-                bookType={bookType}
-              />
+          {articles &&
+            articles.map((row) => (
+              <TableRow
+                style={{
+                  backgroundColor:
+                    editStatus === EDIT_STATUS_DRAFT && row?.markedForDeletion
+                      ? '#FCC1C1B5'
+                      : '#fff',
+                }}
+                key={row.id}
+              >
+                <ArticleListItem
+                  editStatus={editStatus}
+                  article={row}
+                  loadArticlesHandle={loadArticlesHandle}
+                  bookType={bookType}
+                />
+              </TableRow>
+            ))}
+          {articles && articles.length === 0 && (
+            <TableRow key="no-result">
+              <TableCell component="th" scope="row" colSpan={7}>
+                Geen resultaten.
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </TableContainer>

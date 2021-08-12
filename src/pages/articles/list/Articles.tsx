@@ -29,13 +29,13 @@ interface Props {
 }
 
 const Articles: FC<Props> = ({ bookType }) => {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<Article[] | null>(null);
   const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
   const classes = useStyles();
   const history = useHistory();
 
   const loadArticlesHandle = (): void => {
-    setArticles([]);
+    setArticles(null);
     articleRepository
       .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
@@ -61,7 +61,7 @@ const Articles: FC<Props> = ({ bookType }) => {
           editStatus={editStatus}
           setEditStatus={setEditStatus}
         />
-        {articles.length !== 0 && (
+        {articles && articles.length !== 0 && (
           <DownloadArticlesMenuButton
             articles={articles}
             bookType={bookType}
