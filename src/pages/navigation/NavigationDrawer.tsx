@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 import {
   createStyles,
@@ -12,72 +12,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PublicIcon from '@material-ui/icons/Public';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import {
-  ErrorOutline,
-  Folder,
-  Person,
-  PhonelinkSetup,
-} from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import DialpadIcon from '@material-ui/icons/Dialpad';
-import LooksOneIcon from '@material-ui/icons/LooksOne';
-import LooksTwoIcon from '@material-ui/icons/LooksTwo';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
-
-// TODO: make generic
-const categories = [
-  {
-    id: 'Boeken',
-    children: [
-      {
-        id: 'Handboek',
-        urlSlug: 'instruction-manual',
-        icon: <LooksOneIcon />,
-      },
-      { id: 'RVV 1990', urlSlug: 'rvv-1990', icon: <LooksTwoIcon /> },
-      {
-        id: 'Regeling OGS',
-        urlSlug: 'regeling-ogs-2009',
-        icon: <LooksTwoIcon />,
-      },
-      {
-        id: 'Ontheffing goede taakuitvoering',
-        urlSlug: 'ontheffing-goede-taakuitoefening',
-        icon: <LooksTwoIcon />,
-      },
-      {
-        id: 'Brancherichtlijn medische hulpverlening',
-        urlSlug: 'brancherichtlijn-medische-hulpverlening',
-        icon: <LooksTwoIcon />,
-      },
-    ],
-  },
-  {
-    id: 'Menu',
-    children: [
-      { id: 'Beslisboom', urlSlug: 'decision-tree', icon: <CallSplitIcon /> },
-      { id: 'Berekening', urlSlug: 'calculations', icon: <DialpadIcon /> },
-      {
-        id: 'Configuratie',
-        urlSlug: 'configurations',
-        icon: <PhonelinkSetup />,
-      },
-      { id: 'Publiceren', urlSlug: 'publications', icon: <PublicIcon /> },
-    ],
-  },
-  {
-    id: 'Links',
-    children: [
-      { id: 'Bestanden', urlSlug: null, icon: <Folder /> },
-      { id: 'Logging', urlSlug: null, icon: <ErrorOutline /> },
-      { id: 'Gebruikersbeheer', urlSlug: null, icon: <Person /> },
-      { id: 'Cloud kosten', urlSlug: null, icon: <EuroSymbolIcon /> },
-    ],
-  },
-];
+import { Icon } from '@material-ui/core';
+import navigationConfig from './navigationConfig.json';
+import {
+  MenuConfig,
+  MenuLinkConfig,
+  NavigationConfig,
+} from '../../model/NavigationConfig';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -103,7 +46,7 @@ const styles = (theme: Theme) =>
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
     },
-    firebase: {
+    title: {
       fontSize: 24,
       color: theme.palette.common.white,
     },
@@ -136,102 +79,98 @@ export interface Props
 const NavigationDrawer: FC<Props> = (props: Props) => {
   const { classes, currentPage, ...other } = props;
   const history = useHistory();
+  const configs = navigationConfig as NavigationConfig;
 
-  const navigateHandler = (
-    id: string,
-    childId: string,
-    urlSlug: string | null
-  ): void => {
-    if (urlSlug === currentPage) {
-      return;
-    }
-    if (urlSlug === null) {
-      switch (childId) {
-        case 'Bestanden':
-          window.open(
-            'https://console.firebase.google.com/u/0/project/ambulancezorg-app/storage/ambulancezorg-app.appspot.com/files',
-            '_blank'
-          );
-          return;
-        case 'Logging':
-          window.open(
-            'https://app.bugsnag.com/organizations/-181/stability-center',
-            '_blank'
-          );
-          return;
-        case 'Gebruikersbeheer':
-          window.open(
-            'https://console.firebase.google.com/u/0/project/ambulancezorg-app/authentication/users',
-            '_blank'
-          );
-          return;
-        case 'Cloud kosten':
-          window.open(
-            'https://console.firebase.google.com/u/0/project/ambulancezorg-app/usage',
-            '_blank'
-          );
-          return;
-        default:
-          return;
-      }
-    }
+  const getCategoryItem = (title: string, children: ReactNode) => {
+    return (
+      <React.Fragment key={title}>
+        <ListItem className={classes.categoryHeader}>
+          <ListItemText
+            classes={{
+              primary: classes.categoryHeaderPrimary,
+            }}
+          >
+            {title}
+          </ListItemText>
+        </ListItem>
+        {children}
+        <Divider className={classes.divider} />
+      </React.Fragment>
+    );
+  };
 
-    if (id === 'Boeken') {
-      history.push(`/books/${urlSlug}`);
-    } else {
-      history.push(`/${urlSlug}`);
-    }
+  const getListItem = (menuConfig: MenuConfig) => {
+    return menuConfig.listItems.map(({ id: childId, urlSlug, icon }) => (
+      <ListItem
+        key={childId}
+        button
+        onClick={() => {
+          if (menuConfig.title === 'Boeken') {
+            history.push(`/books/${urlSlug}`);
+          } else {
+            history.push(`/${urlSlug}`);
+          }
+        }}
+        className={clsx(
+          classes.item,
+          currentPage === urlSlug && classes.itemActiveItem
+        )}
+      >
+        <ListItemIcon className={classes.itemIcon}>
+          <Icon>{icon}</Icon>
+        </ListItemIcon>
+        <ListItemText
+          classes={{
+            primary: classes.itemPrimary,
+          }}
+        >
+          {childId}
+        </ListItemText>
+      </ListItem>
+    ));
+  };
+
+  const getLinkListItem = (menuConfig: MenuLinkConfig) => {
+    return menuConfig.listItems.map(({ id: childId, url, icon }) => (
+      <ListItem
+        key={childId}
+        button
+        onClick={() => window.open(url, '_blank')}
+        className={clsx(classes.item)}
+      >
+        <ListItemIcon className={classes.itemIcon}>
+          <Icon>{icon}</Icon>
+        </ListItemIcon>
+        <ListItemText
+          classes={{
+            primary: classes.itemPrimary,
+          }}
+        >
+          {childId}
+        </ListItemText>
+        <ListItemIcon className={classes.itemIcon}>
+          <OpenInNewIcon />
+        </ListItemIcon>
+      </ListItem>
+    ));
   };
 
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem
-          className={clsx(classes.firebase, classes.item, classes.itemCategory)}
+          className={clsx(classes.title, classes.item, classes.itemCategory)}
           // @ts-ignore
           onClick={props.onClose}
         >
           Ambulance App CMS
         </ListItem>
-        {categories.map(({ id, children }) => (
-          <React.Fragment key={id}>
-            <ListItem className={classes.categoryHeader}>
-              <ListItemText
-                classes={{
-                  primary: classes.categoryHeaderPrimary,
-                }}
-              >
-                {id}
-              </ListItemText>
-            </ListItem>
-            {children.map(({ id: childId, urlSlug, icon }) => (
-              <ListItem
-                key={childId}
-                button
-                onClick={() => navigateHandler(id, childId, urlSlug)}
-                className={clsx(
-                  classes.item,
-                  currentPage === urlSlug && classes.itemActiveItem
-                )}
-              >
-                <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary,
-                  }}
-                >
-                  {childId}
-                </ListItemText>
-                {urlSlug === null && (
-                  <ListItemIcon className={classes.itemIcon}>
-                    <OpenInNewIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-            ))}
-            <Divider className={classes.divider} />
-          </React.Fragment>
-        ))}
+        {getCategoryItem(configs.books.title, getListItem(configs.books))}
+        {getCategoryItem(configs.menu.title, getListItem(configs.menu))}
+        {getCategoryItem(
+          configs.externalLinks.title,
+          getLinkListItem(configs.externalLinks)
+        )}
       </List>
     </Drawer>
   );

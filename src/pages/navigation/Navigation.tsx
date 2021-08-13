@@ -23,6 +23,9 @@ import DecisionTree from '../decisionTree/DecisionTree';
 import Calculations from '../calculations/Calculations';
 import Configurations from '../configurations/Configurations';
 import Publications from '../publications/Publications';
+import NotFound from '../NotFound';
+import navigationConfig from './navigationConfig.json';
+import { NavigationConfig } from '../../model/NavigationConfig';
 
 const drawerWidth = 240;
 
@@ -44,11 +47,11 @@ interface Props extends WithStyles<typeof styles> {
   children: ReactNode;
 }
 
-const Navigation: FC<Props> = (props: Props) => {
-  const { classes, children } = props;
+const Navigation: FC<Props> = ({ classes, children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-
   const match = useRouteMatch<{ page: string }>();
+  const configs = navigationConfig as NavigationConfig;
+
   const { params } = match;
   const { page } = params;
 
@@ -89,6 +92,18 @@ const Navigation: FC<Props> = (props: Props) => {
         return <Publications />;
     }
   };
+
+  const slugExist = () => {
+    const urlSlugs = [
+      ...configs.books.listItems.map((item) => item.urlSlug),
+      ...configs.menu.listItems.map((item) => item.urlSlug),
+    ];
+    return urlSlugs.find((slug) => slug === page);
+  };
+
+  if (!slugExist() && !children) {
+    return <NotFound />;
+  }
 
   return (
     <div className={classes.root}>

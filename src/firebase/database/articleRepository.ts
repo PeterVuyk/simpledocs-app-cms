@@ -59,9 +59,11 @@ async function getArticles(
 async function getArticleById(
   bookType: BookType,
   id: string
-): Promise<Article> {
+): Promise<Article | null> {
   const documentSnapshot = await database.collection(bookType).doc(id).get();
-  return { id: documentSnapshot.id, ...documentSnapshot.data() } as Article;
+  return documentSnapshot.data()
+    ? ({ id: documentSnapshot.id, ...documentSnapshot.data() } as Article)
+    : null;
 }
 
 async function getArticlesByField(

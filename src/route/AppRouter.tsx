@@ -17,6 +17,7 @@ import EditArticle from '../pages/articles/EditArticle';
 import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance';
 import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
+import NotFound from '../pages/NotFound';
 
 const AppRouter: FC = () => {
   return (
@@ -76,6 +77,7 @@ const AppRouter: FC = () => {
             path="/books/:aggregatePath/:articleId"
             Component={EditArticle}
           />
+          <Route component={NotFound} />
         </Switch>
       </Router>
     </AuthProvider>

@@ -14,13 +14,14 @@ import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import bookTypeHelper from '../../helper/bookTypeHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
+import NotFound from '../NotFound';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const EditArticle: FC<Props> = ({ setNotification }) => {
-  const [article, setArticle] = useState<Article | null>(null);
+  const [article, setArticle] = useState<Article | null>();
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
@@ -67,6 +68,10 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         });
       });
   };
+
+  if (article === null) {
+    return <NotFound />;
+  }
 
   return (
     <Navigation>
