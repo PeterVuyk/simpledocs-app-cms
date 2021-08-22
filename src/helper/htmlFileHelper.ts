@@ -59,46 +59,10 @@ function addHTMLTagsToHTMLFile(htmlFile: string): string {
   </html>`;
 }
 
-function getDefaultHtmlTemplate(): string {
-  return `
-        <style>
-          img {
-              display: block;
-              max-width: 100%;
-              height: auto;
-          }
-          mark {
-              background-color: yellow;
-              color: black;
-          }
-          body {
-              font-size: 16px;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-          }
-          h3 {
-              background-color: #154594;
-              color: white;
-          }
-          h4 {
-              background-color: #154594;
-              color: white;
-          }
-      </style>
-      <article>
-        <div>
-            <h3>Titel</h3>
-            <p>Paragraaf.</p>
-        </div>
-      </article>
-      <div style="margin-top:50px"><br></div>
-      `;
-}
-
 const htmlFileHelper = {
   getHTMLBodyFromBase64,
   getBase64FromHtml,
   addHTMLTagsToHTMLFile,
-  getDefaultHtmlTemplate,
   stripMetaTags,
 };
 

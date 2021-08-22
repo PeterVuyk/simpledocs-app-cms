@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -25,7 +25,10 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
-  const bookType: BookType = bookTypeHelper.dashedPathToBookType(aggregatePath);
+  const bookType: BookType = useMemo(
+    () => bookTypeHelper.dashedPathToBookType(aggregatePath),
+    [aggregatePath]
+  );
 
   useEffect(() => {
     articleRepository
