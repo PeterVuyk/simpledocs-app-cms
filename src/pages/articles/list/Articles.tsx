@@ -6,11 +6,12 @@ import articleRepository from '../../../firebase/database/articleRepository';
 import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
+import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
 import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import bookTypeHelper from '../../../helper/bookTypeHelper';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
+import useStatusToggle from '../../../components/hooks/useStatusToggle';
 
 const useStyles = makeStyles({
   table: {
@@ -30,7 +31,7 @@ interface Props {
 
 const Articles: FC<Props> = ({ bookType }) => {
   const [articles, setArticles] = useState<Article[] | null>(null);
-  const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
+  const [editStatus, setEditStatus] = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();
 

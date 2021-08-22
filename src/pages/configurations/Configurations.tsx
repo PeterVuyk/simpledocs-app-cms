@@ -13,7 +13,6 @@ import EditStatusToggle from '../../components/form/EditStatusToggle';
 import {
   EDIT_STATUS_DRAFT,
   EDIT_STATUS_PUBLISHED,
-  EditStatus,
 } from '../../model/EditStatus';
 import RemoveConfigurationButton from './RemoveConfigurationButton';
 import EditConfigurationButton from './EditConfigurationButton';
@@ -21,6 +20,7 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import Base64TransformerButton from './base64/Base64TransformerButton';
+import useStatusToggle from '../../components/hooks/useStatusToggle';
 
 const useStyles = makeStyles({
   paper: {
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const Configurations: FC<Props> = ({ setNotification }) => {
-  const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
+  const [editStatus, setEditStatus] = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [initialAppConfig, setInitialAppConfig] =
     useState<ConfigInfo | null | void>();

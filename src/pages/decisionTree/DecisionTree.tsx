@@ -7,12 +7,13 @@ import decisionTreeRepository from '../../firebase/database/decisionTreeReposito
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import HtmlFileList from './html/HtmlFileList';
 import DecisionTreeStepsList from './DecisionTreeStepsList';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import { EDIT_STATUS_DRAFT } from '../../model/EditStatus';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
 import MarkForDeletionDecisionTreeMenuButton from './menu/remove/MarkForDeletionDecisionTreeMenuButton';
 import RemoveDecisionTreeMenuButton from './menu/remove/RemoveDecisionTreeMenuButton';
 import DownloadDecisionTreeMenuButton from './menu/download/DownloadDecisionTreeMenuButton';
 import UploadDecisionTreeButton from './menu/upload/UploadDecisionTreeButton';
+import useStatusToggle from '../../components/hooks/useStatusToggle';
 
 const useStyles = makeStyles({
   button: {
@@ -25,7 +26,7 @@ const DecisionTree: FC = () => {
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[] | null
   >();
-  const [editStatus, setEditStatus] = useState<EditStatus>(EDIT_STATUS_DRAFT);
+  const [editStatus, setEditStatus] = useStatusToggle();
   const history = useHistory();
 
   const loadDecisionTreeHandle = (): void => {
