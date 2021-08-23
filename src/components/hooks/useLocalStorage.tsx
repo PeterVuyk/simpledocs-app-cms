@@ -4,7 +4,6 @@ const getSavedValue = (key: string, initialValue: any) => {
   const item = localStorage.getItem(key);
   const savedValue = item ? JSON.parse(item) : null;
   if (savedValue) {
-    console.log('savedValue', savedValue);
     return savedValue;
   }
   return initialValue instanceof Function ? initialValue() : initialValue;

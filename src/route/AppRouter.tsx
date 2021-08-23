@@ -18,6 +18,7 @@ import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance'
 import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
 import NotFound from '../pages/NotFound';
+import HtmlTemplateEditor from '../pages/htmlTemplates/HtmlTemplateEditor';
 
 const AppRouter: FC = () => {
   return (
@@ -61,6 +62,16 @@ const AppRouter: FC = () => {
             exact
             path="/books/:aggregatePath/add"
             Component={CreateArticle}
+          />
+          <PrivateRoute
+            exact
+            path="/html-templates/html/add"
+            Component={HtmlTemplateEditor}
+          />
+          <PrivateRoute
+            exact
+            path="/html-templates/html/:htmlFileId"
+            Component={HtmlTemplateEditor}
           />
           <PrivateRoute
             exact

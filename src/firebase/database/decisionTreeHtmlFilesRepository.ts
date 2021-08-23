@@ -1,16 +1,16 @@
 import { database } from '../firebaseConnection';
-import { DecisionTreeHtmlFile } from '../../model/DecisionTreeHtmlFile';
+import { HtmlFileInfo } from '../../model/HtmlFileInfo';
 
-async function getHtmlFiles(): Promise<DecisionTreeHtmlFile[]> {
+async function getHtmlFiles(): Promise<HtmlFileInfo[]> {
   const querySnapshot = await database
     .collection('decisionTreeHtmlFiles')
     .get();
   return querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as DecisionTreeHtmlFile;
+    return { id: doc.id, ...doc.data() } as HtmlFileInfo;
   });
 }
 
-async function getHtmlFileById(id: string): Promise<DecisionTreeHtmlFile> {
+async function getHtmlFileById(id: string): Promise<HtmlFileInfo> {
   const documentSnapshot = await database
     .collection('decisionTreeHtmlFiles')
     .doc(id)
@@ -18,20 +18,18 @@ async function getHtmlFileById(id: string): Promise<DecisionTreeHtmlFile> {
   return {
     id: documentSnapshot.id,
     ...documentSnapshot.data(),
-  } as DecisionTreeHtmlFile;
+  } as HtmlFileInfo;
 }
 
-async function updateHtmlFile(
-  decisionTreeHtmlFile: DecisionTreeHtmlFile
-): Promise<void> {
-  if (decisionTreeHtmlFile.id) {
+async function updateHtmlFile(htmlFileInfo: HtmlFileInfo): Promise<void> {
+  if (htmlFileInfo.id) {
     await database
       .collection('decisionTreeHtmlFiles')
-      .doc(decisionTreeHtmlFile.id)
-      .set(decisionTreeHtmlFile);
+      .doc(htmlFileInfo.id)
+      .set(htmlFileInfo);
     return;
   }
-  await database.collection('decisionTreeHtmlFiles').add(decisionTreeHtmlFile);
+  await database.collection('decisionTreeHtmlFiles').add(htmlFileInfo);
 }
 
 async function deleteHtmlFile(itemId: string): Promise<void> {

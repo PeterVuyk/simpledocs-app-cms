@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
-import { HtmlTemplate } from '../../../model/HtmlTemplate';
+import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
 import htmlTemplateRepository from '../../../firebase/database/htmlTemplateRepository';
 import logger from '../../../helper/logger';
 
@@ -55,7 +55,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   const [content, setContent] = useState<string | null>(null);
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
   React.useState<null | HTMLElement>(null);
-  const [templates, setTemplates] = React.useState<HtmlTemplate[] | null>(null);
+  const [templates, setTemplates] = React.useState<HtmlFileInfo[] | null>(null);
   const [currentTemplate, setCurrentTemplate] = React.useState<string>('none');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, mata] = useField('htmlFile');
@@ -108,8 +108,8 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
         html = htmlFileHelper.stripMetaTags(html);
       } else {
         html =
-          (await htmlTemplateRepository.getDefaultHtmlTemplate())
-            ?.htmlTemplate ?? '';
+          (await htmlTemplateRepository.getDefaultHtmlTemplate())?.htmlFile ??
+          '';
       }
       formik.current.setFieldValue('htmlFile', html);
       setContent(html);
@@ -144,7 +144,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     );
 
     if (template) {
-      updateFileHandler(template.htmlTemplate);
+      updateFileHandler(template.htmlFile);
     }
   };
   if (content === null) {
@@ -188,7 +188,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
                 Geen
               </MenuItem>
               {templates.map((template) => (
-                <MenuItem key={template.id.toString()} value={template.id}>
+                <MenuItem key={template.id!.toString()} value={template!.id}>
                   {template.title}
                 </MenuItem>
               ))}

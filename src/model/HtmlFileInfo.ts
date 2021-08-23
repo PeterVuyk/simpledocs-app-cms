@@ -1,4 +1,4 @@
-export interface DecisionTreeHtmlFile {
+export interface HtmlFileInfo {
   id?: string;
   htmlFile: string;
   title: string;

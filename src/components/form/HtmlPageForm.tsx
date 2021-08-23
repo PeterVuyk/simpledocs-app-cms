@@ -3,10 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '../../../components/form/formik/TextField';
-import SubmitButton from '../../../components/form/formik/SubmitButton';
-import ArticleEditor from '../../../components/form/formik/ArticleEditor';
-import { DecisionTreeHtmlFile } from '../../../model/DecisionTreeHtmlFile';
+import TextField from './formik/TextField';
+import SubmitButton from './formik/SubmitButton';
+import ArticleEditor from './formik/ArticleEditor';
+import { HtmlFileInfo } from '../../model/HtmlFileInfo';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   handleSubmit: (values: FormikValues) => void;
-  decisionTreeHtmlFile: DecisionTreeHtmlFile;
+  htmlFileInfo: HtmlFileInfo;
   isNewHtmlFile: boolean;
 }
 
 const HtmlPageForm: FC<Props> = ({
   handleSubmit,
-  decisionTreeHtmlFile,
+  htmlFileInfo,
   isNewHtmlFile,
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
@@ -38,8 +38,8 @@ const HtmlPageForm: FC<Props> = ({
   };
 
   const initialFormState = () => {
-    if (decisionTreeHtmlFile !== undefined) {
-      return decisionTreeHtmlFile;
+    if (htmlFileInfo !== undefined) {
+      return htmlFileInfo;
     }
     return {
       title: '',
@@ -93,7 +93,7 @@ const HtmlPageForm: FC<Props> = ({
               <ArticleEditor
                 showError={showError}
                 formik={formikRef}
-                initialFile={decisionTreeHtmlFile?.htmlFile ?? null}
+                initialFile={htmlFileInfo?.htmlFile ?? null}
               />
             </Grid>
           </Grid>

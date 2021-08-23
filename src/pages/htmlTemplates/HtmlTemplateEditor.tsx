@@ -3,21 +3,21 @@ import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { FormikValues } from 'formik';
-import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
-import { NotificationOptions } from '../../../model/NotificationOptions';
-import Navigation from '../../navigation/Navigation';
-import PageHeading from '../../../layout/PageHeading';
-import notification from '../../../redux/actions/notification';
-import logger from '../../../helper/logger';
-import htmlFileHelper from '../../../helper/htmlFileHelper';
-import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
-import HtmlPageForm from '../../../components/form/HtmlPageForm';
+import { NotificationOptions } from '../../model/NotificationOptions';
+import Navigation from '../navigation/Navigation';
+import PageHeading from '../../layout/PageHeading';
+import notification from '../../redux/actions/notification';
+import logger from '../../helper/logger';
+import htmlFileHelper from '../../helper/htmlFileHelper';
+import { HtmlFileInfo } from '../../model/HtmlFileInfo';
+import HtmlPageForm from '../../components/form/HtmlPageForm';
+import htmlTemplateRepository from '../../firebase/database/htmlTemplateRepository';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
+const HtmlTemplateEditor: FC<Props> = ({ setNotification }) => {
   const [isNewHtmlFile, setIsNewHtmlFile] = useState<boolean>(false);
   const [htmlFileInfo, setHtmlFileInfo] = useState<HtmlFileInfo | null>(null);
   const { htmlFileId } = useParams<{ htmlFileId: string }>();
@@ -32,7 +32,7 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
         id: '',
       });
     }
-    decisionTreeHtmlFilesRepository
+    htmlTemplateRepository
       .getHtmlFileById(htmlFileId)
       .then((value) => setHtmlFileInfo(value));
   }, [htmlFileId]);
@@ -40,13 +40,13 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
   const addOrEditText = isNewHtmlFile ? 'toegevoegd' : 'gewijzigd';
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
-    await decisionTreeHtmlFilesRepository
+    await htmlTemplateRepository
       .updateHtmlFile({
         id: htmlFileInfo?.id,
         title: values.title,
         htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
       })
-      .then(() => history.push(`/decision-tree`))
+      .then(() => history.push(`/html-templates`))
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -56,13 +56,13 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit/Add decision tree html page has failed in DecisionTreeHtmlFileEditor.handleSubmit',
+          'Edit/Add template html has failed in HtmlTemplateEditor.handleSubmit',
           error
         );
         setNotification({
           notificationType: 'error',
           notificationOpen: true,
-          notificationMessage: `Het ${addOrEditText} van het artikel is mislukt, neem contact op met de beheerder.`,
+          notificationMessage: `Het ${addOrEditText} van de template is mislukt, neem contact op met de beheerder.`,
         });
       });
   };
@@ -105,7 +105,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DecisionTreeHtmlFileEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(HtmlTemplateEditor);
