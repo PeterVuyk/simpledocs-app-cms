@@ -2,17 +2,15 @@ import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import { useField } from 'formik';
 import SaveIcon from '@material-ui/icons/Save';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { CircularProgress, InputLabel } from '@material-ui/core';
+import { CircularProgress, Tooltip } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import StyleIcon from '@material-ui/icons/Style';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
-import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
 import htmlTemplateRepository from '../../../firebase/database/htmlTemplateRepository';
-import logger from '../../../helper/logger';
+import HtmlTemplateMenu from './HtmlTemplateMenu';
 
 interface Props {
   initialFile: string | null;
@@ -26,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       left: '50%',
       top: 300,
+    },
+    button: {
+      marginLeft: 8,
     },
     relativeContainer: {
       position: 'relative',
@@ -43,9 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       position: 'absolute',
       zIndex: 1000,
-      right: 10,
-      bottom: 30,
-      backgroundColor: '#fff',
+      right: 5,
+      bottom: 25,
     },
   })
 );
@@ -54,9 +54,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
-  React.useState<null | HTMLElement>(null);
-  const [templates, setTemplates] = React.useState<HtmlFileInfo[] | null>(null);
-  const [currentTemplate, setCurrentTemplate] = React.useState<string>('none');
+  const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, mata] = useField('htmlFile');
   const classes = useStyles();
@@ -89,7 +87,6 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
       const html = file ? htmlFileHelper.getHTMLBodyFromBase64(file) : '';
       formik.current.setFieldValue('htmlFile', html);
       setContent(html);
-      setCurrentTemplate('');
     },
     [formik]
   );
@@ -125,28 +122,10 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     iframe: true,
   };
 
-  useEffect(() => {
-    htmlTemplateRepository
-      .getHtmlTemplates()
-      .then(setTemplates)
-      .catch((reason) =>
-        logger.errorWithReason(
-          'Failed collecting the html templates from htmlTemplateRepository.getHtmlTemplates for the ArticleEditor component',
-          reason
-        )
-      );
-  }, []);
-
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCurrentTemplate(event.target.value as string);
-    const template = templates!.find(
-      (value) => value.id === event.target.value
-    );
-
-    if (template) {
-      updateFileHandler(template.htmlFile);
-    }
+  const openHtmlTemplateMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setTemplateMenu(event.currentTarget);
   };
+
   if (content === null) {
     return (
       <div className={classes.relativeContainer}>
@@ -164,46 +143,28 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
       )}
       {showSaveButton && <SaveIcon className={classes.saveIcon} />}
       <div className={classes.relativeContainer}>
-        {templates && (
-          <FormControl variant="filled" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-filled-label">
-              Template
-            </InputLabel>
-            <Select
-              MenuProps={{
-                anchorOrigin: {
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                },
-                getContentAnchorEl: null,
-              }}
-              style={{ minWidth: 200 }}
-              labelId="html-template"
-              id="html-template"
-              value={currentTemplate}
-              onChange={handleChange}
-              name="html-template"
+        <div className={classes.formControl}>
+          <Tooltip title="Template gebruiken">
+            <Button
+              className={classes.button}
+              variant="contained"
+              onClick={openHtmlTemplateMenu}
             >
-              <MenuItem key="" value="none">
-                Geen
-              </MenuItem>
-              {templates.map((template) => (
-                <MenuItem key={template.id!.toString()} value={template!.id}>
-                  {template.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
+              <StyleIcon />
+            </Button>
+          </Tooltip>
+          <HtmlTemplateMenu
+            templateMenu={templateMenu}
+            setTemplateMenu={setTemplateMenu}
+            updateFileHandler={updateFileHandler}
+          />
+        </div>
         <JoditEditor
           ref={editor}
           value={content ?? ''}
           // @ts-ignore
           config={config}
-          onBlur={(newContent) => {
-            setCurrentTemplate('');
-            updateFileHandler(newContent);
-          }}
+          onBlur={updateFileHandler}
         />
       </div>
       <FileDropzoneArea
