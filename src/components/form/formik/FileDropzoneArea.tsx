@@ -25,7 +25,7 @@ const FileDropzoneArea: FC<Props> = ({
   enableHtmlPreview,
   initialFile,
 }) => {
-  const [field, mata] = useField(name);
+  const [field, meta] = useField(name);
 
   const ONE_MB_MAX_FILE_SIZE = 1000000;
 
@@ -34,12 +34,12 @@ const FileDropzoneArea: FC<Props> = ({
     initialFiles: initialFile === null ? undefined : [initialFile],
   };
 
-  if (mata && mata.touched && mata.error) {
-    configDropzoneArea.helperText = mata.error;
+  if (meta && meta.touched && meta.error) {
+    configDropzoneArea.helperText = meta.error;
   }
 
-  if (showError && mata.error) {
-    configDropzoneArea.helperText = mata.error;
+  if (showError && meta.error) {
+    configDropzoneArea.helperText = meta.error;
   }
 
   const handleUploadChange = (files: File[]) => {

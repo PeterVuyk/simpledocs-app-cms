@@ -16,7 +16,7 @@ const SelectWrapper: FC<Props> = ({
   ...otherProps
 }) => {
   const { setFieldValue } = useFormikContext();
-  const [field, mata] = useField(name);
+  const [field, meta] = useField(name);
 
   const handleChange = (evt: any) => {
     const { value } = evt.target;
@@ -32,9 +32,9 @@ const SelectWrapper: FC<Props> = ({
     onChange: handleChange,
   };
 
-  if (showError && mata.error) {
+  if (showError && meta.error) {
     configSelect.error = true;
-    configSelect.helperText = mata.error;
+    configSelect.helperText = meta.error;
   }
 
   return (

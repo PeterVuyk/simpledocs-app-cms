@@ -9,7 +9,7 @@ interface Props {
 }
 
 const TextfieldWrapper: FC<Props> = ({ name, showError, ...otherProps }) => {
-  const [field, mata] = useField(name);
+  const [field, meta] = useField(name);
 
   const configTextfield: OutlinedTextFieldProps = {
     ...field,
@@ -18,9 +18,9 @@ const TextfieldWrapper: FC<Props> = ({ name, showError, ...otherProps }) => {
     variant: 'outlined',
   };
 
-  if (showError && mata.error) {
+  if (showError && meta.error) {
     configTextfield.error = true;
-    configTextfield.helperText = mata.error;
+    configTextfield.helperText = meta.error;
   }
 
   return <TextField {...configTextfield} />;
