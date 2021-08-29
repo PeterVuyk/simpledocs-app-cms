@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       position: 'absolute',
       zIndex: 1000,
-      right: 5,
-      bottom: 25,
+      right: 10,
+      bottom: 30,
     },
   })
 );
@@ -73,9 +73,9 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const updateFileHandler = (file: string) => {
-    showSaveButtonHandle();
     formik.current.setFieldValue('htmlFile', file);
     setContent(file);
+    showSaveButtonHandle();
   };
 
   const updateFileFromBase64Handler = useCallback(
@@ -116,6 +116,8 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     readonly: false,
     useSplitMode: true,
     iframe: true,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
   };
 
   const openHtmlTemplateMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
