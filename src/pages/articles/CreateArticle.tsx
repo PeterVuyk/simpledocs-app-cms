@@ -33,7 +33,9 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
+        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+          values.htmlFile
+        ),
         iconFile: values.iconFile,
         isDraft: true,
       })

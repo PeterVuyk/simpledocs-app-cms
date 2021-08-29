@@ -2,10 +2,12 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { FastField, Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
+// eslint-disable-next-line import/no-unresolved
+import { FastFieldProps } from 'formik/dist/FastField';
 import PageHeading from '../../../layout/PageHeading';
 import notification from '../../../redux/actions/notification';
 import TextField from '../../../components/form/formik/TextField';
@@ -103,7 +105,9 @@ const EditCalculation: FC<Props> = ({
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
+        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+          values.htmlFile
+        ),
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,
@@ -226,11 +230,16 @@ const EditCalculation: FC<Props> = ({
                     xs={12}
                     style={{ marginLeft: 18, marginRight: -18 }}
                   >
-                    <ArticleEditor
-                      showError={showError}
-                      formik={formikRef}
-                      initialFile={calculationInfo.htmlFile}
-                    />
+                    <FastField name="htmlFile">
+                      {(props: FastFieldProps) => (
+                        <ArticleEditor
+                          meta={props.meta}
+                          showError={showError}
+                          formik={formikRef}
+                          initialFile={calculationInfo.htmlFile}
+                        />
+                      )}
+                    </FastField>
                   </Grid>
                 </Grid>
               </Grid>

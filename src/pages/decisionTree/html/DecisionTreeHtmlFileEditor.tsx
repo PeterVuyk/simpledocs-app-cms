@@ -44,7 +44,9 @@ const DecisionTreeHtmlFileEditor: FC<Props> = ({ setNotification }) => {
       .updateHtmlFile({
         id: htmlFileInfo?.id,
         title: values.title,
-        htmlFile: htmlFileHelper.addHTMLTagsToHTMLFile(values.htmlFile),
+        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+          values.htmlFile
+        ),
       })
       .then(() => history.push(`/decision-tree`))
       .then(() =>

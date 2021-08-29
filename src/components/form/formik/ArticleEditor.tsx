@@ -6,8 +6,6 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
 // eslint-disable-next-line import/no-unresolved
-import { FastFieldProps } from 'formik/dist/FastField';
-import { FastField } from 'formik';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
@@ -47,19 +45,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
+  meta: any;
   initialFile: string | null;
   formik: any;
   showError: boolean;
 }
 
-const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
+const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   const classes = useStyles();
 
-  const getErrorMessage = (meta: any): string => {
+  const getErrorMessage = (): string => {
     if (showError && meta.error) {
       return meta.error;
     }
@@ -73,14 +72,11 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
     }, 5000);
   };
 
-  const updateFileHandler = useCallback(
-    (file: string) => {
-      showSaveButtonHandle();
-      formik.current.setFieldValue('htmlFile', file);
-      setContent(file);
-    },
-    [formik]
-  );
+  const updateFileHandler = (file: string) => {
+    showSaveButtonHandle();
+    formik.current.setFieldValue('htmlFile', file);
+    setContent(file);
+  };
 
   const updateFileFromBase64Handler = useCallback(
     (file: string | null) => {
@@ -137,49 +133,43 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError }) => {
   }
 
   return (
-    <FastField name="htmlFile">
-      {(props: FastFieldProps) => (
-        <div className={classes.relativeContainer}>
-          {getErrorMessage(props.meta) !== '' && (
-            <ErrorTextTypography>
-              {getErrorMessage(props.meta)}
-            </ErrorTextTypography>
-          )}
-          {showSaveButton && <SaveIcon className={classes.saveIcon} />}
-          <div className={classes.relativeContainer}>
-            <div className={classes.formControl}>
-              <Tooltip title="Template gebruiken">
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  onClick={openHtmlTemplateMenu}
-                >
-                  <StyleIcon />
-                </Button>
-              </Tooltip>
-              <HtmlTemplateMenu
-                templateMenu={templateMenu}
-                setTemplateMenu={setTemplateMenu}
-                updateFileHandler={updateFileHandler}
-              />
-            </div>
-            <JoditEditor
-              ref={editor}
-              value={content ?? ''}
-              // @ts-ignore
-              config={config}
-              onBlur={updateFileHandler}
-            />
-          </div>
-          <FileDropzoneArea
-            allowedExtension=".html"
-            allowedMimeTypes={['text/html']}
-            initialFile={getBase64HtmlFile()}
-            updateFileHandler={updateFileFromBase64Handler}
+    <div className={classes.relativeContainer}>
+      {getErrorMessage() !== '' && (
+        <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
+      )}
+      {showSaveButton && <SaveIcon className={classes.saveIcon} />}
+      <div className={classes.relativeContainer}>
+        <div className={classes.formControl}>
+          <Tooltip title="Template gebruiken">
+            <Button
+              className={classes.button}
+              variant="contained"
+              onClick={openHtmlTemplateMenu}
+            >
+              <StyleIcon />
+            </Button>
+          </Tooltip>
+          <HtmlTemplateMenu
+            templateMenu={templateMenu}
+            setTemplateMenu={setTemplateMenu}
+            updateFileHandler={updateFileHandler}
           />
         </div>
-      )}
-    </FastField>
+        <JoditEditor
+          ref={editor}
+          value={content ?? ''}
+          // @ts-ignore
+          config={config}
+          onBlur={updateFileHandler}
+        />
+      </div>
+      <FileDropzoneArea
+        allowedExtension=".html"
+        allowedMimeTypes={['text/html']}
+        initialFile={getBase64HtmlFile()}
+        updateFileHandler={updateFileFromBase64Handler}
+      />
+    </div>
   );
 };
 

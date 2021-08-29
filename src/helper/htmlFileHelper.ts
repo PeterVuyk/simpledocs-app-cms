@@ -17,6 +17,24 @@ function stripMetaTags(htmlFile: string): string {
   );
 }
 
+function getBottomSpacing(htmlFile: string): string {
+  if (htmlFile.includes('id="bottom-spacing"')) {
+    return '';
+  }
+  return '<div id="bottom-spacing" style="margin-top:100px" />';
+}
+
+function addSpacingBottom(htmlFile: string): string {
+  if (htmlFile.includes('id="bottom-spacing"')) {
+    return htmlFile;
+  }
+  const html = htmlFile.split('</body>', 2);
+  if (html.length !== 2) {
+    return htmlFile;
+  }
+  return `${html[0]}<div id="bottom-spacing" style="margin-top:100px" />${html[1]}`;
+}
+
 function addMetaTags(htmlFile: string): string {
   if (htmlFile.includes('<meta ')) {
     return htmlFile;
@@ -33,13 +51,14 @@ function addMetaTags(htmlFile: string): string {
     ${html[1]}`;
 }
 
-function addHTMLTagsToHTMLFile(htmlFile: string): string {
+function addHTMLTagsAndBottomSpacingToHTMLFile(htmlFile: string): string {
   if (
     htmlFile.trim().startsWith('<html') ||
     htmlFile.trim().startsWith('<!DOCTYPE html>') ||
     htmlFile.trim().endsWith('</html>')
   ) {
-    return addMetaTags(htmlFile);
+    const updatedHtml = addMetaTags(htmlFile);
+    return addSpacingBottom(updatedHtml);
   }
   const html = htmlFile.split('</style>', 2);
   if (html.length !== 2) {
@@ -55,6 +74,7 @@ function addHTMLTagsToHTMLFile(htmlFile: string): string {
       </head>
     <body>
       ${html[1]}
+      ${getBottomSpacing(html[1])}
     </body>
   </html>`;
 }
@@ -62,7 +82,7 @@ function addHTMLTagsToHTMLFile(htmlFile: string): string {
 const htmlFileHelper = {
   getHTMLBodyFromBase64,
   getBase64FromHtml,
-  addHTMLTagsToHTMLFile,
+  addHTMLTagsAndBottomSpacingToHTMLFile,
   stripMetaTags,
 };
 

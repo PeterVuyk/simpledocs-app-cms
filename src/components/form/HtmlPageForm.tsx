@@ -1,8 +1,10 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
+import { Formik, Form, FormikValues, FormikHelpers, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
+// eslint-disable-next-line import/no-unresolved
+import { FastFieldProps } from 'formik/dist/FastField';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
 import ArticleEditor from './formik/ArticleEditor';
@@ -90,11 +92,16 @@ const HtmlPageForm: FC<Props> = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <ArticleEditor
-                showError={showError}
-                formik={formikRef}
-                initialFile={htmlFileInfo?.htmlFile ?? null}
-              />
+              <FastField name="htmlFile">
+                {(props: FastFieldProps) => (
+                  <ArticleEditor
+                    meta={props.meta}
+                    showError={showError}
+                    formik={formikRef}
+                    initialFile={htmlFileInfo?.htmlFile ?? null}
+                  />
+                )}
+              </FastField>
             </Grid>
           </Grid>
           <div className={classes.submit}>

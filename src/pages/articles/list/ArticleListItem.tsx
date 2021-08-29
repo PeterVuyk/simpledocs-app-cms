@@ -127,7 +127,12 @@ const ArticleListItem: FC<Props> = ({
       </TableCell>
       <TableCell>{article.title}</TableCell>
       <TableCell>{getLevel(article.level)}</TableCell>
-      <TableCell>{article.pageIndex}</TableCell>
+      <TableCell>
+        {article.pageIndex
+          .toString()
+          .replace(/(.{2})/g, '$1•')
+          .trim()}
+      </TableCell>
       <TableCell>
         <img
           className={classes.icon}

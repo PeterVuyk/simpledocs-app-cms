@@ -1,7 +1,9 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
+import { Formik, Form, FormikValues, FormikHelpers, FastField } from 'formik';
+// eslint-disable-next-line import/no-unresolved
+import { FastFieldProps } from 'formik/dist/FastField';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
@@ -218,11 +220,16 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, bookType }) => {
             </Grid>
             <Grid container item sm={6} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
-                <ArticleEditor
-                  showError={showError}
-                  formik={formikRef}
-                  initialFile={article?.htmlFile ?? null}
-                />
+                <FastField name="htmlFile">
+                  {(props: FastFieldProps) => (
+                    <ArticleEditor
+                      meta={props.meta}
+                      showError={showError}
+                      formik={formikRef}
+                      initialFile={article?.htmlFile ?? null}
+                    />
+                  )}
+                </FastField>
               </Grid>
             </Grid>
           </Grid>
