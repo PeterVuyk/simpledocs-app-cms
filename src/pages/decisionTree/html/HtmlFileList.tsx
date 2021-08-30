@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import decisionTreeHtmlFilesRepository from '../../../firebase/database/decisionTreeHtmlFilesRepository';
 import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
-import HtmlFileTable from '../../../components/table/HtmlFileTable';
+import HtmlFileTable from '../../../components/htmlInfo/HtmlFileTable';
 import logger from '../../../helper/logger';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import notification from '../../../redux/actions/notification';
 import { AGGREGATE_DECISION_TREE } from '../../../model/Aggregate';
+import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
+import { HTML_FILE_CATEGORY_DECISION_TREE } from '../../../model/HtmlFileCategory';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -18,8 +19,8 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
   >([]);
 
   const loadHtmlFiles = () => {
-    decisionTreeHtmlFilesRepository
-      .getHtmlFiles()
+    htmlFileInfoRepository
+      .getHtmlInfoByCategories([HTML_FILE_CATEGORY_DECISION_TREE])
       .then((result) => setDecisionTreeHtmlFiles(result));
   };
 
@@ -28,7 +29,7 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
   }, []);
 
   const deleteHtmlFileHandle = (id: string) => {
-    decisionTreeHtmlFilesRepository
+    htmlFileInfoRepository
       .deleteHtmlFile(id)
       .then(loadHtmlFiles)
       .catch(() => {

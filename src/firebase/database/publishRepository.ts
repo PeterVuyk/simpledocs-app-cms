@@ -10,8 +10,8 @@ import {
   AGGREGATE_REGULATION_RVV_1990,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
-import decisionTreeHtmlFilesRepository from './decisionTreeHtmlFilesRepository';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import htmlFileInfoRepository from './htmlFileInfoRepository';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -92,7 +92,7 @@ async function publishDecisionTree(
       return;
     }
     batch.update(documentSnapshot.ref, { htmlFileId: null });
-    decisionTreeHtmlFilesRepository
+    htmlFileInfoRepository
       .getHtmlFileById(decisionTreeStep.htmlFileId)
       .then((value) => {
         batch.update(documentSnapshot.ref, {

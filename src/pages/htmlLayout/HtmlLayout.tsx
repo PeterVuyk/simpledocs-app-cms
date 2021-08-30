@@ -4,13 +4,17 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { HtmlFileInfo } from '../../model/HtmlFileInfo';
-import htmlTemplateRepository from '../../firebase/database/htmlTemplateRepository';
-import HtmlFileTable from '../../components/table/HtmlFileTable';
+import HtmlFileTable from '../../components/htmlInfo/HtmlFileTable';
 import logger from '../../helper/logger';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import { AGGREGATE_HTML_TEMPLATES } from '../../model/Aggregate';
+import { AGGREGATE_HTML_LAYOUT } from '../../model/Aggregate';
+import htmlFileInfoRepository from '../../firebase/database/htmlFileInfoRepository';
+import {
+  HTML_FILE_CATEGORY_SNIPPET,
+  HTML_FILE_CATEGORY_TEMPLATE,
+} from '../../model/HtmlFileCategory';
 
 const useStyles = makeStyles({
   button: {
@@ -22,14 +26,17 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const HtmlTemplates: FC<Props> = ({ setNotification }) => {
+const HtmlLayout: FC<Props> = ({ setNotification }) => {
   const [htmlFileInfos, setHtmlFileInfos] = useState<HtmlFileInfo[]>([]);
   const history = useHistory();
   const classes = useStyles();
 
   const loadHtmlFiles = () => {
-    htmlTemplateRepository
-      .getHtmlTemplates()
+    htmlFileInfoRepository
+      .getHtmlInfoByCategories([
+        HTML_FILE_CATEGORY_TEMPLATE,
+        HTML_FILE_CATEGORY_SNIPPET,
+      ])
       .then((result) => setHtmlFileInfos(result));
   };
 
@@ -38,12 +45,12 @@ const HtmlTemplates: FC<Props> = ({ setNotification }) => {
   }, []);
 
   const deleteHtmlFileHandle = (id: string) => {
-    htmlTemplateRepository
+    htmlFileInfoRepository
       .deleteHtmlFile(id)
       .then(loadHtmlFiles)
       .catch(() => {
         logger.error(
-          `Failed removing the html file from the html templates met id ${id}`
+          `Failed removing the html file from the html file info with id ${id}`
         );
         setNotification({
           notificationOpen: true,
@@ -56,18 +63,26 @@ const HtmlTemplates: FC<Props> = ({ setNotification }) => {
 
   return (
     <>
-      <PageHeading title="HTML templates">
+      <PageHeading title="Templates en snippets">
         <Button
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html-templates/html/add`)}
+          onClick={() => history.push(`/html-layout/snippet/add`)}
         >
-          HTML bestand uploaden
+          Snippet uploaden
+        </Button>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/html-layout/template/add`)}
+        >
+          Template uploaden
         </Button>
       </PageHeading>
       <HtmlFileTable
-        aggregate={AGGREGATE_HTML_TEMPLATES}
+        aggregate={AGGREGATE_HTML_LAYOUT}
         htmlFileInfos={htmlFileInfos}
         deleteHandle={deleteHtmlFileHandle}
       />
@@ -89,4 +104,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HtmlTemplates);
+export default connect(mapStateToProps, mapDispatchToProps)(HtmlLayout);

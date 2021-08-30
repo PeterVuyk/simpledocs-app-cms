@@ -16,9 +16,9 @@ import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
 import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance';
 import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
+import LayoutEditor from '../pages/htmlLayout/LayoutEditor';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
 import NotFound from '../pages/NotFound';
-import HtmlTemplateEditor from '../pages/htmlTemplates/HtmlTemplateEditor';
 
 const AppRouter: FC = () => {
   return (
@@ -65,13 +65,13 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/html-templates/html/add"
-            Component={HtmlTemplateEditor}
+            path="/html-layout/:htmlFileCategory/add"
+            Component={LayoutEditor}
           />
           <PrivateRoute
             exact
-            path="/html-templates/html/:htmlFileId"
-            Component={HtmlTemplateEditor}
+            path="/html-layout/:htmlFileCategory/:htmlFileId"
+            Component={LayoutEditor}
           />
           <PrivateRoute
             exact

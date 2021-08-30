@@ -26,7 +26,7 @@ import Publications from '../publications/Publications';
 import NotFound from '../NotFound';
 import navigationConfig from './navigationConfig.json';
 import { NavigationConfig } from '../../model/NavigationConfig';
-import HtmlTemplates from '../htmlTemplates/HtmlTemplates';
+import HtmlLayout from '../htmlLayout/HtmlLayout';
 
 const drawerWidth = 240;
 
@@ -82,8 +82,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             }
           />
         );
-      case 'html-templates':
-        return <HtmlTemplates />;
+      case 'html-layout':
+        return <HtmlLayout />;
       case 'decision-tree':
         return <DecisionTree />;
       case 'calculations':

@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
-import decisionTreeHtmlFilesRepository from '../../../../firebase/database/decisionTreeHtmlFilesRepository';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
+import htmlFileInfoRepository from '../../../../firebase/database/htmlFileInfoRepository';
+import { HTML_FILE_CATEGORY_DECISION_TREE } from '../../../../model/HtmlFileCategory';
 
 interface Props {
   editStatus: EditStatus;
@@ -17,14 +18,16 @@ const DownloadDecisionTreeHtmlFiles: FC<Props> = ({
   const handleExportHTMLFiles = (): void => {
     const zip = new JSZip();
     if (editStatus === EDIT_STATUS_DRAFT) {
-      decisionTreeHtmlFilesRepository.getHtmlFiles().then((files) => {
-        files.forEach((file) => {
-          zip.file(`id-${file.id}.html`, file.htmlFile);
+      htmlFileInfoRepository
+        .getHtmlInfoByCategories([HTML_FILE_CATEGORY_DECISION_TREE])
+        .then((files) => {
+          files.forEach((file) => {
+            zip.file(`id-${file.id}.html`, file.htmlFile);
+          });
+          zip.generateAsync({ type: 'blob' }).then((blob) => {
+            saveAs(blob, 'html-bestanden.zip');
+          });
         });
-        zip.generateAsync({ type: 'blob' }).then((blob) => {
-          saveAs(blob, 'html-bestanden.zip');
-        });
-      });
       return;
     }
     decisionTreeSteps

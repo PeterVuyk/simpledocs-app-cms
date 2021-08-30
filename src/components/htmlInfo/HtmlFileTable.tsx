@@ -14,6 +14,12 @@ import ViewHTMLFileAction from '../ItemAction/ViewHTMLFileAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
 import DownloadHtmlFileAction from '../ItemAction/DownloadHtmlFileAction';
 import { HtmlFileInfo } from '../../model/HtmlFileInfo';
+import {
+  HTML_FILE_CATEGORY_DECISION_TREE,
+  HTML_FILE_CATEGORY_SNIPPET,
+  HTML_FILE_CATEGORY_TEMPLATE,
+  HtmlFileCategory,
+} from '../../model/HtmlFileCategory';
 
 const useStyles = makeStyles({
   table: {
@@ -41,6 +47,19 @@ const HtmlFileTable: FC<Props> = ({
   const classes = useStyles();
   const history = useHistory();
 
+  const getTranslatedCategory = (category: HtmlFileCategory) => {
+    switch (category) {
+      case HTML_FILE_CATEGORY_DECISION_TREE:
+        return 'Beslisboom';
+      case HTML_FILE_CATEGORY_TEMPLATE:
+        return 'Template';
+      case HTML_FILE_CATEGORY_SNIPPET:
+        return 'Snippet';
+      default:
+        return '';
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -52,6 +71,9 @@ const HtmlFileTable: FC<Props> = ({
             <TableCell>
               <strong>Titel</strong>
             </TableCell>
+            <TableCell>
+              <strong>Categorie</strong>
+            </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
@@ -62,6 +84,9 @@ const HtmlFileTable: FC<Props> = ({
                 {row.id}
               </TableCell>
               <TableCell>{row.title}</TableCell>
+              <TableCell>
+                {getTranslatedCategory(row.htmlFileCategory)}
+              </TableCell>
               <TableCell align="right" className={classes.toolBox}>
                 <Tooltip title="Wijzigen">
                   <EditTwoTone
@@ -71,7 +96,7 @@ const HtmlFileTable: FC<Props> = ({
                         `/${
                           aggregate === 'decision-tree'
                             ? 'decision-tree'
-                            : 'html-templates'
+                            : 'html-layout'
                         }/html/${row.id}`
                       )
                     }

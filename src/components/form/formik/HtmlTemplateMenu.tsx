@@ -2,8 +2,9 @@ import React, { useEffect, FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
 import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
-import htmlTemplateRepository from '../../../firebase/database/htmlTemplateRepository';
 import logger from '../../../helper/logger';
+import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
+import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../model/HtmlFileCategory';
 
 interface Props {
   updateFileHandler: (content: string) => void;
@@ -20,12 +21,12 @@ const HtmlTemplateMenu: FC<Props> = ({
   const [templates, setTemplates] = React.useState<HtmlFileInfo[] | null>(null);
 
   useEffect(() => {
-    htmlTemplateRepository
-      .getHtmlTemplates()
+    htmlFileInfoRepository
+      .getHtmlInfoByCategories([HTML_FILE_CATEGORY_TEMPLATE])
       .then(setTemplates)
       .catch((reason) =>
         logger.errorWithReason(
-          'Failed collecting the html templates from htmlTemplateRepository.getHtmlTemplates for the HtmlTemplateMenu component',
+          'Failed collecting the html templates from htmlFileInfoRepository.getHtmlTemplates for the HtmlTemplateMenu component',
           reason
         )
       );
@@ -48,7 +49,7 @@ const HtmlTemplateMenu: FC<Props> = ({
 
   return (
     <Menu
-      id="article-download-menu"
+      id="template-menu"
       anchorEl={templateMenu}
       anchorOrigin={{
         vertical: 'top',

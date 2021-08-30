@@ -9,8 +9,9 @@ import StyleIcon from '@material-ui/icons/Style';
 import FileDropzoneArea from '../FileDropzoneArea';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
-import htmlTemplateRepository from '../../../firebase/database/htmlTemplateRepository';
 import HtmlTemplateMenu from './HtmlTemplateMenu';
+import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
+import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../model/HtmlFileCategory';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -101,8 +102,12 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
         html = htmlFileHelper.stripMetaTags(html);
       } else {
         html =
-          (await htmlTemplateRepository.getDefaultHtmlTemplate())?.htmlFile ??
-          '';
+          (
+            await htmlFileInfoRepository.getHtmlFileInfoByTitle(
+              'standaard',
+              HTML_FILE_CATEGORY_TEMPLATE
+            )
+          )?.htmlFile ?? '';
       }
       formik.current.setFieldValue('htmlFile', html);
       setContent(html);
