@@ -9,7 +9,7 @@ import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import articleRepository from '../../firebase/database/articleRepository';
-import ArticleEditor from '../../components/form/formik/articleEditor/ArticleEditor';
+import HtmlEditor from '../../components/form/formik/htmlEditor/HtmlEditor';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
@@ -222,7 +222,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, bookType }) => {
               <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
                 <FastField name="htmlFile">
                   {(props: FastFieldProps) => (
-                    <ArticleEditor
+                    <HtmlEditor
                       meta={props.meta}
                       showError={showError}
                       formik={formikRef}

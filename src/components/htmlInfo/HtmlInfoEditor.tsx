@@ -56,7 +56,7 @@ const HtmlInfoEditor: FC<Props> = ({
       .updateHtmlFile({
         id: htmlFileInfo?.id,
         htmlFileCategory,
-        title: values.title,
+        title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
         htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),

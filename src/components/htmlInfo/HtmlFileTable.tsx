@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { EditTwoTone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { Tooltip } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
 import ViewHTMLFileAction from '../ItemAction/ViewHTMLFileAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
 import DownloadHtmlFileAction from '../ItemAction/DownloadHtmlFileAction';
@@ -61,6 +62,13 @@ const HtmlFileTable: FC<Props> = ({
     }
   };
 
+  const isDefaultTemplate = (htmlInfo: HtmlFileInfo): boolean => {
+    if (htmlInfo.htmlFileCategory !== HTML_FILE_CATEGORY_TEMPLATE) {
+      return false;
+    }
+    return htmlInfo.title.toLowerCase() === 'standaard';
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -84,7 +92,12 @@ const HtmlFileTable: FC<Props> = ({
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
-              <TableCell>{row.title}</TableCell>
+              <TableCell>
+                {row.title}&nbsp;
+                {isDefaultTemplate(row) && (
+                  <Chip label="Default template" variant="outlined" />
+                )}
+              </TableCell>
               <TableCell>
                 {getTranslatedCategory(row.htmlFileCategory)}
               </TableCell>
@@ -108,12 +121,14 @@ const HtmlFileTable: FC<Props> = ({
                   fileName={row.title}
                 />
                 <ViewHTMLFileAction htmlFile={row.htmlFile} />
-                <DeleteItemAction
-                  title="Weet je zeker dat je dit html bestand wilt verwijderen?"
-                  dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
-                  onSubmit={deleteHandle}
-                  itemId={row.id!}
-                />
+                {!isDefaultTemplate(row) && (
+                  <DeleteItemAction
+                    title="Weet je zeker dat je dit html bestand wilt verwijderen?"
+                    dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
+                    onSubmit={deleteHandle}
+                    itemId={row.id!}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

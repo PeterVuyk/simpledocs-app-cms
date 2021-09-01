@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { FastFieldProps } from 'formik/dist/FastField';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
-import ArticleEditor from './formik/articleEditor/ArticleEditor';
+import HtmlEditor from './formik/htmlEditor/HtmlEditor';
 import { HtmlFileInfo } from '../../model/HtmlFileInfo';
 import { HTML_FILE_CATEGORY_SNIPPET } from '../../model/HtmlFileCategory';
 
@@ -96,7 +96,7 @@ const HtmlPageForm: FC<Props> = ({
             <Grid item xs={12}>
               <FastField name="htmlFile">
                 {(props: FastFieldProps) => (
-                  <ArticleEditor
+                  <HtmlEditor
                     meta={props.meta}
                     showError={showError}
                     formik={formikRef}

@@ -1,3 +1,6 @@
+const bottomSpacingHtml =
+  '<div id="bottom-spacing-8bb0417d" style="margin-top:100px"><br></div>';
+
 function getHTMLBodyFromBase64(base64HTML: string): string {
   const base64String = base64HTML.split('data:text/html;base64,')[1];
   return Buffer.from(base64String, 'base64').toString('utf-8');
@@ -17,22 +20,27 @@ function stripMetaTags(htmlFile: string): string {
   );
 }
 
+function stripBottomSpacing(htmlFile: string): string {
+  const html = htmlFile.replace('<meta charset="UTF-8">', '');
+  return html.replace(bottomSpacingHtml, '');
+}
+
 function getBottomSpacing(htmlFile: string): string {
-  if (htmlFile.includes('id="bottom-spacing"')) {
+  if (htmlFile.includes('id="bottom-spacing-8bb0417d"')) {
     return '';
   }
-  return '<div id="bottom-spacing" style="margin-top:100px" />';
+  return bottomSpacingHtml;
 }
 
 function addSpacingBottom(htmlFile: string): string {
-  if (htmlFile.includes('id="bottom-spacing"')) {
+  if (htmlFile.includes('id="bottom-spacing-8bb0417d"')) {
     return htmlFile;
   }
   const html = htmlFile.split('</body>', 2);
   if (html.length !== 2) {
     return htmlFile;
   }
-  return `${html[0]}<div id="bottom-spacing" style="margin-top:100px" />${html[1]}`;
+  return `${html[0]}${bottomSpacingHtml}${html[1]}`;
 }
 
 function addMetaTags(htmlFile: string): string {
@@ -84,6 +92,7 @@ const htmlFileHelper = {
   getBase64FromHtml,
   addHTMLTagsAndBottomSpacingToHTMLFile,
   stripMetaTags,
+  stripBottomSpacing,
 };
 
 export default htmlFileHelper;

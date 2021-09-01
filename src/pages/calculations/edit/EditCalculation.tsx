@@ -19,7 +19,7 @@ import calculationsRepository from '../../../firebase/database/calculationsRepos
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
-import ArticleEditor from '../../../components/form/formik/articleEditor/ArticleEditor';
+import HtmlEditor from '../../../components/form/formik/htmlEditor/HtmlEditor';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
 
 const useStyles = makeStyles((theme) => ({
@@ -232,7 +232,7 @@ const EditCalculation: FC<Props> = ({
                   >
                     <FastField name="htmlFile">
                       {(props: FastFieldProps) => (
-                        <ArticleEditor
+                        <HtmlEditor
                           meta={props.meta}
                           showError={showError}
                           formik={formikRef}

@@ -49,7 +49,7 @@ interface Props {
   showError: boolean;
 }
 
-const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
+const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
@@ -96,11 +96,13 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       let html = initialFile;
       if (html) {
         html = htmlFileHelper.stripMetaTags(html);
+        html = htmlFileHelper.stripBottomSpacing(html);
       } else {
+        // Use the 'default' template.
         html =
           (
             await htmlFileInfoRepository.getHtmlFileInfoByTitle(
-              'standaard',
+              'Standaard',
               HTML_FILE_CATEGORY_TEMPLATE
             )
           )?.htmlFile ?? '';
@@ -159,4 +161,4 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   );
 };
 
-export default ArticleEditor;
+export default HtmlEditor;
