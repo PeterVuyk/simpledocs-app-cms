@@ -29,7 +29,7 @@ const DecisionTree: FC = () => {
   const [editStatus, setEditStatus] = useStatusToggle();
   const history = useHistory();
 
-  const loadDecisionTreeHandle = (): void => {
+  const handleLoadDecisionTree = (): void => {
     decisionTreeRepository
       .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
       .then((steps) => setDecisionTreeSteps(steps));
@@ -65,7 +65,7 @@ const DecisionTree: FC = () => {
         {decisionTreeSteps && hasMarkedForDeletionTitles(decisionTreeSteps) && (
           <MarkForDeletionDecisionTreeMenuButton
             decisionTreeSteps={decisionTreeSteps}
-            onSubmitAction={loadDecisionTreeHandle}
+            onSubmitAction={handleLoadDecisionTree}
           />
         )}
         {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
@@ -73,7 +73,7 @@ const DecisionTree: FC = () => {
             <RemoveDecisionTreeMenuButton
               editStatus={editStatus}
               decisionTreeSteps={decisionTreeSteps}
-              onSubmitAction={loadDecisionTreeHandle}
+              onSubmitAction={handleLoadDecisionTree}
             />
             <DownloadDecisionTreeMenuButton
               editStatus={editStatus}
@@ -89,9 +89,7 @@ const DecisionTree: FC = () => {
         >
           HTML bestand uploaden
         </Button>
-        <UploadDecisionTreeButton
-          loadDecisionTreeHandle={loadDecisionTreeHandle}
-        />
+        <UploadDecisionTreeButton onLoadDecisionTree={handleLoadDecisionTree} />
       </PageHeading>
       {decisionTreeSteps && (
         <DecisionTreeStepsList

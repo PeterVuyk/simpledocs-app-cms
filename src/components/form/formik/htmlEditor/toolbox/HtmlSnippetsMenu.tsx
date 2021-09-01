@@ -18,7 +18,7 @@ const HtmlSnippetsMenu: FC<Props> = ({
   const [openSnippetsDialog, setOpenSnippetsDialog] =
     useState<HtmlFileInfo | null>(null);
 
-  const openDialogHandle = (event: React.MouseEvent<HTMLLIElement>) => {
+  const handleOpenDialog = (event: React.MouseEvent<HTMLLIElement>) => {
     const snippet = snippets!.find(
       (value) => value.id === event.currentTarget.id
     );
@@ -27,7 +27,7 @@ const HtmlSnippetsMenu: FC<Props> = ({
     }
   };
 
-  const closeDialogHandle = () => {
+  const handleCloseDialog = () => {
     setSnippetsMenu(null);
     setOpenSnippetsDialog(null);
   };
@@ -58,7 +58,7 @@ const HtmlSnippetsMenu: FC<Props> = ({
             <MenuItem
               id={snippet.id}
               key={snippet.id!.toString()}
-              onClick={openDialogHandle}
+              onClick={handleOpenDialog}
             >
               {snippet.title}
             </MenuItem>
@@ -67,7 +67,7 @@ const HtmlSnippetsMenu: FC<Props> = ({
       {openSnippetsDialog && (
         <HtmlSnippetsDialog
           openSnippetsDialog={openSnippetsDialog}
-          closeDialogHandle={closeDialogHandle}
+          oncloseDialog={handleCloseDialog}
         />
       )}
     </>

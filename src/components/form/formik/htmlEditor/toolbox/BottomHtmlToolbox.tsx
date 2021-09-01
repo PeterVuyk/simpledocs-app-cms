@@ -23,10 +23,10 @@ const useStyles = makeStyles(() =>
 );
 
 interface Props {
-  updateFileHandler: (file: any) => void;
+  onUpdateFile: (file: any) => void;
 }
 
-const BottomHtmlToolbox: FC<Props> = ({ updateFileHandler }) => {
+const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
   const [htmlInfos, setHtmlInfos] = useState<HtmlFileInfo[] | null>(null);
   const [snippetsMenu, setSnippetsMenu] = useState<null | HTMLElement>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
@@ -89,7 +89,7 @@ const BottomHtmlToolbox: FC<Props> = ({ updateFileHandler }) => {
       <HtmlTemplateMenu
         templateMenu={templateMenu}
         setTemplateMenu={setTemplateMenu}
-        updateFileHandler={updateFileHandler}
+        onUpdateFile={onUpdateFile}
         templates={htmlInfos.filter(
           (value) => value.htmlFileCategory === HTML_FILE_CATEGORY_TEMPLATE
         )}

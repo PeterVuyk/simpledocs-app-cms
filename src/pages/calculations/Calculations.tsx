@@ -31,7 +31,7 @@ const Calculations: FC = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const reloadPublicationsHandle = (): void => {
+  const handleReloadPublications = (): void => {
     calculationsRepository.getCalculationsInfo().then((result) => {
       result.forEach((info) => {
         if (info.calculationType === STOPPING_DISTANCE) {
@@ -51,7 +51,7 @@ const Calculations: FC = () => {
   };
 
   useEffect(() => {
-    reloadPublicationsHandle();
+    handleReloadPublications();
   }, []);
 
   return (

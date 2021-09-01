@@ -40,14 +40,14 @@ interface Props {
   dialogText: string;
   setOpenUploadDialog: (openUploadDialog: boolean) => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
-  loadDecisionTreeHandle: () => void;
+  onLoadDecisionTree: () => void;
 }
 
 const UploadDecisionTreeDialog: FC<Props> = ({
   dialogText,
   setOpenUploadDialog,
   setNotification,
-  loadDecisionTreeHandle,
+  onLoadDecisionTree,
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -135,7 +135,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
           notificationMessage: 'beslisboom is gepubliceerd.',
         });
         setOpenUploadDialog(false);
-        loadDecisionTreeHandle();
+        onLoadDecisionTree();
       })
       .catch(() => {
         logger.error(
@@ -180,12 +180,12 @@ const UploadDecisionTreeDialog: FC<Props> = ({
           autoFocus
         />
         <FileDropzoneArea
-          updateFileHandler={setCSVUploadRef}
+          onUpdateFile={setCSVUploadRef}
           allowedMimeTypes={['text/csv']}
           allowedExtension="csv"
         />
         <FileDropzoneArea
-          updateFileHandler={setIconUploadRef}
+          onUpdateFile={setIconUploadRef}
           allowedMimeTypes={['image/svg+xml']}
           allowedExtension="svg"
         />

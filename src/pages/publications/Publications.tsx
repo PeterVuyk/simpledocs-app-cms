@@ -26,12 +26,12 @@ const Publications: FC = () => {
 
   const classes = useStyles();
 
-  const reloadPublicationsHandle = (): void => {
+  const handleReloadPublications = (): void => {
     publishRepository.getVersions().then((result) => setVersions(result));
   };
 
   useEffect(() => {
-    reloadPublicationsHandle();
+    handleReloadPublications();
   }, []);
 
   return (
@@ -55,7 +55,7 @@ const Publications: FC = () => {
               <TableRow key={row.aggregate.toString()}>
                 <PublicationItem
                   version={row}
-                  reloadPublicationsHandle={reloadPublicationsHandle}
+                  onReloadPublications={handleReloadPublications}
                 />
               </TableRow>
             ))}

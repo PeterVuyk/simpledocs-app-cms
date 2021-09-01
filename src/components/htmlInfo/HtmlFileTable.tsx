@@ -38,14 +38,10 @@ const useStyles = makeStyles({
 interface Props {
   aggregate: string;
   htmlFileInfos: HtmlFileInfo[];
-  deleteHandle: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const HtmlFileTable: FC<Props> = ({
-  aggregate,
-  htmlFileInfos,
-  deleteHandle,
-}) => {
+const HtmlFileTable: FC<Props> = ({ aggregate, htmlFileInfos, onDelete }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -125,7 +121,7 @@ const HtmlFileTable: FC<Props> = ({
                   <DeleteItemAction
                     title="Weet je zeker dat je dit html bestand wilt verwijderen?"
                     dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
-                    onSubmit={deleteHandle}
+                    onSubmit={onDelete}
                     itemId={row.id!}
                   />
                 )}

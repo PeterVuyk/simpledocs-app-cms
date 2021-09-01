@@ -71,7 +71,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm handleSubmit={handleSubmit} bookType={bookType} />
+      <ArticleForm onSubmit={handleSubmit} bookType={bookType} />
     </Navigation>
   );
 };

@@ -18,16 +18,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  handleSubmit: (values: FormikValues) => void;
+  onSubmit: (values: FormikValues) => void;
   htmlFileInfo: HtmlFileInfo;
   isNewHtmlFile: boolean;
 }
 
-const HtmlPageForm: FC<Props> = ({
-  handleSubmit,
-  htmlFileInfo,
-  isNewHtmlFile,
-}) => {
+const HtmlPageForm: FC<Props> = ({ onSubmit, htmlFileInfo, isNewHtmlFile }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
@@ -37,7 +33,7 @@ const HtmlPageForm: FC<Props> = ({
     formik: FormikHelpers<any>
   ) => {
     formik.setSubmitting(false);
-    handleSubmit(values);
+    onSubmit(values);
   };
 
   const initialFormState = () => {

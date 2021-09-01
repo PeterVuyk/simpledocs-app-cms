@@ -10,10 +10,10 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  loadDecisionTreeHandle: () => void;
+  onLoadDecisionTree: () => void;
 }
 
-const UploadDecisionTreeButton: FC<Props> = ({ loadDecisionTreeHandle }) => {
+const UploadDecisionTreeButton: FC<Props> = ({ onLoadDecisionTree }) => {
   const [openUploadDialog, setOpenUploadDialog] = useState<boolean>(false);
   const classes = useStyles();
 
@@ -31,7 +31,7 @@ const UploadDecisionTreeButton: FC<Props> = ({ loadDecisionTreeHandle }) => {
         <UploadDecisionTreeDialog
           dialogText="Voeg een nieuwe beslisboom toe of vervang de bestaande door middel van het overschrijven van de benaming en het uploaden van een komma gescheiden csv bestand."
           setOpenUploadDialog={setOpenUploadDialog}
-          loadDecisionTreeHandle={loadDecisionTreeHandle}
+          onLoadDecisionTree={onLoadDecisionTree}
         />
       )}
     </>

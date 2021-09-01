@@ -15,12 +15,12 @@ import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
 
 interface Props {
-  handleSubmit: (values: FormikValues) => void;
+  onSubmit: (values: FormikValues) => void;
   article?: Article;
   bookType: BookType;
 }
 
-const ArticleForm: FC<Props> = ({ handleSubmit, article, bookType }) => {
+const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
 
@@ -29,7 +29,7 @@ const ArticleForm: FC<Props> = ({ handleSubmit, article, bookType }) => {
     formik: FormikHelpers<any>
   ) => {
     formik.setSubmitting(false);
-    handleSubmit(values);
+    onSubmit(values);
   };
 
   const initialFormState = () => {

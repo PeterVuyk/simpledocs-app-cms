@@ -102,7 +102,7 @@ const HtmlInfoEditor: FC<Props> = ({
       {htmlFileInfo && (
         <HtmlPageForm
           isNewHtmlFile={isNewHtmlFile}
-          handleSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           htmlFileInfo={htmlFileInfo}
         />
       )}

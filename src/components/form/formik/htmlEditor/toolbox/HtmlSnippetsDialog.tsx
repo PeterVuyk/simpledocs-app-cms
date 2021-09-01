@@ -48,12 +48,12 @@ const Transition = forwardRef(function Transition(
 
 interface Props {
   openSnippetsDialog: HtmlFileInfo;
-  closeDialogHandle: () => void;
+  oncloseDialog: () => void;
 }
 
 const HtmlSnippetsDialog: FC<Props> = ({
   openSnippetsDialog,
-  closeDialogHandle,
+  oncloseDialog,
 }) => {
   const classes = useStyles();
   return (
@@ -63,7 +63,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
       open={openSnippetsDialog !== null}
       TransitionComponent={Transition}
       keepMounted
-      onClose={closeDialogHandle}
+      onClose={oncloseDialog}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
@@ -110,7 +110,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialogHandle} color="primary" variant="contained">
+        <Button onClick={oncloseDialog} color="primary" variant="contained">
           Terug
         </Button>
       </DialogActions>

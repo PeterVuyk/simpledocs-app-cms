@@ -23,7 +23,7 @@ const ViewHTMLFileAction: FC<Props> = ({ htmlFile, iconStyle }) => {
       {showHtmlPreview && (
         <HtmlPreview
           showHtmlPreview={htmlFile}
-          closeHtmlPreviewHandle={() => setShowHtmlPreview(false)}
+          onCloseHtmlPreview={() => setShowHtmlPreview(false)}
         />
       )}
     </>

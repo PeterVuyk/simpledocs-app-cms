@@ -44,11 +44,11 @@ const Base64TransformerDialog: FC<Props> = ({
   const [base64Input, setBase64Input] = useState<string>('');
   const base64Ref = useRef<TextFieldProps>();
 
-  const handleClose = () => {
+  const onClose = () => {
     setOpenBase64TransformerDialog(false);
   };
 
-  const downloadFileFromBase64Handle = () => {
+  const handleDownloadFileFromBase64 = () => {
     if (!base64Input.split('data:image/svg+xml;base64,')[1]) {
       setError(
         'Het opgegeven base64 is onjuist, de data moet beginnen met data:image/svg+xml;base64,'
@@ -68,7 +68,7 @@ const Base64TransformerDialog: FC<Props> = ({
       open={openBase64TransformerDialog !== null}
       TransitionComponent={Transition}
       keepMounted
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
@@ -101,7 +101,7 @@ const Base64TransformerDialog: FC<Props> = ({
           <Tooltip title="Download als bestand">
             <div>
               <Button
-                onClick={downloadFileFromBase64Handle}
+                onClick={handleDownloadFileFromBase64}
                 variant="contained"
                 disabled={base64Input === ''}
               >
@@ -125,11 +125,11 @@ const Base64TransformerDialog: FC<Props> = ({
         <FileDropzoneArea
           allowedMimeTypes={['image/svg+xml']}
           allowedExtension="svg"
-          updateFileHandler={setSVGUploadRef}
+          onUpdateFile={setSVGUploadRef}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button onClick={onClose} color="primary" variant="contained">
           Terug
         </Button>
       </DialogActions>

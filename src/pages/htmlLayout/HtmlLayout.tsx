@@ -44,7 +44,7 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
     loadHtmlFiles();
   }, []);
 
-  const deleteHtmlFileHandle = (id: string) => {
+  const handleDeleteHtmlFile = (id: string) => {
     htmlFileInfoRepository
       .deleteHtmlFile(id)
       .then(loadHtmlFiles)
@@ -84,7 +84,7 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
       <HtmlFileTable
         aggregate={AGGREGATE_HTML_LAYOUT}
         htmlFileInfos={htmlFileInfos}
-        deleteHandle={deleteHtmlFileHandle}
+        onDelete={handleDeleteHtmlFile}
       />
     </>
   );

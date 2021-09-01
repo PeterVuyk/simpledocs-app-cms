@@ -13,7 +13,7 @@ const ErrorTextTypography = withStyles({
 })(Typography);
 
 interface Props {
-  updateFileHandler: (file: any) => void;
+  onUpdateFile: (file: any) => void;
   allowedMimeTypes: string[];
   allowedExtension: string;
   initialFile?: string | null;
@@ -23,7 +23,7 @@ const FileDropzoneArea: FC<Props> = ({
   allowedMimeTypes,
   allowedExtension,
   initialFile,
-  updateFileHandler,
+  onUpdateFile,
 }) => {
   const ONE_MB_MAX_FILE_SIZE = 1000000;
   const configDropzoneArea: any = {
@@ -34,7 +34,7 @@ const FileDropzoneArea: FC<Props> = ({
     if (files.length !== 1) {
       // Remove file
       // eslint-disable-next-line no-param-reassign
-      updateFileHandler('');
+      onUpdateFile('');
       return;
     }
 
@@ -42,7 +42,7 @@ const FileDropzoneArea: FC<Props> = ({
     const reader = new FileReader();
     reader.readAsDataURL(files[0] as Blob);
     reader.onloadend = () => {
-      updateFileHandler(reader.result);
+      onUpdateFile(reader.result);
     };
   };
 

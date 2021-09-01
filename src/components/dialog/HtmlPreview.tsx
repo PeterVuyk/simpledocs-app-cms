@@ -14,19 +14,16 @@ const Transition = forwardRef(function Transition(
 
 interface Props {
   showHtmlPreview?: string;
-  closeHtmlPreviewHandle: () => void;
+  onCloseHtmlPreview: () => void;
 }
 
-const HtmlPreview: FC<Props> = ({
-  showHtmlPreview,
-  closeHtmlPreviewHandle,
-}) => {
+const HtmlPreview: FC<Props> = ({ showHtmlPreview, onCloseHtmlPreview }) => {
   return (
     <Dialog
       open={showHtmlPreview !== null}
       TransitionComponent={Transition}
       keepMounted
-      onClose={closeHtmlPreviewHandle}
+      onClose={onCloseHtmlPreview}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >

@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 interface Props {
   article: Article;
-  loadArticlesHandle: () => void;
+  onLoadArticles: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: EditStatus;
   bookType: BookType;
@@ -37,7 +37,7 @@ interface Props {
 
 const ArticleListItem: FC<Props> = ({
   article,
-  loadArticlesHandle,
+  onLoadArticles,
   setNotification,
   editStatus,
   bookType,
@@ -63,7 +63,7 @@ const ArticleListItem: FC<Props> = ({
     if (article.isDraft) {
       articleRepository
         .deleteArticle(bookType, id)
-        .then(() => loadArticlesHandle())
+        .then(onLoadArticles)
         .then(() =>
           setNotification({
             notificationType: 'success',
@@ -78,7 +78,7 @@ const ArticleListItem: FC<Props> = ({
     }
     articleRepository
       .markArticleForDeletion(bookType, id)
-      .then(() => loadArticlesHandle())
+      .then(onLoadArticles)
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -94,7 +94,7 @@ const ArticleListItem: FC<Props> = ({
   const undoMarkDeletion = () => {
     articleRepository
       .removeMarkForDeletion(bookType, article.id ?? '')
-      .then(() => loadArticlesHandle())
+      .then(onLoadArticles)
       .then(() =>
         setNotification({
           notificationType: 'success',

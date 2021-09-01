@@ -92,7 +92,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
       {article && (
         <ArticleForm
           article={article}
-          handleSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           bookType={bookType}
         />
       )}

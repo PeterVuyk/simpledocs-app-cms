@@ -23,14 +23,14 @@ const useStyles = makeStyles({
 
 interface Props {
   articles?: Article[] | null;
-  loadArticlesHandle: () => void;
+  onLoadArticles: () => void;
   editStatus: EditStatus;
   bookType: BookType;
 }
 
 const ArticlesList: FC<Props> = ({
   articles,
-  loadArticlesHandle,
+  onLoadArticles,
   editStatus,
   bookType,
 }) => {
@@ -74,7 +74,7 @@ const ArticlesList: FC<Props> = ({
                 <ArticleListItem
                   editStatus={editStatus}
                   article={row}
-                  loadArticlesHandle={loadArticlesHandle}
+                  onLoadArticles={onLoadArticles}
                   bookType={bookType}
                 />
               </TableRow>

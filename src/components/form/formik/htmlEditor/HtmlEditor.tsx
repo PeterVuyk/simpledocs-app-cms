@@ -52,7 +52,7 @@ interface Props {
 const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
-  const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
+  const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
   const classes = useStyles();
 
   const getErrorMessage = (): string => {
@@ -62,20 +62,20 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     return '';
   };
 
-  const showSaveButtonHandle = () => {
-    setShowSaveButton(true);
+  const showSaveButton = () => {
+    setSaveButtonVisible(true);
     setTimeout(() => {
-      setShowSaveButton(false);
+      setSaveButtonVisible(false);
     }, 5000);
   };
 
-  const updateFileHandler = (file: string) => {
+  const handleUpdateFile = (file: string) => {
     formik.current.setFieldValue('htmlFile', file);
     setContent(file);
-    showSaveButtonHandle();
+    showSaveButton();
   };
 
-  const updateFileFromBase64Handler = useCallback(
+  const handleUpdateFileFromBase64 = useCallback(
     (file: string | null) => {
       const html = file ? htmlFileHelper.getHTMLBodyFromBase64(file) : '';
       formik.current.setFieldValue('htmlFile', html);
@@ -138,24 +138,24 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      {showSaveButton && <SaveIcon className={classes.saveIcon} />}
+      {saveButtonVisible && <SaveIcon className={classes.saveIcon} />}
       <div className={classes.relativeContainer}>
         <div className={classes.formControl}>
-          <BottomHtmlToolbox updateFileHandler={updateFileHandler} />
+          <BottomHtmlToolbox onUpdateFile={handleUpdateFile} />
         </div>
         <JoditEditor
           ref={editor}
           value={content ?? ''}
           // @ts-ignore
           config={config}
-          onBlur={updateFileHandler}
+          onBlur={handleUpdateFile}
         />
       </div>
       <FileDropzoneArea
         allowedExtension=".html"
         allowedMimeTypes={['text/html']}
         initialFile={getBase64HtmlFile()}
-        updateFileHandler={updateFileFromBase64Handler}
+        onUpdateFile={handleUpdateFileFromBase64}
       />
     </div>
   );

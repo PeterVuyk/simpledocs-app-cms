@@ -42,7 +42,7 @@ const Login: FC = () => {
       history.push('/');
     }
   }, [currentUser, history]);
-  async function handleSubmit(
+  async function onSubmit(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> {
     e.preventDefault();
@@ -100,7 +100,7 @@ const Login: FC = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleSubmit}
+            onClick={onSubmit}
             disabled={loading}
           >
             Inloggen

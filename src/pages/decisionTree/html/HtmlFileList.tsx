@@ -28,7 +28,7 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
     loadHtmlFiles();
   }, []);
 
-  const deleteHtmlFileHandle = (id: string) => {
+  const handleDeleteHtmlFile = (id: string) => {
     htmlFileInfoRepository
       .deleteHtmlFile(id)
       .then(loadHtmlFiles)
@@ -49,7 +49,7 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
     <HtmlFileTable
       aggregate={AGGREGATE_DECISION_TREE}
       htmlFileInfos={decisionTreeHtmlFiles}
-      deleteHandle={deleteHtmlFileHandle}
+      onDelete={handleDeleteHtmlFile}
     />
   );
 };

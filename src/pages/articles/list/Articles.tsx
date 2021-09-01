@@ -35,7 +35,7 @@ const Articles: FC<Props> = ({ bookType }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const loadArticlesHandle = (): void => {
+  const handleLoadArticles = (): void => {
     setArticles(null);
     articleRepository
       .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
@@ -80,7 +80,7 @@ const Articles: FC<Props> = ({ bookType }) => {
       </PageHeading>
       <ArticlesList
         editStatus={editStatus}
-        loadArticlesHandle={loadArticlesHandle}
+        onLoadArticles={handleLoadArticles}
         articles={articles}
         bookType={bookType}
       />

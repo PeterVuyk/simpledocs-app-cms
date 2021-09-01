@@ -8,10 +8,10 @@ import translationHelper from '../../helper/translationHelper';
 
 interface Props {
   version: Versioning;
-  reloadPublicationsHandle: () => void;
+  onReloadPublications: () => void;
 }
 
-const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
+const PublicationItem: FC<Props> = ({ version, onReloadPublications }) => {
   const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
     null
   );
@@ -47,7 +47,7 @@ const PublicationItem: FC<Props> = ({ version, reloadPublicationsHandle }) => {
               dialogText={`Huidige versie: ${openPublishDialog.version}. Geef de nieuwe versie op:`}
               openDialog={openPublishDialog}
               setOpenDialog={setOpenPublishDialog}
-              onSubmit={reloadPublicationsHandle}
+              onSubmit={onReloadPublications}
             />
           )}
       </TableCell>

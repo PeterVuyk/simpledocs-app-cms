@@ -4,14 +4,14 @@ import { Menu } from '@material-ui/core';
 import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
 
 interface Props {
-  updateFileHandler: (content: string) => void;
+  onUpdateFile: (content: string) => void;
   templateMenu: HTMLElement | null;
   setTemplateMenu: (templateMenu: null | HTMLElement) => void;
   templates: HtmlFileInfo[];
 }
 
 const HtmlTemplateMenu: FC<Props> = ({
-  updateFileHandler,
+  onUpdateFile,
   templateMenu,
   setTemplateMenu,
   templates,
@@ -23,7 +23,7 @@ const HtmlTemplateMenu: FC<Props> = ({
     );
 
     if (template) {
-      updateFileHandler(template.htmlFile);
+      onUpdateFile(template.htmlFile);
     }
   };
 
