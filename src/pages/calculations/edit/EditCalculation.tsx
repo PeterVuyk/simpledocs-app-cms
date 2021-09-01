@@ -19,7 +19,7 @@ import calculationsRepository from '../../../firebase/database/calculationsRepos
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
-import ArticleEditor from '../../../components/form/formik/ArticleEditor';
+import ArticleEditor from '../../../components/form/formik/articleEditor/ArticleEditor';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
 
 const useStyles = makeStyles((theme) => ({

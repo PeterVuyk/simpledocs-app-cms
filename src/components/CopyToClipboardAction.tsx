@@ -1,20 +1,25 @@
 import React, { FC } from 'react';
 import Button from '@material-ui/core/Button';
-import { TextFieldProps } from '@material-ui/core/TextField';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import { Tooltip } from '@material-ui/core';
 
 interface Props {
-  textField: TextFieldProps | undefined;
-  disabled: boolean;
+  textToCopy: string;
+  disabled?: boolean;
 }
 
-const CopyToClipboardAction: FC<Props> = ({ textField, disabled }) => {
-  const copyBase64ToClipboardHandle = (e: any) => {
-    // @ts-ignore
-    textField?.select();
+const CopyToClipboardAction: FC<Props> = ({ textToCopy, disabled }) => {
+  const copyText = () => {
+    const el = document.createElement('textarea');
+    el.value = textToCopy;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    el.focus();
     document.execCommand('copy');
-    e.target.focus();
+    document.body.removeChild(el);
   };
 
   return (
@@ -27,9 +32,9 @@ const CopyToClipboardAction: FC<Props> = ({ textField, disabled }) => {
       <Tooltip title="Kopieer naar klembord">
         <div>
           <Button
-            onClick={copyBase64ToClipboardHandle}
+            onClick={copyText}
             variant="contained"
-            disabled={disabled}
+            disabled={disabled === undefined ? false : disabled}
           >
             <FilterNoneIcon />
           </Button>

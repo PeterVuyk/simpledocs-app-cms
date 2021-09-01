@@ -20,6 +20,7 @@ import {
   HTML_FILE_CATEGORY_TEMPLATE,
   HtmlFileCategory,
 } from '../../model/HtmlFileCategory';
+import { AGGREGATE_DECISION_TREE } from '../../model/Aggregate';
 
 const useStyles = makeStyles({
   table: {
@@ -94,10 +95,10 @@ const HtmlFileTable: FC<Props> = ({
                     onClick={() =>
                       history.push(
                         `/${
-                          aggregate === 'decision-tree'
-                            ? 'decision-tree'
-                            : 'html-layout'
-                        }/html/${row.id}`
+                          aggregate === AGGREGATE_DECISION_TREE
+                            ? 'html/'
+                            : 'html-layout/'
+                        }${row.htmlFileCategory}/${row.id}`
                       )
                     }
                   />

@@ -1,37 +1,21 @@
-import React, { useEffect, FC } from 'react';
+import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
-import logger from '../../../helper/logger';
-import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
-import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../model/HtmlFileCategory';
+import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
 
 interface Props {
   updateFileHandler: (content: string) => void;
   templateMenu: HTMLElement | null;
   setTemplateMenu: (templateMenu: null | HTMLElement) => void;
+  templates: HtmlFileInfo[];
 }
 
 const HtmlTemplateMenu: FC<Props> = ({
   updateFileHandler,
   templateMenu,
   setTemplateMenu,
+  templates,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [templates, setTemplates] = React.useState<HtmlFileInfo[] | null>(null);
-
-  useEffect(() => {
-    htmlFileInfoRepository
-      .getHtmlInfoByCategories([HTML_FILE_CATEGORY_TEMPLATE])
-      .then(setTemplates)
-      .catch((reason) =>
-        logger.errorWithReason(
-          'Failed collecting the html templates from htmlFileInfoRepository.getHtmlTemplates for the HtmlTemplateMenu component',
-          reason
-        )
-      );
-  }, []);
-
   const handleChange = (event: React.MouseEvent<HTMLLIElement>) => {
     setTemplateMenu(null);
     const template = templates!.find(

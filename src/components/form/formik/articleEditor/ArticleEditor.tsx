@@ -1,17 +1,14 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import SaveIcon from '@material-ui/icons/Save';
-import { CircularProgress, Tooltip } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import StyleIcon from '@material-ui/icons/Style';
-// eslint-disable-next-line import/no-unresolved
-import FileDropzoneArea from '../FileDropzoneArea';
-import ErrorTextTypography from '../../text/ErrorTextTypography';
-import htmlFileHelper from '../../../helper/htmlFileHelper';
-import HtmlTemplateMenu from './HtmlTemplateMenu';
-import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
-import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../model/HtmlFileCategory';
+import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
+import FileDropzoneArea from './FileDropzoneArea';
+import ErrorTextTypography from '../../../text/ErrorTextTypography';
+import htmlFileHelper from '../../../../helper/htmlFileHelper';
+import htmlFileInfoRepository from '../../../../firebase/database/htmlFileInfoRepository';
+import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../../model/HtmlFileCategory';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,7 +53,6 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
-  const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   const classes = useStyles();
 
   const getErrorMessage = (): string => {
@@ -125,10 +121,6 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     askBeforePasteFromWord: false,
   };
 
-  const openHtmlTemplateMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setTemplateMenu(event.currentTarget);
-  };
-
   if (content === null) {
     return (
       <div className={classes.relativeContainer}>
@@ -147,20 +139,7 @@ const ArticleEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       {showSaveButton && <SaveIcon className={classes.saveIcon} />}
       <div className={classes.relativeContainer}>
         <div className={classes.formControl}>
-          <Tooltip title="Template gebruiken">
-            <Button
-              className={classes.button}
-              variant="contained"
-              onClick={openHtmlTemplateMenu}
-            >
-              <StyleIcon />
-            </Button>
-          </Tooltip>
-          <HtmlTemplateMenu
-            templateMenu={templateMenu}
-            setTemplateMenu={setTemplateMenu}
-            updateFileHandler={updateFileHandler}
-          />
+          <BottomHtmlToolbox updateFileHandler={updateFileHandler} />
         </div>
         <JoditEditor
           ref={editor}

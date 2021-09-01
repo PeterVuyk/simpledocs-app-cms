@@ -20,7 +20,7 @@ import { Tooltip } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Alert from '@material-ui/lab/Alert';
 import FileSaver from 'file-saver';
-import FileDropzoneArea from '../../../components/form/FileDropzoneArea';
+import FileDropzoneArea from '../../../components/form/formik/articleEditor/FileDropzoneArea';
 import CopyToClipboardAction from '../../../components/CopyToClipboardAction';
 
 const Transition = forwardRef(function Transition(
@@ -89,7 +89,7 @@ const Base64TransformerDialog: FC<Props> = ({
           </Alert>
         )}
         <CopyToClipboardAction
-          textField={base64Ref.current}
+          textToCopy={(base64Ref.current?.value as string) ?? ''}
           disabled={base64Input === ''}
         />
         <div

@@ -85,7 +85,7 @@ const DecisionTree: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/decision-tree/html/add`)}
+          onClick={() => history.push(`/html/decisionTree/add`)}
         >
           HTML bestand uploaden
         </Button>

@@ -9,7 +9,7 @@ import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import articleRepository from '../../firebase/database/articleRepository';
-import ArticleEditor from '../../components/form/formik/ArticleEditor';
+import ArticleEditor from '../../components/form/formik/articleEditor/ArticleEditor';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';

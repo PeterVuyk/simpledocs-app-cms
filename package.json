@@ -34,6 +34,7 @@
     "papaparse": "^5.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-highlight": "^0.14.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -70,6 +71,7 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.2",
+    "@types/react-highlight": "^0.12.3",
     "@types/react-redux": "^7.1.16",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",

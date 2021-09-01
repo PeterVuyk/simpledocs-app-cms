@@ -73,14 +73,15 @@ const AppRouter: FC = () => {
             path="/html-layout/:htmlFileCategory/:htmlFileId"
             Component={LayoutEditor}
           />
+          {/* TODO: slugify */}
           <PrivateRoute
             exact
-            path="/decision-tree/html/add"
+            path="/html/decisionTree/add"
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute
             exact
-            path="/decision-tree/html/:htmlFileId"
+            path="/html/decisionTree/:htmlFileId"
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute

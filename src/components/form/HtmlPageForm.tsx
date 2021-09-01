@@ -7,8 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { FastFieldProps } from 'formik/dist/FastField';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
-import ArticleEditor from './formik/ArticleEditor';
+import ArticleEditor from './formik/articleEditor/ArticleEditor';
 import { HtmlFileInfo } from '../../model/HtmlFileInfo';
+import { HTML_FILE_CATEGORY_SNIPPET } from '../../model/HtmlFileCategory';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -55,12 +56,13 @@ const HtmlPageForm: FC<Props> = ({
       .required('Het toevoegen van een html bestand is verplicht.')
       .test(
         'htmlFile',
-        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
+        'De inhoud moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
         async (htmlFile) => {
           return (
-            htmlFile !== undefined &&
-            (htmlFile as string).includes('<article>') &&
-            (htmlFile as string).includes('</article>')
+            htmlFileInfo.htmlFileCategory === HTML_FILE_CATEGORY_SNIPPET ||
+            (htmlFile !== undefined &&
+              htmlFile.includes('<article>') &&
+              htmlFile.includes('</article>'))
           );
         }
       ),

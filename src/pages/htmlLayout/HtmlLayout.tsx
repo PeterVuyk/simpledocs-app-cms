@@ -68,17 +68,17 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html-layout/snippet/add`)}
+          onClick={() => history.push(`/html-layout/template/add`)}
         >
-          Snippet uploaden
+          Template uploaden
         </Button>
         <Button
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html-layout/template/add`)}
+          onClick={() => history.push(`/html-layout/snippet/add`)}
         >
-          Template uploaden
+          Snippet uploaden
         </Button>
       </PageHeading>
       <HtmlFileTable
