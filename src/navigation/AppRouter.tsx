@@ -14,18 +14,9 @@ import EditStoppingDistance from '../pages/calculations/edit/EditStoppingDistanc
 import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDistance';
 import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
-import EditBrakingDistance from '../pages/calculations/edit/EditBrakingDistance';
-import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPathDistance';
 import LayoutEditor from '../pages/htmlLayout/LayoutEditor';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
 import NotFound from '../pages/NotFound';
-import {
-  ADD_DECISION_TREE,
-  EDIT_CALCULATIONS_BRAKING_DISTANCE,
-  EDIT_CALCULATIONS_OVERTAKING_DISTANCE,
-  EDIT_CALCULATIONS_REACTION_PATH_DISTANCE,
-  EDIT_CALCULATIONS_STOPPING_DISTANCE,
-} from './UrlSlugs';
 
 const AppRouter: FC = () => {
   return (
@@ -47,23 +38,13 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path={EDIT_CALCULATIONS_STOPPING_DISTANCE}
+            path="/calculations/stopping-distance/edit"
             Component={EditStoppingDistance}
           />
           <PrivateRoute
             exact
-            path={EDIT_CALCULATIONS_OVERTAKING_DISTANCE}
+            path="/calculations/overtaking-distance/edit"
             Component={EditOvertakingDistance}
-          />
-          <PrivateRoute
-            exact
-            path={EDIT_CALCULATIONS_BRAKING_DISTANCE}
-            Component={EditBrakingDistance}
-          />
-          <PrivateRoute
-            exact
-            path={EDIT_CALCULATIONS_REACTION_PATH_DISTANCE}
-            Component={EditReactionPathDistance}
           />
           <PrivateRoute
             exact
@@ -82,7 +63,7 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path={ADD_DECISION_TREE}
+            path="/html/decision-tree/add"
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute
