@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useAuth } from './AuthProvider';
+import { HOME_PAGE } from '../navigation/UrlSlugs';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +40,7 @@ const Login: FC = () => {
 
   useEffect(() => {
     if (currentUser !== null) {
-      history.push('/');
+      history.push(HOME_PAGE);
     }
   }, [currentUser, history]);
   async function onSubmit(

@@ -12,6 +12,12 @@ import {
   REACTION_PATH_DISTANCE,
   STOPPING_DISTANCE,
 } from '../../model/CalculationType';
+import {
+  EDIT_CALCULATIONS_BRAKING_DISTANCE,
+  EDIT_CALCULATIONS_OVERTAKING_DISTANCE,
+  EDIT_CALCULATIONS_REACTION_PATH_DISTANCE,
+  EDIT_CALCULATIONS_STOPPING_DISTANCE,
+} from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles({
   button: {
@@ -61,7 +67,7 @@ const Calculations: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push('calculations/stopping-distance/edit')}
+          onClick={() => history.push(EDIT_CALCULATIONS_STOPPING_DISTANCE)}
         >
           Stopafstand updaten
         </Button>
@@ -74,7 +80,7 @@ const Calculations: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push('calculations/overtaking-distance/edit')}
+          onClick={() => history.push(EDIT_CALCULATIONS_OVERTAKING_DISTANCE)}
         >
           Inhaalafstand updaten
         </Button>
@@ -87,7 +93,7 @@ const Calculations: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push('calculations/braking-distance/edit')}
+          onClick={() => history.push(EDIT_CALCULATIONS_BRAKING_DISTANCE)}
         >
           Remweg updaten
         </Button>
@@ -100,9 +106,7 @@ const Calculations: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() =>
-            history.push('calculations/reaction-path-distance/edit')
-          }
+          onClick={() => history.push(EDIT_CALCULATIONS_REACTION_PATH_DISTANCE)}
         >
           Reactieweg updaten
         </Button>

@@ -6,13 +6,13 @@ import { connect } from 'react-redux';
 import articleRepository from '../../firebase/database/articleRepository';
 import notification from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
-import Navigation from '../navigation/Navigation';
+import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import { BookType } from '../../model/BookType';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import bookTypeHelper from '../../helper/bookTypeHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
+import navigationConfig from '../../navigation/navigationConfig.json';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -22,11 +22,17 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
 
-  const bookType: BookType = bookTypeHelper.dashedPathToBookType(aggregatePath);
+  const getBookType = (): BookType => {
+    return Object.keys(navigationConfig.books.bookItems)[
+      Object.values(navigationConfig.books.bookItems)
+        .map((item) => item.urlSlug)
+        .indexOf(aggregatePath)
+    ] as BookType;
+  };
 
   const handleSubmit = (values: FormikValues): void => {
     articleRepository
-      .createArticle(bookType, {
+      .createArticle(getBookType(), {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -71,7 +77,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm onSubmit={handleSubmit} bookType={bookType} />
+      <ArticleForm onSubmit={handleSubmit} bookType={getBookType()} />
     </Navigation>
   );
 };

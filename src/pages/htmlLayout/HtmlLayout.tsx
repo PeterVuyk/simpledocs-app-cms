@@ -15,6 +15,7 @@ import {
   HTML_FILE_CATEGORY_SNIPPET,
   HTML_FILE_CATEGORY_TEMPLATE,
 } from '../../model/HtmlFileCategory';
+import { ADD_SNIPPETS, ADD_TEMPLATE } from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles({
   button: {
@@ -68,7 +69,7 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html-layout/template/add`)}
+          onClick={() => history.push(ADD_TEMPLATE)}
         >
           Template uploaden
         </Button>
@@ -76,7 +77,7 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html-layout/snippet/add`)}
+          onClick={() => history.push(ADD_SNIPPETS)}
         >
           Snippet uploaden
         </Button>

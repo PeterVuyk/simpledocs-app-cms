@@ -9,24 +9,18 @@ import {
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
-import Header from '../../components/header/Header';
+import Header from '../components/header/Header';
 import NavigationDrawer from './NavigationDrawer';
-import Articles from '../articles/list/Articles';
-import {
-  AGGREGATE_INSTRUCTION_MANUAL,
-  AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
-  AGGREGATE_REGULATION_OGS_2009,
-  AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  AGGREGATE_REGULATION_RVV_1990,
-} from '../../model/Aggregate';
-import DecisionTree from '../decisionTree/DecisionTree';
-import Calculations from '../calculations/Calculations';
-import Configurations from '../configurations/Configurations';
-import Publications from '../publications/Publications';
-import NotFound from '../NotFound';
+import Articles from '../pages/articles/list/Articles';
+import DecisionTree from '../pages/decisionTree/DecisionTree';
+import Calculations from '../pages/calculations/Calculations';
+import Configurations from '../pages/configurations/Configurations';
+import Publications from '../pages/publications/Publications';
+import NotFound from '../pages/NotFound';
 import navigationConfig from './navigationConfig.json';
-import { NavigationConfig } from '../../model/NavigationConfig';
-import HtmlLayout from '../htmlLayout/HtmlLayout';
+import { NavigationConfig } from '../model/NavigationConfig';
+import HtmlLayout from '../pages/htmlLayout/HtmlLayout';
+import { BookType } from '../model/BookType';
 
 const drawerWidth = 240;
 
@@ -61,36 +55,27 @@ const Navigation: FC<Props> = ({ classes, children }) => {
   };
 
   const getPage = () => {
+    const article = Object.values(configs.books.bookItems).find(
+      (item) => item.urlSlug === page
+    );
+    if (article) {
+      const bookType = Object.keys(navigationConfig.books.bookItems)[
+        Object.values(navigationConfig.books.bookItems)
+          .map((item) => item.urlSlug)
+          .indexOf(page)
+      ] as BookType;
+      return <Articles title={article.title} bookType={bookType} />;
+    }
     switch (page) {
-      case 'instruction-manual':
-        return <Articles bookType={AGGREGATE_INSTRUCTION_MANUAL} />;
-      case 'rvv-1990':
-        return <Articles bookType={AGGREGATE_REGULATION_RVV_1990} />;
-      case 'regeling-ogs-2009':
-        return <Articles bookType={AGGREGATE_REGULATION_OGS_2009} />;
-      case 'ontheffing-goede-taakuitoefening':
-        return (
-          <Articles
-            bookType={AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING}
-          />
-        );
-      case 'brancherichtlijn-medische-hulpverlening':
-        return (
-          <Articles
-            bookType={
-              AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING
-            }
-          />
-        );
-      case 'html-layout':
+      case configs.menu.menuItems.htmlLayout.urlSlug:
         return <HtmlLayout />;
-      case 'decision-tree':
+      case configs.menu.menuItems.decisionTree.urlSlug:
         return <DecisionTree />;
-      case 'calculations':
+      case configs.menu.menuItems.calculations.urlSlug:
         return <Calculations />;
-      case 'configurations':
+      case configs.menu.menuItems.configurations.urlSlug:
         return <Configurations />;
-      case 'publications':
+      case configs.menu.menuItems.publications.urlSlug:
       default:
         return <Publications />;
     }
@@ -98,8 +83,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
 
   const slugExist = () => {
     const urlSlugs = [
-      ...configs.books.listItems.map((item) => item.urlSlug),
-      ...configs.menu.listItems.map((item) => item.urlSlug),
+      ...Object.values(configs.books.bookItems).map((item) => item.urlSlug),
+      ...Object.values(configs.menu.menuItems).map((item) => item.urlSlug),
     ];
     return urlSlugs.find((slug) => slug === page);
   };

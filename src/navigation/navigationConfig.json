@@ -1,63 +1,63 @@
 {
   "books": {
     "title": "Boeken",
-    "listItems": [
-      {
-        "id": "Handboek",
+    "bookItems": {
+      "instructionManual": {
+        "title": "Handboek",
         "urlSlug": "instruction-manual",
         "icon": "looks_one_icon"
       },
-      {
-        "id": "RVV 1990",
+      "RVV1990": {
+        "title": "RVV 1990",
         "urlSlug": "rvv-1990",
         "icon": "looks_two_icon"
       },
-      {
-        "id": "Regeling OGS",
+      "regelingOGS2009": {
+        "title": "Regeling OGS",
         "urlSlug": "regeling-ogs-2009",
         "icon": "looks_two_icon"
       },
-      {
-        "id": "Ontheffing goede taakuitvoering",
+      "ontheffingGoedeTaakuitoefening": {
+        "title": "Ontheffing goede taakuitvoering",
         "urlSlug": "ontheffing-goede-taakuitoefening",
         "icon": "looks_two_icon"
       },
-      {
-        "id": "Brancherichtlijn medische hulpverlening",
+      "brancherichtlijnMedischeHulpverlening": {
+        "title": "Brancherichtlijn medische hulpverlening",
         "urlSlug": "brancherichtlijn-medische-hulpverlening",
         "icon": "looks_two_icon"
       }
-    ]
+    }
   },
   "menu": {
     "title": "Menu",
-    "listItems": [
-      {
-        "id": "Beslisboom",
+    "menuItems": {
+      "decisionTree": {
+        "title": "Beslisboom",
         "urlSlug": "decision-tree",
         "icon": "call_split_icon"
       },
-      {
-        "id": "Berekening",
+      "calculations": {
+        "title": "Berekening",
         "urlSlug": "calculations",
         "icon": "dialpad_icon"
       },
-      {
-        "id": "Configuratie app",
+      "configurations": {
+        "title": "Configuratie app",
         "urlSlug": "configurations",
         "icon": "phonelink_setup"
       },
-      {
-        "id": "Templates en snippets",
+      "htmlLayout": {
+        "title": "Templates en snippets",
         "urlSlug": "html-layout",
         "icon": "style_icon"
       },
-      {
-        "id": "Publiceren",
+      "publications": {
+        "title": "Publiceren",
         "urlSlug": "publications",
         "icon": "public_icon"
       }
-    ]
+    }
   },
   "externalLinks": {
     "title": "Links",

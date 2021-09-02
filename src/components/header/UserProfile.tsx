@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../authentication/AuthProvider';
+import { LOGIN_PAGE } from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles(() => ({
   headerItem: {
@@ -31,7 +32,7 @@ const UserProfile: FC = () => {
   async function handleLogout() {
     setAnchorEl(null);
     await logout();
-    history.push('/login');
+    history.push(LOGIN_PAGE);
   }
 
   return (

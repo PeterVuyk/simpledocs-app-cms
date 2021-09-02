@@ -13,7 +13,7 @@ import notification from '../../../redux/actions/notification';
 import TextField from '../../../components/form/formik/TextField';
 import FileDropZoneArea from '../../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../../components/form/formik/SubmitButton';
-import Navigation from '../../navigation/Navigation';
+import Navigation from '../../../navigation/Navigation';
 import logger from '../../../helper/logger';
 import calculationsRepository from '../../../firebase/database/calculationsRepository';
 import { NotificationOptions } from '../../../model/NotificationOptions';
@@ -21,6 +21,7 @@ import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
 import HtmlEditor from '../../../components/form/formik/htmlEditor/HtmlEditor';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
+import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -56,7 +57,7 @@ const EditCalculation: FC<Props> = ({
           notificationOpen: true,
           notificationMessage: 'Het openen van de wijzigingspagina is mislukt',
         });
-        history.push('/calculations');
+        history.push(CALCULATIONS_PAGE);
         return;
       }
       setCalculationInfo(calculation[0]);
@@ -81,8 +82,8 @@ const EditCalculation: FC<Props> = ({
         async (htmlFile) => {
           return (
             htmlFile !== undefined &&
-            (htmlFile as string).includes('<article>') &&
-            (htmlFile as string).includes('</article>')
+            htmlFile.includes('<article>') &&
+            htmlFile.includes('</article>')
           );
         }
       ),
@@ -112,7 +113,7 @@ const EditCalculation: FC<Props> = ({
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,
       })
-      .then(() => history.push('/calculations'))
+      .then(() => history.push(CALCULATIONS_PAGE))
       .then(() =>
         setNotification({
           notificationType: 'success',

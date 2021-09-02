@@ -14,6 +14,7 @@ import RemoveDecisionTreeMenuButton from './menu/remove/RemoveDecisionTreeMenuBu
 import DownloadDecisionTreeMenuButton from './menu/download/DownloadDecisionTreeMenuButton';
 import UploadDecisionTreeButton from './menu/upload/UploadDecisionTreeButton';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
+import { ADD_DECISION_TREE } from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles({
   button: {
@@ -85,7 +86,7 @@ const DecisionTree: FC = () => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(`/html/decisionTree/add`)}
+          onClick={() => history.push(ADD_DECISION_TREE)}
         >
           HTML bestand uploaden
         </Button>

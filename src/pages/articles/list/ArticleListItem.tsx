@@ -13,10 +13,10 @@ import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
-import bookTypeHelper from '../../../helper/bookTypeHelper';
 import DownloadHtmlFileAction from '../../../components/ItemAction/DownloadHtmlFileAction';
 import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
+import navigationConfig from '../../../navigation/navigationConfig.json';
 
 const useStyles = makeStyles({
   icon: {
@@ -112,7 +112,7 @@ const ArticleListItem: FC<Props> = ({
   };
 
   const getEditUrl = () =>
-    `/books/${bookTypeHelper.bookTypeToDashedPath(bookType)}/${article.id}`;
+    `/books/${navigationConfig.books.bookItems[bookType].urlSlug}/${article.id}`;
 
   const getDeleteTitle = () => {
     return editStatus === EDIT_STATUS_DRAFT

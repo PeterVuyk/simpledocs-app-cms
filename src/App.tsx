@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import configureStore from './redux/configureStore';
 import theme from './theme';
-import AppRouter from './route/AppRouter';
+import AppRouter from './navigation/AppRouter';
 
 const store = configureStore();
 

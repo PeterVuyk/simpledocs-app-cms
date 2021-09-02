@@ -8,13 +8,13 @@ import PageHeading from '../../layout/PageHeading';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import Navigation from '../navigation/Navigation';
+import Navigation from '../../navigation/Navigation';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import bookTypeHelper from '../../helper/bookTypeHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
 import NotFound from '../NotFound';
+import navigationConfig from '../../navigation/navigationConfig.json';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -25,10 +25,14 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
-  const bookType: BookType = useMemo(
-    () => bookTypeHelper.dashedPathToBookType(aggregatePath),
-    [aggregatePath]
-  );
+
+  const bookType = useMemo(() => {
+    return Object.keys(navigationConfig.books.bookItems)[
+      Object.values(navigationConfig.books.bookItems)
+        .map((item) => item.urlSlug)
+        .indexOf(aggregatePath)
+    ] as BookType;
+  }, [aggregatePath]);
 
   useEffect(() => {
     articleRepository

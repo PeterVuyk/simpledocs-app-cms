@@ -17,10 +17,10 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { Icon } from '@material-ui/core';
 import navigationConfig from './navigationConfig.json';
 import {
-  MenuConfig,
+  MenuItem,
   MenuLinkConfig,
   NavigationConfig,
-} from '../../model/NavigationConfig';
+} from '../model/NavigationConfig';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -99,32 +99,32 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
     );
   };
 
-  const getListItem = (menuConfig: MenuConfig) => {
-    return menuConfig.listItems.map(({ id: childId, urlSlug, icon }) => (
+  const getListItem = (title: string, menuItems: MenuItem[]) => {
+    return menuItems.map((menuItem) => (
       <ListItem
-        key={childId}
+        key={menuItem.title}
         button
         onClick={() => {
-          if (menuConfig.title === 'Boeken') {
-            history.push(`/books/${urlSlug}`);
+          if (title === 'Boeken') {
+            history.push(`/books/${menuItem.urlSlug}`);
           } else {
-            history.push(`/${urlSlug}`);
+            history.push(`/${menuItem.urlSlug}`);
           }
         }}
         className={clsx(
           classes.item,
-          currentPage === urlSlug && classes.itemActiveItem
+          currentPage === menuItem.urlSlug && classes.itemActiveItem
         )}
       >
         <ListItemIcon className={classes.itemIcon}>
-          <Icon>{icon}</Icon>
+          <Icon>{menuItem.icon}</Icon>
         </ListItemIcon>
         <ListItemText
           classes={{
             primary: classes.itemPrimary,
           }}
         >
-          {childId}
+          {menuItem.title}
         </ListItemText>
       </ListItem>
     ));
@@ -165,8 +165,17 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
         >
           Ambulance App CMS
         </ListItem>
-        {getCategoryItem(configs.books.title, getListItem(configs.books))}
-        {getCategoryItem(configs.menu.title, getListItem(configs.menu))}
+        {getCategoryItem(
+          configs.books.title,
+          getListItem(
+            configs.books.title,
+            Object.values(configs.books.bookItems)
+          )
+        )}
+        {getCategoryItem(
+          configs.menu.title,
+          getListItem(configs.menu.title, Object.values(configs.menu.menuItems))
+        )}
         {getCategoryItem(
           configs.externalLinks.title,
           getLinkListItem(configs.externalLinks)

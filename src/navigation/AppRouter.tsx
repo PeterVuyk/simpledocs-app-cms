@@ -9,7 +9,7 @@ import Login from '../authentication/Login';
 import { AuthProvider } from '../authentication/AuthProvider';
 import PrivateRoute from '../authentication/PrivateRoute';
 import SnackbarNotification from '../components/SnackbarNotification';
-import Navigation from '../pages/navigation/Navigation';
+import Navigation from './Navigation';
 import EditStoppingDistance from '../pages/calculations/edit/EditStoppingDistance';
 import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDistance';
 import CreateArticle from '../pages/articles/CreateArticle';
@@ -19,6 +19,13 @@ import EditReactionPathDistance from '../pages/calculations/edit/EditReactionPat
 import LayoutEditor from '../pages/htmlLayout/LayoutEditor';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
 import NotFound from '../pages/NotFound';
+import {
+  ADD_DECISION_TREE,
+  EDIT_CALCULATIONS_BRAKING_DISTANCE,
+  EDIT_CALCULATIONS_OVERTAKING_DISTANCE,
+  EDIT_CALCULATIONS_REACTION_PATH_DISTANCE,
+  EDIT_CALCULATIONS_STOPPING_DISTANCE,
+} from './UrlSlugs';
 
 const AppRouter: FC = () => {
   return (
@@ -40,22 +47,22 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/calculations/stopping-distance/edit"
+            path={EDIT_CALCULATIONS_STOPPING_DISTANCE}
             Component={EditStoppingDistance}
           />
           <PrivateRoute
             exact
-            path="/calculations/overtaking-distance/edit"
+            path={EDIT_CALCULATIONS_OVERTAKING_DISTANCE}
             Component={EditOvertakingDistance}
           />
           <PrivateRoute
             exact
-            path="/calculations/braking-distance/edit"
+            path={EDIT_CALCULATIONS_BRAKING_DISTANCE}
             Component={EditBrakingDistance}
           />
           <PrivateRoute
             exact
-            path="/calculations/reaction-path-distance/edit"
+            path={EDIT_CALCULATIONS_REACTION_PATH_DISTANCE}
             Component={EditReactionPathDistance}
           />
           <PrivateRoute
@@ -73,15 +80,14 @@ const AppRouter: FC = () => {
             path="/html-layout/:htmlFileCategory/:htmlFileId"
             Component={LayoutEditor}
           />
-          {/* TODO: slugify */}
           <PrivateRoute
             exact
-            path="/html/decisionTree/add"
+            path={ADD_DECISION_TREE}
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute
             exact
-            path="/html/decisionTree/:htmlFileId"
+            path="/html/decision-tree/:htmlFileId"
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute

@@ -15,8 +15,9 @@ import {
   HtmlFileCategory,
   isHtmlFileCategory,
 } from '../../model/HtmlFileCategory';
-import Navigation from '../../pages/navigation/Navigation';
+import Navigation from '../../navigation/Navigation';
 import NotFound from '../../pages/NotFound';
+import { HTML_LAYOUT_PAGE } from '../../navigation/UrlSlugs';
 
 interface Props {
   htmlFileId?: string;
@@ -61,7 +62,7 @@ const HtmlInfoEditor: FC<Props> = ({
           values.htmlFile
         ),
       })
-      .then(() => history.push(`/html-layout`))
+      .then(() => history.push(HTML_LAYOUT_PAGE))
       .then(() =>
         setNotification({
           notificationType: 'success',

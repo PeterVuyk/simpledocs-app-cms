@@ -9,9 +9,9 @@ import ArticlesList from './ArticlesList';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
 import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
-import bookTypeHelper from '../../../helper/bookTypeHelper';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
+import navigationConfig from '../../../navigation/navigationConfig.json';
 
 const useStyles = makeStyles({
   table: {
@@ -26,10 +26,11 @@ const useStyles = makeStyles({
 });
 
 interface Props {
+  title: string;
   bookType: BookType;
 }
 
-const Articles: FC<Props> = ({ bookType }) => {
+const Articles: FC<Props> = ({ title, bookType }) => {
   const [articles, setArticles] = useState<Article[] | null>(null);
   const [editStatus, setEditStatus] = useStatusToggle();
   const classes = useStyles();
@@ -50,14 +51,14 @@ const Articles: FC<Props> = ({ bookType }) => {
 
   const getAddArticlePath = () => {
     return {
-      pathname: `/books/${bookTypeHelper.bookTypeToDashedPath(bookType)}/add`,
+      pathname: `/books/${navigationConfig.books.bookItems[bookType].urlSlug}/add`,
       bookType,
     };
   };
 
   return (
     <>
-      <PageHeading title={bookTypeHelper.getTitleByBookType(bookType)}>
+      <PageHeading title={title}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}
