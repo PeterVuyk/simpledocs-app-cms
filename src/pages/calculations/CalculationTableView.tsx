@@ -69,12 +69,13 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
           <TableBody>
             {calculationInfo && (
               <>
-                <TableRow key="1">
+                <TableRow key={calculationInfo.title + 1}>
                   <TableCell className={classes.head} />
                   <TableCell>{calculationInfo.listIndex}</TableCell>
                   <TableCell>{calculationInfo.title}</TableCell>
                   <TableCell>
                     <img
+                      alt="illustratie"
                       style={{ width: 30 }}
                       src={`${calculationInfo.iconFile}`}
                     />
@@ -85,7 +86,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                     <ViewHTMLFileAction htmlFile={calculationInfo.htmlFile} />
                   </TableCell>
                 </TableRow>
-                <TableRow key="2">
+                <TableRow key={calculationInfo.title + 2}>
                   <TableCell className={classes.head}>
                     <strong>Afbeelding</strong>
                     <br />

@@ -45,7 +45,7 @@ const FileDropzoneArea: FC<Props> = ({
   const handleUploadChange = (files: File[]) => {
     if (files.length !== 1) {
       // Remove file
-      formik.current.setFieldValue(name, '');
+      formik.current?.setFieldValue(name, '');
       return;
     }
 
@@ -54,7 +54,7 @@ const FileDropzoneArea: FC<Props> = ({
     reader.readAsDataURL(files[0] as Blob);
     reader.onloadend = () => {
       const base64data = reader.result;
-      formik.current.setFieldValue(name, base64data);
+      formik.current?.setFieldValue(name, base64data);
     };
   };
 

@@ -116,8 +116,11 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
           <Typography>Geen resultaten.</Typography>
         </Paper>
       )}
+
       {calculations.map((calculation) => (
-        <CalculationTableView calculationInfo={calculation} />
+        <div key={calculation.title.toString()}>
+          <CalculationTableView calculationInfo={calculation} />
+        </div>
       ))}
     </>
   );

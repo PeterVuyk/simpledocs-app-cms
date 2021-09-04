@@ -65,7 +65,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const handleUpdateFile = (file: string) => {
-    formik.current.setFieldValue('htmlFile', file);
+    formik.current?.setFieldValue('htmlFile', file);
     setContent(file);
     showSaveButton();
   };
@@ -73,7 +73,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const handleUpdateFileFromBase64 = useCallback(
     (file: string | null) => {
       const html = file ? htmlFileHelper.getHTMLBodyFromBase64(file) : '';
-      formik.current.setFieldValue('htmlFile', html);
+      formik.current?.setFieldValue('htmlFile', html);
       setContent(html);
     },
     [formik]
@@ -102,7 +102,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
             )
           )?.htmlFile ?? '';
       }
-      formik.current.setFieldValue('htmlFile', html);
+      formik.current?.setFieldValue('htmlFile', html);
       setContent(html);
     }
     setInitialHtmlFile();
