@@ -1,22 +1,17 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import SaveIcon from '@material-ui/icons/Save';
-import { CircularProgress } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
 import FileDropzoneArea from './FileDropzoneArea';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../../helper/htmlFileHelper';
+import LoadingSpinner from '../../../LoadingSpinner';
 import htmlFileInfoRepository from '../../../../firebase/database/htmlFileInfoRepository';
 import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../../model/HtmlFileCategory';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    center: {
-      position: 'absolute',
-      left: '50%',
-      top: 300,
-    },
     button: {
       marginLeft: 8,
     },
@@ -124,13 +119,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   if (content === null) {
-    return (
-      <div className={classes.relativeContainer}>
-        <div className={classes.center}>
-          <CircularProgress />
-        </div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

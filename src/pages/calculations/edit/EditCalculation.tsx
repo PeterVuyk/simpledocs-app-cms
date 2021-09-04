@@ -22,6 +22,8 @@ import { CalculationType } from '../../../model/CalculationType';
 import HtmlEditor from '../../../components/form/formik/htmlEditor/HtmlEditor';
 import htmlFileHelper from '../../../helper/htmlFileHelper';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
+import useStatusToggle from '../../../components/hooks/useStatusToggle';
+import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -45,23 +47,25 @@ const EditCalculation: FC<Props> = ({
   const formikRef = useRef<any>();
   const history = useHistory();
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [editStatus, setEditStatus] = useStatusToggle();
 
   useEffect(() => {
-    calculationsRepository.getCalculationsInfo().then((result) => {
-      const calculation = result.filter(
-        (value) => value.calculationType === calculationType
-      );
-      if (calculation.length !== 1) {
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: 'Het openen van de wijzigingspagina is mislukt',
-        });
-        history.push(CALCULATIONS_PAGE);
-        return;
-      }
-      setCalculationInfo(calculation[0]);
-    });
+    calculationsRepository
+      .getCalculationsInfoToEdit(calculationType)
+      .then((result) => {
+        if (!result) {
+          setNotification({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage:
+              'Het openen van de wijzigingspagina is mislukt',
+          });
+          history.push(CALCULATIONS_PAGE);
+          return;
+        }
+        setCalculationInfo(result);
+      });
   }, [calculationType, history, setNotification]);
 
   const FORM_VALIDATION = Yup.object().shape({
@@ -100,9 +104,9 @@ const EditCalculation: FC<Props> = ({
     formik: FormikHelpers<any>
   ): void => {
     formik.setSubmitting(false);
-    throw calculationsRepository
+    calculationsRepository
       .updateCalculationsInfo({
-        calculationType: calculationType.toString(),
+        calculationType,
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
@@ -112,7 +116,9 @@ const EditCalculation: FC<Props> = ({
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,
+        isDraft: true,
       })
+      .then(() => setEditStatus(EDIT_STATUS_DRAFT))
       .then(() => history.push(CALCULATIONS_PAGE))
       .then(() =>
         setNotification({

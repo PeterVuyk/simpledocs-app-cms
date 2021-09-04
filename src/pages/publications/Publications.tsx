@@ -21,7 +21,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Publications: FC = () => {
+interface Props {
+  title: string;
+}
+
+const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[]>([]);
 
   const classes = useStyles();
@@ -36,7 +40,7 @@ const Publications: FC = () => {
 
   return (
     <>
-      <PageHeading title="Publiceren" />
+      <PageHeading title={title} />
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="publications table">
           <TableHead>

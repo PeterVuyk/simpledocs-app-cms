@@ -7,10 +7,14 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginBottom: theme.spacing(2),
+  },
   table: {
     width: '100%',
   },
@@ -20,7 +24,7 @@ const useStyles = makeStyles({
   head: {
     backgroundColor: '#ddd',
   },
-});
+}));
 
 interface Props {
   calculationInfo: CalculationInfo;
@@ -29,7 +33,14 @@ interface Props {
 const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
   const classes = useStyles();
   return (
-    <>
+    <div className={classes.container}>
+      <Typography
+        style={{ fontWeight: 'bold' }}
+        variant="body1"
+        color="textPrimary"
+      >
+        {calculationInfo.title}
+      </Typography>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -92,7 +103,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 

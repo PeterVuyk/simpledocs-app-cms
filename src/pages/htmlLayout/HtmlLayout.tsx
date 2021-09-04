@@ -25,9 +25,10 @@ const useStyles = makeStyles({
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
+  title: string;
 }
 
-const HtmlLayout: FC<Props> = ({ setNotification }) => {
+const HtmlLayout: FC<Props> = ({ title, setNotification }) => {
   const [htmlFileInfos, setHtmlFileInfos] = useState<HtmlFileInfo[]>([]);
   const history = useHistory();
   const classes = useStyles();
@@ -64,7 +65,7 @@ const HtmlLayout: FC<Props> = ({ setNotification }) => {
 
   return (
     <>
-      <PageHeading title="Templates en snippets">
+      <PageHeading title={title}>
         <Button
           className={classes.button}
           variant="contained"

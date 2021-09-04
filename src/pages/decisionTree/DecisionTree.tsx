@@ -22,7 +22,11 @@ const useStyles = makeStyles({
   },
 });
 
-const DecisionTree: FC = () => {
+interface Props {
+  title: string;
+}
+
+const DecisionTree: FC<Props> = ({ title }) => {
   const classes = useStyles();
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[] | null
@@ -58,7 +62,7 @@ const DecisionTree: FC = () => {
 
   return (
     <>
-      <PageHeading title="Beslisboom">
+      <PageHeading title={title}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}

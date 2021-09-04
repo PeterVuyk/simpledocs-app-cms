@@ -1,10 +1,10 @@
 import useLocalStorage from './useLocalStorage';
-import { EDIT_STATUS_DRAFT } from '../../model/EditStatus';
+import { EDIT_STATUS_PUBLISHED } from '../../model/EditStatus';
 
 function useStatusToggle() {
   const [editStatus, setEditStatus] = useLocalStorage(
     'editStatus',
-    () => EDIT_STATUS_DRAFT
+    () => EDIT_STATUS_PUBLISHED
   );
   return [editStatus, setEditStatus];
 }

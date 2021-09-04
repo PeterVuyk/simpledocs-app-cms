@@ -2,6 +2,7 @@ import { database } from '../firebaseConnection';
 import {
   AGGREGATE_APP_CONFIG,
   AGGREGATE_APP_CONFIG_DRAFT,
+  AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   AGGREGATE_INSTRUCTION_MANUAL,
   AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
@@ -12,6 +13,7 @@ import {
 import { Versioning } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import htmlFileInfoRepository from './htmlFileInfoRepository';
+import { CalculationInfo } from '../../model/CalculationInfo';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -131,7 +133,7 @@ async function publishUpdatedAppConfig(
 
   // 2: if a draft from the appConfig does not exist, return
   const draftConfigurationRef = database
-    .collection('config')
+    .collection('config') // TODO: Use const
     .doc(AGGREGATE_APP_CONFIG_DRAFT);
   const docSnapshot = await draftConfigurationRef.get();
   if (!docSnapshot.exists) {
@@ -188,38 +190,87 @@ async function publishUpdatedArticles(
   return batch.commit();
 }
 
+async function publishUpdatedCalculations(
+  versioning: Versioning,
+  newVersion: string
+): Promise<void> {
+  const batch = database.batch();
+
+  // 1: Update version
+  const DocumentSnapshotAggregate = await database
+    .collection('versioning')
+    .doc('aggregate')
+    .get();
+  batch.update(DocumentSnapshotAggregate.ref, {
+    [versioning.aggregate]: newVersion,
+  });
+
+  // 2: if drafts from the calculations does not exist, return
+  const querySnapshot = await database
+    .collection(AGGREGATE_CALCULATIONS)
+    .where('isDraft', '==', true)
+    .get();
+  if (querySnapshot.size === 0) {
+    return batch.commit();
+  }
+
+  // 3: Remove calculations that need to be replaced
+  const calculationInfos = querySnapshot.docs
+    .map((result) => result.data() as CalculationInfo)
+    .filter((value) => value.isDraft);
+  const querySnapshotCalculations = await database
+    .collection(versioning.aggregate)
+    .where('isDraft', '==', false)
+    .get();
+  querySnapshotCalculations.forEach((documentSnapshot) => {
+    const calculation = documentSnapshot.data() as CalculationInfo;
+    if (
+      calculationInfos.find(
+        (value) => value.calculationType === calculation.calculationType
+      )
+    ) {
+      batch.delete(documentSnapshot.ref);
+    }
+  });
+
+  // 4: Remove 'draft' from calculations
+  const querySnapshotDrafts = await database
+    .collection(versioning.aggregate)
+    .where('isDraft', '==', true)
+    .get();
+  querySnapshotDrafts.forEach((documentSnapshot) => {
+    batch.update(documentSnapshot.ref, { isDraft: false });
+  });
+
+  return batch.commit();
+}
+
 async function updateVersion(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
-  if (versioning.aggregate === AGGREGATE_DECISION_TREE) {
-    await publishDecisionTree(versioning, newVersion);
-    return;
+  switch (versioning.aggregate) {
+    case AGGREGATE_DECISION_TREE:
+      await publishDecisionTree(versioning, newVersion);
+      break;
+    case AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING:
+    case AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING:
+    case AGGREGATE_REGULATION_OGS_2009:
+    case AGGREGATE_REGULATION_RVV_1990:
+    case AGGREGATE_INSTRUCTION_MANUAL:
+      await publishUpdatedArticles(versioning, newVersion);
+      break;
+    case AGGREGATE_APP_CONFIG:
+      await publishUpdatedAppConfig(versioning, newVersion);
+      break;
+    case AGGREGATE_CALCULATIONS:
+      await publishUpdatedCalculations(versioning, newVersion);
+      break;
+    default:
+      throw new Error(
+        `Nothing to update, no aggregates found for aggregate: ${versioning.aggregate}, version: ${versioning.version}`
+      );
   }
-  if (
-    versioning.aggregate ===
-      AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING ||
-    versioning.aggregate ===
-      AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING ||
-    versioning.aggregate === AGGREGATE_REGULATION_OGS_2009 ||
-    versioning.aggregate === AGGREGATE_REGULATION_RVV_1990 ||
-    versioning.aggregate === AGGREGATE_INSTRUCTION_MANUAL
-  ) {
-    await publishUpdatedArticles(versioning, newVersion);
-    return;
-  }
-
-  if (versioning.aggregate === AGGREGATE_APP_CONFIG) {
-    await publishUpdatedAppConfig(versioning, newVersion);
-    return;
-  }
-
-  await database
-    .collection('versioning')
-    .doc('aggregate')
-    .update({
-      [versioning.aggregate]: newVersion,
-    });
 }
 
 const publishRepository = {

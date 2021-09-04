@@ -30,9 +30,10 @@ const useStyles = makeStyles({
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
+  title: string;
 }
 
-const Configurations: FC<Props> = ({ setNotification }) => {
+const Configurations: FC<Props> = ({ title, setNotification }) => {
   const [editStatus, setEditStatus] = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [initialAppConfig, setInitialAppConfig] =
@@ -103,7 +104,7 @@ const Configurations: FC<Props> = ({ setNotification }) => {
 
   return (
     <>
-      <PageHeading title="Configuratie app">
+      <PageHeading title={title}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={toggleEditStatus}

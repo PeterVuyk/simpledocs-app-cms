@@ -68,16 +68,24 @@ const Navigation: FC<Props> = ({ classes, children }) => {
     }
     switch (page) {
       case configs.menu.menuItems.htmlLayout.urlSlug:
-        return <HtmlLayout />;
+        return <HtmlLayout title={configs.menu.menuItems.htmlLayout.title} />;
       case configs.menu.menuItems.decisionTree.urlSlug:
-        return <DecisionTree />;
+        return (
+          <DecisionTree title={configs.menu.menuItems.decisionTree.title} />
+        );
       case configs.menu.menuItems.calculations.urlSlug:
-        return <Calculations />;
+        return (
+          <Calculations title={configs.menu.menuItems.calculations.title} />
+        );
       case configs.menu.menuItems.configurations.urlSlug:
-        return <Configurations />;
+        return (
+          <Configurations title={configs.menu.menuItems.configurations.title} />
+        );
       case configs.menu.menuItems.publications.urlSlug:
       default:
-        return <Publications />;
+        return (
+          <Publications title={configs.menu.menuItems.publications.title} />
+        );
     }
   };
 
