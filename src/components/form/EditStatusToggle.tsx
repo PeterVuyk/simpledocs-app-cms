@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { Tooltip } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PublicIcon from '@material-ui/icons/Public';
 import {
@@ -25,21 +26,23 @@ const EditStatusToggle: FC<Props> = ({ editStatus, setEditStatus }) => {
   };
 
   return (
-    <ToggleButtonGroup
-      style={{ display: 'inline-block' }}
-      size="small"
-      value={editStatus}
-      exclusive
-      onChange={handleStatus}
-      aria-label="text alignment"
-    >
-      <ToggleButton value="draft" aria-label="left aligned">
-        <EditIcon />
-      </ToggleButton>
-      <ToggleButton value="published" aria-label="right aligned">
-        <PublicIcon />
-      </ToggleButton>
-    </ToggleButtonGroup>
+    <Tooltip title="concepten / gepubliceerd">
+      <ToggleButtonGroup
+        style={{ display: 'inline-block' }}
+        size="small"
+        value={editStatus}
+        exclusive
+        onChange={handleStatus}
+        aria-label="text alignment"
+      >
+        <ToggleButton value="draft" aria-label="left aligned">
+          <EditIcon />
+        </ToggleButton>
+        <ToggleButton value="published" aria-label="right aligned">
+          <PublicIcon />
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Tooltip>
   );
 };
 

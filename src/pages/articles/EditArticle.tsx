@@ -15,6 +15,7 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import htmlFileHelper from '../../helper/htmlFileHelper';
 import NotFound from '../NotFound';
 import navigationConfig from '../../navigation/navigationConfig.json';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -93,6 +94,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
+      {!article && <LoadingSpinner />}
       {article && (
         <ArticleForm
           article={article}

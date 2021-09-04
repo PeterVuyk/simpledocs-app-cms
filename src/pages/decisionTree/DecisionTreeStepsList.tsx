@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTreeSteps: DecisionTreeStep[] | null;
   editStatus: EditStatus;
 }
 
@@ -73,49 +73,50 @@ const DecisionTreeStepsList: FC<Props> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {decisionTreeSteps.length === 0 && (
+          {decisionTreeSteps !== null && decisionTreeSteps.length === 0 && (
             <TableRow key="no-result">
               <TableCell component="th" scope="row" colSpan={7}>
                 Geen resultaten.
               </TableCell>
             </TableRow>
           )}
-          {decisionTreeSteps.map((row) => (
-            <TableRow
-              key={row.id + row.title + row?.markedForDeletion}
-              style={{
-                backgroundColor: row.markedForDeletion ? '#FCC1C1B5' : '#fff',
-              }}
-            >
-              <TableCell component="th" scope="row">
-                {row.title}&nbsp;
-                {row.iconFile && (
-                  <img
-                    style={{ width: 30 }}
-                    src={`${row.iconFile}`}
-                    alt={row.title}
-                  />
-                )}
-              </TableCell>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>{row.label}</TableCell>
-              <TableCell>{row.parentId}</TableCell>
-              <TableCell>{row.lineLabel}</TableCell>
-              <TableCell>
-                {editStatus === EDIT_STATUS_DRAFT && row.htmlFileId}&nbsp;
-                {row.htmlFile && (
-                  <>
-                    <DownloadHtmlFileAction
-                      htmlFile={row.htmlFile}
-                      fileName={row.title}
+          {decisionTreeSteps !== null &&
+            decisionTreeSteps.map((row) => (
+              <TableRow
+                key={row.id + row.title + row?.markedForDeletion}
+                style={{
+                  backgroundColor: row.markedForDeletion ? '#FCC1C1B5' : '#fff',
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.title}&nbsp;
+                  {row.iconFile && (
+                    <img
+                      style={{ width: 30 }}
+                      src={`${row.iconFile}`}
+                      alt={row.title}
                     />
-                    <ViewHTMLFileAction htmlFile={row.htmlFile} />
-                  </>
-                )}
-              </TableCell>
-              <TableCell>{row.internalNote}</TableCell>
-            </TableRow>
-          ))}
+                  )}
+                </TableCell>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.label}</TableCell>
+                <TableCell>{row.parentId}</TableCell>
+                <TableCell>{row.lineLabel}</TableCell>
+                <TableCell>
+                  {editStatus === EDIT_STATUS_DRAFT && row.htmlFileId}&nbsp;
+                  {row.htmlFile && (
+                    <>
+                      <DownloadHtmlFileAction
+                        htmlFile={row.htmlFile}
+                        fileName={row.title}
+                      />
+                      <ViewHTMLFileAction htmlFile={row.htmlFile} />
+                    </>
+                  )}
+                </TableCell>
+                <TableCell>{row.internalNote}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

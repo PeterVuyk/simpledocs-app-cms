@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 
 interface Props {
   aggregate: string;
-  htmlFileInfos: HtmlFileInfo[];
+  htmlFileInfos: HtmlFileInfo[] | null;
   onDelete: (id: string) => void;
 }
 
@@ -83,51 +83,52 @@ const HtmlFileTable: FC<Props> = ({ aggregate, htmlFileInfos, onDelete }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {htmlFileInfos.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell>
-                {row.title}&nbsp;
-                {isDefaultTemplate(row) && (
-                  <Chip label="Default template" variant="outlined" />
-                )}
-              </TableCell>
-              <TableCell>
-                {getTranslatedCategory(row.htmlFileCategory)}
-              </TableCell>
-              <TableCell align="right" className={classes.toolBox}>
-                <Tooltip title="Wijzigen">
-                  <EditTwoTone
-                    style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      history.push(
-                        `/${
-                          aggregate === AGGREGATE_DECISION_TREE
-                            ? 'html/'
-                            : 'html-layout/'
-                        }${row.htmlFileCategory}/${row.id}`
-                      )
-                    }
+          {htmlFileInfos !== null &&
+            htmlFileInfos.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell>
+                  {row.title}&nbsp;
+                  {isDefaultTemplate(row) && (
+                    <Chip label="Default template" variant="outlined" />
+                  )}
+                </TableCell>
+                <TableCell>
+                  {getTranslatedCategory(row.htmlFileCategory)}
+                </TableCell>
+                <TableCell align="right" className={classes.toolBox}>
+                  <Tooltip title="Wijzigen">
+                    <EditTwoTone
+                      style={{ cursor: 'pointer' }}
+                      onClick={() =>
+                        history.push(
+                          `/${
+                            aggregate === AGGREGATE_DECISION_TREE
+                              ? 'html/'
+                              : 'html-layout/'
+                          }${row.htmlFileCategory}/${row.id}`
+                        )
+                      }
+                    />
+                  </Tooltip>
+                  <DownloadHtmlFileAction
+                    htmlFile={row.htmlFile}
+                    fileName={row.title}
                   />
-                </Tooltip>
-                <DownloadHtmlFileAction
-                  htmlFile={row.htmlFile}
-                  fileName={row.title}
-                />
-                <ViewHTMLFileAction htmlFile={row.htmlFile} />
-                {!isDefaultTemplate(row) && (
-                  <DeleteItemAction
-                    title="Weet je zeker dat je dit html bestand wilt verwijderen?"
-                    dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
-                    onSubmit={onDelete}
-                    itemId={row.id!}
-                  />
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+                  <ViewHTMLFileAction htmlFile={row.htmlFile} />
+                  {!isDefaultTemplate(row) && (
+                    <DeleteItemAction
+                      title="Weet je zeker dat je dit html bestand wilt verwijderen?"
+                      dialogText={`ID: ${row.id}\nTitel: ${row.title}`}
+                      onSubmit={onDelete}
+                      itemId={row.id!}
+                    />
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

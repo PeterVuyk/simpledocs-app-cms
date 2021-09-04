@@ -15,6 +15,7 @@ import DownloadDecisionTreeMenuButton from './menu/download/DownloadDecisionTree
 import UploadDecisionTreeButton from './menu/upload/UploadDecisionTreeButton';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
 import { ADD_DECISION_TREE } from '../../navigation/UrlSlugs';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const useStyles = makeStyles({
   button: {
@@ -30,7 +31,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
   const classes = useStyles();
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[] | null
-  >();
+  >(null);
   const [editStatus, setEditStatus] = useStatusToggle();
   const history = useHistory();
 
@@ -41,6 +42,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
   };
 
   useEffect(() => {
+    setDecisionTreeSteps(null);
     decisionTreeRepository
       .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
       .then((steps) => {
@@ -96,13 +98,12 @@ const DecisionTree: FC<Props> = ({ title }) => {
         </Button>
         <UploadDecisionTreeButton onLoadDecisionTree={handleLoadDecisionTree} />
       </PageHeading>
-      {decisionTreeSteps && (
-        <DecisionTreeStepsList
-          editStatus={editStatus}
-          decisionTreeSteps={decisionTreeSteps}
-        />
-      )}
+      <DecisionTreeStepsList
+        editStatus={editStatus}
+        decisionTreeSteps={decisionTreeSteps}
+      />
       {editStatus === EDIT_STATUS_DRAFT && <HtmlFileList />}
+      {decisionTreeSteps === null && <LoadingSpinner />}
     </>
   );
 };

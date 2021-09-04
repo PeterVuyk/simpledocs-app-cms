@@ -24,6 +24,7 @@ import htmlFileHelper from '../../../helper/htmlFileHelper';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -152,6 +153,7 @@ const EditCalculation: FC<Props> = ({
           Terug
         </Button>
       </PageHeading>
+      {calculationInfo === null && <LoadingSpinner />}
       {calculationInfo && (
         <Formik
           innerRef={formikRef}

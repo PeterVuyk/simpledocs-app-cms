@@ -16,6 +16,7 @@ import {
   HTML_FILE_CATEGORY_TEMPLATE,
 } from '../../model/HtmlFileCategory';
 import { ADD_SNIPPETS, ADD_TEMPLATE } from '../../navigation/UrlSlugs';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const useStyles = makeStyles({
   button: {
@@ -29,7 +30,9 @@ interface Props {
 }
 
 const HtmlLayout: FC<Props> = ({ title, setNotification }) => {
-  const [htmlFileInfos, setHtmlFileInfos] = useState<HtmlFileInfo[]>([]);
+  const [htmlFileInfos, setHtmlFileInfos] = useState<HtmlFileInfo[] | null>(
+    null
+  );
   const history = useHistory();
   const classes = useStyles();
 
@@ -88,6 +91,7 @@ const HtmlLayout: FC<Props> = ({ title, setNotification }) => {
         htmlFileInfos={htmlFileInfos}
         onDelete={handleDeleteHtmlFile}
       />
+      {htmlFileInfos === null && <LoadingSpinner />}
     </>
   );
 };

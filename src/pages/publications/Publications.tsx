@@ -11,6 +11,7 @@ import PageHeading from '../../layout/PageHeading';
 import publishRepository from '../../firebase/database/publishRepository';
 import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const useStyles = makeStyles({
   table: {
@@ -26,7 +27,7 @@ interface Props {
 }
 
 const Publications: FC<Props> = ({ title }) => {
-  const [versions, setVersions] = useState<Versioning[]>([]);
+  const [versions, setVersions] = useState<Versioning[] | null>(null);
 
   const classes = useStyles();
 
@@ -55,17 +56,19 @@ const Publications: FC<Props> = ({ title }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {versions.map((row) => (
-              <TableRow key={row.aggregate.toString()}>
-                <PublicationItem
-                  version={row}
-                  onReloadPublications={handleReloadPublications}
-                />
-              </TableRow>
-            ))}
+            {versions !== null &&
+              versions.map((row) => (
+                <TableRow key={row.aggregate.toString()}>
+                  <PublicationItem
+                    version={row}
+                    onReloadPublications={handleReloadPublications}
+                  />
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {versions === null && <LoadingSpinner />}
     </>
   );
 };

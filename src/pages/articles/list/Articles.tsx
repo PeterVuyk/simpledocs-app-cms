@@ -12,6 +12,7 @@ import { Article } from '../../../model/Article';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import navigationConfig from '../../../navigation/navigationConfig.json';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const useStyles = makeStyles({
   table: {
@@ -44,6 +45,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
   };
 
   useEffect(() => {
+    setArticles(null);
     articleRepository
       .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
@@ -85,6 +87,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
         articles={articles}
         bookType={bookType}
       />
+      {articles === null && <LoadingSpinner />}
     </>
   );
 };
