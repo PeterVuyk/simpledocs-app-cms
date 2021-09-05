@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
-import DownloadHtmlFileAction from '../../components/ItemAction/DownloadHtmlFileAction';
+import DownloadFileAction from '../../components/ItemAction/DownloadFileAction';
 import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
 
 const useStyles = makeStyles({
@@ -106,7 +106,7 @@ const DecisionTreeStepsList: FC<Props> = ({
                   {editStatus === EDIT_STATUS_DRAFT && row.htmlFileId}&nbsp;
                   {row.htmlFile && (
                     <>
-                      <DownloadHtmlFileAction
+                      <DownloadFileAction
                         htmlFile={row.htmlFile}
                         fileName={row.title}
                       />

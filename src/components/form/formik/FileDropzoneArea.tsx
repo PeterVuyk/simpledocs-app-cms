@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
-import DownloadHtmlFileAction from '../../ItemAction/DownloadHtmlFileAction';
+import DownloadFileAction from '../../ItemAction/DownloadFileAction';
 import ViewHTMLFileAction from '../../ItemAction/ViewHTMLFileAction';
 
 interface Props {
@@ -94,7 +94,7 @@ const FileDropzoneArea: FC<Props> = ({
             htmlFile={formik.current?.values[name]}
             iconStyle={{ fontSize: '4em' }}
           />
-          <DownloadHtmlFileAction
+          <DownloadFileAction
             htmlFile={formik.current?.values[name]}
             fileName="regulation.html"
           />

@@ -12,8 +12,8 @@ import {
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import htmlFileInfoRepository from './htmlFileInfoRepository';
 import { CalculationInfo } from '../../model/CalculationInfo';
+import artifactsRepository from './artifactsRepository';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -94,11 +94,11 @@ async function publishDecisionTree(
       return;
     }
     batch.update(documentSnapshot.ref, { htmlFileId: null });
-    htmlFileInfoRepository
-      .getHtmlFileById(decisionTreeStep.htmlFileId)
+    artifactsRepository
+      .getArtifactById(decisionTreeStep.htmlFileId)
       .then((value) => {
         batch.update(documentSnapshot.ref, {
-          htmlFile: value.htmlFile,
+          htmlFile: value.file,
         });
       });
   });
@@ -133,7 +133,7 @@ async function publishUpdatedAppConfig(
 
   // 2: if a draft from the appConfig does not exist, return
   const draftConfigurationRef = database
-    .collection('config') // TODO: Use const
+    .collection('config')
     .doc(AGGREGATE_APP_CONFIG_DRAFT);
   const docSnapshot = await draftConfigurationRef.get();
   if (!docSnapshot.exists) {

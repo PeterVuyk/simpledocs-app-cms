@@ -6,13 +6,13 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import HtmlTemplateMenu from './HtmlTemplateMenu';
 import HtmlSnippetsMenu from './HtmlSnippetsMenu';
-import htmlFileInfoRepository from '../../../../../firebase/database/htmlFileInfoRepository';
-import {
-  HTML_FILE_CATEGORY_SNIPPET,
-  HTML_FILE_CATEGORY_TEMPLATE,
-} from '../../../../../model/HtmlFileCategory';
 import logger from '../../../../../helper/logger';
-import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
+import {
+  ARTIFACT_TYPE_SNIPPET,
+  ARTIFACT_TYPE_TEMPLATE,
+} from '../../../../../model/ArtifactType';
+import { Artifact } from '../../../../../model/Artifact';
+import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -27,21 +27,18 @@ interface Props {
 }
 
 const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
-  const [htmlInfos, setHtmlInfos] = useState<HtmlFileInfo[] | null>(null);
+  const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
   const [snippetsMenu, setSnippetsMenu] = useState<null | HTMLElement>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   const classes = useStyles();
 
   useEffect(() => {
-    htmlFileInfoRepository
-      .getHtmlInfoByCategories([
-        HTML_FILE_CATEGORY_SNIPPET,
-        HTML_FILE_CATEGORY_TEMPLATE,
-      ])
-      .then(setHtmlInfos)
+    artifactsRepository
+      .getArtifactsByCategories([ARTIFACT_TYPE_SNIPPET, ARTIFACT_TYPE_TEMPLATE])
+      .then(setArtifacts)
       .catch((reason) =>
         logger.errorWithReason(
-          'Failed collecting the html snippets and templates from htmlFileInfoRepository.getHtmlInfoByCategories for the BottomHtmlToolbox component',
+          'Failed collecting snippets and templates from artifactsRepository.getArtifactsByCategories for the BottomHtmlToolbox component',
           reason
         )
       );
@@ -55,7 +52,7 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
     setSnippetsMenu(event.currentTarget);
   };
 
-  if (htmlInfos === null) {
+  if (artifacts === null) {
     return null;
   }
 
@@ -73,8 +70,8 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
       <HtmlSnippetsMenu
         snippetsMenu={snippetsMenu}
         setSnippetsMenu={setSnippetsMenu}
-        snippets={htmlInfos.filter(
-          (value) => value.htmlFileCategory === HTML_FILE_CATEGORY_SNIPPET
+        snippets={artifacts.filter(
+          (value) => value.type === ARTIFACT_TYPE_SNIPPET
         )}
       />
       <Tooltip title="Template gebruiken">
@@ -90,8 +87,8 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
         templateMenu={templateMenu}
         setTemplateMenu={setTemplateMenu}
         onUpdateFile={onUpdateFile}
-        templates={htmlInfos.filter(
-          (value) => value.htmlFileCategory === HTML_FILE_CATEGORY_TEMPLATE
+        templates={artifacts.filter(
+          (value) => value.type === ARTIFACT_TYPE_TEMPLATE
         )}
       />
     </>

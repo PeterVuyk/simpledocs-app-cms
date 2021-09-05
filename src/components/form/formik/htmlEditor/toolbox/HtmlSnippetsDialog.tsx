@@ -12,9 +12,9 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import Highlight from 'react-highlight';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
 import CopyToClipboardAction from '../../../../CopyToClipboardAction';
 import '../../../../../../node_modules/highlight.js/styles/a11y-dark.css';
+import { Artifact } from '../../../../../model/Artifact';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -47,7 +47,7 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
-  openSnippetsDialog: HtmlFileInfo;
+  openSnippetsDialog: Artifact;
   oncloseDialog: () => void;
 }
 
@@ -69,7 +69,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
     >
       <DialogTitle id="alert-dialog-slide-title">
         <div className={classes.relativeContainer}>
-          <CopyToClipboardAction textToCopy={openSnippetsDialog.htmlFile} />
+          <CopyToClipboardAction textToCopy={openSnippetsDialog.file} />
         </div>
         Snippet {openSnippetsDialog.title}
       </DialogTitle>
@@ -86,7 +86,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
               </DialogContentText>
               <div className="highLightContainer">
                 <Highlight className="html">
-                  {openSnippetsDialog.htmlFile}
+                  {openSnippetsDialog.file}
                 </Highlight>
               </div>
             </Grid>
@@ -102,7 +102,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
                 <iframe
                   className={classes.iframe}
                   title="snippet.html"
-                  srcDoc={openSnippetsDialog.htmlFile}
+                  srcDoc={openSnippetsDialog.file}
                 />
               </Paper>
             </Grid>

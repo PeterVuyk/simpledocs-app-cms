@@ -21,7 +21,7 @@ import { TextField } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import notification from '../../redux/actions/notification';
-import FileDropzoneArea from '../../components/form/formik/htmlEditor/FileDropzoneArea';
+import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import logger from '../../helper/logger';
 import decisionTreeValidator from '../../validators/decisionTreevalidator';

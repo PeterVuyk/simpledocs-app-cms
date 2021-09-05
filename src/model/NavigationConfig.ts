@@ -25,7 +25,7 @@ interface BookItems {
 
 interface MenuItems {
   publications: MenuItem;
-  htmlLayout: MenuItem;
+  styleguide: MenuItem;
   configurations: MenuItem;
   calculations: MenuItem;
   decisionTree: MenuItem;

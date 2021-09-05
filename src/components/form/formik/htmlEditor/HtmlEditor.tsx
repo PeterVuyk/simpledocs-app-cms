@@ -3,12 +3,13 @@ import JoditEditor from 'jodit-react';
 import SaveIcon from '@material-ui/icons/Save';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
-import FileDropzoneArea from './FileDropzoneArea';
+import FileDropzoneArea from '../../FileDropzoneArea';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
 import htmlFileHelper from '../../../../helper/htmlFileHelper';
 import LoadingSpinner from '../../../LoadingSpinner';
-import htmlFileInfoRepository from '../../../../firebase/database/htmlFileInfoRepository';
-import { HTML_FILE_CATEGORY_TEMPLATE } from '../../../../model/HtmlFileCategory';
+import artifactsRepository from '../../../../firebase/database/artifactsRepository';
+import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
+import base64Helper from '../../../../helper/base64Helper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,7 +73,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
 
   const handleUpdateFileFromBase64 = useCallback(
     (file: string | null) => {
-      const html = file ? htmlFileHelper.getHTMLBodyFromBase64(file) : '';
+      const html = file ? base64Helper.getBodyFromBase64(file, 'html') : '';
       formik.current?.setFieldValue('htmlFile', html);
       setContent(html);
     },
@@ -83,7 +84,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     if (content === null || content === '') {
       return null;
     }
-    return htmlFileHelper.getBase64FromHtml(content);
+    return base64Helper.getBase64FromFile(content, 'html');
   };
 
   useEffect(() => {
@@ -96,11 +97,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
         // Use the 'default' template.
         html =
           (
-            await htmlFileInfoRepository.getHtmlFileInfoByTitle(
+            await artifactsRepository.getArtifactByTitle(
               'Standaard',
-              HTML_FILE_CATEGORY_TEMPLATE
+              ARTIFACT_TYPE_TEMPLATE
             )
-          )?.htmlFile ?? '';
+          )?.file ?? '';
       }
       formik.current?.setFieldValue('htmlFile', html);
       setContent(html);

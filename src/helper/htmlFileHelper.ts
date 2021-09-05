@@ -1,17 +1,6 @@
 const bottomSpacingHtml =
   '<div id="bottom-spacing-8bb0417d" style="margin-top:100px"><br></div>';
 
-function getHTMLBodyFromBase64(base64HTML: string): string {
-  const base64String = base64HTML.split('data:text/html;base64,')[1];
-  return Buffer.from(base64String, 'base64').toString('utf-8');
-}
-
-function getBase64FromHtml(htmlFile: string): string {
-  return `data:text/html;base64,${btoa(
-    unescape(encodeURIComponent(htmlFile))
-  )}`;
-}
-
 function stripMetaTags(htmlFile: string): string {
   const html = htmlFile.replace('<meta charset="UTF-8">', '');
   return html.replace(
@@ -88,8 +77,6 @@ function addHTMLTagsAndBottomSpacingToHTMLFile(htmlFile: string): string {
 }
 
 const htmlFileHelper = {
-  getHTMLBodyFromBase64,
-  getBase64FromHtml,
   addHTMLTagsAndBottomSpacingToHTMLFile,
   stripMetaTags,
   stripBottomSpacing,

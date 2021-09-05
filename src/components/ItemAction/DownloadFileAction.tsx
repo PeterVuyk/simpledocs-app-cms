@@ -2,23 +2,24 @@ import React, { FC } from 'react';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import { Tooltip } from '@material-ui/core';
-import htmlFileHelper from '../../helper/htmlFileHelper';
+import base64Helper from '../../helper/base64Helper';
 
 interface Props {
   htmlFile: string;
   fileName: string;
+  extension?: string;
 }
 
-const DownloadHtmlFileAction: FC<Props> = ({ htmlFile, fileName }) => {
+const DownloadFileAction: FC<Props> = ({ htmlFile, fileName, extension }) => {
   return (
-    <Tooltip title="Download html">
+    <Tooltip title={`Download ${extension ?? 'html'}`}>
       <GetAppIcon
         color="action"
         style={{ cursor: 'pointer' }}
         onClick={() =>
           FileSaver.saveAs(
-            htmlFileHelper.getBase64FromHtml(htmlFile),
-            `${fileName}.html`
+            base64Helper.getBase64FromFile(htmlFile, 'html'),
+            `${fileName}.${extension}`
           )
         }
       />
@@ -26,4 +27,4 @@ const DownloadHtmlFileAction: FC<Props> = ({ htmlFile, fileName }) => {
   );
 };
 
-export default DownloadHtmlFileAction;
+export default DownloadFileAction;

@@ -3,8 +3,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
-import htmlFileInfoRepository from '../../../../firebase/database/htmlFileInfoRepository';
-import { HTML_FILE_CATEGORY_DECISION_TREE } from '../../../../model/HtmlFileCategory';
+import artifactsRepository from '../../../../firebase/database/artifactsRepository';
+import { ARTIFACT_TYPE_DECISION_TREE } from '../../../../model/ArtifactType';
 
 interface Props {
   editStatus: EditStatus;
@@ -18,11 +18,11 @@ const DownloadDecisionTreeHtmlFiles: FC<Props> = ({
   const handleExportHTMLFiles = (): void => {
     const zip = new JSZip();
     if (editStatus === EDIT_STATUS_DRAFT) {
-      htmlFileInfoRepository
-        .getHtmlInfoByCategories([HTML_FILE_CATEGORY_DECISION_TREE])
-        .then((files) => {
-          files.forEach((file) => {
-            zip.file(`id-${file.id}.html`, file.htmlFile);
+      artifactsRepository
+        .getArtifactsByCategories([ARTIFACT_TYPE_DECISION_TREE])
+        .then((artifacts) => {
+          artifacts.forEach((artifact) => {
+            zip.file(`id-${artifact.id}.html`, artifact.file);
           });
           zip.generateAsync({ type: 'blob' }).then((blob) => {
             saveAs(blob, 'html-bestanden.zip');

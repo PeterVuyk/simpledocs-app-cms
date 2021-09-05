@@ -14,7 +14,7 @@ import EditStoppingDistance from '../pages/calculations/edit/EditStoppingDistanc
 import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDistance';
 import CreateArticle from '../pages/articles/CreateArticle';
 import EditArticle from '../pages/articles/EditArticle';
-import LayoutEditor from '../pages/htmlLayout/LayoutEditor';
+import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeHtmlFileEditor from '../pages/decisionTree/html/DecisionTreeHtmlFileEditor';
 import NotFound from '../pages/NotFound';
 
@@ -53,13 +53,13 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/html-layout/:htmlFileCategory/add"
-            Component={LayoutEditor}
+            path="/styleguide/:artifactType/add"
+            Component={StyleEditor}
           />
           <PrivateRoute
             exact
-            path="/html-layout/:htmlFileCategory/:htmlFileId"
-            Component={LayoutEditor}
+            path="/styleguide/:artifactType/:artifactId"
+            Component={StyleEditor}
           />
           <PrivateRoute
             exact
@@ -68,7 +68,7 @@ const AppRouter: FC = () => {
           />
           <PrivateRoute
             exact
-            path="/html/decision-tree/:htmlFileId"
+            path="/html/decision-tree/:artifactId"
             Component={DecisionTreeHtmlFileEditor}
           />
           <PrivateRoute

@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
 import HtmlSnippetsDialog from './HtmlSnippetsDialog';
+import { Artifact } from '../../../../../model/Artifact';
 
 interface Props {
   snippetsMenu: HTMLElement | null;
   setSnippetsMenu: (snippetMenu: null | HTMLElement) => void;
-  snippets: HtmlFileInfo[];
+  snippets: Artifact[];
 }
 
 const HtmlSnippetsMenu: FC<Props> = ({
@@ -15,8 +15,9 @@ const HtmlSnippetsMenu: FC<Props> = ({
   setSnippetsMenu,
   snippets,
 }) => {
-  const [openSnippetsDialog, setOpenSnippetsDialog] =
-    useState<HtmlFileInfo | null>(null);
+  const [openSnippetsDialog, setOpenSnippetsDialog] = useState<Artifact | null>(
+    null
+  );
 
   const handleOpenDialog = (event: React.MouseEvent<HTMLLIElement>) => {
     const snippet = snippets!.find(

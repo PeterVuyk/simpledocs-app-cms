@@ -19,7 +19,7 @@ import Publications from '../pages/publications/Publications';
 import NotFound from '../pages/NotFound';
 import navigationConfig from './navigationConfig.json';
 import { NavigationConfig } from '../model/NavigationConfig';
-import HtmlLayout from '../pages/htmlLayout/HtmlLayout';
+import Styleguide from '../pages/styleguide/Styleguide';
 import { BookType } from '../model/BookType';
 
 const drawerWidth = 240;
@@ -67,8 +67,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
       return <Articles title={article.title} bookType={bookType} />;
     }
     switch (page) {
-      case configs.menu.menuItems.htmlLayout.urlSlug:
-        return <HtmlLayout title={configs.menu.menuItems.htmlLayout.title} />;
+      case configs.menu.menuItems.styleguide.urlSlug:
+        return <Styleguide title={configs.menu.menuItems.styleguide.title} />;
       case configs.menu.menuItems.decisionTree.urlSlug:
         return (
           <DecisionTree title={configs.menu.menuItems.decisionTree.title} />

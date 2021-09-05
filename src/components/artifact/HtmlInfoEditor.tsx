@@ -8,61 +8,73 @@ import PageHeading from '../../layout/PageHeading';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import htmlFileHelper from '../../helper/htmlFileHelper';
-import { HtmlFileInfo } from '../../model/HtmlFileInfo';
 import HtmlPageForm from '../form/HtmlPageForm';
-import htmlFileInfoRepository from '../../firebase/database/htmlFileInfoRepository';
-import {
-  HtmlFileCategory,
-  isHtmlFileCategory,
-} from '../../model/HtmlFileCategory';
 import Navigation from '../../navigation/Navigation';
 import NotFound from '../../pages/NotFound';
-import { HTML_LAYOUT_PAGE } from '../../navigation/UrlSlugs';
+import {
+  DECISION_TREE_PAGE,
+  HTML_LAYOUT_PAGE,
+} from '../../navigation/UrlSlugs';
+import artifactsRepository from '../../firebase/database/artifactsRepository';
+import {
+  ARTIFACT_TYPE_DECISION_TREE,
+  ArtifactType,
+  isArtifactType,
+} from '../../model/ArtifactType';
+import { Artifact } from '../../model/Artifact';
 
 interface Props {
-  htmlFileId?: string;
-  htmlFileCategory: HtmlFileCategory;
+  artifactId?: string;
+  artifactType: ArtifactType;
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const HtmlInfoEditor: FC<Props> = ({
-  htmlFileCategory,
-  htmlFileId,
+  artifactType,
+  artifactId,
   setNotification,
 }) => {
   const [isNewHtmlFile, setIsNewHtmlFile] = useState<boolean>(false);
-  const [htmlFileInfo, setHtmlFileInfo] = useState<HtmlFileInfo | null>(null);
+  const [artifact, setArtifact] = useState<Artifact | null>(null);
   const history = useHistory();
 
   useEffect(() => {
-    if (htmlFileId === undefined) {
+    if (artifactId === undefined) {
       setIsNewHtmlFile(true);
-      setHtmlFileInfo({
-        htmlFileCategory,
-        htmlFile: '',
+      setArtifact({
+        type: artifactType,
+        extension: '',
+        file: '',
         title: '',
         id: '',
       });
       return;
     }
-    htmlFileInfoRepository
-      .getHtmlFileById(htmlFileId)
-      .then((value) => setHtmlFileInfo(value));
-  }, [htmlFileCategory, htmlFileId]);
+    artifactsRepository
+      .getArtifactById(artifactId)
+      .then((value) => setArtifact(value));
+  }, [artifactType, artifactId]);
 
   const addOrEditText = isNewHtmlFile ? 'toegevoegd' : 'gewijzigd';
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
-    await htmlFileInfoRepository
-      .updateHtmlFile({
-        id: htmlFileInfo?.id,
-        htmlFileCategory,
+    await artifactsRepository
+      .updateArtifact({
+        id: artifact?.id,
+        type: artifactType,
+        extension: 'html',
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
-        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+        file: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),
       })
-      .then(() => history.push(HTML_LAYOUT_PAGE))
+      .then(() =>
+        history.push(
+          artifactType === ARTIFACT_TYPE_DECISION_TREE
+            ? DECISION_TREE_PAGE
+            : HTML_LAYOUT_PAGE
+        )
+      )
       .then(() =>
         setNotification({
           notificationType: 'success',
@@ -72,7 +84,7 @@ const HtmlInfoEditor: FC<Props> = ({
       )
       .catch((error) => {
         logger.errorWithReason(
-          `Edit/Add ${htmlFileCategory} has failed in HtmlInfoEditor.handleSubmit`,
+          `Edit/Add ${artifactType} has failed in HtmlInfoEditor.handleSubmit`,
           error
         );
         setNotification({
@@ -83,7 +95,7 @@ const HtmlInfoEditor: FC<Props> = ({
       });
   };
 
-  if (!isHtmlFileCategory(htmlFileCategory)) {
+  if (!isArtifactType(artifactType)) {
     return <NotFound />;
   }
 
@@ -100,11 +112,11 @@ const HtmlInfoEditor: FC<Props> = ({
           Terug
         </Button>
       </PageHeading>
-      {htmlFileInfo && (
+      {artifact && (
         <HtmlPageForm
           isNewHtmlFile={isNewHtmlFile}
           onSubmit={handleSubmit}
-          htmlFileInfo={htmlFileInfo}
+          artifact={artifact}
         />
       )}
     </Navigation>

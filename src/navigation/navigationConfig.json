@@ -47,10 +47,10 @@
         "urlSlug": "configurations",
         "icon": "phonelink_setup"
       },
-      "htmlLayout": {
-        "title": "Templates en snippets",
-        "urlSlug": "html-layout",
-        "icon": "style_icon"
+      "styleguide": {
+        "title": "Styleguide",
+        "urlSlug": "styleguide",
+        "icon": "gesture"
       },
       "publications": {
         "title": "Publiceren",

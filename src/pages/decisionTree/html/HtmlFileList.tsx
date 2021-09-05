@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { HtmlFileInfo } from '../../../model/HtmlFileInfo';
-import HtmlFileTable from '../../../components/htmlInfo/HtmlFileTable';
+import ArtifactsTable from '../../../components/artifact/ArtifactsTable';
 import logger from '../../../helper/logger';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import notification from '../../../redux/actions/notification';
 import { AGGREGATE_DECISION_TREE } from '../../../model/Aggregate';
-import htmlFileInfoRepository from '../../../firebase/database/htmlFileInfoRepository';
-import { HTML_FILE_CATEGORY_DECISION_TREE } from '../../../model/HtmlFileCategory';
+import artifactsRepository from '../../../firebase/database/artifactsRepository';
+import { ARTIFACT_TYPE_DECISION_TREE } from '../../../model/ArtifactType';
+import { Artifact } from '../../../model/Artifact';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -15,12 +15,12 @@ interface Props {
 
 const HtmlFileList: FC<Props> = ({ setNotification }) => {
   const [decisionTreeHtmlFiles, setDecisionTreeHtmlFiles] = useState<
-    HtmlFileInfo[]
+    Artifact[]
   >([]);
 
   const loadHtmlFiles = () => {
-    htmlFileInfoRepository
-      .getHtmlInfoByCategories([HTML_FILE_CATEGORY_DECISION_TREE])
+    artifactsRepository
+      .getArtifactsByCategories([ARTIFACT_TYPE_DECISION_TREE])
       .then((result) => setDecisionTreeHtmlFiles(result));
   };
 
@@ -29,9 +29,16 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
   }, []);
 
   const handleDeleteHtmlFile = (id: string) => {
-    htmlFileInfoRepository
-      .deleteHtmlFile(id)
+    artifactsRepository
+      .deleteArtifact(id)
       .then(loadHtmlFiles)
+      .then(() =>
+        setNotification({
+          notificationType: 'success',
+          notificationOpen: true,
+          notificationMessage: `Het html bestand is verwijderd.`,
+        })
+      )
       .catch(() => {
         logger.error(
           `Failed removing the html file from the decision tree ${id}`
@@ -46,10 +53,12 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
   };
 
   return (
-    <HtmlFileTable
+    <ArtifactsTable
       aggregate={AGGREGATE_DECISION_TREE}
-      htmlFileInfos={decisionTreeHtmlFiles}
+      artifacts={decisionTreeHtmlFiles}
       onDelete={handleDeleteHtmlFile}
+      showIdColumn
+      showArtifactType={false}
     />
   );
 };

@@ -8,8 +8,8 @@ import { FastFieldProps } from 'formik/dist/FastField';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
 import HtmlEditor from './formik/htmlEditor/HtmlEditor';
-import { HtmlFileInfo } from '../../model/HtmlFileInfo';
-import { HTML_FILE_CATEGORY_SNIPPET } from '../../model/HtmlFileCategory';
+import { Artifact } from '../../model/Artifact';
+import { ARTIFACT_TYPE_SNIPPET } from '../../model/ArtifactType';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   onSubmit: (values: FormikValues) => void;
-  htmlFileInfo: HtmlFileInfo;
+  artifact: Artifact;
   isNewHtmlFile: boolean;
 }
 
-const HtmlPageForm: FC<Props> = ({ onSubmit, htmlFileInfo, isNewHtmlFile }) => {
+const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
@@ -37,8 +37,11 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, htmlFileInfo, isNewHtmlFile }) => {
   };
 
   const initialFormState = () => {
-    if (htmlFileInfo !== undefined) {
-      return htmlFileInfo;
+    if (artifact !== undefined) {
+      return {
+        title: artifact.title,
+        htmlFile: artifact.file,
+      };
     }
     return {
       title: '',
@@ -55,7 +58,7 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, htmlFileInfo, isNewHtmlFile }) => {
         'De inhoud moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
         async (htmlFile) => {
           return (
-            htmlFileInfo.htmlFileCategory === HTML_FILE_CATEGORY_SNIPPET ||
+            artifact.type === ARTIFACT_TYPE_SNIPPET ||
             (htmlFile !== undefined &&
               htmlFile.includes('<article>') &&
               htmlFile.includes('</article>'))
@@ -96,7 +99,7 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, htmlFileInfo, isNewHtmlFile }) => {
                     meta={props.meta}
                     showError={showError}
                     formik={formikRef}
-                    initialFile={htmlFileInfo?.htmlFile ?? null}
+                    initialFile={artifact?.file ?? null}
                   />
                 )}
               </FastField>

@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { HTML_FILE_CATEGORY_DECISION_TREE } from '../../../model/HtmlFileCategory';
-import HtmlInfoEditor from '../../../components/htmlInfo/HtmlInfoEditor';
+import HtmlInfoEditor from '../../../components/artifact/HtmlInfoEditor';
+import { ARTIFACT_TYPE_DECISION_TREE } from '../../../model/ArtifactType';
 
 const DecisionTreeHtmlFileEditor: FC = () => {
-  const { htmlFileId } = useParams<{ htmlFileId: string }>();
+  const { artifactId } = useParams<{ artifactId: string }>();
 
   return (
     <HtmlInfoEditor
-      htmlFileCategory={HTML_FILE_CATEGORY_DECISION_TREE}
-      htmlFileId={htmlFileId}
+      artifactType={ARTIFACT_TYPE_DECISION_TREE}
+      artifactId={artifactId}
     />
   );
 };

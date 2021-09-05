@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { HtmlFileInfo } from '../../../../../model/HtmlFileInfo';
+import { Artifact } from '../../../../../model/Artifact';
 
 interface Props {
   onUpdateFile: (content: string) => void;
   templateMenu: HTMLElement | null;
   setTemplateMenu: (templateMenu: null | HTMLElement) => void;
-  templates: HtmlFileInfo[];
+  templates: Artifact[];
 }
 
 const HtmlTemplateMenu: FC<Props> = ({
@@ -23,7 +23,7 @@ const HtmlTemplateMenu: FC<Props> = ({
     );
 
     if (template) {
-      onUpdateFile(template.htmlFile);
+      onUpdateFile(template.file);
     }
   };
 
