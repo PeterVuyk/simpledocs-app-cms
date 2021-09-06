@@ -3,6 +3,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import { Tooltip } from '@material-ui/core';
 import base64Helper from '../../helper/base64Helper';
+import stylesheetHelper from '../../helper/stylesheetHelper';
 
 interface Props {
   htmlFile: string;
@@ -18,8 +19,11 @@ const DownloadFileAction: FC<Props> = ({ htmlFile, fileName, extension }) => {
         style={{ cursor: 'pointer' }}
         onClick={() =>
           FileSaver.saveAs(
-            base64Helper.getBase64FromFile(htmlFile, 'html'),
-            `${fileName}.${extension}`
+            base64Helper.getBase64FromFile(
+              stylesheetHelper.removeInnerHeaderCss(htmlFile),
+              'html'
+            ),
+            `${fileName}.${extension ?? 'html'}`
           )
         }
       />

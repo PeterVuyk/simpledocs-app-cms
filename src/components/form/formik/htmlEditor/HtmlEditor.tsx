@@ -10,6 +10,11 @@ import LoadingSpinner from '../../../LoadingSpinner';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
 import base64Helper from '../../../../helper/base64Helper';
+import useStylesheet from '../../../hooks/useStylesheet';
+import stylesheetHelper from '../../../../helper/stylesheetHelper';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pretty = require('pretty');
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,6 +54,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
+  const stylesheet = useStylesheet();
   const classes = useStyles();
 
   const getErrorMessage = (): string => {
@@ -66,8 +72,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const handleUpdateFile = (file: string) => {
+    if (content === file) {
+      return;
+    }
     formik.current?.setFieldValue('htmlFile', file);
-    setContent(file);
+    setContent(pretty(stylesheetHelper.addStylesheet(file, stylesheet)));
     showSaveButton();
   };
 
@@ -75,9 +84,9 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     (file: string | null) => {
       const html = file ? base64Helper.getBodyFromBase64(file, 'html') : '';
       formik.current?.setFieldValue('htmlFile', html);
-      setContent(html);
+      setContent(pretty(stylesheetHelper.addStylesheet(html, stylesheet)));
     },
-    [formik]
+    [formik, stylesheet]
   );
 
   const getBase64HtmlFile = (): string | null => {
@@ -89,37 +98,38 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
 
   useEffect(() => {
     async function setInitialHtmlFile() {
+      if (stylesheet === undefined) {
+        return;
+      }
       let html = initialFile;
       if (html) {
         html = htmlFileHelper.stripMetaTags(html);
         html = htmlFileHelper.stripBottomSpacing(html);
+        html = stylesheetHelper.addStylesheet(html, stylesheet);
       } else {
         // Use the 'default' template.
-        html =
-          (
-            await artifactsRepository.getArtifactByTitle(
-              'Standaard',
-              ARTIFACT_TYPE_TEMPLATE
-            )
-          )?.file ?? '';
+        html = await artifactsRepository
+          .getArtifactByTitle('Standaard', ARTIFACT_TYPE_TEMPLATE)
+          .then((value) =>
+            value ? stylesheetHelper.addStylesheet(value.file, stylesheet) : ''
+          );
       }
       formik.current?.setFieldValue('htmlFile', html);
       setContent(html);
     }
     setInitialHtmlFile();
-  }, [formik, initialFile]);
+  }, [formik, initialFile, stylesheet]);
 
   const config = {
     // all options check: https://xdsoft.net/jodit/doc/
     height: 600,
     readonly: false,
-    useSplitMode: true,
     iframe: true,
     askBeforePasteHTML: false,
     askBeforePasteFromWord: false,
   };
 
-  if (content === null) {
+  if (content === null || stylesheet === null) {
     return <LoadingSpinner />;
   }
 

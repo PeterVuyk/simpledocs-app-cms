@@ -2,16 +2,25 @@ const bottomSpacingHtml =
   '<div id="bottom-spacing-8bb0417d" style="margin-top:100px"><br></div>';
 
 function stripMetaTags(htmlFile: string): string {
-  const html = htmlFile.replace('<meta charset="UTF-8">', '');
-  return html.replace(
+  const html = htmlFile.replaceAll('<meta charset="UTF-8">', '');
+  return html.replaceAll(
     '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">',
     ''
   );
 }
 
 function stripBottomSpacing(htmlFile: string): string {
-  const html = htmlFile.replace('<meta charset="UTF-8">', '');
-  return html.replace(bottomSpacingHtml, '');
+  if (!htmlFile.includes('id="bottom-spacing-8bb0417d"')) {
+    return htmlFile;
+  }
+  const htmlOne = htmlFile.split(
+    '<div id="bottom-spacing-8bb0417d" style="margin-top:100px">'
+  );
+  if (htmlOne.length !== 2) {
+    return htmlFile;
+  }
+  const htmlTwo = htmlOne[1].split('</div>').slice(1).join('</div>');
+  return htmlOne[0] + htmlTwo[1];
 }
 
 function getBottomSpacing(htmlFile: string): string {

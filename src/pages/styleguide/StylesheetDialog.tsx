@@ -29,6 +29,8 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pretty = require('pretty');
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -77,7 +79,9 @@ const StylesheetDialog: FC<Props> = ({
   const classes = useStyles();
 
   const handleUpdateFileFromBase64 = useCallback((file: string | null) => {
-    setCSSInput(file ? base64Helper.getBodyFromBase64(file, 'css') : '');
+    setCSSInput(
+      pretty(file ? base64Helper.getBodyFromBase64(file, 'css') : '')
+    );
   }, []);
 
   const handleSubmit = () => {
@@ -146,7 +150,9 @@ const StylesheetDialog: FC<Props> = ({
                 CSS:
               </DialogContentText>
               <div className="highLightContainer">
-                {cssInput && <Highlight className="css">{cssInput}</Highlight>}
+                {cssInput && (
+                  <Highlight className="css">{pretty(cssInput)}</Highlight>
+                )}
               </div>
             </Grid>
             <Grid item sm={4}>
@@ -180,7 +186,7 @@ const StylesheetDialog: FC<Props> = ({
           variant="contained"
           disabled={loading}
         >
-          Beslisboom uploaden
+          Stylesheet uploaden
         </Button>
       </DialogActions>
     </Dialog>
