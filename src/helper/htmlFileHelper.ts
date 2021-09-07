@@ -20,7 +20,7 @@ function stripBottomSpacing(htmlFile: string): string {
     return htmlFile;
   }
   const htmlTwo = htmlOne[1].split('</div>').slice(1).join('</div>');
-  return htmlOne[0] + htmlTwo[1];
+  return htmlOne[0] + htmlTwo;
 }
 
 function getBottomSpacing(htmlFile: string): string {
@@ -34,7 +34,7 @@ function addSpacingBottom(htmlFile: string): string {
   if (htmlFile.includes('id="bottom-spacing-8bb0417d"')) {
     return htmlFile;
   }
-  const html = htmlFile.split('</body>', 2);
+  const html = htmlFile.split('</body>');
   if (html.length !== 2) {
     return htmlFile;
   }
@@ -45,7 +45,7 @@ function addMetaTags(htmlFile: string): string {
   if (htmlFile.includes('<meta ')) {
     return htmlFile;
   }
-  const html = htmlFile.split('<head>', 2);
+  const html = htmlFile.split('<head>');
   if (html.length !== 2) {
     return htmlFile;
   }
@@ -66,7 +66,7 @@ function addHTMLTagsAndBottomSpacingToHTMLFile(htmlFile: string): string {
     const updatedHtml = addMetaTags(htmlFile);
     return addSpacingBottom(updatedHtml);
   }
-  const html = htmlFile.split('</style>', 2);
+  const html = htmlFile.split('</style>');
   if (html.length !== 2) {
     return htmlFile;
   }

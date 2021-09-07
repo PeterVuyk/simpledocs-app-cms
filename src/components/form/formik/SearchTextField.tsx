@@ -55,7 +55,7 @@ const SearchTextField: FC<Props> = ({ showError }) => {
       formikProps.setFieldValue('searchText', '');
       return;
     }
-    const splitHtml = html.split('</style>', 2);
+    const splitHtml = html.split('</style>');
     if (splitHtml.length === 2) {
       // eslint-disable-next-line prefer-destructuring
       html = splitHtml[1];

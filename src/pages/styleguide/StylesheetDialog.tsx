@@ -29,6 +29,7 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
+import stylesheetHelper from '../../helper/stylesheetHelper';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 
@@ -80,7 +81,9 @@ const StylesheetDialog: FC<Props> = ({
 
   const handleUpdateFileFromBase64 = useCallback((file: string | null) => {
     setCSSInput(
-      pretty(file ? base64Helper.getBodyFromBase64(file, 'css') : '')
+      stylesheetHelper.makeCssStylesheetPretty(
+        file ? base64Helper.getBodyFromBase64(file, 'css') : ''
+      )
     );
   }, []);
 

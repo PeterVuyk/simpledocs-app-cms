@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import { connect } from 'react-redux';
-import { EditTwoTone } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import { Tooltip } from '@material-ui/core';
 import articleRepository from '../../../firebase/database/articleRepository';
@@ -17,6 +15,7 @@ import DownloadFileAction from '../../../components/ItemAction/DownloadFileActio
 import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import navigationConfig from '../../../navigation/navigationConfig.json';
+import EditItemAction from '../../../components/ItemAction/EditItemAction';
 
 const useStyles = makeStyles({
   icon: {
@@ -43,7 +42,6 @@ const ArticleListItem: FC<Props> = ({
   bookType,
 }) => {
   const classes = useStyles();
-  const history = useHistory();
 
   const getLevel = (level: string): string => {
     const levels = {
@@ -142,12 +140,7 @@ const ArticleListItem: FC<Props> = ({
       </TableCell>
       <TableCell align="right" className={classes.toolBox}>
         {!article.markedForDeletion && (
-          <Tooltip title="Wijzigen">
-            <EditTwoTone
-              style={{ cursor: 'pointer' }}
-              onClick={() => history.push(getEditUrl())}
-            />
-          </Tooltip>
+          <EditItemAction urlSlug={getEditUrl()} />
         )}
         <DownloadFileAction
           htmlFile={article.htmlFile}
