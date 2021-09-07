@@ -7,6 +7,8 @@ export interface Article {
   subTitle: string;
   searchText: string;
   htmlFile: string;
+  content: string;
+  contentType: string;
   iconFile: string;
   isDraft: boolean;
   markedForDeletion?: boolean;

@@ -46,7 +46,7 @@ async function deleteArtifact(itemId: string): Promise<void> {
 async function getArtifactById(id: string): Promise<Artifact> {
   const documentSnapshot = await database
     .collection(AGGREGATE_ARTIFACTS)
-    .doc(id)
+    .doc(id.trim())
     .get();
   return {
     id: documentSnapshot.id,

@@ -31,9 +31,9 @@ const DownloadDecisionTreeHtmlFiles: FC<Props> = ({
       return;
     }
     decisionTreeSteps
-      .filter((step) => step.htmlFile !== undefined)
+      .filter((step) => step.content !== undefined)
       .forEach((step) => {
-        zip.file(`id-${step.id}.html`, step.htmlFile);
+        zip.file(`id-${step.id}.html`, step.content!);
       });
     zip.generateAsync({ type: 'blob' }).then((blob) => {
       saveAs(blob, 'html-bestanden.zip');

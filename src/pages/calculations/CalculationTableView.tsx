@@ -83,7 +83,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
-                    <ViewHTMLFileAction htmlFile={calculationInfo.htmlFile} />
+                    <ViewHTMLFileAction htmlFile={calculationInfo.content} />
                   </TableCell>
                 </TableRow>
                 <TableRow key={calculationInfo.title + 2}>

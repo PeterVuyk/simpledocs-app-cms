@@ -31,7 +31,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
         'label',
         'parentId',
         'lineLabel',
-        'htmlFileId',
+        'contentId',
         'internalNote',
       ],
       data: steps,

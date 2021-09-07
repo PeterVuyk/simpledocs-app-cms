@@ -6,8 +6,12 @@ export interface DecisionTreeStep {
   parentId?: number;
   lineLabel?: string;
   htmlFileId?: string;
-  htmlFile: string;
+  htmlFile?: string;
   isDraft: boolean;
   markedForDeletion?: boolean;
   internalNote?: string;
+  contentId?: string;
+  content?: string;
+  contentType?: string;
+  bla: string;
 }

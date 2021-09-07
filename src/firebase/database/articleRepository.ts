@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import { database } from '../firebaseConnection';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
+import { AGGREGATE_ARTIFACTS } from '../../model/Aggregate';
+import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 
 async function createArticle(
   bookType: BookType,

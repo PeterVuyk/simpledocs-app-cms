@@ -79,7 +79,7 @@ const EditCalculation: FC<Props> = ({
       .required('Lijst index is een verplicht veld.')
       .positive(),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    htmlFile: Yup.string()
+    content: Yup.string()
       .required('Het toevoegen van een html bestand is verplicht.')
       .test(
         'htmlFile',
@@ -111,7 +111,8 @@ const EditCalculation: FC<Props> = ({
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+        contentType: 'html',
+        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),
         iconFile: values.iconFile,
@@ -245,7 +246,7 @@ const EditCalculation: FC<Props> = ({
                           meta={props.meta}
                           showError={showError}
                           formik={formikRef}
-                          initialFile={calculationInfo.htmlFile}
+                          initialFile={calculationInfo.content}
                         />
                       )}
                     </FastField>

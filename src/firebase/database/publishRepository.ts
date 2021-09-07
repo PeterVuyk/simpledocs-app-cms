@@ -70,7 +70,7 @@ async function publishDecisionTree(
     }
   });
 
-  // C: Als title beide published en draft is? Dan alle steps published verwijderen
+  // C: If title is both published and draft? then remove all published steps
   if (updatedTitles.length !== 0) {
     const querySnapshotUpdatedTitles = await database
       .collection(AGGREGATE_DECISION_TREE)
@@ -82,23 +82,24 @@ async function publishDecisionTree(
     });
   }
 
-  // 4: Replace htmlFileId reference with htmlFile
-  const querySnapshotWithHtmlFileIdReference = await database
+  // 4: Replace contentId reference with htmlFile
+  const querySnapshotWithContentIdReference = await database
     .collection(versioning.aggregate)
     .where('isDraft', '==', true)
     .get();
 
-  querySnapshotWithHtmlFileIdReference.forEach((documentSnapshot) => {
+  querySnapshotWithContentIdReference.forEach((documentSnapshot) => {
     const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
-    if (!decisionTreeStep.htmlFileId) {
+    if (!decisionTreeStep.contentId) {
       return;
     }
-    batch.update(documentSnapshot.ref, { htmlFileId: null });
+    batch.update(documentSnapshot.ref, { contentId: null });
     artifactsRepository
-      .getArtifactById(decisionTreeStep.htmlFileId)
+      .getArtifactById(decisionTreeStep.contentId)
       .then((value) => {
         batch.update(documentSnapshot.ref, {
-          htmlFile: value.file,
+          content: value.file,
+          contentType: value.extension,
         });
       });
   });

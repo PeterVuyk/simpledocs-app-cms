@@ -6,7 +6,8 @@ export interface CalculationInfo {
   title: string;
   explanation: string;
   articleButtonText: string;
-  htmlFile: string;
+  content: string;
+  contentType: string;
   iconFile: string;
   calculationImage: string;
   isDraft: boolean;

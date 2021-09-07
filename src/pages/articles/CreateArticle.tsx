@@ -42,6 +42,10 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),
+        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+          values.htmlFile
+        ),
+        contentType: 'html',
         iconFile: values.iconFile,
         isDraft: true,
       })

@@ -63,7 +63,7 @@ const DecisionTreeStepsList: FC<Props> = ({
             <TableCell>
               <strong>HTML bestand ID</strong>
               <br />
-              htmlFileId
+              contentId
             </TableCell>
             <TableCell>
               <strong>Interne notitie</strong>
@@ -103,14 +103,14 @@ const DecisionTreeStepsList: FC<Props> = ({
                 <TableCell>{row.parentId}</TableCell>
                 <TableCell>{row.lineLabel}</TableCell>
                 <TableCell>
-                  {editStatus === EDIT_STATUS_DRAFT && row.htmlFileId}&nbsp;
-                  {row.htmlFile && (
+                  {editStatus === EDIT_STATUS_DRAFT && row.contentId}&nbsp;
+                  {row.content && (
                     <>
                       <DownloadFileAction
-                        htmlFile={row.htmlFile}
+                        htmlFile={row.content}
                         fileName={row.title}
                       />
-                      <ViewHTMLFileAction htmlFile={row.htmlFile} />
+                      <ViewHTMLFileAction htmlFile={row.content} />
                     </>
                   )}
                 </TableCell>

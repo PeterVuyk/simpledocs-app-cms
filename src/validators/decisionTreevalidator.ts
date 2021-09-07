@@ -13,8 +13,8 @@ const validateRootQuestion = (
   if (rootQuestion.lineLabel) {
     errorMessages.push('- De lineLabel van de eerste vraag moet leeg blijven.');
   }
-  if (rootQuestion.htmlFileId) {
-    errorMessages.push('- htmlFileId van de eerste vraag moet leeg blijven.');
+  if (rootQuestion.contentId) {
+    errorMessages.push('- contentId van de eerste vraag moet leeg blijven.');
   }
   return errorMessages;
 };
@@ -83,29 +83,29 @@ const ValidateLeafNodes = (
   return errorMessages;
 };
 
-const validateOnlyLastLeafHasHtmlFileId = (
+const validateOnlyLastLeafHasContentId = (
   steps: DecisionTreeStep[],
   errorMessages: string[]
 ): string[] => {
   const parentIds = steps.map((step) => step.parentId);
   const finalStepIds = steps
     .filter((step) => {
-      return step.htmlFileId !== null;
+      return step.contentId !== null;
     })
     .map((step) => step.id);
 
   if (!finalStepIds.every((id) => !parentIds.includes(id))) {
     errorMessages.push(
-      '- Alleen de laatste en niet de tussenliggende antwoorden/vragen mag een htmlFileId hebben.'
+      '- Alleen de laatste en niet de tussenliggende antwoorden/vragen mag een contentId hebben.'
     );
   }
 
-  const finalAnswersHasHtmlFileId = steps
+  const finalAnswersHasContentId = steps
     .filter((step) => !parentIds.includes(step.id))
-    .every((step) => step.htmlFileId !== null);
-  if (!finalAnswersHasHtmlFileId) {
+    .every((step) => step.contentId !== null);
+  if (!finalAnswersHasContentId) {
     errorMessages.push(
-      '- Het laatste antwoord is verplicht om een htmlFileId te hebben, deze ontbreek bij 1 of meerdere.'
+      '- Het laatste antwoord is verplicht om een contentId te hebben, deze ontbreek bij 1 of meerdere.'
     );
   }
   return errorMessages;
@@ -126,7 +126,7 @@ const validate = (steps: DecisionTreeStep[]) => {
   errorMessages = validateRootQuestion(rootQuestion, errorMessages);
   errorMessages = ValidateNodes(steps, errorMessages);
   errorMessages = ValidateLeafNodes(steps, errorMessages);
-  errorMessages = validateOnlyLastLeafHasHtmlFileId(steps, errorMessages);
+  errorMessages = validateOnlyLastLeafHasContentId(steps, errorMessages);
 
   return errorMessages.length === 0
     ? ''
