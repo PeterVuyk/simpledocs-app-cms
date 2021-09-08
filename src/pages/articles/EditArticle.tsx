@@ -51,9 +51,6 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        htmlFile: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
-          values.htmlFile
-        ),
         content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),

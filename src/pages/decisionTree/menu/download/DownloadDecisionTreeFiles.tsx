@@ -5,46 +5,56 @@ import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_DECISION_TREE } from '../../../../model/ArtifactType';
+import { getExtensionFromContentType } from '../../../../model/Artifact';
 
 interface Props {
   editStatus: EditStatus;
   decisionTreeSteps: DecisionTreeStep[];
 }
 
-const DownloadDecisionTreeHtmlFiles: FC<Props> = ({
+const DownloadDecisionTreeFiles: FC<Props> = ({
   editStatus,
   decisionTreeSteps,
 }) => {
-  const handleExportHTMLFiles = (): void => {
+  const handleExportFiles = (): void => {
     const zip = new JSZip();
     if (editStatus === EDIT_STATUS_DRAFT) {
       artifactsRepository
         .getArtifactsByCategories([ARTIFACT_TYPE_DECISION_TREE])
         .then((artifacts) => {
           artifacts.forEach((artifact) => {
-            zip.file(`id-${artifact.id}.html`, artifact.file);
+            zip.file(
+              `id-${artifact.id}.${getExtensionFromContentType(
+                artifact.contentType
+              )}`,
+              artifact.content
+            );
           });
           zip.generateAsync({ type: 'blob' }).then((blob) => {
-            saveAs(blob, 'html-bestanden.zip');
+            saveAs(blob, 'beslisboom-bestanden.zip');
           });
         });
       return;
     }
     decisionTreeSteps
       .filter((step) => step.content !== undefined)
+      .filter((step) => step.contentType !== undefined)
       .forEach((step) => {
-        zip.file(`id-${step.id}.html`, step.content!);
+        zip.file(
+          `id-${step.id}.${getExtensionFromContentType(step.contentType!)}`,
+          step.content!
+        );
       });
     zip.generateAsync({ type: 'blob' }).then((blob) => {
-      saveAs(blob, 'html-bestanden.zip');
+      saveAs(blob, 'beslisboom-bestanden.zip');
     });
   };
 
   return (
-    <MenuItem key="html" onClick={() => handleExportHTMLFiles()}>
-      html-bestanden.zip
+    <MenuItem key="zip" onClick={() => handleExportFiles()}>
+      beslisboom-bestanden.zip
     </MenuItem>
   );
 };
 
-export default DownloadDecisionTreeHtmlFiles;
+export default DownloadDecisionTreeFiles;

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import HtmlFileList from './html/HtmlFileList';
+import ArtifactsList from './artifacts/ArtifactsList';
 import DecisionTreeStepsList from './DecisionTreeStepsList';
 import { EDIT_STATUS_DRAFT } from '../../model/EditStatus';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
@@ -94,7 +94,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
           color="primary"
           onClick={() => history.push(ADD_DECISION_TREE)}
         >
-          HTML bestand uploaden
+          Toelichting bestand uploaden
         </Button>
         <UploadDecisionTreeButton onLoadDecisionTree={handleLoadDecisionTree} />
       </PageHeading>
@@ -102,7 +102,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
         editStatus={editStatus}
         decisionTreeSteps={decisionTreeSteps}
       />
-      {editStatus === EDIT_STATUS_DRAFT && <HtmlFileList />}
+      {editStatus === EDIT_STATUS_DRAFT && <ArtifactsList />}
       {decisionTreeSteps === null && <LoadingSpinner />}
     </>
   );

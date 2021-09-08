@@ -42,8 +42,11 @@ const DownloadArticlesMenuButton: FC<Props> = ({
     );
   };
 
-  const exportHTMLFiles = () => {
-    exportArticles.htmlFiles(articles, `${bookType}-${editStatus}-html.zip`);
+  const exportContentFiles = () => {
+    exportArticles.exportContent(
+      articles,
+      `${bookType}-${editStatus}-content.zip`
+    );
   };
 
   const exportIcons = () => {
@@ -74,8 +77,8 @@ const DownloadArticlesMenuButton: FC<Props> = ({
         <MenuItem key="csv" onClick={exportCsvFile}>
           {bookType}-{editStatus}.csv
         </MenuItem>
-        <MenuItem key="html" onClick={exportHTMLFiles}>
-          {bookType}-{editStatus}-html.zip
+        <MenuItem key="content" onClick={exportContentFiles}>
+          {bookType}-{editStatus}-content.zip
         </MenuItem>
         <MenuItem key="icon" onClick={exportIcons}>
           {bookType}-{editStatus}-illustraties.zip

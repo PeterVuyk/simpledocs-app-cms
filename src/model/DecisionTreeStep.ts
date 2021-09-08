@@ -1,3 +1,5 @@
+import { ContentType } from './Artifact';
+
 export interface DecisionTreeStep {
   title: string;
   iconFile?: string;
@@ -5,13 +7,11 @@ export interface DecisionTreeStep {
   label: string;
   parentId?: number;
   lineLabel?: string;
-  htmlFileId?: string;
-  htmlFile?: string;
   isDraft: boolean;
   markedForDeletion?: boolean;
   internalNote?: string;
   contentId?: string;
   content?: string;
-  contentType?: string;
+  contentType?: ContentType;
   bla: string;
 }

@@ -3,6 +3,10 @@ import FileSaver from 'file-saver';
 import JSZip from 'jszip';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
+import {
+  CONTENT_TYPE_HTML,
+  getExtensionFromContentType,
+} from '../../../model/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 
@@ -22,11 +26,16 @@ const icons = (articles: Article[], filename: string) => {
   });
 };
 
-const htmlFiles = (articles: Article[], filename: string) => {
+const exportContent = (articles: Article[], filename: string) => {
   const zip = new JSZip();
 
   articles.forEach((article) => {
-    zip.file(`${article.chapter}.html`, pretty(article.htmlFile));
+    zip.file(
+      `${article.chapter}.${getExtensionFromContentType(article.contentType)}`,
+      article.contentType === CONTENT_TYPE_HTML
+        ? pretty(article.content)
+        : article.content
+    );
   });
   zip.generateAsync({ type: 'blob' }).then((blob) => {
     saveAs(blob, filename);
@@ -60,7 +69,7 @@ const csvFile = (
 
 const exportArticles = {
   csvFile,
-  htmlFiles,
+  exportContent,
   icons,
 };
 

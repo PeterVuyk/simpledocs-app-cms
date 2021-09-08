@@ -1,12 +1,12 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Chip from '@material-ui/core/Chip';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Highlight from 'react-highlight';
-import ViewHTMLFileAction from '../ItemAction/ViewHTMLFileAction';
+import ViewContentAction from '../ItemAction/ViewContentAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
-import DownloadFileAction from '../ItemAction/DownloadFileAction';
+import DownloadContentAction from '../ItemAction/DownloadContentAction';
 import { AGGREGATE_DECISION_TREE } from '../../model/Aggregate';
 import { Artifact } from '../../model/Artifact';
 import {
@@ -121,7 +121,7 @@ const ArtifactsTableRow: FC<Props> = ({
           <Chip label="Default template" variant="outlined" />
         )}
       </TableCell>
-      <TableCell>{artifact.extension}</TableCell>
+      <TableCell>{artifact.contentType}</TableCell>
       {showArtifactType && <TableCell>{getTranslatedCategory()}</TableCell>}
       <TableCell align="right" className={classes.toolBox}>
         {artifact.type === ARTIFACT_TYPE_CSS_STYLESHEET && (
@@ -132,19 +132,26 @@ const ArtifactsTableRow: FC<Props> = ({
         {showEditIcon() && (
           <EditItemAction
             urlSlug={`/${
-              aggregate === AGGREGATE_DECISION_TREE ? 'html/' : 'styleguide/'
+              aggregate === AGGREGATE_DECISION_TREE
+                ? 'artifacts/'
+                : 'styleguide/'
             }${getSlugFromType()}/${artifact.id}`}
           />
         )}
-        <DownloadFileAction
-          htmlFile={artifact.file}
+        <DownloadContentAction
+          content={artifact.content}
+          contentType={artifact.contentType}
           fileName={artifact.title}
-          extension={artifact.extension}
         />
-        {showPreviewIcon() && <ViewHTMLFileAction htmlFile={artifact.file} />}
+        {showPreviewIcon() && (
+          <ViewContentAction
+            content={artifact.content}
+            contentType={artifact.contentType}
+          />
+        )}
         {showDeleteIcon() && (
           <DeleteItemAction
-            title="Weet je zeker dat je dit html bestand wilt verwijderen?"
+            title="Weet je zeker dat je dit bestand wilt verwijderen?"
             dialogText={`ID: ${artifact.id}\nTitel: ${artifact.title}`}
             onSubmit={onDelete}
             itemId={artifact.id!}

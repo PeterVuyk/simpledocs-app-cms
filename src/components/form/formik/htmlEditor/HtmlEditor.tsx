@@ -12,6 +12,7 @@ import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
 import base64Helper from '../../../../helper/base64Helper';
 import useStylesheet from '../../../hooks/useStylesheet';
 import stylesheetHelper from '../../../../helper/stylesheetHelper';
+import { CONTENT_TYPE_HTML } from '../../../../model/Artifact';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
@@ -82,7 +83,9 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
 
   const handleUpdateFileFromBase64 = useCallback(
     (file: string | null) => {
-      const html = file ? base64Helper.getBodyFromBase64(file, 'html') : '';
+      const html = file
+        ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_HTML)
+        : '';
       formik.current?.setFieldValue('htmlFile', html);
       setContent(pretty(stylesheetHelper.addStylesheet(html, stylesheet)));
     },
@@ -93,7 +96,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     if (content === null || content === '') {
       return null;
     }
-    return base64Helper.getBase64FromFile(content, 'html');
+    return base64Helper.getBase64FromFile(content, CONTENT_TYPE_HTML);
   };
 
   useEffect(() => {
@@ -111,7 +114,9 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
         html = await artifactsRepository
           .getArtifactByTitle('Standaard', ARTIFACT_TYPE_TEMPLATE)
           .then((value) =>
-            value ? stylesheetHelper.addStylesheet(value.file, stylesheet) : ''
+            value
+              ? stylesheetHelper.addStylesheet(value.content, stylesheet)
+              : ''
           );
       }
       formik.current?.setFieldValue('htmlFile', html);

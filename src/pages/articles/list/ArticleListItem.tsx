@@ -11,8 +11,8 @@ import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
-import DownloadFileAction from '../../../components/ItemAction/DownloadFileAction';
-import ViewHTMLFileAction from '../../../components/ItemAction/ViewHTMLFileAction';
+import DownloadContentAction from '../../../components/ItemAction/DownloadContentAction';
+import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import navigationConfig from '../../../navigation/navigationConfig.json';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
@@ -142,11 +142,15 @@ const ArticleListItem: FC<Props> = ({
         {!article.markedForDeletion && (
           <EditItemAction urlSlug={getEditUrl()} />
         )}
-        <DownloadFileAction
-          htmlFile={article.htmlFile}
+        <DownloadContentAction
+          content={article.content}
+          contentType={article.contentType}
           fileName={article.chapter}
         />
-        <ViewHTMLFileAction htmlFile={article.htmlFile} />
+        <ViewContentAction
+          content={article.content}
+          contentType={article.contentType}
+        />
         {article.markedForDeletion && editStatus === EDIT_STATUS_DRAFT && (
           <Tooltip title="Markering voor verwijdering opheffen">
             <RestoreFromTrashTwoToneIcon

@@ -8,7 +8,7 @@ import PageHeading from '../../layout/PageHeading';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import htmlFileHelper from '../../helper/htmlFileHelper';
-import HtmlPageForm from '../form/HtmlPageForm';
+import ContentPageForm from '../form/ContentPageForm';
 import Navigation from '../../navigation/Navigation';
 import NotFound from '../../pages/NotFound';
 import {
@@ -29,22 +29,22 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const HtmlInfoEditor: FC<Props> = ({
+const ArtifactEditor: FC<Props> = ({
   artifactType,
   artifactId,
   setNotification,
 }) => {
-  const [isNewHtmlFile, setIsNewHtmlFile] = useState<boolean>(false);
+  const [isNewFile, setIsNewFile] = useState<boolean>(false);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const history = useHistory();
 
   useEffect(() => {
     if (artifactId === undefined) {
-      setIsNewHtmlFile(true);
+      setIsNewFile(true);
       setArtifact({
         type: artifactType,
-        extension: '',
-        file: '',
+        content: '',
+        contentType: 'html',
         title: '',
         id: '',
       });
@@ -55,16 +55,17 @@ const HtmlInfoEditor: FC<Props> = ({
       .then((value) => setArtifact(value));
   }, [artifactType, artifactId]);
 
-  const addOrEditText = isNewHtmlFile ? 'toegevoegd' : 'gewijzigd';
+  const addOrEditText = isNewFile ? 'toegevoegd' : 'gewijzigd';
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
+    console.log('called!');
     await artifactsRepository
       .updateArtifact({
         id: artifact?.id,
         type: artifactType,
-        extension: 'html',
+        contentType: 'html',
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
-        file: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
+        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
           values.htmlFile
         ),
       })
@@ -79,12 +80,12 @@ const HtmlInfoEditor: FC<Props> = ({
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: `HTML pagina is ${addOrEditText}.`,
+          notificationMessage: `De pagina is ${addOrEditText}.`,
         })
       )
       .catch((error) => {
         logger.errorWithReason(
-          `Edit/Add ${artifactType} has failed in HtmlInfoEditor.handleSubmit`,
+          `Edit/Add ${artifactType} has failed in ArtifactEditor.handleSubmit`,
           error
         );
         setNotification({
@@ -101,9 +102,7 @@ const HtmlInfoEditor: FC<Props> = ({
 
   return (
     <Navigation>
-      <PageHeading
-        title={`HTML bestand ${isNewHtmlFile ? 'toevoegen' : 'wijzigen'}`}
-      >
+      <PageHeading title={`Bestand ${isNewFile ? 'toevoegen' : 'wijzigen'}`}>
         <Button
           variant="contained"
           color="secondary"
@@ -113,8 +112,8 @@ const HtmlInfoEditor: FC<Props> = ({
         </Button>
       </PageHeading>
       {artifact && (
-        <HtmlPageForm
-          isNewHtmlFile={isNewHtmlFile}
+        <ContentPageForm
+          isNewFile={isNewFile}
           onSubmit={handleSubmit}
           artifact={artifact}
         />
@@ -137,4 +136,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HtmlInfoEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtifactEditor);

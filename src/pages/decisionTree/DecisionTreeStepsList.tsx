@@ -9,8 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
-import DownloadFileAction from '../../components/ItemAction/DownloadFileAction';
-import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
+import DownloadContentAction from '../../components/ItemAction/DownloadContentAction';
+import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 
 const useStyles = makeStyles({
   table: {
@@ -61,7 +61,7 @@ const DecisionTreeStepsList: FC<Props> = ({
               lineLabel
             </TableCell>
             <TableCell>
-              <strong>HTML bestand ID</strong>
+              <strong>Toelichting bestand ID</strong>
               <br />
               contentId
             </TableCell>
@@ -104,13 +104,17 @@ const DecisionTreeStepsList: FC<Props> = ({
                 <TableCell>{row.lineLabel}</TableCell>
                 <TableCell>
                   {editStatus === EDIT_STATUS_DRAFT && row.contentId}&nbsp;
-                  {row.content && (
+                  {row.content && row.contentType && (
                     <>
-                      <DownloadFileAction
-                        htmlFile={row.content}
+                      <DownloadContentAction
+                        contentType={row.contentType}
+                        content={row.content}
                         fileName={row.title}
                       />
-                      <ViewHTMLFileAction htmlFile={row.content} />
+                      <ViewContentAction
+                        content={row.content}
+                        contentType={row.contentType}
+                      />
                     </>
                   )}
                 </TableCell>

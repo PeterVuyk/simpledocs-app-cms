@@ -3,9 +3,9 @@ import { Artifact } from '../model/Artifact';
 const pretty = require('pretty');
 
 const stylesheetTopDivider =
-  '<!–– BEGIN ingeladen styling dat ingeladen wordt vanuit de css stylesheet dat alleen te bewerken is via de styleguide. Let op: Verwijder of bewerk deze en de comment hieronder niet. ––>';
+  ' <!–– BEGIN ingeladen styling dat ingeladen wordt vanuit de css stylesheet dat alleen te bewerken is via de styleguide. Let op: Verwijder of bewerk deze en de comment hieronder niet. ––> ';
 const stylesheetBottomDivider =
-  '<!–– EINDE ingeladen css stylesheet. Voeg pagina specifieke styling onder deze comment toe ––>';
+  ' <!–– EINDE ingeladen css stylesheet. Voeg pagina specifieke styling onder deze comment toe ––> ';
 
 function makeCssStylesheetPretty(stylesheet: string) {
   let html = pretty(`<html><head><style>${stylesheet}</style></head></html>`);
@@ -15,18 +15,6 @@ function makeCssStylesheetPretty(stylesheet: string) {
     return stylesheet;
   }
   return result[0];
-}
-
-function removeInnerHeaderCss(htmlFile: string): string {
-  const htmlOne = htmlFile.split(stylesheetTopDivider);
-  if (htmlOne.length !== 2) {
-    return htmlFile;
-  }
-  const htmlTwo = htmlOne[1].split(stylesheetBottomDivider);
-  if (htmlTwo.length !== 2) {
-    return htmlFile;
-  }
-  return htmlOne[0] + htmlTwo[1];
 }
 
 function removeLinkStylesheet(htmlFile: string): string {
@@ -42,11 +30,11 @@ function addStylesheet(
   stylesheet: Artifact | undefined
 ): string {
   const html = removeLinkStylesheet(htmlFile);
-  if (!stylesheet || htmlFile.includes(stylesheetTopDivider)) {
+  if (!stylesheet || htmlFile.includes('!–– BEGIN ingeladen styling')) {
     return html;
   }
   const styling =
-    stylesheetTopDivider + stylesheet.file + stylesheetBottomDivider;
+    stylesheetTopDivider + stylesheet.content + stylesheetBottomDivider;
   if (
     html.trim().startsWith('<html') ||
     html.trim().startsWith('<!DOCTYPE html>') ||
@@ -64,7 +52,7 @@ function addStylesheet(
       if (splittedHtml.length !== 2) {
         return html;
       }
-      return `${splittedHtml[0]}<head><style>${styling}${splittedHtml[1]}</style>`;
+      return `${splittedHtml[0]}<head><style>${styling}</style>${splittedHtml[1]}`;
     }
     return html;
   }
@@ -80,7 +68,6 @@ function addStylesheet(
 
 const stylesheetHelper = {
   addStylesheet,
-  removeInnerHeaderCss,
   makeCssStylesheetPretty,
 };
 

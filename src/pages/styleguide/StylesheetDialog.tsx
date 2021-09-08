@@ -23,7 +23,7 @@ import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
-import { Artifact } from '../../model/Artifact';
+import { Artifact, CONTENT_TYPE_CSS } from '../../model/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
@@ -82,7 +82,7 @@ const StylesheetDialog: FC<Props> = ({
   const handleUpdateFileFromBase64 = useCallback((file: string | null) => {
     setCSSInput(
       stylesheetHelper.makeCssStylesheetPretty(
-        file ? base64Helper.getBodyFromBase64(file, 'css') : ''
+        file ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_CSS) : ''
       )
     );
   }, []);
@@ -95,7 +95,7 @@ const StylesheetDialog: FC<Props> = ({
       return;
     }
     const updatedArtifact = openStylesheetDialog;
-    updatedArtifact.file = cssInput;
+    updatedArtifact.content = cssInput;
     artifactsRepository
       .updateArtifact(updatedArtifact)
       .then(() => setLoading(false))
@@ -171,8 +171,8 @@ const StylesheetDialog: FC<Props> = ({
                 allowedExtension="css"
                 onUpdateFile={handleUpdateFileFromBase64}
                 initialFile={base64Helper.getBase64FromFile(
-                  openStylesheetDialog.file,
-                  'css'
+                  openStylesheetDialog.content,
+                  CONTENT_TYPE_CSS
                 )}
               />
             </Grid>
@@ -189,7 +189,7 @@ const StylesheetDialog: FC<Props> = ({
           variant="contained"
           disabled={loading}
         >
-          Stylesheet uploaden
+          Stylesheet wijzigen
         </Button>
       </DialogActions>
     </Dialog>

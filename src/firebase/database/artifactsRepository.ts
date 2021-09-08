@@ -57,16 +57,16 @@ async function getArtifactById(id: string): Promise<Artifact> {
 async function updateArtifact(artifact: Artifact): Promise<void> {
   if (artifact.id) {
     await database.collection(AGGREGATE_ARTIFACTS).doc(artifact.id).set({
-      file: artifact.file,
-      extension: artifact.extension,
+      content: artifact.content,
+      contentType: artifact.contentType,
       type: artifact.type,
       title: artifact.title,
     });
     return;
   }
   await database.collection(AGGREGATE_ARTIFACTS).add({
-    file: artifact.file,
-    extension: artifact.extension,
+    content: artifact.content,
+    contentType: artifact.contentType,
     type: artifact.type,
     title: artifact.title,
   });

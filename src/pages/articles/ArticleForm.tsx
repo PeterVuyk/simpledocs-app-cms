@@ -111,7 +111,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
     searchText: Yup.string().required('Zoektekst is een verplicht veld'),
-    htmlFile: Yup.string()
+    content: Yup.string()
       .required('Het toevoegen van een html bestand is verplicht.')
       .test(
         'htmlFile',
@@ -208,7 +208,6 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <FileDropZoneArea
-                  enableHtmlPreview={false}
                   name="iconFile"
                   formik={formikRef}
                   showError={showError}
@@ -226,7 +225,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                       meta={props.meta}
                       showError={showError}
                       formik={formikRef}
-                      initialFile={article?.htmlFile ?? null}
+                      initialFile={article?.content ?? null}
                     />
                   )}
                 </FastField>

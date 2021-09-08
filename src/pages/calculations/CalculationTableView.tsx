@@ -9,7 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { CalculationInfo } from '../../model/CalculationInfo';
-import ViewHTMLFileAction from '../../components/ItemAction/ViewHTMLFileAction';
+import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -83,7 +83,10 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
                   <TableCell>
-                    <ViewHTMLFileAction htmlFile={calculationInfo.content} />
+                    <ViewContentAction
+                      content={calculationInfo.content}
+                      contentType={calculationInfo.contentType}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow key={calculationInfo.title + 2}>

@@ -9,6 +9,7 @@ import {
   AGGREGATE_REGULATION_RVV_1990,
 } from '../model/Aggregate';
 
+// TODO: Use the json config instead of this function.
 const getTranslatedAggregate = (aggregate: string): string => {
   switch (aggregate) {
     case AGGREGATE_REGULATION_OGS_2009:

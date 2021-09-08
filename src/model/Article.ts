@@ -1,3 +1,5 @@
+import { ContentType } from './Artifact';
+
 export interface Article {
   id?: string;
   pageIndex: number;
@@ -6,9 +8,8 @@ export interface Article {
   title: string;
   subTitle: string;
   searchText: string;
-  htmlFile: string;
   content: string;
-  contentType: string;
+  contentType: ContentType;
   iconFile: string;
   isDraft: boolean;
   markedForDeletion?: boolean;

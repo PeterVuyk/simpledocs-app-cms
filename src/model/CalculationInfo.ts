@@ -1,4 +1,5 @@
 import { CalculationType } from './CalculationType';
+import { ContentType } from './Artifact';
 
 export interface CalculationInfo {
   listIndex: number;
@@ -7,7 +8,7 @@ export interface CalculationInfo {
   explanation: string;
   articleButtonText: string;
   content: string;
-  contentType: string;
+  contentType: ContentType;
   iconFile: string;
   calculationImage: string;
   isDraft: boolean;

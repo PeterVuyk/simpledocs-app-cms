@@ -13,41 +13,40 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const HtmlFileList: FC<Props> = ({ setNotification }) => {
-  const [decisionTreeHtmlFiles, setDecisionTreeHtmlFiles] = useState<
+const ArtifactsList: FC<Props> = ({ setNotification }) => {
+  const [decisionTreeArtifacts, setDecisionTreeArtifacts] = useState<
     Artifact[]
   >([]);
 
-  const loadHtmlFiles = () => {
+  const loadArtifacts = () => {
     artifactsRepository
       .getArtifactsByCategories([ARTIFACT_TYPE_DECISION_TREE])
-      .then((result) => setDecisionTreeHtmlFiles(result));
+      .then((result) => setDecisionTreeArtifacts(result));
   };
 
   useEffect(() => {
-    loadHtmlFiles();
+    loadArtifacts();
   }, []);
 
-  const handleDeleteHtmlFile = (id: string) => {
+  const handleDeleteArtifact = (id: string) => {
     artifactsRepository
       .deleteArtifact(id)
-      .then(loadHtmlFiles)
+      .then(loadArtifacts)
       .then(() =>
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: `Het html bestand is verwijderd.`,
+          notificationMessage: `Het bestand is verwijderd.`,
         })
       )
       .catch(() => {
         logger.error(
-          `Failed removing the html file from the decision tree ${id}`
+          `Failed removing the artifact from the decision tree ${id}`
         );
         setNotification({
           notificationOpen: true,
           notificationType: 'error',
-          notificationMessage:
-            'Het verwijderen van het html bestand is mislukt',
+          notificationMessage: 'Het verwijderen van het bestand is mislukt',
         });
       });
   };
@@ -55,8 +54,8 @@ const HtmlFileList: FC<Props> = ({ setNotification }) => {
   return (
     <ArtifactsTable
       aggregate={AGGREGATE_DECISION_TREE}
-      artifacts={decisionTreeHtmlFiles}
-      onDelete={handleDeleteHtmlFile}
+      artifacts={decisionTreeArtifacts}
+      onDelete={handleDeleteArtifact}
       showIdColumn
       showArtifactType={false}
     />
@@ -77,4 +76,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HtmlFileList);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtifactsList);

@@ -3,6 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -13,27 +14,35 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
-  showHtmlPreview?: string;
-  onCloseHtmlPreview: () => void;
+  contentType: ContentType;
+  showContentPreview?: string;
+  onCloseContentPreview: () => void;
 }
 
-const HtmlPreview: FC<Props> = ({ showHtmlPreview, onCloseHtmlPreview }) => {
+const ContentPreview: FC<Props> = ({
+  contentType,
+  showContentPreview,
+  onCloseContentPreview,
+}) => {
+  // TODO: Add functionality for markdown Preview
   return (
     <Dialog
-      open={showHtmlPreview !== null}
+      open={showContentPreview !== null}
       TransitionComponent={Transition}
       keepMounted
-      onClose={onCloseHtmlPreview}
+      onClose={onCloseContentPreview}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
-      <iframe
-        style={{ height: 812, width: 375, border: 'none' }}
-        title="preview.html"
-        srcDoc={showHtmlPreview}
-      />
+      {contentType === CONTENT_TYPE_HTML && (
+        <iframe
+          style={{ height: 812, width: 375, border: 'none' }}
+          title="preview.html"
+          srcDoc={showContentPreview}
+        />
+      )}
     </Dialog>
   );
 };
 
-export default HtmlPreview;
+export default ContentPreview;

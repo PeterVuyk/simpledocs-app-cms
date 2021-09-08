@@ -23,7 +23,7 @@ const HtmlTemplateMenu: FC<Props> = ({
     );
 
     if (template) {
-      onUpdateFile(template.file);
+      onUpdateFile(template.content);
     }
   };
 

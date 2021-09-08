@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
-import DownloadFileAction from '../../ItemAction/DownloadFileAction';
-import ViewHTMLFileAction from '../../ItemAction/ViewHTMLFileAction';
 
 interface Props {
   name: string;
@@ -11,7 +9,6 @@ interface Props {
   showError: boolean;
   allowedMimeTypes: string[];
   dropzoneText: string;
-  enableHtmlPreview: boolean;
   initialFile: string | null;
   [x: string]: any;
 }
@@ -22,7 +19,6 @@ const FileDropzoneArea: FC<Props> = ({
   showError,
   allowedMimeTypes,
   dropzoneText,
-  enableHtmlPreview,
   initialFile,
 }) => {
   const [field, meta] = useField(name);
@@ -88,18 +84,6 @@ const FileDropzoneArea: FC<Props> = ({
         getFileLimitExceedMessage={fileLimitExceedMessage}
         onChange={handleUploadChange}
       />
-      {enableHtmlPreview && formik.current?.values[name] !== '' && (
-        <div style={{ position: 'absolute', bottom: 0, right: 5 }}>
-          <ViewHTMLFileAction
-            htmlFile={formik.current?.values[name]}
-            iconStyle={{ fontSize: '4em' }}
-          />
-          <DownloadFileAction
-            htmlFile={formik.current?.values[name]}
-            fileName="regulation.html"
-          />
-        </div>
-      )}
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>
   );

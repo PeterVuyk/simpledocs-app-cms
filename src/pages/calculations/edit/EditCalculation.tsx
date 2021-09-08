@@ -213,7 +213,6 @@ const EditCalculation: FC<Props> = ({
                   </Grid>
                   <Grid item xs={12}>
                     <FileDropZoneArea
-                      enableHtmlPreview={false}
                       name="iconFile"
                       formik={formikRef}
                       showError={showError}
@@ -224,7 +223,6 @@ const EditCalculation: FC<Props> = ({
                   </Grid>
                   <Grid item xs={12}>
                     <FileDropZoneArea
-                      enableHtmlPreview={false}
                       name="calculationImage"
                       formik={formikRef}
                       showError={showError}

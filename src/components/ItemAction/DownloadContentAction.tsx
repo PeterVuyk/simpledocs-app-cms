@@ -3,34 +3,41 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import { Tooltip } from '@material-ui/core';
 import base64Helper from '../../helper/base64Helper';
-import stylesheetHelper from '../../helper/stylesheetHelper';
 import htmlFileHelper from '../../helper/htmlFileHelper';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 
 interface Props {
-  htmlFile: string;
+  content: string;
+  contentType: ContentType;
   fileName: string;
-  extension?: string;
 }
 
-const DownloadFileAction: FC<Props> = ({ htmlFile, fileName, extension }) => {
+const DownloadContentAction: FC<Props> = ({
+  content,
+  contentType,
+  fileName,
+}) => {
   const handleDownloadClick = () => {
-    FileSaver.saveAs(
-      base64Helper.getBase64FromFile(
-        pretty(
-          htmlFileHelper.stripBottomSpacing(
-            stylesheetHelper.removeInnerHeaderCss(htmlFile)
-          )
+    // TODO: Add download functionality for markdown
+    if (contentType !== CONTENT_TYPE_MARKDOWN) {
+      FileSaver.saveAs(
+        base64Helper.getBase64FromFile(
+          pretty(htmlFileHelper.stripBottomSpacing(content)),
+          CONTENT_TYPE_HTML
         ),
-        'html'
-      ),
-      `${fileName}.${extension ?? 'html'}`
-    );
+        `${fileName}.${contentType}`
+      );
+    }
   };
 
   return (
-    <Tooltip title={`Download ${extension ?? 'html'}`}>
+    <Tooltip title={`Download ${contentType}`}>
       <GetAppIcon
         color="action"
         style={{ cursor: 'pointer' }}
@@ -40,4 +47,4 @@ const DownloadFileAction: FC<Props> = ({ htmlFile, fileName, extension }) => {
   );
 };
 
-export default DownloadFileAction;
+export default DownloadContentAction;

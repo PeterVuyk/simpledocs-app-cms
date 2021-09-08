@@ -4,7 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
-import DownloadDecisionTreeHtmlFiles from './DownloadDecisionTreeHtmlFiles';
+import DownloadDecisionTreeFiles from './DownloadDecisionTreeFiles';
 import { EditStatus } from '../../../../model/EditStatus';
 
 interface Props {
@@ -78,7 +78,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
           {step.title}.svg
         </MenuItem>
       ))}
-      <DownloadDecisionTreeHtmlFiles
+      <DownloadDecisionTreeFiles
         editStatus={editStatus}
         decisionTreeSteps={decisionTreeSteps}
       />

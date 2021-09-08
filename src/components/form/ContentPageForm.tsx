@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   onSubmit: (values: FormikValues) => void;
   artifact: Artifact;
-  isNewHtmlFile: boolean;
+  isNewFile: boolean;
 }
 
-const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
+const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
@@ -40,12 +40,13 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
     if (artifact !== undefined) {
       return {
         title: artifact.title,
-        htmlFile: artifact.file,
+        content: artifact.content,
       };
     }
     return {
       title: '',
-      htmlFile: '',
+      content: '',
+      contentType: 'html',
     };
   };
 
@@ -99,7 +100,7 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
                     meta={props.meta}
                     showError={showError}
                     formik={formikRef}
-                    initialFile={artifact?.file ?? null}
+                    initialFile={artifact?.content ?? null}
                   />
                 )}
               </FastField>
@@ -110,7 +111,7 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
               setShowError={setShowError}
               disabled={isSubmitting || !dirty}
             >
-              {isNewHtmlFile ? 'Toevoegen' : 'Wijzigen'}
+              {isNewFile ? 'Toevoegen' : 'Wijzigen'}
             </SubmitButton>
           </div>
         </Form>
@@ -119,4 +120,4 @@ const HtmlPageForm: FC<Props> = ({ onSubmit, artifact, isNewHtmlFile }) => {
   );
 };
 
-export default HtmlPageForm;
+export default ContentPageForm;

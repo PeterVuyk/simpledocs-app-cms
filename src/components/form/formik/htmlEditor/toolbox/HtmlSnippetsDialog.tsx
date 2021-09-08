@@ -69,7 +69,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
     >
       <DialogTitle id="alert-dialog-slide-title">
         <div className={classes.relativeContainer}>
-          <CopyToClipboardAction textToCopy={openSnippetsDialog.file} />
+          <CopyToClipboardAction textToCopy={openSnippetsDialog.content} />
         </div>
         Snippet {openSnippetsDialog.title}
       </DialogTitle>
@@ -86,7 +86,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
               </DialogContentText>
               <div className="highLightContainer">
                 <Highlight className="html">
-                  {openSnippetsDialog.file}
+                  {openSnippetsDialog.content}
                 </Highlight>
               </div>
             </Grid>
@@ -102,7 +102,7 @@ const HtmlSnippetsDialog: FC<Props> = ({
                 <iframe
                   className={classes.iframe}
                   title="snippet.html"
-                  srcDoc={openSnippetsDialog.file}
+                  srcDoc={openSnippetsDialog.content}
                 />
               </Paper>
             </Grid>

@@ -82,7 +82,7 @@ async function publishDecisionTree(
     });
   }
 
-  // 4: Replace contentId reference with htmlFile
+  // 4: Replace contentId reference with content
   const querySnapshotWithContentIdReference = await database
     .collection(versioning.aggregate)
     .where('isDraft', '==', true)
@@ -98,8 +98,8 @@ async function publishDecisionTree(
       .getArtifactById(decisionTreeStep.contentId)
       .then((value) => {
         batch.update(documentSnapshot.ref, {
-          content: value.file,
-          contentType: value.extension,
+          content: value.content,
+          contentType: value.contentType,
         });
       });
   });
