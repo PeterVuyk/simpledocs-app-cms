@@ -12,10 +12,11 @@ import Navigation from '../../navigation/Navigation';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import htmlFileHelper from '../../helper/htmlFileHelper';
+import htmlContentHelper from '../../helper/htmlContentHelper';
 import NotFound from '../NotFound';
 import navigationConfig from '../../navigation/navigationConfig.json';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -41,7 +42,10 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
       .then((result) => setArticle(result));
   }, [aggregatePath, bookType, articleId]);
 
-  const handleSubmit = async (values: FormikValues): Promise<void> => {
+  const handleSubmit = async (
+    values: FormikValues,
+    contentType: ContentType
+  ): Promise<void> => {
     await articleRepository
       .updateArticle(bookType, article?.chapter ?? '', {
         id: article?.id,
@@ -51,10 +55,13 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
-          values.htmlFile
-        ),
-        contentType: 'html',
+        content:
+          contentType === CONTENT_TYPE_HTML
+            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                values.htmlContent
+              )
+            : values.markdownContent,
+        contentType,
         iconFile: values.iconFile,
         isDraft: true,
       })

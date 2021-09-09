@@ -17,22 +17,43 @@ function makeCssStylesheetPretty(stylesheet: string) {
   return result[0];
 }
 
-function removeLinkStylesheet(htmlFile: string): string {
-  const htmlOne = htmlFile.split('<link rel="stylesheet"');
+function removeStylesheet(htmlContent: string): string {
+  if (
+    !htmlContent.includes('!–– BEGIN ingeladen styling') ||
+    !htmlContent.includes('!–– EINDE ingeladen css stylesheet')
+  ) {
+    return htmlContent;
+  }
+  const htmlOne = htmlContent.split('!–– BEGIN ingeladen styling');
   if (htmlOne.length !== 2) {
-    return htmlFile;
+    return htmlContent;
+  }
+  const htmlTwo = htmlOne[1].split('!–– EINDE ingeladen css stylesheet');
+  if (htmlTwo.length !== 2) {
+    return htmlContent;
+  }
+  return (
+    htmlOne[0].trim().slice(0, -1) + htmlTwo[1].split('>').slice(1).join('>')
+  );
+}
+
+function removeLinkStylesheet(htmlContent: string): string {
+  const htmlOne = htmlContent.split('<link rel="stylesheet"');
+  if (htmlOne.length !== 2) {
+    return htmlContent;
   }
   return htmlOne[0] + htmlOne[1].split('>').slice(1).join('>');
 }
 
-function addStylesheet(
-  htmlFile: string,
+function updateStylesheetForHtmlContent(
+  htmlContent: string,
   stylesheet: Artifact | undefined
 ): string {
-  const html = removeLinkStylesheet(htmlFile);
-  if (!stylesheet || htmlFile.includes('!–– BEGIN ingeladen styling')) {
+  let html = removeLinkStylesheet(htmlContent);
+  if (!stylesheet) {
     return html;
   }
+  html = removeStylesheet(html);
   const styling =
     stylesheetTopDivider + stylesheet.content + stylesheetBottomDivider;
   if (
@@ -67,7 +88,7 @@ function addStylesheet(
 }
 
 const stylesheetHelper = {
-  addStylesheet,
+  updateStylesheetForHtmlContent,
   makeCssStylesheetPretty,
 };
 

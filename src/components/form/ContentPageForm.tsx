@@ -52,17 +52,17 @@ const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
 
   const formValidation = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    htmlFile: Yup.string()
+    htmlContent: Yup.string()
       .required('Het toevoegen van een html bestand is verplicht.')
       .test(
-        'htmlFile',
+        'htmlContent',
         'De inhoud moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlFile) => {
+        async (htmlContent) => {
           return (
             artifact.type === ARTIFACT_TYPE_SNIPPET ||
-            (htmlFile !== undefined &&
-              htmlFile.includes('<article>') &&
-              htmlFile.includes('</article>'))
+            (htmlContent !== undefined &&
+              htmlContent.includes('<article>') &&
+              htmlContent.includes('</article>'))
           );
         }
       ),
@@ -94,7 +94,7 @@ const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <FastField name="htmlFile">
+              <FastField name="htmlContent">
                 {(props: FastFieldProps) => (
                   <HtmlEditor
                     meta={props.meta}

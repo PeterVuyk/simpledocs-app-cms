@@ -1,26 +1,34 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers, FastField } from 'formik';
-// eslint-disable-next-line import/no-unresolved
-import { FastFieldProps } from 'formik/dist/FastField';
+import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import articleRepository from '../../firebase/database/articleRepository';
-import HtmlEditor from '../../components/form/formik/htmlEditor/HtmlEditor';
 import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
+import ContentEditor from '../../components/content/ContentEditor';
+import ContentTypeToggle from '../../components/content/ContentTypeToggle';
+import useContentTypeToggle from '../../components/content/useContentTypeToggle';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/Artifact';
 
 interface Props {
-  onSubmit: (values: FormikValues) => void;
+  onSubmit: (values: FormikValues, contentType: ContentType) => void;
   article?: Article;
   bookType: BookType;
 }
 
 const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
+  const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
+    article?.contentType
+  );
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
 
@@ -29,7 +37,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
     formik: FormikHelpers<any>
   ) => {
     formik.setSubmitting(false);
-    onSubmit(values);
+    onSubmit(values, contentTypeToggle);
   };
 
   const initialFormState = () => {
@@ -42,7 +50,8 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       subTitle: '',
       pageIndex: '',
       level: '',
-      htmlFile: '',
+      markdownContent: '',
+      htmlContent: '',
       iconFile: '',
       searchText: '',
     };
@@ -111,16 +120,35 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
     searchText: Yup.string().required('Zoektekst is een verplicht veld'),
-    content: Yup.string()
-      .required('Het toevoegen van een html bestand is verplicht.')
+    markdownContent: Yup.string().test(
+      'markdownContent',
+      'Het toevoegen van een markdown bestand is verplicht.',
+      async (markdownContent) => {
+        return (
+          contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
+          markdownContent !== undefined
+        );
+      }
+    ),
+    htmlContent: Yup.string()
       .test(
-        'htmlFile',
-        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlFile) => {
+        'htmlContent',
+        'Het toevoegen van een html bestand is verplicht.',
+        async (htmlContent) => {
           return (
-            htmlFile !== undefined &&
-            (htmlFile as string).includes('<article>') &&
-            (htmlFile as string).includes('</article>')
+            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== undefined
+          );
+        }
+      )
+      .test(
+        'htmlContent',
+        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
+        async (htmlContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_HTML ||
+            (htmlContent !== undefined &&
+              (htmlContent as string).includes('<article>') &&
+              (htmlContent as string).includes('</article>'))
           );
         }
       ),
@@ -219,16 +247,16 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
             </Grid>
             <Grid container item sm={6} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
-                <FastField name="htmlFile">
-                  {(props: FastFieldProps) => (
-                    <HtmlEditor
-                      meta={props.meta}
-                      showError={showError}
-                      formik={formikRef}
-                      initialFile={article?.content ?? null}
-                    />
-                  )}
-                </FastField>
+                <ContentTypeToggle
+                  contentType={contentTypeToggle}
+                  setContentTypeToggle={setContentTypeToggle}
+                />
+                <ContentEditor
+                  contentTypeToggle={contentTypeToggle}
+                  showError={showError}
+                  formik={formikRef}
+                  initialFile={article?.content ?? null}
+                />
               </Grid>
             </Grid>
           </Grid>

@@ -7,7 +7,7 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import PageHeading from '../../layout/PageHeading';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
-import htmlFileHelper from '../../helper/htmlFileHelper';
+import htmlContentHelper from '../../helper/htmlContentHelper';
 import ContentPageForm from '../form/ContentPageForm';
 import Navigation from '../../navigation/Navigation';
 import NotFound from '../../pages/NotFound';
@@ -58,15 +58,14 @@ const ArtifactEditor: FC<Props> = ({
   const addOrEditText = isNewFile ? 'toegevoegd' : 'gewijzigd';
 
   const handleSubmit = async (values: FormikValues): Promise<void> => {
-    console.log('called!');
     await artifactsRepository
       .updateArtifact({
         id: artifact?.id,
         type: artifactType,
         contentType: 'html',
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
-        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
-          values.htmlFile
+        content: htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+          values.htmlContent
         ),
       })
       .then(() =>

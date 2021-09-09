@@ -5,7 +5,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
 import FileDropzoneArea from '../../FileDropzoneArea';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
-import htmlFileHelper from '../../../../helper/htmlFileHelper';
+import htmlContentHelper from '../../../../helper/htmlContentHelper';
 import LoadingSpinner from '../../../LoadingSpinner';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
@@ -76,8 +76,10 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     if (content === file) {
       return;
     }
-    formik.current?.setFieldValue('htmlFile', file);
-    setContent(pretty(stylesheetHelper.addStylesheet(file, stylesheet)));
+    formik.current?.setFieldValue('htmlContent', file);
+    setContent(
+      pretty(stylesheetHelper.updateStylesheetForHtmlContent(file, stylesheet))
+    );
     showSaveButton();
   };
 
@@ -86,13 +88,17 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       const html = file
         ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_HTML)
         : '';
-      formik.current?.setFieldValue('htmlFile', html);
-      setContent(pretty(stylesheetHelper.addStylesheet(html, stylesheet)));
+      formik.current?.setFieldValue('htmlContent', html);
+      setContent(
+        pretty(
+          stylesheetHelper.updateStylesheetForHtmlContent(html, stylesheet)
+        )
+      );
     },
     [formik, stylesheet]
   );
 
-  const getBase64HtmlFile = (): string | null => {
+  const getBase64HtmlContent = (): string | null => {
     if (content === null || content === '') {
       return null;
     }
@@ -100,29 +106,35 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   useEffect(() => {
-    async function setInitialHtmlFile() {
+    async function setInitialHtmlContent() {
       if (stylesheet === undefined) {
         return;
       }
       let html = initialFile;
       if (html) {
-        html = htmlFileHelper.stripMetaTags(html);
-        html = htmlFileHelper.stripBottomSpacing(html);
-        html = stylesheetHelper.addStylesheet(html, stylesheet);
+        html = htmlContentHelper.stripMetaTags(html);
+        html = htmlContentHelper.stripBottomSpacing(html);
+        html = stylesheetHelper.updateStylesheetForHtmlContent(
+          html,
+          stylesheet
+        );
       } else {
         // Use the 'default' template.
         html = await artifactsRepository
           .getArtifactByTitle('Standaard', ARTIFACT_TYPE_TEMPLATE)
           .then((value) =>
             value
-              ? stylesheetHelper.addStylesheet(value.content, stylesheet)
+              ? stylesheetHelper.updateStylesheetForHtmlContent(
+                  value.content,
+                  stylesheet
+                )
               : ''
           );
       }
-      formik.current?.setFieldValue('htmlFile', html);
+      formik.current?.setFieldValue('htmlContent', html);
       setContent(html);
     }
-    setInitialHtmlFile();
+    setInitialHtmlContent();
   }, [formik, initialFile, stylesheet]);
 
   const config = {
@@ -159,7 +171,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       <FileDropzoneArea
         allowedExtension=".html"
         allowedMimeTypes={['text/html']}
-        initialFile={getBase64HtmlFile()}
+        initialFile={getBase64HtmlContent()}
         onUpdateFile={handleUpdateFileFromBase64}
       />
     </div>

@@ -13,7 +13,7 @@ interface Props {
 const SearchTextField: FC<Props> = ({ showError }) => {
   const formikProps = useFormikContext();
   const [searchTextField] = useField('searchText');
-  const [htmlFileField] = useField('htmlFile');
+  const [htmlContentField] = useField('htmlContent');
 
   const stripLastLines = (text: string) => {
     const lines = text.split('\n').reverse();
@@ -49,8 +49,8 @@ const SearchTextField: FC<Props> = ({ showError }) => {
     formikProps.setFieldValue('searchText', text);
   };
 
-  const importHtmlFileValue = () => {
-    let html = htmlFileField.value as string;
+  const importHtmlContentValue = () => {
+    let html = htmlContentField.value as string;
     if (html === '') {
       formikProps.setFieldValue('searchText', '');
       return;
@@ -75,7 +75,7 @@ const SearchTextField: FC<Props> = ({ showError }) => {
             marginBottom: 5,
           }}
           variant="contained"
-          onClick={importHtmlFileValue}
+          onClick={importHtmlContentValue}
         >
           <CodeIcon color="inherit" />
         </Button>

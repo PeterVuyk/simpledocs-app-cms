@@ -20,7 +20,7 @@ import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
 import HtmlEditor from '../../../components/form/formik/htmlEditor/HtmlEditor';
-import htmlFileHelper from '../../../helper/htmlFileHelper';
+import htmlContentHelper from '../../../helper/htmlContentHelper';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
@@ -82,13 +82,13 @@ const EditCalculation: FC<Props> = ({
     content: Yup.string()
       .required('Het toevoegen van een html bestand is verplicht.')
       .test(
-        'htmlFile',
+        'htmlContent',
         'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlFile) => {
+        async (htmlContent) => {
           return (
-            htmlFile !== undefined &&
-            htmlFile.includes('<article>') &&
-            htmlFile.includes('</article>')
+            htmlContent !== undefined &&
+            htmlContent.includes('<article>') &&
+            htmlContent.includes('</article>')
           );
         }
       ),
@@ -112,8 +112,8 @@ const EditCalculation: FC<Props> = ({
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
         contentType: 'html',
-        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
-          values.htmlFile
+        content: htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+          values.htmlContent
         ),
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
@@ -238,7 +238,7 @@ const EditCalculation: FC<Props> = ({
                     xs={12}
                     style={{ marginLeft: 18, marginRight: -18 }}
                   >
-                    <FastField name="htmlFile">
+                    <FastField name="htmlContent">
                       {(props: FastFieldProps) => (
                         <HtmlEditor
                           meta={props.meta}

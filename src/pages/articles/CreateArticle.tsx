@@ -11,8 +11,9 @@ import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import { BookType } from '../../model/BookType';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import htmlFileHelper from '../../helper/htmlFileHelper';
+import htmlContentHelper from '../../helper/htmlContentHelper';
 import navigationConfig from '../../navigation/navigationConfig.json';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -30,7 +31,10 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
     ] as BookType;
   };
 
-  const handleSubmit = (values: FormikValues): void => {
+  const handleSubmit = (
+    values: FormikValues,
+    contentType: ContentType
+  ): void => {
     articleRepository
       .createArticle(getBookType(), {
         pageIndex: values.pageIndex,
@@ -39,10 +43,13 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,
-        content: htmlFileHelper.addHTMLTagsAndBottomSpacingToHTMLFile(
-          values.htmlFile
-        ),
-        contentType: 'html',
+        content:
+          contentType === CONTENT_TYPE_HTML
+            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                values.htmlContent
+              )
+            : values.markdownContent,
+        contentType,
         iconFile: values.iconFile,
         isDraft: true,
       })
