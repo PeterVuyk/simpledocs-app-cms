@@ -5,15 +5,18 @@ import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import CodeIcon from '@material-ui/icons/Code';
 import { Tooltip } from '@material-ui/core';
 import TextField from './TextField';
+import { CONTENT_TYPE_MARKDOWN, ContentType } from '../../../model/Artifact';
 
 interface Props {
+  contentTypeToggle: ContentType;
   showError: boolean;
 }
 
-const SearchTextField: FC<Props> = ({ showError }) => {
+const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
   const formikProps = useFormikContext();
   const [searchTextField] = useField('searchText');
   const [htmlContentField] = useField('htmlContent');
+  const [markdownContentField] = useField('markdownContent');
 
   const stripLastLines = (text: string) => {
     const lines = text.split('\n').reverse();
@@ -49,6 +52,25 @@ const SearchTextField: FC<Props> = ({ showError }) => {
     formikProps.setFieldValue('searchText', text);
   };
 
+  const importMarkdownContentValue = () => {
+    const markdown = markdownContentField.value as string;
+    if (markdown === '') {
+      formikProps.setFieldValue('searchText', '');
+    }
+    const markdownText = markdown
+      .replace(/^### (.*$)/gim, '$1')
+      .replace(/^## (.*$)/gim, '$1')
+      .replace(/^# (.*$)/gim, '$1')
+      .replace(/^\> (.*$)/gim, '$1')
+      .replace(/\*\*(.*)\*\*/gim, '$1')
+      .replace(/\*(.*)\*/gim, '$1')
+      .replace(/!\[(.*?)\]\((.*?)\)/gim, '')
+      .replace(/\[(.*?)\]\((.*?)\)/gim, '$1')
+      .replace(/\n$/gim, '')
+      .trim();
+    return removeIndentation(markdownText);
+  };
+
   const importHtmlContentValue = () => {
     let html = htmlContentField.value as string;
     if (html === '') {
@@ -64,9 +86,10 @@ const SearchTextField: FC<Props> = ({ showError }) => {
     removeIndentation(text);
   };
 
+  // TODO: Ook werkend maken voor markdown
   return (
     <>
-      <Tooltip title="Html in zoektekst plaatsen">
+      <Tooltip title="Tekst in zoektekst plaatsen">
         <Button
           disableElevation
           style={{
@@ -75,7 +98,11 @@ const SearchTextField: FC<Props> = ({ showError }) => {
             marginBottom: 5,
           }}
           variant="contained"
-          onClick={importHtmlContentValue}
+          onClick={
+            contentTypeToggle === CONTENT_TYPE_MARKDOWN
+              ? importMarkdownContentValue
+              : importHtmlContentValue
+          }
         >
           <CodeIcon color="inherit" />
         </Button>

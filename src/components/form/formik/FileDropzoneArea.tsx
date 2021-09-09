@@ -72,6 +72,7 @@ const FileDropzoneArea: FC<Props> = ({
 
   return (
     <div style={{ position: 'relative' }}>
+      <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
       <DropzoneArea
         {...configDropzoneArea}
         dropzoneText={dropzoneText}
@@ -84,7 +85,6 @@ const FileDropzoneArea: FC<Props> = ({
         getFileLimitExceedMessage={fileLimitExceedMessage}
         onChange={handleUploadChange}
       />
-      <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
     </div>
   );
 };

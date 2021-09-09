@@ -120,23 +120,26 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
     searchText: Yup.string().required('Zoektekst is een verplicht veld'),
-    markdownContent: Yup.string().test(
-      'markdownContent',
-      'Het toevoegen van een markdown bestand is verplicht.',
-      async (markdownContent) => {
-        return (
-          contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
-          markdownContent !== undefined
-        );
-      }
-    ),
+    markdownContent: Yup.string()
+      .nullable()
+      .test(
+        'markdownContent',
+        'Het toevoegen van een markdown bestand is verplicht.',
+        async (markdownContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
+            markdownContent !== null
+          );
+        }
+      ),
     htmlContent: Yup.string()
+      .nullable()
       .test(
         'htmlContent',
         'Het toevoegen van een html bestand is verplicht.',
         async (htmlContent) => {
           return (
-            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== undefined
+            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
           );
         }
       )
@@ -232,7 +235,10 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <SearchTextField showError={showError} />
+                <SearchTextField
+                  showError={showError}
+                  contentTypeToggle={contentTypeToggle}
+                />
               </Grid>
               <Grid item xs={12}>
                 <FileDropZoneArea
@@ -255,6 +261,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                   contentTypeToggle={contentTypeToggle}
                   showError={showError}
                   formik={formikRef}
+                  initialFileType={article?.contentType}
                   initialFile={article?.content ?? null}
                 />
               </Grid>

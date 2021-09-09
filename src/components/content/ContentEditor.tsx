@@ -10,10 +10,18 @@ import {
   ContentType,
 } from '../../model/Artifact';
 import HtmlEditor from '../form/formik/htmlEditor/HtmlEditor';
+import MarkdownEditor from '../form/formik/markdownEditor/MarkdownEditor';
 
 const useStyles = makeStyles({
   hiddenContainer: {
     opacity: 0,
+    position: 'absolute',
+    zIndex: 12,
+    top: 0,
+    left: -1000000,
+  },
+  relativeContainer: {
+    position: 'relative',
   },
 });
 
@@ -22,12 +30,14 @@ interface Props {
   showError: boolean;
   formik: any;
   initialFile: string | null;
+  initialFileType: ContentType | undefined;
 }
 
 const ContentEditor: FC<Props> = ({
   showError,
   formik,
   initialFile,
+  initialFileType,
   contentTypeToggle,
 }) => {
   const classes = useStyles();
@@ -46,7 +56,11 @@ const ContentEditor: FC<Props> = ({
               meta={props.meta}
               showError={showError}
               formik={formik}
-              initialFile={initialFile ?? null}
+              initialFile={
+                initialFileType === CONTENT_TYPE_HTML && initialFile
+                  ? initialFile
+                  : null
+              }
             />
           )}
         </FastField>
@@ -56,7 +70,20 @@ const ContentEditor: FC<Props> = ({
           contentTypeToggle === CONTENT_TYPE_HTML ? classes.hiddenContainer : {}
         )}
       >
-        <p>Add Markdown functionality</p>
+        <FastField name="markdownContent">
+          {(props: FastFieldProps) => (
+            <MarkdownEditor
+              meta={props.meta}
+              showError={showError}
+              formik={formik}
+              initialFile={
+                initialFileType === CONTENT_TYPE_MARKDOWN && initialFile
+                  ? initialFile
+                  : null
+              }
+            />
+          )}
+        </FastField>
       </div>
     </>
   );
