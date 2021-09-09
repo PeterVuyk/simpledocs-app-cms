@@ -3,7 +3,14 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
+import Markdown from 'markdown-to-jsx';
+import DialogContent from '@material-ui/core/DialogContent';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/Artifact';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -12,6 +19,13 @@ const Transition = forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const useStyles = makeStyles(() => ({
+  previewContainer: {
+    height: 812,
+    width: 375,
+  },
+}));
 
 interface Props {
   contentType: ContentType;
@@ -24,7 +38,8 @@ const ContentPreview: FC<Props> = ({
   showContentPreview,
   onCloseContentPreview,
 }) => {
-  // TODO: Add functionality for markdown Preview
+  const classes = useStyles();
+
   return (
     <Dialog
       open={showContentPreview !== null}
@@ -34,9 +49,15 @@ const ContentPreview: FC<Props> = ({
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
+      {contentType === CONTENT_TYPE_MARKDOWN && (
+        <div className={classes.previewContainer}>
+          <Markdown>{showContentPreview!}</Markdown>
+        </div>
+      )}
       {contentType === CONTENT_TYPE_HTML && (
         <iframe
-          style={{ height: 812, width: 375, border: 'none' }}
+          className={classes.previewContainer}
+          style={{ border: 'none' }}
           title="preview.html"
           srcDoc={showContentPreview}
         />

@@ -8,6 +8,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
+  getExtensionFromContentType,
 } from '../../model/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
@@ -24,16 +25,21 @@ const DownloadContentAction: FC<Props> = ({
   fileName,
 }) => {
   const handleDownloadClick = () => {
-    // TODO: Add download functionality for markdown
-    if (contentType !== CONTENT_TYPE_MARKDOWN) {
+    if (contentType === CONTENT_TYPE_MARKDOWN) {
       FileSaver.saveAs(
-        base64Helper.getBase64FromFile(
-          pretty(htmlContentHelper.stripBottomSpacing(content)),
-          CONTENT_TYPE_HTML
-        ),
-        `${fileName}.${contentType}`
+        base64Helper.getBase64FromFile(content, CONTENT_TYPE_MARKDOWN),
+        `${fileName}.${getExtensionFromContentType(contentType)}`
       );
+      return;
     }
+
+    FileSaver.saveAs(
+      base64Helper.getBase64FromFile(
+        pretty(htmlContentHelper.stripBottomSpacing(content)),
+        CONTENT_TYPE_HTML
+      ),
+      `${fileName}.${getExtensionFromContentType(contentType)}`
+    );
   };
 
   return (

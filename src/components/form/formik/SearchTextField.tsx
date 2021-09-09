@@ -86,7 +86,6 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
     removeIndentation(text);
   };
 
-  // TODO: Ook werkend maken voor markdown
   return (
     <>
       <Tooltip title="Tekst in zoektekst plaatsen">

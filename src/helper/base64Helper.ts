@@ -21,7 +21,6 @@ function getBodyFromBase64(
         'base64'
       ).toString('utf-8');
     case CONTENT_TYPE_MARKDOWN:
-      // TODO: Check later if this is the correct base64
       return Buffer.from(
         base64Blob.split('data:text/markdown;base64,')[1],
         'base64'
@@ -40,7 +39,6 @@ function getBase64FromFile(file: string, contentType: ContentType): string {
     case CONTENT_TYPE_CSS:
       return `data:text/css;base64,${btoa(unescape(encodeURIComponent(file)))}`;
     case CONTENT_TYPE_MARKDOWN:
-      // TODO: Check later if this is the correct base64
       return `data:text/markdown;base64,${btoa(
         unescape(encodeURIComponent(file))
       )}`;
