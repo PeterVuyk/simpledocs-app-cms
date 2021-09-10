@@ -11,9 +11,9 @@ import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import { BookType } from '../../model/BookType';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import htmlContentHelper from '../../helper/htmlContentHelper';
 import navigationConfig from '../../navigation/navigationConfig.json';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
+import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -22,6 +22,7 @@ interface Props {
 const CreateArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
+  const { modifyHtmlForStorage } = useHtmlModifier();
 
   const getBookType = (): BookType => {
     return Object.keys(navigationConfig.books.bookItems)[
@@ -45,9 +46,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         searchText: values.searchText,
         content:
           contentType === CONTENT_TYPE_HTML
-            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                values.htmlContent
-              )
+            ? modifyHtmlForStorage(values.htmlContent)
             : values.markdownContent,
         contentType,
         iconFile: values.iconFile,

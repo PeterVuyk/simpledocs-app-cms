@@ -153,9 +153,7 @@ const StylesheetDialog: FC<Props> = ({
                 CSS:
               </DialogContentText>
               <div className="highLightContainer">
-                {cssInput && (
-                  <Highlight className="css">{pretty(cssInput)}</Highlight>
-                )}
+                {cssInput && <Highlight className="css">{cssInput}</Highlight>}
               </div>
             </Grid>
             <Grid item sm={4}>

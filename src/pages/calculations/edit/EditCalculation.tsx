@@ -29,6 +29,9 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
 } from '../../../model/Artifact';
+import validateYupMarkdownContent from '../../../components/form/formik/validators/validateYupMarkdownContent';
+import validateYupHtmlContent from '../../../components/form/formik/validators/validateYupHtmlContent';
+import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -55,8 +58,10 @@ const EditCalculation: FC<Props> = ({
   const formikRef = useRef<any>();
   const history = useHistory();
   const classes = useStyles();
+  // TODO: return object to improve
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editStatus, setEditStatus] = useStatusToggle();
+  const { modifyHtmlForStorage } = useHtmlModifier();
 
   useEffect(() => {
     calculationsRepository
@@ -76,7 +81,6 @@ const EditCalculation: FC<Props> = ({
       });
   }, [calculationType, history, setNotification]);
 
-  // TODO: Move yup validation to multiple validation files or something?
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
     articleButtonText: Yup.string().required(
@@ -87,41 +91,8 @@ const EditCalculation: FC<Props> = ({
       .required('Lijst index is een verplicht veld.')
       .positive(),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    markdownContent: Yup.string()
-      .nullable()
-      .test(
-        'markdownContent',
-        'Het toevoegen van een markdown bestand is verplicht.',
-        async (markdownContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
-            markdownContent !== null
-          );
-        }
-      ),
-    htmlContent: Yup.string()
-      .nullable()
-      .test(
-        'htmlContent',
-        'Het toevoegen van een html bestand is verplicht.',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
-          );
-        }
-      )
-      .test(
-        'htmlContent',
-        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML ||
-            (htmlContent !== undefined &&
-              (htmlContent as string).includes('<article>') &&
-              (htmlContent as string).includes('</article>'))
-          );
-        }
-      ),
+    markdownContent: validateYupMarkdownContent(contentTypeToggle),
+    htmlContent: validateYupHtmlContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
@@ -144,9 +115,7 @@ const EditCalculation: FC<Props> = ({
         contentType: 'html',
         content:
           contentTypeToggle === CONTENT_TYPE_HTML
-            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                values.htmlContent
-              )
+            ? modifyHtmlForStorage(values.htmlContent)
             : values.markdownContent,
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,

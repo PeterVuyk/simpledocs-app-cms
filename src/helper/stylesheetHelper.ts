@@ -3,9 +3,9 @@ import { Artifact } from '../model/Artifact';
 const pretty = require('pretty');
 
 const stylesheetTopDivider =
-  ' <!–– BEGIN ingeladen styling dat ingeladen wordt vanuit de css stylesheet dat alleen te bewerken is via de styleguide. Let op: Verwijder of bewerk deze en de comment hieronder niet. ––> ';
+  ' /* BEGIN ingeladen styling dat ingeladen wordt vanuit de css stylesheet dat alleen te bewerken is via de styleguide. Let op: Verwijder of bewerk deze en de comment hieronder niet. */';
 const stylesheetBottomDivider =
-  ' <!–– EINDE ingeladen css stylesheet. Voeg pagina specifieke styling onder deze comment toe ––> ';
+  ' /* EINDE ingeladen css stylesheet. Voeg pagina specifieke styling onder deze comment toe */';
 
 function makeCssStylesheetPretty(stylesheet: string) {
   let html = pretty(`<html><head><style>${stylesheet}</style></head></html>`);
@@ -19,22 +19,20 @@ function makeCssStylesheetPretty(stylesheet: string) {
 
 function removeStylesheet(htmlContent: string): string {
   if (
-    !htmlContent.includes('!–– BEGIN ingeladen styling') ||
-    !htmlContent.includes('!–– EINDE ingeladen css stylesheet')
+    !htmlContent.includes('/* BEGIN ingeladen styling') ||
+    !htmlContent.includes('/* EINDE ingeladen css stylesheet')
   ) {
     return htmlContent;
   }
-  const htmlOne = htmlContent.split('!–– BEGIN ingeladen styling');
+  const htmlOne = htmlContent.split('/* BEGIN ingeladen styling');
   if (htmlOne.length !== 2) {
     return htmlContent;
   }
-  const htmlTwo = htmlOne[1].split('!–– EINDE ingeladen css stylesheet');
+  const htmlTwo = htmlOne[1].split('/* EINDE ingeladen css stylesheet');
   if (htmlTwo.length !== 2) {
     return htmlContent;
   }
-  return (
-    htmlOne[0].trim().slice(0, -1) + htmlTwo[1].split('>').slice(1).join('>')
-  );
+  return htmlOne[0].trim() + htmlTwo[1].split('*/').slice(1).join('');
 }
 
 function removeLinkStylesheet(htmlContent: string): string {
@@ -49,11 +47,10 @@ function updateStylesheetForHtmlContent(
   htmlContent: string,
   stylesheet: Artifact | undefined
 ): string {
-  let html = removeLinkStylesheet(htmlContent);
+  const html = htmlContent;
   if (!stylesheet) {
     return html;
   }
-  html = removeStylesheet(html);
   const styling =
     stylesheetTopDivider + stylesheet.content + stylesheetBottomDivider;
   if (
@@ -90,6 +87,8 @@ function updateStylesheetForHtmlContent(
 const stylesheetHelper = {
   updateStylesheetForHtmlContent,
   makeCssStylesheetPretty,
+  removeLinkStylesheet,
+  removeStylesheet,
 };
 
 export default stylesheetHelper;

@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
-import SaveIcon from '@material-ui/icons/Save';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../model/Artifact';
 import base64Helper from '../../../../helper/base64Helper';

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
-import SaveIcon from '@material-ui/icons/Save';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { current } from '@reduxjs/toolkit';
 import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
 import FileDropzoneArea from '../../FileDropzoneArea';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
@@ -14,6 +14,7 @@ import useStylesheet from '../../../hooks/useStylesheet';
 import stylesheetHelper from '../../../../helper/stylesheetHelper';
 import { CONTENT_TYPE_HTML } from '../../../../model/Artifact';
 import SaveIndicator from '../SaveIndicator';
+import useHtmlModifier from '../../../hooks/useHtmlModifier';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
@@ -48,6 +49,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const [content, setContent] = useState<string | null>(null);
   const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
   const stylesheet = useStylesheet();
+  const { modifyHtmlAfterUpload } = useHtmlModifier();
   const classes = useStyles();
 
   const getErrorMessage = (): string => {
@@ -66,29 +68,23 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
 
   const handleUpdateFile = (file: string) => {
     if (content !== file) {
-      formik.current?.setFieldValue('htmlContent', file);
-      setContent(
-        pretty(
-          stylesheetHelper.updateStylesheetForHtmlContent(file, stylesheet)
-        )
-      );
+      const html = modifyHtmlAfterUpload(file);
+      formik.current?.setFieldValue('htmlContent', html);
+      setContent(html);
     }
     showSaveButton();
   };
 
   const handleUpdateFileFromBase64 = useCallback(
     (file: string | null) => {
-      const html = file
+      let html = file
         ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_HTML)
         : '';
+      html = modifyHtmlAfterUpload(html);
       formik.current?.setFieldValue('htmlContent', html);
-      setContent(
-        pretty(
-          stylesheetHelper.updateStylesheetForHtmlContent(html, stylesheet)
-        )
-      );
+      setContent(html);
     },
-    [formik, stylesheet]
+    [formik, modifyHtmlAfterUpload]
   );
 
   const getBase64HtmlContent = (): string | null => {
@@ -99,36 +95,29 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   useEffect(() => {
+    if (content !== null) {
+      return;
+    }
     async function setInitialHtmlContent() {
       if (stylesheet === undefined) {
         return;
       }
       let html = initialFile;
       if (html) {
-        html = htmlContentHelper.stripMetaTags(html);
-        html = htmlContentHelper.stripBottomSpacing(html);
-        html = stylesheetHelper.updateStylesheetForHtmlContent(
-          html,
-          stylesheet
-        );
+        html = modifyHtmlAfterUpload(html);
       } else {
         // Use the 'default' template.
         html = await artifactsRepository
           .getArtifactByTitle('Standaard', ARTIFACT_TYPE_TEMPLATE)
-          .then((value) =>
-            value
-              ? stylesheetHelper.updateStylesheetForHtmlContent(
-                  value.content,
-                  stylesheet
-                )
-              : ''
+          .then((artifact) =>
+            artifact?.content ? modifyHtmlAfterUpload(artifact.content) : ''
           );
       }
       formik.current?.setFieldValue('htmlContent', html);
       setContent(html);
     }
     setInitialHtmlContent();
-  }, [formik, initialFile, stylesheet]);
+  }, [content, formik, initialFile, modifyHtmlAfterUpload, stylesheet]);
 
   const config = {
     // all options check: https://xdsoft.net/jodit/doc/

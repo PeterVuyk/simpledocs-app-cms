@@ -18,6 +18,8 @@ import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/Artifact';
+import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
+import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => void;
@@ -120,41 +122,8 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       ),
     level: Yup.string().required('Soort markering is een verplicht veld.'),
     searchText: Yup.string().required('Zoektekst is een verplicht veld'),
-    markdownContent: Yup.string()
-      .nullable()
-      .test(
-        'markdownContent',
-        'Het toevoegen van een markdown bestand is verplicht.',
-        async (markdownContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
-            markdownContent !== null
-          );
-        }
-      ),
-    htmlContent: Yup.string()
-      .nullable()
-      .test(
-        'htmlContent',
-        'Het toevoegen van een html bestand is verplicht.',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
-          );
-        }
-      )
-      .test(
-        'htmlContent',
-        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML ||
-            (htmlContent !== undefined &&
-              (htmlContent as string).includes('<article>') &&
-              (htmlContent as string).includes('</article>'))
-          );
-        }
-      ),
+    markdownContent: validateYupMarkdownContent(contentTypeToggle),
+    htmlContent: validateYupHtmlContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),

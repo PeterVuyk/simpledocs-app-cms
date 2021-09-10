@@ -7,7 +7,6 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import PageHeading from '../../layout/PageHeading';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
-import htmlContentHelper from '../../helper/htmlContentHelper';
 import ContentPageForm from '../form/ContentPageForm';
 import Navigation from '../../navigation/Navigation';
 import NotFound from '../../pages/NotFound';
@@ -23,6 +22,7 @@ import {
 } from '../../model/ArtifactType';
 import { Artifact, CONTENT_TYPE_HTML } from '../../model/Artifact';
 import useContentTypeToggle from '../content/useContentTypeToggle';
+import useHtmlModifier from '../hooks/useHtmlModifier';
 
 interface Props {
   artifactId?: string;
@@ -41,6 +41,7 @@ const ArtifactEditor: FC<Props> = ({
     artifact?.contentType
   );
   const history = useHistory();
+  const { modifyHtmlForStorage } = useHtmlModifier();
 
   useEffect(() => {
     if (artifactId === undefined) {
@@ -57,7 +58,7 @@ const ArtifactEditor: FC<Props> = ({
     artifactsRepository
       .getArtifactById(artifactId)
       .then((value) => setArtifact(value));
-  }, [artifactType, artifactId]);
+  }, [artifactType, artifactId, contentTypeToggle]);
 
   const addOrEditText = isNewFile ? 'toegevoegd' : 'gewijzigd';
 
@@ -70,9 +71,7 @@ const ArtifactEditor: FC<Props> = ({
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
         content:
           contentTypeToggle === CONTENT_TYPE_HTML
-            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                values.htmlContent
-              )
+            ? modifyHtmlForStorage(values.htmlContent)
             : values.markdownContent,
       })
       .then(() =>

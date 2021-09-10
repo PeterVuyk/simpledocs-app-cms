@@ -14,6 +14,8 @@ import {
 import useContentTypeToggle from '../content/useContentTypeToggle';
 import ContentEditor from '../content/ContentEditor';
 import ContentTypeToggle from '../content/ContentTypeToggle';
+import validateYupMarkdownContent from './formik/validators/validateYupMarkdownContent';
+import validateYupHtmlContent from './formik/validators/validateYupHtmlContent';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -65,41 +67,8 @@ const ContentPageForm: FC<Props> = ({
 
   const formValidation = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    markdownContent: Yup.string()
-      .nullable()
-      .test(
-        'markdownContent',
-        'Het toevoegen van een markdown bestand is verplicht.',
-        async (markdownContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
-            markdownContent !== null
-          );
-        }
-      ),
-    htmlContent: Yup.string()
-      .nullable()
-      .test(
-        'htmlContent',
-        'Het toevoegen van een html bestand is verplicht.',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
-          );
-        }
-      )
-      .test(
-        'htmlContent',
-        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
-        async (htmlContent) => {
-          return (
-            contentTypeToggle !== CONTENT_TYPE_HTML ||
-            (htmlContent !== undefined &&
-              (htmlContent as string).includes('<article>') &&
-              (htmlContent as string).includes('</article>'))
-          );
-        }
-      ),
+    markdownContent: validateYupMarkdownContent(contentTypeToggle),
+    htmlContent: validateYupHtmlContent(contentTypeToggle),
   });
 
   return (
