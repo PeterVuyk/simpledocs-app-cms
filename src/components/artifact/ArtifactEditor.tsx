@@ -21,7 +21,8 @@ import {
   ArtifactType,
   isArtifactType,
 } from '../../model/ArtifactType';
-import { Artifact } from '../../model/Artifact';
+import { Artifact, CONTENT_TYPE_HTML } from '../../model/Artifact';
+import useContentTypeToggle from '../content/useContentTypeToggle';
 
 interface Props {
   artifactId?: string;
@@ -36,6 +37,9 @@ const ArtifactEditor: FC<Props> = ({
 }) => {
   const [isNewFile, setIsNewFile] = useState<boolean>(false);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
+  const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
+    artifact?.contentType
+  );
   const history = useHistory();
 
   useEffect(() => {
@@ -44,7 +48,7 @@ const ArtifactEditor: FC<Props> = ({
       setArtifact({
         type: artifactType,
         content: '',
-        contentType: 'html',
+        contentType: contentTypeToggle,
         title: '',
         id: '',
       });
@@ -62,11 +66,14 @@ const ArtifactEditor: FC<Props> = ({
       .updateArtifact({
         id: artifact?.id,
         type: artifactType,
-        contentType: 'html',
+        contentType: contentTypeToggle,
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
-        content: htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-          values.htmlContent
-        ),
+        content:
+          contentTypeToggle === CONTENT_TYPE_HTML
+            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                values.htmlContent
+              )
+            : values.markdownContent,
       })
       .then(() =>
         history.push(
@@ -115,6 +122,8 @@ const ArtifactEditor: FC<Props> = ({
           isNewFile={isNewFile}
           onSubmit={handleSubmit}
           artifact={artifact}
+          contentTypeToggle={contentTypeToggle}
+          setContentTypeToggle={setContentTypeToggle}
         />
       )}
     </Navigation>

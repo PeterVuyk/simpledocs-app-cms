@@ -2,12 +2,10 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { FastField, Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
-// eslint-disable-next-line import/no-unresolved
-import { FastFieldProps } from 'formik/dist/FastField';
 import PageHeading from '../../../layout/PageHeading';
 import notification from '../../../redux/actions/notification';
 import TextField from '../../../components/form/formik/TextField';
@@ -19,12 +17,18 @@ import calculationsRepository from '../../../firebase/database/calculationsRepos
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
-import HtmlEditor from '../../../components/form/formik/htmlEditor/HtmlEditor';
 import htmlContentHelper from '../../../helper/htmlContentHelper';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import ContentTypeToggle from '../../../components/content/ContentTypeToggle';
+import ContentEditor from '../../../components/content/ContentEditor';
+import useContentTypeToggle from '../../../components/content/useContentTypeToggle';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+} from '../../../model/Artifact';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -44,6 +48,9 @@ const EditCalculation: FC<Props> = ({
 }) => {
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
+  const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
+    calculationInfo?.contentType
+  );
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const history = useHistory();
@@ -69,6 +76,7 @@ const EditCalculation: FC<Props> = ({
       });
   }, [calculationType, history, setNotification]);
 
+  // TODO: Move yup validation to multiple validation files or something?
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
     articleButtonText: Yup.string().required(
@@ -79,16 +87,38 @@ const EditCalculation: FC<Props> = ({
       .required('Lijst index is een verplicht veld.')
       .positive(),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
-    content: Yup.string()
-      .required('Het toevoegen van een html bestand is verplicht.')
+    markdownContent: Yup.string()
+      .nullable()
+      .test(
+        'markdownContent',
+        'Het toevoegen van een markdown bestand is verplicht.',
+        async (markdownContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
+            markdownContent !== null
+          );
+        }
+      ),
+    htmlContent: Yup.string()
+      .nullable()
+      .test(
+        'htmlContent',
+        'Het toevoegen van een html bestand is verplicht.',
+        async (htmlContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
+          );
+        }
+      )
       .test(
         'htmlContent',
         'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
         async (htmlContent) => {
           return (
-            htmlContent !== undefined &&
-            htmlContent.includes('<article>') &&
-            htmlContent.includes('</article>')
+            contentTypeToggle !== CONTENT_TYPE_HTML ||
+            (htmlContent !== undefined &&
+              (htmlContent as string).includes('<article>') &&
+              (htmlContent as string).includes('</article>'))
           );
         }
       ),
@@ -112,9 +142,12 @@ const EditCalculation: FC<Props> = ({
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
         contentType: 'html',
-        content: htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-          values.htmlContent
-        ),
+        content:
+          contentTypeToggle === CONTENT_TYPE_HTML
+            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                values.htmlContent
+              )
+            : values.markdownContent,
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,
@@ -238,16 +271,17 @@ const EditCalculation: FC<Props> = ({
                     xs={12}
                     style={{ marginLeft: 18, marginRight: -18 }}
                   >
-                    <FastField name="htmlContent">
-                      {(props: FastFieldProps) => (
-                        <HtmlEditor
-                          meta={props.meta}
-                          showError={showError}
-                          formik={formikRef}
-                          initialFile={calculationInfo.content}
-                        />
-                      )}
-                    </FastField>
+                    <ContentTypeToggle
+                      contentType={contentTypeToggle}
+                      setContentTypeToggle={setContentTypeToggle}
+                    />
+                    <ContentEditor
+                      contentTypeToggle={contentTypeToggle}
+                      showError={showError}
+                      formik={formikRef}
+                      initialFileType={calculationInfo?.contentType}
+                      initialFile={calculationInfo?.content ?? null}
+                    />
                   </Grid>
                 </Grid>
               </Grid>

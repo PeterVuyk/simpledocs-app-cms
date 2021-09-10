@@ -1,8 +1,21 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { Editor } from '@toast-ui/react-editor';
+import SaveIcon from '@material-ui/icons/Save';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../model/Artifact';
 import base64Helper from '../../../../helper/base64Helper';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
 import FileDropzoneArea from '../../FileDropzoneArea';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import SaveIndicator from '../SaveIndicator';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    relativeContainer: {
+      position: 'relative',
+    },
+  })
+);
 
 interface Props {
   meta: any;
@@ -18,10 +31,14 @@ const MarkdownEditor: FC<Props> = ({
   meta,
 }) => {
   const [content, setContent] = useState<string | null>(null);
+  const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
+  const classes = useStyles();
+  const editorRef = useRef<any>();
 
   useEffect(() => {
-    formik.current?.setFieldValue('markdownContent', initialFile);
-    setContent(initialFile);
+    const markdown = initialFile === null ? '' : initialFile;
+    formik.current?.setFieldValue('markdownContent', markdown);
+    setContent(markdown);
   }, [formik, initialFile]);
 
   const getErrorMessage = (): string => {
@@ -44,15 +61,45 @@ const MarkdownEditor: FC<Props> = ({
         ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_MARKDOWN)
         : '';
       formik.current?.setFieldValue('markdownContent', markdown);
+      editorRef.current.editorInst.setMarkdown(markdown);
       setContent(markdown);
     },
     [formik]
   );
 
+  const showSaveButton = () => {
+    setSaveButtonVisible(true);
+    setTimeout(() => {
+      setSaveButtonVisible(false);
+    }, 5000);
+  };
+
+  const handleUpdateFile = () => {
+    const markdown = editorRef.current.editorInst.getMarkdown();
+    if (content !== markdown) {
+      formik.current?.setFieldValue('markdownContent', markdown);
+      setContent(markdown);
+    }
+    showSaveButton();
+  };
+
   return (
-    <>
+    <div className={classes.relativeContainer}>
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
+      )}
+      {saveButtonVisible && <SaveIndicator />}
+      {content !== null && (
+        <Editor
+          ref={editorRef}
+          initialValue={content ?? ''}
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="markdown"
+          useCommandShortcut
+          usageStatistics={false}
+          onBlur={handleUpdateFile}
+        />
       )}
       <FileDropzoneArea
         allowedExtension=".md"
@@ -60,7 +107,7 @@ const MarkdownEditor: FC<Props> = ({
         initialFile={getBase64MarkdownContent()}
         onUpdateFile={handleUpdateFileFromBase64}
       />
-    </>
+    </div>
   );
 };
 

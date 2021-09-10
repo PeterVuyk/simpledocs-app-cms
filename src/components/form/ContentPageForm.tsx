@@ -3,13 +3,17 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues, FormikHelpers, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-// eslint-disable-next-line import/no-unresolved
-import { FastFieldProps } from 'formik/dist/FastField';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
-import HtmlEditor from './formik/htmlEditor/HtmlEditor';
-import { Artifact } from '../../model/Artifact';
-import { ARTIFACT_TYPE_SNIPPET } from '../../model/ArtifactType';
+import {
+  Artifact,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/Artifact';
+import useContentTypeToggle from '../content/useContentTypeToggle';
+import ContentEditor from '../content/ContentEditor';
+import ContentTypeToggle from '../content/ContentTypeToggle';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -18,12 +22,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
+  contentTypeToggle: ContentType;
+  setContentTypeToggle: (contentType: ContentType | undefined) => void;
   onSubmit: (values: FormikValues) => void;
   artifact: Artifact;
   isNewFile: boolean;
 }
 
-const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
+const ContentPageForm: FC<Props> = ({
+  contentTypeToggle,
+  setContentTypeToggle,
+  onSubmit,
+  artifact,
+  isNewFile,
+}) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const classes = useStyles();
@@ -41,28 +53,50 @@ const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
       return {
         title: artifact.title,
         content: artifact.content,
+        contentType: artifact.contentType,
       };
     }
     return {
       title: '',
       content: '',
-      contentType: 'html',
+      contentType: contentTypeToggle,
     };
   };
 
   const formValidation = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
+    markdownContent: Yup.string()
+      .nullable()
+      .test(
+        'markdownContent',
+        'Het toevoegen van een markdown bestand is verplicht.',
+        async (markdownContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_MARKDOWN ||
+            markdownContent !== null
+          );
+        }
+      ),
     htmlContent: Yup.string()
-      .required('Het toevoegen van een html bestand is verplicht.')
+      .nullable()
       .test(
         'htmlContent',
-        'De inhoud moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
+        'Het toevoegen van een html bestand is verplicht.',
         async (htmlContent) => {
           return (
-            artifact.type === ARTIFACT_TYPE_SNIPPET ||
+            contentTypeToggle !== CONTENT_TYPE_HTML || htmlContent !== null
+          );
+        }
+      )
+      .test(
+        'htmlContent',
+        'De inhoud van het artikel moet in een article-tag staan, de zoekfunctie van de app zoekt vervolgens alleen tussen deze tags: <article></article>',
+        async (htmlContent) => {
+          return (
+            contentTypeToggle !== CONTENT_TYPE_HTML ||
             (htmlContent !== undefined &&
-              htmlContent.includes('<article>') &&
-              htmlContent.includes('</article>'))
+              (htmlContent as string).includes('<article>') &&
+              (htmlContent as string).includes('</article>'))
           );
         }
       ),
@@ -84,7 +118,7 @@ const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
             justify="flex-start"
             direction="row"
           >
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 showError={showError}
                 required
@@ -93,17 +127,20 @@ const ContentPageForm: FC<Props> = ({ onSubmit, artifact, isNewFile }) => {
                 name="title"
               />
             </Grid>
+            <Grid item xs={6}>
+              <ContentTypeToggle
+                contentType={contentTypeToggle}
+                setContentTypeToggle={setContentTypeToggle}
+              />
+            </Grid>
             <Grid item xs={12}>
-              <FastField name="htmlContent">
-                {(props: FastFieldProps) => (
-                  <HtmlEditor
-                    meta={props.meta}
-                    showError={showError}
-                    formik={formikRef}
-                    initialFile={artifact?.content ?? null}
-                  />
-                )}
-              </FastField>
+              <ContentEditor
+                contentTypeToggle={contentTypeToggle}
+                showError={showError}
+                formik={formikRef}
+                initialFileType={artifact?.contentType}
+                initialFile={artifact?.content ?? null}
+              />
             </Grid>
           </Grid>
           <div className={classes.submit}>

@@ -62,7 +62,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                 <strong>Artikel knop tekst</strong>
               </TableCell>
               <TableCell>
-                <strong>Verwijzing hoofdstuk</strong>
+                <strong>Weergave</strong>
               </TableCell>
             </TableRow>
           </TableHead>

@@ -13,6 +13,7 @@ import base64Helper from '../../../../helper/base64Helper';
 import useStylesheet from '../../../hooks/useStylesheet';
 import stylesheetHelper from '../../../../helper/stylesheetHelper';
 import { CONTENT_TYPE_HTML } from '../../../../model/Artifact';
+import SaveIndicator from '../SaveIndicator';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
@@ -24,15 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     relativeContainer: {
       position: 'relative',
-    },
-    saveIcon: {
-      position: 'absolute',
-      zIndex: 1000,
-      right: 50,
-      top: 50,
-      backgroundColor: '#fff',
-      color: '#099000FF',
-      fontSize: 'xxx-large',
     },
     formControl: {
       margin: theme.spacing(1),
@@ -73,13 +65,14 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const handleUpdateFile = (file: string) => {
-    if (content === file) {
-      return;
+    if (content !== file) {
+      formik.current?.setFieldValue('htmlContent', file);
+      setContent(
+        pretty(
+          stylesheetHelper.updateStylesheetForHtmlContent(file, stylesheet)
+        )
+      );
     }
-    formik.current?.setFieldValue('htmlContent', file);
-    setContent(
-      pretty(stylesheetHelper.updateStylesheetForHtmlContent(file, stylesheet))
-    );
     showSaveButton();
   };
 
@@ -155,7 +148,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      {saveButtonVisible && <SaveIcon className={classes.saveIcon} />}
+      {saveButtonVisible && <SaveIndicator />}
       <div className={classes.relativeContainer}>
         <div className={classes.formControl}>
           <BottomHtmlToolbox onUpdateFile={handleUpdateFile} />
