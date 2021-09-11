@@ -1,7 +1,6 @@
 import { database } from '../firebaseConnection';
 import {
-  AGGREGATE_APP_CONFIG,
-  AGGREGATE_APP_CONFIG_DRAFT,
+  AGGREGATE_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
   AGGREGATE_INSTRUCTION_MANUAL,
@@ -14,6 +13,7 @@ import { Versioning } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import artifactsRepository from './artifactsRepository';
+import { APP_CONFIG, APP_CONFIG_DRAFT } from '../../model/Configurations';
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -117,7 +117,7 @@ async function publishDecisionTree(
   return batch.commit();
 }
 
-async function publishUpdatedAppConfig(
+async function publishUpdatedConfigurations(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
@@ -134,8 +134,8 @@ async function publishUpdatedAppConfig(
 
   // 2: if a draft from the appConfig does not exist, return
   const draftConfigurationRef = database
-    .collection('config')
-    .doc(AGGREGATE_APP_CONFIG_DRAFT);
+    .collection(AGGREGATE_CONFIGURATIONS)
+    .doc(APP_CONFIG_DRAFT);
   const docSnapshot = await draftConfigurationRef.get();
   if (!docSnapshot.exists) {
     return batch.commit();
@@ -147,8 +147,8 @@ async function publishUpdatedAppConfig(
 
   // 4: overwrite published met draft
   const publishedConfigurationRef = database
-    .collection('config')
-    .doc(AGGREGATE_APP_CONFIG);
+    .collection(AGGREGATE_CONFIGURATIONS)
+    .doc(APP_CONFIG);
   batch.set(publishedConfigurationRef, draftConfig.data());
 
   return batch.commit();
@@ -261,8 +261,8 @@ async function updateVersion(
     case AGGREGATE_INSTRUCTION_MANUAL:
       await publishUpdatedArticles(versioning, newVersion);
       break;
-    case AGGREGATE_APP_CONFIG:
-      await publishUpdatedAppConfig(versioning, newVersion);
+    case AGGREGATE_CONFIGURATIONS:
+      await publishUpdatedConfigurations(versioning, newVersion);
       break;
     case AGGREGATE_CALCULATIONS:
       await publishUpdatedCalculations(versioning, newVersion);

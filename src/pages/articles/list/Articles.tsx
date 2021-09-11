@@ -33,7 +33,7 @@ interface Props {
 
 const Articles: FC<Props> = ({ title, bookType }) => {
   const [articles, setArticles] = useState<Article[] | null>(null);
-  const [editStatus, setEditStatus] = useStatusToggle();
+  const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();
 

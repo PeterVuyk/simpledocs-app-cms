@@ -4,7 +4,9 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { Tooltip } from '@material-ui/core';
 import PublishDialog from './PublishDialog';
 import { Versioning } from '../../model/Versioning';
-import translationHelper from '../../helper/translationHelper';
+import navigationConfig from '../../navigation/navigationConfig.json';
+import { NavigationConfig } from '../../model/NavigationConfig';
+import { isBookType } from '../../model/BookType';
 
 interface Props {
   version: Versioning;
@@ -15,22 +17,26 @@ const PublicationItem: FC<Props> = ({ version, onReloadPublications }) => {
   const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
     null
   );
+  const handleTranslatedAggregate = (aggregate: string): string => {
+    const configs = navigationConfig as NavigationConfig;
+    if (isBookType(aggregate)) {
+      return configs.books.bookItems[aggregate].title;
+    }
+    if (Object.keys(configs.menu.menuItems).includes(aggregate)) {
+      // @ts-ignore
+      return configs.menu.menuItems[aggregate].title;
+    }
+    return 'Onbekend';
+  };
 
   const getDialogTitle = (dialogVersion: Versioning): string => {
-    return `${
-      translationHelper
-        .getTranslatedAggregate(dialogVersion.aggregate)
-        .charAt(0)
-        .toUpperCase() +
-      translationHelper.getTranslatedAggregate(dialogVersion.aggregate).slice(1)
-    } publiceren`;
+    const title = handleTranslatedAggregate(dialogVersion.aggregate);
+    return `${title.charAt(0).toUpperCase() + title.slice(1)} publiceren`;
   };
 
   return (
     <>
-      <TableCell>
-        {translationHelper.getTranslatedAggregate(version.aggregate)}
-      </TableCell>
+      <TableCell>{handleTranslatedAggregate(version.aggregate)}</TableCell>
       <TableCell>{version.version}</TableCell>
       <TableCell align="right">
         <Tooltip title="Publiceren">
@@ -43,6 +49,7 @@ const PublicationItem: FC<Props> = ({ version, onReloadPublications }) => {
         {openPublishDialog &&
           openPublishDialog.aggregate === version.aggregate && (
             <PublishDialog
+              onTranslation={handleTranslatedAggregate}
               dialogTitle={getDialogTitle(openPublishDialog)}
               dialogText={`Huidige versie: ${openPublishDialog.version}. Geef de nieuwe versie op:`}
               openDialog={openPublishDialog}

@@ -34,7 +34,7 @@ interface Props {
 }
 
 const Configurations: FC<Props> = ({ title, setNotification }) => {
-  const [editStatus, setEditStatus] = useStatusToggle();
+  const { editStatus, setEditStatus } = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [initialAppConfig, setInitialAppConfig] =
     useState<ConfigInfo | null | void>();

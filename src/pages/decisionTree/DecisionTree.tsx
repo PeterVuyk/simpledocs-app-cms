@@ -32,7 +32,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[] | null
   >(null);
-  const [editStatus, setEditStatus] = useStatusToggle();
+  const { editStatus, setEditStatus } = useStatusToggle();
   const history = useHistory();
 
   const handleLoadDecisionTree = (): void => {

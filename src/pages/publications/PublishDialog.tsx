@@ -22,7 +22,6 @@ import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import translationHelper from '../../helper/translationHelper';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -33,6 +32,7 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
+  onTranslation: (aggregate: string) => string;
   dialogTitle: string;
   dialogText: string;
   openDialog: Versioning | null;
@@ -42,6 +42,7 @@ interface Props {
 }
 
 const PublishDialog: FC<Props> = ({
+  onTranslation,
   dialogTitle,
   dialogText,
   openDialog,
@@ -77,7 +78,7 @@ const PublishDialog: FC<Props> = ({
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: `${translationHelper.getTranslatedAggregate(
+          notificationMessage: `${onTranslation(
             openDialog?.aggregate ?? ''
           )} is gepubliceerd.`,
         });

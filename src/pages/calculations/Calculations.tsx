@@ -41,7 +41,7 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const classes = useStyles();
   const history = useHistory();
-  const [editStatus, setEditStatus] = useStatusToggle();
+  const { editStatus, setEditStatus } = useStatusToggle();
 
   const handleReloadPublications = useCallback((): void => {
     setLoading(true);

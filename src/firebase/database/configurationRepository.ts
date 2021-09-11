@@ -1,22 +1,16 @@
 import { database } from '../firebaseConnection';
-import {
-  AGGREGATE_APP_CONFIG,
-  AGGREGATE_APP_CONFIG_DRAFT,
-} from '../../model/Aggregate';
+import { AGGREGATE_CONFIGURATIONS } from '../../model/Aggregate';
 import { ConfigInfo } from '../../model/ConfigInfo';
 import logger from '../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import { APP_CONFIG, APP_CONFIG_DRAFT } from '../../model/Configurations';
 
 async function getAppConfig(
   editStatus: EditStatus
 ): Promise<ConfigInfo | void> {
   return database
-    .collection('config')
-    .doc(
-      editStatus === EDIT_STATUS_DRAFT
-        ? AGGREGATE_APP_CONFIG_DRAFT
-        : AGGREGATE_APP_CONFIG
-    )
+    .collection(AGGREGATE_CONFIGURATIONS)
+    .doc(editStatus === EDIT_STATUS_DRAFT ? APP_CONFIG_DRAFT : APP_CONFIG)
     .get()
     .then((value) => value.data() as ConfigInfo)
     .then((value) => value)
@@ -30,14 +24,14 @@ async function getAppConfig(
 
 async function updateAppConfig(configInfo: ConfigInfo): Promise<void> {
   const configurationRef = database
-    .collection('config')
-    .doc(AGGREGATE_APP_CONFIG_DRAFT);
+    .collection(AGGREGATE_CONFIGURATIONS)
+    .doc(APP_CONFIG_DRAFT);
 
   configurationRef.get().then(async (docSnapshot) => {
     if (docSnapshot.exists) {
       await database
-        .collection('config')
-        .doc(AGGREGATE_APP_CONFIG)
+        .collection(AGGREGATE_CONFIGURATIONS)
+        .doc(AGGREGATE_CONFIGURATIONS)
         .set(configInfo);
     } else {
       await configurationRef.set(configInfo);
@@ -46,7 +40,10 @@ async function updateAppConfig(configInfo: ConfigInfo): Promise<void> {
 }
 
 async function removeConfigurationDraft(): Promise<void> {
-  await database.collection('config').doc(AGGREGATE_APP_CONFIG_DRAFT).delete();
+  await database
+    .collection(AGGREGATE_CONFIGURATIONS)
+    .doc(APP_CONFIG_DRAFT)
+    .delete();
 }
 
 const decisionTreeRepository = {

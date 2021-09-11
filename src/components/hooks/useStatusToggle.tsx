@@ -6,7 +6,7 @@ function useStatusToggle() {
     'editStatus',
     () => EDIT_STATUS_PUBLISHED
   );
-  return [editStatus, setEditStatus];
+  return { editStatus, setEditStatus };
 }
 
 export default useStatusToggle;

@@ -58,9 +58,7 @@ const EditCalculation: FC<Props> = ({
   const formikRef = useRef<any>();
   const history = useHistory();
   const classes = useStyles();
-  // TODO: return object to improve
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [editStatus, setEditStatus] = useStatusToggle();
+  const { setEditStatus } = useStatusToggle();
   const { modifyHtmlForStorage } = useHtmlModifier();
 
   useEffect(() => {
