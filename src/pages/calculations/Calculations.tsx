@@ -87,12 +87,14 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
           editStatus={editStatus}
           setEditStatus={setEditStatus}
         />
-        {calculations && calculations.length !== 0 && (
-          <RemoveCalculationsButton
-            calculationInfos={calculations}
-            onSubmitAction={handleSubmitRemove}
-          />
-        )}
+        {editStatus === EDIT_STATUS_DRAFT &&
+          calculations &&
+          calculations.length !== 0 && (
+            <RemoveCalculationsButton
+              calculationInfos={calculations}
+              onSubmitAction={handleSubmitRemove}
+            />
+          )}
         <Button
           className={classes.button}
           variant="contained"

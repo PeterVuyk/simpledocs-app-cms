@@ -64,7 +64,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
     >
       {getTitleWithIcons().map((step) => (
         <MenuItem
-          key={`${step.title}csv`}
+          key={`${step.title + step.isDraft}csv`}
           onClick={() => handleExportCSVFile(step.title)}
         >
           {step.title}.csv
@@ -72,7 +72,7 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
       ))}
       {getTitleWithIcons().map((step) => (
         <MenuItem
-          key={`${step.title}svg`}
+          key={`${step.title + step.isDraft}svg`}
           onClick={() => handleExportSVGFile(step)}
         >
           {step.title}.svg

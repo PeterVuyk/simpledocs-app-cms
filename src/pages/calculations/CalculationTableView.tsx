@@ -62,6 +62,9 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                 <strong>Artikel knop tekst</strong>
               </TableCell>
               <TableCell>
+                <strong>Inhoudstype</strong>
+              </TableCell>
+              <TableCell>
                 <strong>Weergave</strong>
               </TableCell>
             </TableRow>
@@ -82,6 +85,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                   </TableCell>
                   <TableCell>{calculationInfo.explanation}</TableCell>
                   <TableCell>{calculationInfo.articleButtonText}</TableCell>
+                  <TableCell>{calculationInfo.contentType}</TableCell>
                   <TableCell>
                     <ViewContentAction
                       content={calculationInfo.content}
@@ -95,7 +99,7 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                     <br />
                     Beeldverhouding: 4 / 3
                   </TableCell>
-                  <TableCell colSpan={6}>
+                  <TableCell colSpan={7}>
                     <img
                       style={{ width: 600 }}
                       src={`${calculationInfo.calculationImage}`}

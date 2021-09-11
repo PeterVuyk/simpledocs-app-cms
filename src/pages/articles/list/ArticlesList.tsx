@@ -56,6 +56,9 @@ const ArticlesList: FC<Props> = ({
             <TableCell>
               <strong>Illustratie</strong>
             </TableCell>
+            <TableCell>
+              <strong>Inhoudstype</strong>
+            </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
@@ -81,7 +84,7 @@ const ArticlesList: FC<Props> = ({
             ))}
           {articles && articles.length === 0 && (
             <TableRow key="no-result">
-              <TableCell component="th" scope="row" colSpan={7}>
+              <TableCell component="th" scope="row" colSpan={8}>
                 Geen resultaten.
               </TableCell>
             </TableRow>

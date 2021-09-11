@@ -53,7 +53,7 @@ const ArtifactsTable: FC<Props> = ({
               <strong>Titel</strong>
             </TableCell>
             <TableCell>
-              <strong>Extensie</strong>
+              <strong>Inhoudstype</strong>
             </TableCell>
             {showArtifactType && (
               <TableCell>

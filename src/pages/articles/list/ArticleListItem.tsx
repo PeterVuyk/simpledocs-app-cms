@@ -138,6 +138,7 @@ const ArticleListItem: FC<Props> = ({
           alt={article.chapter}
         />
       </TableCell>
+      <TableCell>{article.contentType}</TableCell>
       <TableCell align="right" className={classes.toolBox}>
         {!article.markedForDeletion && (
           <EditItemAction urlSlug={getEditUrl()} />

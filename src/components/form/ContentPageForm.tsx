@@ -1,17 +1,11 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers, FastField } from 'formik';
+import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
-import {
-  Artifact,
-  CONTENT_TYPE_HTML,
-  CONTENT_TYPE_MARKDOWN,
-  ContentType,
-} from '../../model/Artifact';
-import useContentTypeToggle from '../content/useContentTypeToggle';
+import { Artifact, ContentType } from '../../model/Artifact';
 import ContentEditor from '../content/ContentEditor';
 import ContentTypeToggle from '../content/ContentTypeToggle';
 import validateYupMarkdownContent from './formik/validators/validateYupMarkdownContent';
