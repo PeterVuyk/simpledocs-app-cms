@@ -110,7 +110,7 @@ const EditCalculation: FC<Props> = ({
         title: values.title,
         articleButtonText: values.articleButtonText,
         explanation: values.explanation,
-        contentType: 'html',
+        contentType: contentTypeToggle,
         content:
           contentTypeToggle === CONTENT_TYPE_HTML
             ? modifyHtmlForStorage(values.htmlContent)

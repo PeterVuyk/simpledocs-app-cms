@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import InfoIcon from '@material-ui/icons/Info';
 import { Tooltip } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import HelpDialog from './HelpDialog';
@@ -21,7 +21,7 @@ const HelpAction: FC<Props> = ({ title, children }) => {
   return (
     <>
       <Tooltip title="Toelichting gebruik">
-        <HelpOutlineIcon
+        <InfoIcon
           className={classes.lightColor}
           style={{ cursor: 'pointer' }}
           onClick={() => setOpenHelpDialog(true)}

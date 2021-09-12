@@ -1,6 +1,9 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import chart from '@toast-ui/editor-plugin-chart';
+import tableMergedCell from '@toast-ui/editor-plugin-color-syntax';
+import uml from '@toast-ui/editor-plugin-uml';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../model/Artifact';
 import base64Helper from '../../../../helper/base64Helper';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
@@ -98,6 +101,7 @@ const MarkdownEditor: FC<Props> = ({
           useCommandShortcut
           usageStatistics={false}
           onBlur={handleUpdateFile}
+          plugins={[chart, tableMergedCell, uml]}
         />
       )}
       <FileDropzoneArea
