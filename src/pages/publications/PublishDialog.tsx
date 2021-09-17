@@ -3,7 +3,7 @@ import React, {
   forwardRef,
   ReactElement,
   Ref,
-  useRef,
+  useCallback,
   useState,
 } from 'react';
 import Button from '@material-ui/core/Button';
@@ -15,8 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
@@ -52,25 +52,30 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const versionRef = useRef<TextFieldProps>();
   const handleClose = () => {
     setOpenDialog(null);
   };
 
+  const getNextVersion = useCallback((): string => {
+    if (!openDialog) {
+      setOpenDialog(null);
+      return '';
+    }
+    const currentDate = new Date();
+    const monthLastRelease = parseInt(openDialog.version.split('.')[1], 10);
+    const nextVersion = parseInt(openDialog.version.split('.')[2], 10) + 1;
+    const releaseVersion =
+      monthLastRelease === currentDate.getMonth() + 1 ? nextVersion : 1;
+    return `${currentDate.getFullYear()}.${
+      currentDate.getMonth() + 1
+    }.${releaseVersion}`;
+  }, [openDialog, setOpenDialog]);
+
   const handleSubmit = () => {
     setLoading(true);
-    if (
-      versionRef.current?.value === undefined ||
-      versionRef.current.value === ''
-    ) {
-      setError('Geef een valide versie op van tenminste 8 karakters.');
-      setLoading(false);
-      return;
-    }
-
     publishRepository
       // @ts-ignore
-      .updateVersion(openDialog, versionRef.current.value)
+      .updateVersion(openDialog, getNextVersion())
       .then(() => {
         onSubmit(openDialog?.aggregate ?? '');
         setLoading(false);
@@ -101,25 +106,20 @@ const PublishDialog: FC<Props> = ({
     >
       <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
       <DialogContent>
+        {error && (
+          <>
+            <Alert severity="error">{error}</Alert>
+            <br />
+          </>
+        )}
         <DialogContentText
           style={{ whiteSpace: 'pre-line' }}
           id="alert-dialog-slide-description"
         >
-          {dialogText}
+          Weet je zeker dat je deze versie wilt updaten?
+          <br />
+          {dialogText} {getNextVersion()}.
         </DialogContentText>
-        <TextField
-          inputRef={versionRef}
-          variant="outlined"
-          margin="normal"
-          error={error !== ''}
-          helperText={error}
-          required
-          fullWidth
-          id="version"
-          label="Nieuwe versie"
-          name="version"
-          autoFocus
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary" variant="contained">

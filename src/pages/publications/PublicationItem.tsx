@@ -51,7 +51,7 @@ const PublicationItem: FC<Props> = ({ version, onReloadPublications }) => {
             <PublishDialog
               onTranslation={handleTranslatedAggregate}
               dialogTitle={getDialogTitle(openPublishDialog)}
-              dialogText={`Huidige versie: ${openPublishDialog.version}. Geef de nieuwe versie op:`}
+              dialogText={`Huidige versie: ${openPublishDialog.version}, nieuwe versie: `}
               openDialog={openPublishDialog}
               setOpenDialog={setOpenPublishDialog}
               onSubmit={onReloadPublications}

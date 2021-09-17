@@ -67,11 +67,12 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const handleUpdateFile = (file: string) => {
-    if (content !== file) {
-      const html = modifyHtmlAfterUpload(file);
-      formik.current?.setFieldValue('htmlContent', html);
-      setContent(html);
+    if (content === file) {
+      return;
     }
+    const html = modifyHtmlAfterUpload(file);
+    formik.current?.setFieldValue('htmlContent', html);
+    setContent(html);
     showSaveButton();
   };
 
