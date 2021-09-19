@@ -45,6 +45,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
+    "string.prototype.matchall": "^4.0.5",
     "typescript": "^4.3.4",
     "web-vitals": "^1.1.2",
     "yup": "^0.32.9"
@@ -79,6 +80,7 @@
     "@types/file-saver": "^2.0.2",
     "@types/react-highlight": "^0.12.3",
     "@types/react-redux": "^7.1.16",
+    "@types/string.prototype.matchall": "^4.0.0",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "prettier": "^2.3.1",

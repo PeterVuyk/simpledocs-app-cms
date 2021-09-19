@@ -6,6 +6,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import { Tooltip } from '@material-ui/core';
 import TextField from './TextField';
 import { CONTENT_TYPE_MARKDOWN, ContentType } from '../../../model/Artifact';
+import markdownHelper from '../../../helper/markdownHelper';
 
 interface Props {
   contentTypeToggle: ContentType;
@@ -51,22 +52,12 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
   };
 
   const importMarkdownContentValue = () => {
-    const markdown = markdownContentField.value as string;
+    let markdown = markdownContentField.value as string;
     if (markdown === '') {
       formikProps.setFieldValue('searchText', '');
     }
-    const markdownText = markdown
-      .replace(/^### (.*$)/gim, '$1')
-      .replace(/^## (.*$)/gim, '$1')
-      .replace(/^# (.*$)/gim, '$1')
-      .replace(/^\> (.*$)/gim, '$1')
-      .replace(/\*\*(.*)\*\*/gim, '$1')
-      .replace(/\*(.*)\*/gim, '$1')
-      .replace(/!\[(.*?)\]\((.*?)\)/gim, '')
-      .replace(/\[(.*?)\]\((.*?)\)/gim, '$1')
-      .replace(/\n$/gim, '')
-      .trim();
-    return removeIndentation(markdownText);
+    markdown = markdownHelper.getTextFromMarkdown(markdown);
+    return removeIndentation(markdown);
   };
 
   const importHtmlContentValue = () => {
