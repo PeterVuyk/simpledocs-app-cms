@@ -17,6 +17,7 @@ import NotFound from '../NotFound';
 import navigationConfig from '../../navigation/navigationConfig.json';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
+import markdownHelper from '../../helper/markdownHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -60,7 +61,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
             ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
                 values.htmlContent
               )
-            : values.markdownContent,
+            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
         contentType,
         iconFile: values.iconFile,
         isDraft: true,

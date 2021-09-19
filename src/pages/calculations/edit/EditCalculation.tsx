@@ -17,7 +17,6 @@ import calculationsRepository from '../../../firebase/database/calculationsRepos
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
-import htmlContentHelper from '../../../helper/htmlContentHelper';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
@@ -25,13 +24,11 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import ContentTypeToggle from '../../../components/content/ContentTypeToggle';
 import ContentEditor from '../../../components/content/ContentEditor';
 import useContentTypeToggle from '../../../components/content/useContentTypeToggle';
-import {
-  CONTENT_TYPE_HTML,
-  CONTENT_TYPE_MARKDOWN,
-} from '../../../model/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../model/Artifact';
 import validateYupMarkdownContent from '../../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../../components/form/formik/validators/validateYupHtmlContent';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
+import markdownHelper from '../../../helper/markdownHelper';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -114,7 +111,7 @@ const EditCalculation: FC<Props> = ({
         content:
           contentTypeToggle === CONTENT_TYPE_HTML
             ? modifyHtmlForStorage(values.htmlContent)
-            : values.markdownContent,
+            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
         iconFile: values.iconFile,
         calculationImage: values.calculationImage,
         listIndex: values.listIndex,

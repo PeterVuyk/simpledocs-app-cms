@@ -14,6 +14,7 @@ import { NotificationOptions } from '../../model/NotificationOptions';
 import navigationConfig from '../../navigation/navigationConfig.json';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
+import markdownHelper from '../../helper/markdownHelper';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -47,7 +48,7 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
         content:
           contentType === CONTENT_TYPE_HTML
             ? modifyHtmlForStorage(values.htmlContent)
-            : values.markdownContent,
+            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
         contentType,
         iconFile: values.iconFile,
         isDraft: true,

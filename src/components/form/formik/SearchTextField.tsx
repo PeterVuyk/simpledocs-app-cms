@@ -20,7 +20,6 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
 
   const stripLastLines = (text: string) => {
     const lines = text.split('\n').reverse();
-    // eslint-disable-next-line no-restricted-syntax
     for (const line of text.split('\n').reverse()) {
       if (line !== '') {
         break;
@@ -32,7 +31,6 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
 
   const stripFirstLines = (text: string) => {
     const lines = text.split('\n');
-    // eslint-disable-next-line no-restricted-syntax
     for (const line of text.split('\n')) {
       if (line !== '') {
         break;

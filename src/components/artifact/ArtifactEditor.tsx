@@ -23,6 +23,7 @@ import {
 import { Artifact, CONTENT_TYPE_HTML } from '../../model/Artifact';
 import useContentTypeToggle from '../content/useContentTypeToggle';
 import useHtmlModifier from '../hooks/useHtmlModifier';
+import markdownHelper from '../../helper/markdownHelper';
 
 interface Props {
   artifactId?: string;
@@ -72,7 +73,7 @@ const ArtifactEditor: FC<Props> = ({
         content:
           contentTypeToggle === CONTENT_TYPE_HTML
             ? modifyHtmlForStorage(values.htmlContent)
-            : values.markdownContent,
+            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
       })
       .then(() =>
         history.push(
