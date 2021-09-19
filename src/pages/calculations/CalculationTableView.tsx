@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
+import DownloadContentAction from '../../components/ItemAction/DownloadContentAction';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -90,6 +91,13 @@ const CalculationTableView: FC<Props> = ({ calculationInfo }) => {
                     <ViewContentAction
                       content={calculationInfo.content}
                       contentType={calculationInfo.contentType}
+                    />
+                    <DownloadContentAction
+                      content={calculationInfo.content}
+                      contentType={calculationInfo.contentType}
+                      fileName={calculationInfo.title
+                        .replace(' ', '-')
+                        .toLowerCase()}
                     />
                   </TableCell>
                 </TableRow>

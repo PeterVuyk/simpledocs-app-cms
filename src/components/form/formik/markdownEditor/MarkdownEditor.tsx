@@ -60,7 +60,7 @@ const MarkdownEditor: FC<Props> = ({
         ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_MARKDOWN)
         : '';
       formik.current?.setFieldValue('markdownContent', markdown);
-      editorRef.current.editorInst.setMarkdown(markdown);
+      editorRef.current?.editorInst.setMarkdown(markdown);
       setContent(markdown);
     },
     [formik]
@@ -74,7 +74,7 @@ const MarkdownEditor: FC<Props> = ({
   };
 
   const handleUpdateFile = () => {
-    const markdown = editorRef.current.editorInst.getMarkdown();
+    const markdown = editorRef.current?.editorInst.getMarkdown();
     if (content !== markdown) {
       formik.current?.setFieldValue('markdownContent', markdown);
       setContent(markdown);
