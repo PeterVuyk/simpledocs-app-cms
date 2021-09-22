@@ -2,11 +2,9 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
-import CalculationTableView from './CalculationTableView';
+import CalculationList from './CalculationList';
 import PageHeading from '../../layout/PageHeading';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import {
@@ -113,17 +111,7 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
         </Button>
       </PageHeading>
       {isLoading && calculations.length === 0 && <LoadingSpinner />}
-      {!isLoading && calculations.length === 0 && (
-        <Paper elevation={2} className={classes.paper}>
-          <Typography>Geen resultaten.</Typography>
-        </Paper>
-      )}
-
-      {calculations.map((calculation) => (
-        <div key={calculation.title.toString()}>
-          <CalculationTableView calculationInfo={calculation} />
-        </div>
-      ))}
+      <CalculationList calculationInfos={calculations} />
     </>
   );
 };

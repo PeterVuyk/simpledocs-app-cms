@@ -31,7 +31,6 @@ import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
 import stylesheetHelper from '../../helper/stylesheetHelper';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pretty = require('pretty');
 
 const useStyles = makeStyles(() => ({
   paper: {

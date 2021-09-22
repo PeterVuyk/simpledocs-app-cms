@@ -78,9 +78,6 @@ const EditCalculation: FC<Props> = ({
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    articleButtonText: Yup.string().required(
-      'Regelgeving knop tekst is een verplicht veld.'
-    ),
     listIndex: Yup.number()
       .integer()
       .required('Lijst index is een verplicht veld.')
@@ -90,9 +87,6 @@ const EditCalculation: FC<Props> = ({
     htmlContent: validateYupHtmlContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
-    ),
-    calculationImage: Yup.mixed().required(
-      'Het uploaden van een afbeelding is verplicht.'
     ),
   });
 
@@ -105,7 +99,6 @@ const EditCalculation: FC<Props> = ({
       .updateCalculationsInfo({
         calculationType,
         title: values.title,
-        articleButtonText: values.articleButtonText,
         explanation: values.explanation,
         contentType: contentTypeToggle,
         content:
@@ -113,7 +106,6 @@ const EditCalculation: FC<Props> = ({
             ? modifyHtmlForStorage(values.htmlContent)
             : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
         iconFile: values.iconFile,
-        calculationImage: values.calculationImage,
         listIndex: values.listIndex,
         isDraft: true,
       })
@@ -182,15 +174,6 @@ const EditCalculation: FC<Props> = ({
                     <TextField
                       showError={showError}
                       required
-                      id="articleButtonText"
-                      label="Regelgeving knop tekst"
-                      name="articleButtonText"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
-                      required
                       id="listIndex"
                       label="Lijst index"
                       name="listIndex"
@@ -216,16 +199,6 @@ const EditCalculation: FC<Props> = ({
                       dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
                       allowedMimeTypes={['image/svg+xml']}
                       initialFile={calculationInfo.iconFile}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FileDropZoneArea
-                      name="calculationImage"
-                      formik={formikRef}
-                      showError={showError}
-                      dropzoneText="Klik hier of sleep het jpg/jpeg afbeelding hierheen"
-                      allowedMimeTypes={['image/jpeg']}
-                      initialFile={calculationInfo.calculationImage}
                     />
                   </Grid>
                 </Grid>

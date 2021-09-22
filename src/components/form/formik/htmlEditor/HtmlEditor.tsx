@@ -1,23 +1,17 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { current } from '@reduxjs/toolkit';
 import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
 import FileDropzoneArea from '../../FileDropzoneArea';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
-import htmlContentHelper from '../../../../helper/htmlContentHelper';
 import LoadingSpinner from '../../../LoadingSpinner';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
 import base64Helper from '../../../../helper/base64Helper';
 import useStylesheet from '../../../hooks/useStylesheet';
-import stylesheetHelper from '../../../../helper/stylesheetHelper';
 import { CONTENT_TYPE_HTML } from '../../../../model/Artifact';
 import SaveIndicator from '../SaveIndicator';
 import useHtmlModifier from '../../../hooks/useHtmlModifier';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pretty = require('pretty');
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

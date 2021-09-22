@@ -4,7 +4,6 @@ import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 import Markdown from 'markdown-to-jsx';
-import DialogContent from '@material-ui/core/DialogContent';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   CONTENT_TYPE_HTML,
