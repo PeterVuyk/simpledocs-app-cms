@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Chip from '@material-ui/core/Chip';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Highlight from 'react-highlight';
 import ViewContentAction from '../ItemAction/ViewContentAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
 import DownloadContentAction from '../ItemAction/DownloadContentAction';
@@ -17,6 +15,10 @@ import {
 } from '../../model/ArtifactType';
 import HelpAction from '../ItemAction/helpAction/HelpAction';
 import EditItemAction from '../ItemAction/EditItemAction';
+import {
+  DOCUMENTATION_DEFAULT_TEMPLATE,
+  DOCUMENTATION_STYLEGUIDE,
+} from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   toolBox: {
@@ -54,29 +56,6 @@ const ArtifactsTableRow: FC<Props> = ({
       default:
         return '';
     }
-  };
-
-  const getStylesheetExplanation = (): React.ReactNode => {
-    return (
-      <DialogContentText
-        color="textPrimary"
-        style={{ whiteSpace: 'pre-line' }}
-        id="alert-dialog-slide-description"
-      >
-        Met deze stylesheet kun je het uiterlijk van de html pagina&apos;s
-        globaal veranderen door alleen dit bestand te wijzigen. Deze wijzigingen
-        worden doorgevoerd op het moment dat je ze individueel wijzigt of nieuwe
-        pagina&apos;s toevoegt. <br /> <br />
-        Bewerk je html bestanden op je eigen computer? Maak dan lokaal een
-        stylesheet aan (bijvoorbeeld: stylesheet.css) en plaats hier de styling.
-        Voeg vervolgens de link in het html bestand met referentie naar deze
-        stylesheet toe, deze moet (met uitzondering van href) gelijk zijn aan:
-        <Highlight className="html">{`<link rel="stylesheet" href="stylesheet.css">`}</Highlight>
-        Ben je klaar met je lokale wijzigingen en upload je het html bestand,
-        dan wordt deze link automatisch verwijderd en vervangen door de
-        stylesheet van de styleguide.
-      </DialogContentText>
-    );
   };
 
   const isDefaultTemplate = (): boolean => {
@@ -125,9 +104,10 @@ const ArtifactsTableRow: FC<Props> = ({
       {showArtifactType && <TableCell>{getTranslatedCategory()}</TableCell>}
       <TableCell align="right" className={classes.toolBox}>
         {artifact.type === ARTIFACT_TYPE_CSS_STYLESHEET && (
-          <HelpAction title="Gebruik CSS Stylesheet">
-            {getStylesheetExplanation()}
-          </HelpAction>
+          <HelpAction documentationType={DOCUMENTATION_STYLEGUIDE} />
+        )}
+        {isDefaultTemplate() && (
+          <HelpAction documentationType={DOCUMENTATION_DEFAULT_TEMPLATE} />
         )}
         {showEditIcon() && (
           <EditItemAction

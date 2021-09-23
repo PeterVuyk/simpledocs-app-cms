@@ -3,7 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import Markdown from 'markdown-to-jsx';
+import ReactMarkdown from 'react-markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   CONTENT_TYPE_HTML,
@@ -23,6 +23,9 @@ const useStyles = makeStyles(() => ({
   previewContainer: {
     height: 812,
     width: 375,
+  },
+  markdown: {
+    padding: 10,
   },
 }));
 
@@ -50,7 +53,9 @@ const ContentPreview: FC<Props> = ({
     >
       {contentType === CONTENT_TYPE_MARKDOWN && (
         <div className={classes.previewContainer}>
-          <Markdown>{showContentPreview!}</Markdown>
+          <ReactMarkdown className={classes.markdown}>
+            {showContentPreview!}
+          </ReactMarkdown>
         </div>
       )}
       {contentType === CONTENT_TYPE_HTML && (

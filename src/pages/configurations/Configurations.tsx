@@ -21,6 +21,7 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import Base64TransformerButton from './base64/Base64TransformerButton';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
+import { DOCUMENTATION_CONFIGURATIONS } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   paper: {
@@ -104,7 +105,7 @@ const Configurations: FC<Props> = ({ title, setNotification }) => {
 
   return (
     <>
-      <PageHeading title={title}>
+      <PageHeading title={title} help={DOCUMENTATION_CONFIGURATIONS}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={toggleEditStatus}

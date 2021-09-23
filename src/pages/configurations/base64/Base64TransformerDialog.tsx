@@ -22,6 +22,8 @@ import Alert from '@material-ui/lab/Alert';
 import FileSaver from 'file-saver';
 import FileDropzoneArea from '../../../components/form/FileDropzoneArea';
 import CopyToClipboardAction from '../../../components/CopyToClipboardAction';
+import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
+import { DOCUMENTATION_TRANSFORM_BASE64 } from '../../../model/DocumentationType';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -73,7 +75,8 @@ const Base64TransformerDialog: FC<Props> = ({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
-        Transformeer SVG &gt; &lt; base64
+        Transformeer SVG &gt; &lt; base64&ensp;
+        <HelpAction documentationType={DOCUMENTATION_TRANSFORM_BASE64} />
       </DialogTitle>
       <DialogContent>
         <DialogContentText

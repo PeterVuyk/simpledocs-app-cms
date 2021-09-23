@@ -90,6 +90,7 @@ const MarkdownEditor: FC<Props> = ({
       {saveButtonVisible && <SaveIndicator />}
       {content !== null && (
         <Editor
+          previewHighlight={false}
           ref={editorRef}
           initialValue={content ?? ''}
           previewStyle="vertical"

@@ -1,26 +1,33 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 import InfoIcon from '@material-ui/icons/Info';
 import { Tooltip } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import ReactMarkdown from 'react-markdown';
 import HelpDialog from './HelpDialog';
+import useDocumentation from '../../documentation/useDocumentation';
+import { DocumentationType } from '../../../model/DocumentationType';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lightColor: {
     color: theme.palette.primary.light,
   },
+  markdown: {
+    fontSize: '1rem',
+  },
 }));
 
 interface Props {
-  title: string;
-  children: ReactNode;
+  documentationType: DocumentationType;
 }
 
-const HelpAction: FC<Props> = ({ title, children }) => {
+const HelpAction: FC<Props> = ({ documentationType }) => {
   const [openHelpDialog, setOpenHelpDialog] = useState<boolean>(false);
+  const { documentation, title, tooltip } = useDocumentation(documentationType);
   const classes = useStyles();
+
   return (
     <>
-      <Tooltip title="Toelichting gebruik">
+      <Tooltip title={tooltip}>
         <InfoIcon
           className={classes.lightColor}
           style={{ cursor: 'pointer' }}
@@ -33,7 +40,9 @@ const HelpAction: FC<Props> = ({ title, children }) => {
           dialogTitle={title}
           setOpenDialog={setOpenHelpDialog}
         >
-          {children}
+          <ReactMarkdown className={classes.markdown}>
+            {documentation}
+          </ReactMarkdown>
         </HelpDialog>
       )}
     </>

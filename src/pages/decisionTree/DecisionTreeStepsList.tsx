@@ -43,12 +43,12 @@ const DecisionTreeStepsList: FC<Props> = ({
             <TableCell>
               <strong>ID</strong>
               <br />
-              id
+              id*
             </TableCell>
             <TableCell>
               <strong>Label</strong>
               <br />
-              label
+              label*
             </TableCell>
             <TableCell style={{ whiteSpace: 'nowrap' }}>
               <strong>Parent ID</strong>

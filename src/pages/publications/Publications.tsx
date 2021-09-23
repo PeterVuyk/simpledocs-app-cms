@@ -12,6 +12,7 @@ import publishRepository from '../../firebase/database/publishRepository';
 import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { DOCUMENTATION_PUBLICATIONS } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   table: {
@@ -41,7 +42,7 @@ const Publications: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title} />
+      <PageHeading title={title} help={DOCUMENTATION_PUBLICATIONS} />
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="publications table">
           <TableHead>

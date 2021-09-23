@@ -16,6 +16,7 @@ import UploadDecisionTreeButton from './menu/upload/UploadDecisionTreeButton';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
 import { ADD_DECISION_TREE } from '../../navigation/UrlSlugs';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { DOCUMENTATION_DECISION_TREE } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   button: {
@@ -64,7 +65,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title}>
+      <PageHeading title={title} help={DOCUMENTATION_DECISION_TREE}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}
