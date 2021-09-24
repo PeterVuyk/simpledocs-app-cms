@@ -1,16 +1,18 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { Artifact } from '../../../../../model/Artifact';
+import { Artifact, ContentType } from '../../../../../model/Artifact';
 
 interface Props {
+  contentType: ContentType;
   onUpdateFile: (content: string) => void;
   templateMenu: HTMLElement | null;
   setTemplateMenu: (templateMenu: null | HTMLElement) => void;
   templates: Artifact[];
 }
 
-const HtmlTemplateMenu: FC<Props> = ({
+const TemplateMenu: FC<Props> = ({
+  contentType,
   onUpdateFile,
   templateMenu,
   setTemplateMenu,
@@ -48,17 +50,19 @@ const HtmlTemplateMenu: FC<Props> = ({
       onClose={() => setTemplateMenu(null)}
     >
       {templates &&
-        templates.map((template) => (
-          <MenuItem
-            id={template.id}
-            key={template.id!.toString()}
-            onClick={handleChange}
-          >
-            {template.title}
-          </MenuItem>
-        ))}
+        templates
+          .filter((value) => value.contentType === contentType)
+          .map((template) => (
+            <MenuItem
+              id={template.id}
+              key={template.id!.toString()}
+              onClick={handleChange}
+            >
+              {template.title}
+            </MenuItem>
+          ))}
     </Menu>
   );
 };
 
-export default HtmlTemplateMenu;
+export default TemplateMenu;

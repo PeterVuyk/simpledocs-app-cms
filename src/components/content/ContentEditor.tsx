@@ -9,8 +9,8 @@ import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/Artifact';
-import HtmlEditor from '../form/formik/htmlEditor/HtmlEditor';
-import MarkdownEditor from '../form/formik/markdownEditor/MarkdownEditor';
+import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
+import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 
 const useStyles = makeStyles({
   hiddenContainer: {

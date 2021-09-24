@@ -1,16 +1,18 @@
 import { database } from '../firebaseConnection';
 import { AGGREGATE_ARTIFACTS } from '../../model/Aggregate';
-import { Artifact } from '../../model/Artifact';
+import { Artifact, ContentType } from '../../model/Artifact';
 import { ArtifactType } from '../../model/ArtifactType';
 
 async function getArtifactByTitle(
   title: string,
-  artifactType: ArtifactType
+  artifactType: ArtifactType,
+  contentType: ContentType
 ): Promise<Artifact | null> {
   const result = await database
     .collection(AGGREGATE_ARTIFACTS)
     .where('type', '==', artifactType)
     .where('title', '==', title)
+    .where('contentType', '==', contentType)
     .limit(1)
     .get()
     .then((querySnapshot) => {

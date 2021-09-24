@@ -1,17 +1,17 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import JoditEditor from 'jodit-react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import BottomHtmlToolbox from './toolbox/BottomHtmlToolbox';
-import FileDropzoneArea from '../../FileDropzoneArea';
-import ErrorTextTypography from '../../../text/ErrorTextTypography';
-import LoadingSpinner from '../../../LoadingSpinner';
-import artifactsRepository from '../../../../firebase/database/artifactsRepository';
-import { ARTIFACT_TYPE_TEMPLATE } from '../../../../model/ArtifactType';
-import base64Helper from '../../../../helper/base64Helper';
-import useStylesheet from '../../../hooks/useStylesheet';
-import { CONTENT_TYPE_HTML } from '../../../../model/Artifact';
-import SaveIndicator from '../SaveIndicator';
-import useHtmlModifier from '../../../hooks/useHtmlModifier';
+import BottomToolbox from '../toolbox/BottomToolbox';
+import FileDropzoneArea from '../../../FileDropzoneArea';
+import ErrorTextTypography from '../../../../text/ErrorTextTypography';
+import LoadingSpinner from '../../../../LoadingSpinner';
+import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
+import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/ArtifactType';
+import base64Helper from '../../../../../helper/base64Helper';
+import useStylesheet from '../../../../hooks/useStylesheet';
+import { CONTENT_TYPE_HTML } from '../../../../../model/Artifact';
+import SaveIndicator from '../../SaveIndicator';
+import useHtmlModifier from '../../../../hooks/useHtmlModifier';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,7 +103,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       } else {
         // Use the 'default' template.
         html = await artifactsRepository
-          .getArtifactByTitle('Standaard', ARTIFACT_TYPE_TEMPLATE)
+          .getArtifactByTitle(
+            'Standaard',
+            ARTIFACT_TYPE_TEMPLATE,
+            CONTENT_TYPE_HTML
+          )
           .then((artifact) =>
             artifact?.content ? modifyHtmlAfterUpload(artifact.content) : ''
           );
@@ -135,7 +139,10 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       {saveButtonVisible && <SaveIndicator />}
       <div className={classes.relativeContainer}>
         <div className={classes.formControl}>
-          <BottomHtmlToolbox onUpdateFile={handleUpdateFile} />
+          <BottomToolbox
+            contentType={CONTENT_TYPE_HTML}
+            onUpdateFile={handleUpdateFile}
+          />
         </div>
         <JoditEditor
           ref={editor}

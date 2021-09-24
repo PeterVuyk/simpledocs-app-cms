@@ -65,17 +65,19 @@ const ArtifactsTable: FC<Props> = ({
         </TableHead>
         <TableBody>
           {artifacts !== null &&
-            artifacts.map((row) => (
-              <TableRow key={row.id}>
-                <ArtifactsTableRow
-                  artifact={row}
-                  showArtifactType={showArtifactType}
-                  aggregate={aggregate}
-                  onDelete={onDelete}
-                  showIdColumn={showIdColumn}
-                />
-              </TableRow>
-            ))}
+            artifacts
+              .sort((a, b) => a.contentType.localeCompare(b.contentType))
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <ArtifactsTableRow
+                    artifact={row}
+                    showArtifactType={showArtifactType}
+                    aggregate={aggregate}
+                    onDelete={onDelete}
+                    showIdColumn={showIdColumn}
+                  />
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
     </TableContainer>

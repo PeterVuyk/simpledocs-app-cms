@@ -4,14 +4,14 @@ import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
-import HtmlTemplateMenu from './HtmlTemplateMenu';
-import HtmlSnippetsMenu from './HtmlSnippetsMenu';
+import TemplateMenu from './TemplateMenu';
+import SnippetsMenu from './SnippetsMenu';
 import logger from '../../../../../helper/logger';
 import {
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
 } from '../../../../../model/ArtifactType';
-import { Artifact } from '../../../../../model/Artifact';
+import { Artifact, ContentType } from '../../../../../model/Artifact';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 
 const useStyles = makeStyles(() =>
@@ -24,9 +24,10 @@ const useStyles = makeStyles(() =>
 
 interface Props {
   onUpdateFile: (file: any) => void;
+  contentType: ContentType;
 }
 
-const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
+const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
   const [snippetsMenu, setSnippetsMenu] = useState<null | HTMLElement>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
@@ -44,11 +45,11 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
       );
   }, []);
 
-  const openHtmlTemplateMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openTemplateMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setTemplateMenu(event.currentTarget);
   };
 
-  const openHtmlSnippetsMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openSnippetsMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setSnippetsMenu(event.currentTarget);
   };
 
@@ -62,12 +63,13 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
         <Button
           className={classes.button}
           variant="contained"
-          onClick={openHtmlSnippetsMenu}
+          onClick={openSnippetsMenu}
         >
           <LoyaltyIcon />
         </Button>
       </Tooltip>
-      <HtmlSnippetsMenu
+      <SnippetsMenu
+        contentType={contentType}
         snippetsMenu={snippetsMenu}
         setSnippetsMenu={setSnippetsMenu}
         snippets={artifacts.filter(
@@ -78,12 +80,13 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
         <Button
           className={classes.button}
           variant="contained"
-          onClick={openHtmlTemplateMenu}
+          onClick={openTemplateMenu}
         >
           <StyleIcon />
         </Button>
       </Tooltip>
-      <HtmlTemplateMenu
+      <TemplateMenu
+        contentType={contentType}
         templateMenu={templateMenu}
         setTemplateMenu={setTemplateMenu}
         onUpdateFile={onUpdateFile}
@@ -95,4 +98,4 @@ const BottomHtmlToolbox: FC<Props> = ({ onUpdateFile }) => {
   );
 };
 
-export default BottomHtmlToolbox;
+export default BottomToolbox;

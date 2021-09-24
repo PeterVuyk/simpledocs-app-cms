@@ -12,16 +12,20 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import Highlight from 'react-highlight';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import ReactMarkdown from 'react-markdown';
 import CopyToClipboardAction from '../../../../CopyToClipboardAction';
 import '../../../../../../node_modules/highlight.js/styles/a11y-dark.css';
-import { Artifact } from '../../../../../model/Artifact';
+import {
+  Artifact,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+} from '../../../../../model/Artifact';
 
 const useStyles = makeStyles(() => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: 700,
     width: 375,
   },
   highLightContainer: {
@@ -35,6 +39,11 @@ const useStyles = makeStyles(() => ({
     border: 'none',
     width: 375,
     height: 700,
+  },
+  markdown: {
+    width: 375,
+    minHeight: 700,
+    padding: 10,
   },
 }));
 
@@ -51,10 +60,7 @@ interface Props {
   oncloseDialog: () => void;
 }
 
-const HtmlSnippetsDialog: FC<Props> = ({
-  openSnippetsDialog,
-  oncloseDialog,
-}) => {
+const SnippetsDialog: FC<Props> = ({ openSnippetsDialog, oncloseDialog }) => {
   const classes = useStyles();
   return (
     <Dialog
@@ -82,10 +88,16 @@ const HtmlSnippetsDialog: FC<Props> = ({
                 style={{ whiteSpace: 'pre-line' }}
                 id="alert-dialog-slide-description"
               >
-                Html:
+                {openSnippetsDialog.contentType}:
               </DialogContentText>
               <div className="highLightContainer">
-                <Highlight className="html">
+                <Highlight
+                  className={
+                    openSnippetsDialog.contentType === CONTENT_TYPE_HTML
+                      ? 'html'
+                      : 'markdown'
+                  }
+                >
                   {openSnippetsDialog.content}
                 </Highlight>
               </div>
@@ -99,11 +111,18 @@ const HtmlSnippetsDialog: FC<Props> = ({
                 Voorbeeld:
               </DialogContentText>
               <Paper elevation={2} className={classes.paper}>
-                <iframe
-                  className={classes.iframe}
-                  title="snippet.html"
-                  srcDoc={openSnippetsDialog.content}
-                />
+                {openSnippetsDialog.contentType === CONTENT_TYPE_HTML && (
+                  <iframe
+                    className={classes.iframe}
+                    title="snippet.html"
+                    srcDoc={openSnippetsDialog.content}
+                  />
+                )}
+                {openSnippetsDialog.contentType === CONTENT_TYPE_MARKDOWN && (
+                  <ReactMarkdown className={classes.markdown}>
+                    {openSnippetsDialog.content}
+                  </ReactMarkdown>
+                )}
               </Paper>
             </Grid>
           </Grid>
@@ -118,4 +137,4 @@ const HtmlSnippetsDialog: FC<Props> = ({
   );
 };
 
-export default HtmlSnippetsDialog;
+export default SnippetsDialog;

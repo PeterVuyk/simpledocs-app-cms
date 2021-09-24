@@ -1,17 +1,27 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { CONTENT_TYPE_MARKDOWN } from '../../../../model/Artifact';
-import base64Helper from '../../../../helper/base64Helper';
-import ErrorTextTypography from '../../../text/ErrorTextTypography';
-import FileDropzoneArea from '../../FileDropzoneArea';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/Artifact';
+import base64Helper from '../../../../../helper/base64Helper';
+import ErrorTextTypography from '../../../../text/ErrorTextTypography';
+import FileDropzoneArea from '../../../FileDropzoneArea';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import SaveIndicator from '../SaveIndicator';
+import SaveIndicator from '../../SaveIndicator';
+import BottomToolbox from '../toolbox/BottomToolbox';
+import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
+import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/ArtifactType';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     relativeContainer: {
       position: 'relative',
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      position: 'absolute',
+      zIndex: 1000,
+      right: 10,
+      bottom: 30,
     },
   })
 );
@@ -35,9 +45,22 @@ const MarkdownEditor: FC<Props> = ({
   const editorRef = useRef<any>();
 
   useEffect(() => {
-    const markdown = initialFile === null ? '' : initialFile;
-    formik.current?.setFieldValue('markdownContent', markdown);
-    setContent(markdown);
+    async function setInitialHtmlContent() {
+      let markdown = initialFile === null ? '' : initialFile;
+      if (!markdown) {
+        // Use the 'default' template.
+        markdown = await artifactsRepository
+          .getArtifactByTitle(
+            'Standaard',
+            ARTIFACT_TYPE_TEMPLATE,
+            CONTENT_TYPE_MARKDOWN
+          )
+          .then((artifact) => (artifact?.content ? artifact.content : ''));
+      }
+      formik.current?.setFieldValue('markdownContent', markdown);
+      setContent(markdown);
+    }
+    setInitialHtmlContent();
   }, [formik, initialFile]);
 
   const getErrorMessage = (): string => {
@@ -73,13 +96,19 @@ const MarkdownEditor: FC<Props> = ({
     }, 5000);
   };
 
-  const handleUpdateFile = () => {
+  const handleUpdateFile = (file: string) => {
+    if (file !== 'markdown') {
+      editorRef.current?.editorInst.setMarkdown(file);
+      setContent(file);
+      showSaveButton();
+      return;
+    }
     const markdown = editorRef.current?.editorInst.getMarkdown();
     if (content !== markdown) {
       formik.current?.setFieldValue('markdownContent', markdown);
       setContent(markdown);
+      showSaveButton();
     }
-    showSaveButton();
   };
 
   return (
@@ -89,17 +118,25 @@ const MarkdownEditor: FC<Props> = ({
       )}
       {saveButtonVisible && <SaveIndicator />}
       {content !== null && (
-        <Editor
-          previewHighlight={false}
-          ref={editorRef}
-          initialValue={content ?? ''}
-          previewStyle="vertical"
-          height="600px"
-          initialEditType="markdown"
-          useCommandShortcut
-          usageStatistics={false}
-          onBlur={handleUpdateFile}
-        />
+        <div className={classes.relativeContainer}>
+          <div className={classes.formControl}>
+            <BottomToolbox
+              contentType={CONTENT_TYPE_MARKDOWN}
+              onUpdateFile={handleUpdateFile}
+            />
+          </div>
+          <Editor
+            previewHighlight={false}
+            ref={editorRef}
+            initialValue={content ?? ''}
+            previewStyle="vertical"
+            height="600px"
+            initialEditType="markdown"
+            useCommandShortcut
+            usageStatistics={false}
+            onBlur={handleUpdateFile}
+          />
+        </div>
       )}
       <FileDropzoneArea
         allowedExtension=".md"

@@ -1,16 +1,18 @@
 import React, { FC, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import HtmlSnippetsDialog from './HtmlSnippetsDialog';
-import { Artifact } from '../../../../../model/Artifact';
+import SnippetsDialog from './SnippetsDialog';
+import { Artifact, ContentType } from '../../../../../model/Artifact';
 
 interface Props {
   snippetsMenu: HTMLElement | null;
   setSnippetsMenu: (snippetMenu: null | HTMLElement) => void;
   snippets: Artifact[];
+  contentType: ContentType;
 }
 
-const HtmlSnippetsMenu: FC<Props> = ({
+const SnippetsMenu: FC<Props> = ({
+  contentType,
   snippetsMenu,
   setSnippetsMenu,
   snippets,
@@ -55,18 +57,20 @@ const HtmlSnippetsMenu: FC<Props> = ({
         onClose={() => setSnippetsMenu(null)}
       >
         {snippets &&
-          snippets.map((snippet) => (
-            <MenuItem
-              id={snippet.id}
-              key={snippet.id!.toString()}
-              onClick={handleOpenDialog}
-            >
-              {snippet.title}
-            </MenuItem>
-          ))}
+          snippets
+            .filter((value) => value.contentType === contentType)
+            .map((snippet) => (
+              <MenuItem
+                id={snippet.id}
+                key={snippet.id!.toString()}
+                onClick={handleOpenDialog}
+              >
+                {snippet.title}
+              </MenuItem>
+            ))}
       </Menu>
       {openSnippetsDialog && (
-        <HtmlSnippetsDialog
+        <SnippetsDialog
           openSnippetsDialog={openSnippetsDialog}
           oncloseDialog={handleCloseDialog}
         />
@@ -75,4 +79,4 @@ const HtmlSnippetsMenu: FC<Props> = ({
   );
 };
 
-export default HtmlSnippetsMenu;
+export default SnippetsMenu;

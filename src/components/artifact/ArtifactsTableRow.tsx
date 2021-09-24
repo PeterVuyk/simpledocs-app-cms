@@ -97,7 +97,10 @@ const ArtifactsTableRow: FC<Props> = ({
       <TableCell>
         {artifact.title}&nbsp;
         {isDefaultTemplate() && (
-          <Chip label="Default template" variant="outlined" />
+          <Chip
+            label={`Default ${artifact.contentType} template`}
+            variant="outlined"
+          />
         )}
       </TableCell>
       <TableCell>{artifact.contentType}</TableCell>

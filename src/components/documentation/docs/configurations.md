@@ -12,6 +12,6 @@ Het volgende kan in grote lijnen gewijzigd worden:
 - De titel en ondertitel van de afwegingen tabblad
 - Volgorde van de beslisboom en berekeningen op de afwegingen tab
 
-Met deze flexibiliteit is het beheer van de app versimpelt omdat de gebruikers geen app updates nodig heeft.
+Met deze flexibiliteit is het beheer van de app versimpelt omdat gebruikers geen app updates nodig hebben.
 
 Let op: Verkeerd aangebrachte wijzigingen kunnen grote gevolgen hebben in het functioneren van de app, bij twijfel adviseren we aanpassingen te beperken tot tekstuele wijzigingen. Neem bij twijfel contact op met de beheerder.

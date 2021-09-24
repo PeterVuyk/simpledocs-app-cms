@@ -22,7 +22,7 @@ function useDocumentation(documentationType: DocumentationType) {
         return configurations;
       case 'contentTypes':
         setTooltip('Info HTML en Markdown');
-        setTitle('Info HTML en Markdown');
+        setTitle('HTML en Markdown');
         return contentTypes;
       case 'decisionTree':
         setTooltip('Info beslisboom');
