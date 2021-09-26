@@ -68,8 +68,13 @@
         "icon": "folder"
       },
       {
-        "id": "Logging",
-        "url": "https://app.bugsnag.com/organizations/-181/stability-center",
+        "id": "App logging",
+        "url": "https://app.bugsnag.com/-181/ambulanzezorg-app/overview?release_stage=production",
+        "icon": "error_outline"
+      },
+      {
+        "id": "Api logging",
+        "url": "https://console.cloud.google.com/errors?time=PT1H&refresh=auto&order=COUNT_DESC&resolution=OPEN&resolution=ACKNOWLEDGED&project=ambulancezorg-app",
         "icon": "error_outline"
       },
       {
