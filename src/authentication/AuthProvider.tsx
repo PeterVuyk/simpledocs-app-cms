@@ -37,12 +37,29 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     return auth.signOut();
   }
 
+  function getMillisecondsUntilMidnight() {
+    const midnight = new Date();
+    midnight.setHours(24);
+    midnight.setMinutes(0);
+    midnight.setSeconds(0);
+    midnight.setMilliseconds(0);
+    return midnight.getTime() - new Date().getTime();
+  }
+
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    return auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
+      if (user !== null) {
+        user.getIdTokenResult().then((idTokenResult) => {
+          const authTime = idTokenResult.claims.auth_time * 1000;
+          const sessionDuration = getMillisecondsUntilMidnight();
+          const millisecondsUntilExpiration =
+            sessionDuration - (Date.now() - authTime);
+          setTimeout(() => auth.signOut(), millisecondsUntilExpiration);
+        });
+      }
     });
-    return unsubscribe;
   }, []);
 
   return (
