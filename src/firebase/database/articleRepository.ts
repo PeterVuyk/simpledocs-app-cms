@@ -7,14 +7,23 @@ async function createArticle(
   bookType: BookType,
   article: Article
 ): Promise<void> {
-  await database.collection(bookType).add(article);
+  await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .add(article);
 }
 
 async function deleteArticle(
   bookType: BookType,
   articleId: string
 ): Promise<void> {
-  await database.collection(bookType).doc(articleId).delete();
+  await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .doc(articleId)
+    .delete();
 }
 
 async function markArticleForDeletion(
@@ -22,6 +31,8 @@ async function markArticleForDeletion(
   articleId: string
 ): Promise<void> {
   await database
+    .collection('books')
+    .doc(bookType)
     .collection(bookType)
     .doc(articleId)
     .update({ markedForDeletion: true });
@@ -31,7 +42,11 @@ async function removeMarkForDeletion(
   bookType: BookType,
   articleId: string
 ): Promise<void> {
-  const articleRef = database.collection(bookType).doc(articleId);
+  const articleRef = database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .doc(articleId);
   return articleRef.update({
     markedForDeletion: firebase.firestore.FieldValue.delete(),
   });
@@ -42,6 +57,8 @@ async function getArticles(
   draftArticles: boolean
 ): Promise<Article[]> {
   const querySnapshot = await database
+    .collection('books')
+    .doc(bookType)
     .collection(bookType)
     .orderBy('pageIndex', 'asc')
     .get();
@@ -60,7 +77,12 @@ async function getArticleById(
   bookType: BookType,
   id: string
 ): Promise<Article | null> {
-  const documentSnapshot = await database.collection(bookType).doc(id).get();
+  const documentSnapshot = await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .doc(id)
+    .get();
   return documentSnapshot.data()
     ? ({ id: documentSnapshot.id, ...documentSnapshot.data() } as Article)
     : null;
@@ -72,6 +94,8 @@ async function getArticlesByField(
   fieldValue: string
 ): Promise<Article[]> {
   const querySnapshot = await database
+    .collection('books')
+    .doc(bookType)
     .collection(bookType)
     .where(fieldName, '==', fieldValue)
     .get();
@@ -94,7 +118,12 @@ async function updateArticle(
   delete updatedArticle.id;
 
   if (isDraft) {
-    await database.collection(bookType).doc(articleId).set(updatedArticle);
+    await database
+      .collection('books')
+      .doc(bookType)
+      .collection(bookType)
+      .doc(articleId)
+      .set(updatedArticle);
   } else {
     await createArticle(bookType, updatedArticle).then(() =>
       markArticleForDeletion(bookType, articleId ?? '')

@@ -171,6 +171,8 @@ async function publishUpdatedArticles(
 
   // 2: Remove articles that are marked for deletion:
   const querySnapshotDeletion = await database
+    .collection('books')
+    .doc(versioning.aggregate)
     .collection(versioning.aggregate)
     .where('markedForDeletion', '==', true)
     .get();
@@ -180,6 +182,8 @@ async function publishUpdatedArticles(
 
   // 3: Publish drafts:
   const querySnapshotToBePublished = await database
+    .collection('books')
+    .doc(versioning.aggregate)
     .collection(versioning.aggregate)
     .where('isDraft', '==', true)
     .get();
