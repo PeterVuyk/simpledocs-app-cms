@@ -37,8 +37,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     return auth.signOut();
   }
 
-  function getMillisecondsUntilMidnight() {
-    const midnight = new Date();
+  function getMillisecondsUntilMidnight(authTime: Date) {
+    const midnight = authTime;
     midnight.setHours(24);
     midnight.setMinutes(0);
     midnight.setSeconds(0);
@@ -53,9 +53,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       if (user !== null) {
         user.getIdTokenResult().then((idTokenResult) => {
           const authTime = idTokenResult.claims.auth_time * 1000;
-          const sessionDuration = getMillisecondsUntilMidnight();
+          const sessionDuration = getMillisecondsUntilMidnight(
+            new Date(authTime)
+          );
           const millisecondsUntilExpiration =
-            sessionDuration - (Date.now() - authTime);
+            sessionDuration + (Date.now() - authTime);
           setTimeout(() => auth.signOut(), millisecondsUntilExpiration);
         });
       }

@@ -1,9 +1,6 @@
 import { database } from '../firebaseConnection';
 import logger from '../../helper/logger';
 import {
-  APP_CONFIGURATIONS,
-  APP_CONFIGURATIONS_DRAFT,
-  CMS_CONFIGURATIONS_DRAFT,
   ConfigurationType,
   ConfigurationTypeStatus,
   getDraftFromConfigurationType,
@@ -14,13 +11,12 @@ import { CmsConfiguration } from '../../model/CmsConfiguration';
 const CONFIGURATION_COLLECTION = 'configurations';
 async function getConfigurations(
   configurationTypeStatus: ConfigurationTypeStatus
-): Promise<AppConfigurations | void> {
+): Promise<AppConfigurations | CmsConfiguration | void> {
   return database
     .collection(CONFIGURATION_COLLECTION)
     .doc(configurationTypeStatus)
     .get()
-    .then((value) => value.data() as AppConfigurations)
-    .then((value) => value)
+    .then((value) => value.data() as AppConfigurations | CmsConfiguration)
     .catch((reason) =>
       logger.errorWithReason(
         'Failed collecting configurations from config file',

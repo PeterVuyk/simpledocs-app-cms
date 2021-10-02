@@ -11,27 +11,28 @@ import { CalculationInfo } from '../../model/CalculationInfo';
 import artifactsRepository from './artifactsRepository';
 import {
   APP_CONFIGURATIONS,
-  APP_CONFIGURATIONS_DRAFT,
   CMS_CONFIGURATIONS,
   ConfigurationType,
   getDraftFromConfigurationType,
 } from '../../model/ConfigurationType';
 import cmsConfiguration from '../../configuration/cmsConfiguration.json';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
+import { VERSIONING_STATUS_REMOVED } from '../../model/VersioningStatus';
 
 const configuration = cmsConfiguration as CmsConfiguration;
+const versioningFirestoreCollection = 'versioning';
 
+// TODO: Translations should come from the config (search for 'Onbekend').
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
-    .collection('versioning')
-    .doc('aggregate')
-    .get();
-  // @ts-ignore
-  return Object.entries(versioning.data())
-    .map(([key, value]) => {
-      return { aggregate: key, version: value } as Versioning;
-    })
-    .sort((a, b) => a.aggregate.localeCompare(b.aggregate));
+    .collection(versioningFirestoreCollection)
+    .get()
+    .then((query) =>
+      query.docs
+        .map((document) => document.data() as Versioning)
+        .filter((version) => version.status !== VERSIONING_STATUS_REMOVED)
+    );
+  return versioning.sort((a, b) => a.aggregate.localeCompare(b.aggregate));
 }
 
 async function publishDecisionTree(
@@ -41,13 +42,16 @@ async function publishDecisionTree(
   const batch = database.batch();
 
   // 1: Update version
-  const DocumentSnapshotAggregate = await database
-    .collection('versioning')
-    .doc('aggregate')
+  const documentSnapshotAggregate = await database
+    .collection(versioningFirestoreCollection)
+    .where('aggregate', '==', versioning.aggregate)
+    .limit(1)
     .get();
-  batch.update(DocumentSnapshotAggregate.ref, {
-    [versioning.aggregate]: newVersion,
-  });
+  documentSnapshotAggregate.forEach((result) =>
+    batch.update(result.ref, {
+      version: newVersion,
+    })
+  );
 
   // 2: Remove markedForDeletion steps
   const querySnapshot = await database.collection(versioning.aggregate).get();
@@ -131,13 +135,17 @@ async function publishUpdatedAppConfigurations(
   const batch = database.batch();
 
   // 1: Update version
-  const DocumentSnapshotAggregate = await database
-    .collection('versioning')
-    .doc('aggregate')
+  const documentSnapshotAggregate = await database
+    .collection(versioningFirestoreCollection)
+    .where('aggregate', '==', versioning.aggregate)
+    .limit(1)
     .get();
-  batch.update(DocumentSnapshotAggregate.ref, {
-    [versioning.aggregate]: newVersion,
+  documentSnapshotAggregate.forEach((result) => {
+    batch.update(result.ref, {
+      version: newVersion,
+    });
   });
+
   // 2: if a draft from the app/cmsConfiguration does not exist, return
   const draftConfigurationRef = database
     .collection('configurations')
@@ -165,14 +173,17 @@ async function publishUpdatedArticles(
 ): Promise<void> {
   const batch = database.batch();
 
-  // 1: Update version:
+  // 1: Update version
   const documentSnapshotAggregate = await database
-    .collection('versioning')
-    .doc('aggregate')
+    .collection(versioningFirestoreCollection)
+    .where('aggregate', '==', versioning.aggregate)
+    .limit(1)
     .get();
-  batch.update(documentSnapshotAggregate.ref, {
-    [versioning.aggregate]: newVersion,
-  });
+  documentSnapshotAggregate.forEach((result) =>
+    batch.update(result.ref, {
+      version: newVersion,
+    })
+  );
 
   // 2: Remove articles that are marked for deletion:
   const querySnapshotDeletion = await database
@@ -207,13 +218,16 @@ async function publishUpdatedCalculations(
   const batch = database.batch();
 
   // 1: Update version
-  const DocumentSnapshotAggregate = await database
-    .collection('versioning')
-    .doc('aggregate')
+  const documentSnapshotAggregate = await database
+    .collection(versioningFirestoreCollection)
+    .where('aggregate', '==', versioning.aggregate)
+    .limit(1)
     .get();
-  batch.update(DocumentSnapshotAggregate.ref, {
-    [versioning.aggregate]: newVersion,
-  });
+  documentSnapshotAggregate.forEach((result) =>
+    batch.update(result.ref, {
+      version: newVersion,
+    })
+  );
 
   // 2: if drafts from the calculations does not exist, return
   const querySnapshot = await database
