@@ -14,11 +14,12 @@ import NavigationDrawer from './NavigationDrawer';
 import Articles from '../pages/articles/list/Articles';
 import DecisionTree from '../pages/decisionTree/DecisionTree';
 import Calculations from '../pages/calculations/Calculations';
-import Configurations from '../pages/configurations/Configurations';
 import Publications from '../pages/publications/Publications';
 import NotFound from '../pages/NotFound';
 import Styleguide from '../pages/styleguide/Styleguide';
 import useConfiguration from '../configuration/useConfiguration';
+import AppConfigurationsPage from '../pages/appConfigurations/AppConfigurationsPage';
+import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
 
 const drawerWidth = 240;
 
@@ -82,10 +83,16 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             title={configuration.menu.menuItems.calculations.title}
           />
         );
-      case configuration.menu.menuItems.configurations.urlSlug:
+      case configuration.menu.menuItems.appConfigurations.urlSlug:
         return (
-          <Configurations
-            title={configuration.menu.menuItems.configurations.title}
+          <AppConfigurationsPage
+            title={configuration.menu.menuItems.appConfigurations.title}
+          />
+        );
+      case configuration.menu.menuItems.cmsConfigurations.urlSlug:
+        return (
+          <CmsConfigurations
+            title={configuration.menu.menuItems.appConfigurations.title}
           />
         );
       case configuration.menu.menuItems.publications.urlSlug:

@@ -1,2 +1,4 @@
-export const APP_CONFIG = 'appConfig';
-export const APP_CONFIG_DRAFT = 'appConfigDraft';
+export const APP_CONFIGURATIONS = 'appConfigurations';
+export const APP_CONFIGURATIONS_DRAFT = 'appConfigurationsDraft';
+export const CMS_CONFIGURATIONS = 'cmsConfigurations';
+export const CMS_CONFIGURATIONS_DRAFT = 'cmsConfigurationsDraft';

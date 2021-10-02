@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
-import { ConfigInfo } from '../../model/ConfigInfo';
+import { AppConfigurations } from '../../model/AppConfigurations';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
 import {
@@ -21,7 +21,7 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import Base64TransformerButton from './base64/Base64TransformerButton';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
-import { DOCUMENTATION_CONFIGURATIONS } from '../../model/DocumentationType';
+import { DOCUMENTATION_APP_CONFIGURATIONS } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   paper: {
@@ -34,25 +34,26 @@ interface Props {
   title: string;
 }
 
-const Configurations: FC<Props> = ({ title, setNotification }) => {
+const AppConfigurationsPage: FC<Props> = ({ title, setNotification }) => {
   const { editStatus, setEditStatus } = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
-  const [initialAppConfig, setInitialAppConfig] =
-    useState<ConfigInfo | null | void>();
+  const [initialAppConfigurations, setInitialAppConfigurations] =
+    useState<AppConfigurations | null | void>();
   const [showEditor, setShowEditor] = useState<boolean>(false);
-  const [appConfig, setAppConfig] = useState<ConfigInfo | null | void>(null);
+  const [appConfigurations, setAppConfigurations] =
+    useState<AppConfigurations | null | void>(null);
   const classes = useStyles();
 
   useEffect(() => {
     configurationRepository
-      .getAppConfig(EDIT_STATUS_DRAFT)
+      .getAppConfigurations(EDIT_STATUS_DRAFT)
       .then((value) => setHasDraft(value !== undefined));
   }, []);
 
   useEffect(() => {
-    configurationRepository.getAppConfig(editStatus).then((value) => {
+    configurationRepository.getAppConfigurations(editStatus).then((value) => {
       setShowEditor(false);
-      setInitialAppConfig(value);
+      setInitialAppConfigurations(value);
       setShowEditor(true);
     });
   }, [editStatus, setShowEditor]);
@@ -60,10 +61,10 @@ const Configurations: FC<Props> = ({ title, setNotification }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (val: string) => {
     configurationRepository
-      .updateAppConfig(appConfig!)
+      .updateAppConfigurations(appConfigurations!)
       .then(() => {
         setHasDraft(true);
-        setAppConfig(null);
+        setAppConfigurations(null);
       })
       .then(() =>
         setNotification({
@@ -74,7 +75,7 @@ const Configurations: FC<Props> = ({ title, setNotification }) => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit configuration has failed in Configurations.onSubmit',
+          'Edit configuration has failed in AppConfigurations.onSubmit',
           error
         );
         setNotification({
@@ -87,8 +88,8 @@ const Configurations: FC<Props> = ({ title, setNotification }) => {
   };
 
   const toggleEditStatus = () => {
-    setInitialAppConfig(null);
-    setAppConfig(null);
+    setInitialAppConfigurations(null);
+    setAppConfigurations(null);
     setEditStatus(
       editStatus === EDIT_STATUS_DRAFT
         ? EDIT_STATUS_PUBLISHED
@@ -98,30 +99,36 @@ const Configurations: FC<Props> = ({ title, setNotification }) => {
 
   const showEditButton = () => {
     return (
-      (editStatus === EDIT_STATUS_DRAFT && initialAppConfig) ||
+      (editStatus === EDIT_STATUS_DRAFT && initialAppConfigurations) ||
       (editStatus === EDIT_STATUS_PUBLISHED && hasDraft === false)
     );
   };
 
   return (
     <>
-      <PageHeading title={title} help={DOCUMENTATION_CONFIGURATIONS}>
+      <PageHeading title={title} help={DOCUMENTATION_APP_CONFIGURATIONS}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={toggleEditStatus}
         />
         <Base64TransformerButton />
-        {editStatus === EDIT_STATUS_DRAFT && initialAppConfig && (
+        {editStatus === EDIT_STATUS_DRAFT && initialAppConfigurations && (
           <RemoveConfigurationButton />
         )}
         {showEditButton() && (
-          <EditConfigurationButton appConfig={appConfig!} onSubmit={onSubmit} />
+          <EditConfigurationButton
+            appConfigurations={appConfigurations!}
+            onSubmit={onSubmit}
+          />
         )}
       </PageHeading>
-      {showEditor && initialAppConfig && (
-        <Editor value={initialAppConfig} onChange={setAppConfig} />
+      {showEditor && initialAppConfigurations && (
+        <Editor
+          value={initialAppConfigurations}
+          onChange={setAppConfigurations}
+        />
       )}
-      {showEditor && !initialAppConfig && (
+      {showEditor && !initialAppConfigurations && (
         <Paper elevation={2} className={classes.paper}>
           <Typography>Geen resultaten.</Typography>
         </Paper>
@@ -144,4 +151,7 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Configurations);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppConfigurationsPage);

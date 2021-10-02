@@ -30,7 +30,7 @@ export interface TabInfo {
   subTitle?: string;
 }
 
-export interface ConfigInfo {
+export interface AppConfigurations {
   firstTab: TabInfo;
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;

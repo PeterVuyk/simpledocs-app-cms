@@ -20,11 +20,7 @@ interface BookItems {
 }
 
 interface MenuItems {
-  publications: MenuItem;
-  styleguide: MenuItem;
-  configurations: MenuItem;
-  calculations: MenuItem;
-  decisionTree: MenuItem;
+  [key: string]: MenuItem;
 }
 
 interface BookConfig {

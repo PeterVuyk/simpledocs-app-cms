@@ -42,11 +42,6 @@
         "urlSlug": "calculations",
         "icon": "dialpad_icon"
       },
-      "configurations": {
-        "title": "Configuratie app",
-        "urlSlug": "configurations",
-        "icon": "phonelink_setup"
-      },
       "styleguide": {
         "title": "Styleguide",
         "urlSlug": "styleguide",
@@ -56,6 +51,16 @@
         "title": "Publiceren",
         "urlSlug": "publications",
         "icon": "public_icon"
+      },
+      "appConfigurations": {
+        "title": "Configuratie app",
+        "urlSlug": "app-configurations",
+        "icon": "phonelink_setup"
+      },
+      "cmsConfigurations": {
+        "title": "Configuratie cms",
+        "urlSlug": "cms-configurations",
+        "icon": "settings_applications"
       }
     }
   },

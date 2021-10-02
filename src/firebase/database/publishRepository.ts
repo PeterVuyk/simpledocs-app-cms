@@ -1,6 +1,6 @@
 import { database } from '../firebaseConnection';
 import {
-  AGGREGATE_CONFIGURATIONS,
+  AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
@@ -8,7 +8,10 @@ import { Versioning } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import artifactsRepository from './artifactsRepository';
-import { APP_CONFIG, APP_CONFIG_DRAFT } from '../../model/Configurations';
+import {
+  APP_CONFIGURATIONS,
+  APP_CONFIGURATIONS_DRAFT,
+} from '../../model/Configurations';
 import cmsConfiguration from '../../configuration/cmsConfiguration.json';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
 
@@ -130,24 +133,22 @@ async function publishUpdatedConfigurations(
   batch.update(DocumentSnapshotAggregate.ref, {
     [versioning.aggregate]: newVersion,
   });
-
-  // 2: if a draft from the appConfig does not exist, return
+  // 2: if a draft from the appConfiguration does not exist, return
   const draftConfigurationRef = database
-    .collection(AGGREGATE_CONFIGURATIONS)
-    .doc(APP_CONFIG_DRAFT);
+    .collection('configurations')
+    .doc(APP_CONFIGURATIONS_DRAFT);
   const docSnapshot = await draftConfigurationRef.get();
   if (!docSnapshot.exists) {
     return batch.commit();
   }
-
   // 3: remove draft
   const draftConfig = await draftConfigurationRef.get();
   batch.delete(draftConfigurationRef);
 
   // 4: overwrite published met draft
   const publishedConfigurationRef = database
-    .collection(AGGREGATE_CONFIGURATIONS)
-    .doc(APP_CONFIG);
+    .collection('configurations')
+    .doc(APP_CONFIGURATIONS);
   batch.set(publishedConfigurationRef, draftConfig.data());
 
   return batch.commit();
@@ -263,7 +264,7 @@ async function updateVersion(
     case AGGREGATE_DECISION_TREE:
       await publishDecisionTree(versioning, newVersion);
       break;
-    case AGGREGATE_CONFIGURATIONS:
+    case AGGREGATE_APP_CONFIGURATIONS:
       await publishUpdatedConfigurations(versioning, newVersion);
       break;
     case AGGREGATE_CALCULATIONS:

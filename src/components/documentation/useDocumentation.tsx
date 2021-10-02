@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import defaultTemplate from './docs/default-template.md';
-import configurations from './docs/configurations.md';
+import appConfigurations from './docs/app-configurations.md';
 import contentTypes from './docs/content-types.md';
 import decisionTree from './docs/decision-tree.md';
 import publications from './docs/publications.md';
@@ -16,10 +16,10 @@ function useDocumentation(documentationType: DocumentationType) {
   const getMarkdownFile = useCallback(() => {
     // eslint-disable-next-line default-case
     switch (documentationType) {
-      case 'configurations':
+      case 'appConfigurations':
         setTooltip('Info configuratie app');
         setTitle('Info configuratie app');
-        return configurations;
+        return appConfigurations;
       case 'contentTypes':
         setTooltip('Info HTML en Markdown');
         setTitle('HTML en Markdown');
