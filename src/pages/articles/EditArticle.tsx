@@ -9,15 +9,14 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
 import Navigation from '../../navigation/Navigation';
-import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import htmlContentHelper from '../../helper/htmlContentHelper';
 import NotFound from '../NotFound';
-import navigationConfig from '../../navigation/navigationConfig.json';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
+import useConfiguration from '../../configuration/useConfiguration';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -28,44 +27,41 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
-
-  const bookType = useMemo(() => {
-    return Object.keys(navigationConfig.books.bookItems)[
-      Object.values(navigationConfig.books.bookItems)
-        .map((item) => item.urlSlug)
-        .indexOf(aggregatePath)
-    ] as BookType;
-  }, [aggregatePath]);
+  const { getBookTypeFromUrlSlug } = useConfiguration();
 
   useEffect(() => {
     articleRepository
-      .getArticleById(bookType, articleId)
+      .getArticleById(getBookTypeFromUrlSlug(aggregatePath), articleId)
       .then((result) => setArticle(result));
-  }, [aggregatePath, bookType, articleId]);
+  }, [aggregatePath, articleId]);
 
   const handleSubmit = async (
     values: FormikValues,
     contentType: ContentType
   ): Promise<void> => {
     await articleRepository
-      .updateArticle(bookType, article?.chapter ?? '', {
-        id: article?.id,
-        pageIndex: values.pageIndex,
-        chapter: values.chapter,
-        level: values.level,
-        title: values.title,
-        subTitle: values.subTitle,
-        searchText: values.searchText,
-        content:
-          contentType === CONTENT_TYPE_HTML
-            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                values.htmlContent
-              )
-            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
-        contentType,
-        iconFile: values.iconFile,
-        isDraft: true,
-      })
+      .updateArticle(
+        getBookTypeFromUrlSlug(aggregatePath),
+        article?.chapter ?? '',
+        {
+          id: article?.id,
+          pageIndex: values.pageIndex,
+          chapter: values.chapter,
+          level: values.level,
+          title: values.title,
+          subTitle: values.subTitle,
+          searchText: values.searchText,
+          content:
+            contentType === CONTENT_TYPE_HTML
+              ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                  values.htmlContent
+                )
+              : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
+          contentType,
+          iconFile: values.iconFile,
+          isDraft: true,
+        }
+      )
       .then(() => history.push(`/books/${aggregatePath}`))
       .then(() =>
         setNotification({
@@ -108,7 +104,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
         <ArticleForm
           article={article}
           onSubmit={handleSubmit}
-          bookType={bookType}
+          bookType={getBookTypeFromUrlSlug(aggregatePath)}
         />
       )}
     </Navigation>

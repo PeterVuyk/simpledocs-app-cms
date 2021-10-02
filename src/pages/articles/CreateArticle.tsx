@@ -9,12 +9,11 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import { BookType } from '../../model/BookType';
 import { NotificationOptions } from '../../model/NotificationOptions';
-import navigationConfig from '../../navigation/navigationConfig.json';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
+import useConfiguration from '../../configuration/useConfiguration';
 
 interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -24,21 +23,14 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
   const { modifyHtmlForStorage } = useHtmlModifier();
-
-  const getBookType = (): BookType => {
-    return Object.keys(navigationConfig.books.bookItems)[
-      Object.values(navigationConfig.books.bookItems)
-        .map((item) => item.urlSlug)
-        .indexOf(aggregatePath)
-    ] as BookType;
-  };
+  const { getBookTypeFromUrlSlug } = useConfiguration();
 
   const handleSubmit = (
     values: FormikValues,
     contentType: ContentType
   ): void => {
     articleRepository
-      .createArticle(getBookType(), {
+      .createArticle(getBookTypeFromUrlSlug(aggregatePath), {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         level: values.level,
@@ -85,7 +77,10 @@ const CreateArticle: FC<Props> = ({ setNotification }) => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm onSubmit={handleSubmit} bookType={getBookType()} />
+      <ArticleForm
+        onSubmit={handleSubmit}
+        bookType={getBookTypeFromUrlSlug(aggregatePath)}
+      />
     </Navigation>
   );
 };

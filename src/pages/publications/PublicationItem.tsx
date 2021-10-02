@@ -4,9 +4,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { Tooltip } from '@material-ui/core';
 import PublishDialog from './PublishDialog';
 import { Versioning } from '../../model/Versioning';
-import navigationConfig from '../../navigation/navigationConfig.json';
-import { NavigationConfig } from '../../model/NavigationConfig';
-import { isBookType } from '../../model/BookType';
+import useConfiguration from '../../configuration/useConfiguration';
 
 interface Props {
   version: Versioning;
@@ -17,14 +15,15 @@ const PublicationItem: FC<Props> = ({ version, onReloadPublications }) => {
   const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
     null
   );
+  const { configuration, isBookType, isMenuAggregate } = useConfiguration();
+
   const handleTranslatedAggregate = (aggregate: string): string => {
-    const configs = navigationConfig as NavigationConfig;
     if (isBookType(aggregate)) {
-      return configs.books.bookItems[aggregate].title;
+      return configuration.books.bookItems[aggregate].title;
     }
-    if (Object.keys(configs.menu.menuItems).includes(aggregate)) {
+    if (isMenuAggregate(aggregate)) {
       // @ts-ignore
-      return configs.menu.menuItems[aggregate].title;
+      return configuration.menu.menuItems[aggregate].title;
     }
     return 'Onbekend';
   };

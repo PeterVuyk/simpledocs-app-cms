@@ -7,7 +7,6 @@ import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import articleRepository from '../../firebase/database/articleRepository';
-import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
 import ContentEditor from '../../components/content/ContentEditor';
@@ -20,7 +19,7 @@ import validateYupHtmlContent from '../../components/form/formik/validators/vali
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => void;
   article?: Article;
-  bookType: BookType;
+  bookType: string;
 }
 
 const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {

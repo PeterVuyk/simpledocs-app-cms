@@ -3,17 +3,16 @@ import {
   AGGREGATE_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
-  AGGREGATE_INSTRUCTION_MANUAL,
-  AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING,
-  AGGREGATE_REGULATION_OGS_2009,
-  AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING,
-  AGGREGATE_REGULATION_RVV_1990,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import artifactsRepository from './artifactsRepository';
 import { APP_CONFIG, APP_CONFIG_DRAFT } from '../../model/Configurations';
+import cmsConfiguration from '../../configuration/cmsConfiguration.json';
+import { CmsConfiguration } from '../../model/CmsConfiguration';
+
+const configuration = cmsConfiguration as CmsConfiguration;
 
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
@@ -254,16 +253,15 @@ async function updateVersion(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
+  if (
+    Object.keys(configuration.books.bookItems).includes(versioning.aggregate)
+  ) {
+    await publishUpdatedArticles(versioning, newVersion);
+    return;
+  }
   switch (versioning.aggregate) {
     case AGGREGATE_DECISION_TREE:
       await publishDecisionTree(versioning, newVersion);
-      break;
-    case AGGREGATE_REGULATION_BRANCHERICHTLIJN_MEDISCHE_HULPVERLENING:
-    case AGGREGATE_REGULATION_ONTHEFFING_GOEDE_TAAKUITVOERING:
-    case AGGREGATE_REGULATION_OGS_2009:
-    case AGGREGATE_REGULATION_RVV_1990:
-    case AGGREGATE_INSTRUCTION_MANUAL:
-      await publishUpdatedArticles(versioning, newVersion);
       break;
     case AGGREGATE_CONFIGURATIONS:
       await publishUpdatedConfigurations(versioning, newVersion);

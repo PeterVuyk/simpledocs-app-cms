@@ -8,14 +8,13 @@ import articleRepository from '../../../firebase/database/articleRepository';
 import notification from '../../../redux/actions/notification';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import { NotificationOptions } from '../../../model/NotificationOptions';
 import DownloadContentAction from '../../../components/ItemAction/DownloadContentAction';
 import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
-import navigationConfig from '../../../navigation/navigationConfig.json';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
+import useConfiguration from '../../../configuration/useConfiguration';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,7 +30,7 @@ interface Props {
   onLoadArticles: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: EditStatus;
-  bookType: BookType;
+  bookType: string;
 }
 
 const ArticleListItem: FC<Props> = ({
@@ -42,6 +41,7 @@ const ArticleListItem: FC<Props> = ({
   bookType,
 }) => {
   const classes = useStyles();
+  const { getSlugFromBookType } = useConfiguration();
 
   const getLevel = (level: string): string => {
     const levels = {
@@ -110,7 +110,7 @@ const ArticleListItem: FC<Props> = ({
   };
 
   const getEditUrl = () =>
-    `/books/${navigationConfig.books.bookItems[bookType].urlSlug}/${article.id}`;
+    `/books/${getSlugFromBookType(bookType)}/${article.id}`;
 
   const getDeleteTitle = () => {
     return editStatus === EDIT_STATUS_DRAFT

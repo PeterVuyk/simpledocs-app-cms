@@ -15,12 +15,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { Icon } from '@material-ui/core';
-import navigationConfig from './navigationConfig.json';
-import {
-  MenuItem,
-  MenuLinkConfig,
-  NavigationConfig,
-} from '../model/NavigationConfig';
+import { MenuItem, MenuLinkConfig } from '../model/CmsConfiguration';
+import useConfiguration from '../configuration/useConfiguration';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -79,7 +75,7 @@ export interface Props
 const NavigationDrawer: FC<Props> = (props: Props) => {
   const { classes, currentPage, ...other } = props;
   const history = useHistory();
-  const configs = navigationConfig as NavigationConfig;
+  const { configuration } = useConfiguration();
 
   const getCategoryItem = (title: string, children: ReactNode) => {
     return (
@@ -166,19 +162,22 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
           Ambulance App CMS
         </ListItem>
         {getCategoryItem(
-          configs.books.title,
+          configuration.books.title,
           getListItem(
-            configs.books.title,
-            Object.values(configs.books.bookItems)
+            configuration.books.title,
+            Object.values(configuration.books.bookItems)
           )
         )}
         {getCategoryItem(
-          configs.menu.title,
-          getListItem(configs.menu.title, Object.values(configs.menu.menuItems))
+          configuration.menu.title,
+          getListItem(
+            configuration.menu.title,
+            Object.values(configuration.menu.menuItems)
+          )
         )}
         {getCategoryItem(
-          configs.externalLinks.title,
-          getLinkListItem(configs.externalLinks)
+          configuration.externalLinks.title,
+          getLinkListItem(configuration.externalLinks)
         )}
       </List>
     </Drawer>

@@ -7,12 +7,11 @@ import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import ArticlesList from './ArticlesList';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
-import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
-import navigationConfig from '../../../navigation/navigationConfig.json';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import useConfiguration from '../../../configuration/useConfiguration';
 
 const useStyles = makeStyles({
   table: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
 
 interface Props {
   title: string;
-  bookType: BookType;
+  bookType: string;
 }
 
 const Articles: FC<Props> = ({ title, bookType }) => {
@@ -36,6 +35,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
   const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();
+  const { getSlugFromBookType } = useConfiguration();
 
   const handleLoadArticles = (): void => {
     setArticles(null);
@@ -53,7 +53,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
 
   const getAddArticlePath = () => {
     return {
-      pathname: `/books/${navigationConfig.books.bookItems[bookType].urlSlug}/add`,
+      pathname: `/books/${getSlugFromBookType(bookType)}/add`,
       bookType,
     };
   };

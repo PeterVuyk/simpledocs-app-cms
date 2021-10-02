@@ -7,7 +7,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Tooltip } from '@material-ui/core';
 import { EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
-import { BookType } from '../../../model/BookType';
 import exportArticles from './exportArticles';
 
 const useStyles = makeStyles({
@@ -19,7 +18,7 @@ const useStyles = makeStyles({
 interface Props {
   editStatus: EditStatus;
   articles: Article[];
-  bookType: BookType;
+  bookType: string;
 }
 
 const DownloadArticlesMenuButton: FC<Props> = ({

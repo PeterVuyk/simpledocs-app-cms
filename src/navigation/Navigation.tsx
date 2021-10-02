@@ -17,10 +17,8 @@ import Calculations from '../pages/calculations/Calculations';
 import Configurations from '../pages/configurations/Configurations';
 import Publications from '../pages/publications/Publications';
 import NotFound from '../pages/NotFound';
-import navigationConfig from './navigationConfig.json';
-import { NavigationConfig } from '../model/NavigationConfig';
 import Styleguide from '../pages/styleguide/Styleguide';
-import { BookType } from '../model/BookType';
+import useConfiguration from '../configuration/useConfiguration';
 
 const drawerWidth = 240;
 
@@ -45,7 +43,8 @@ interface Props extends WithStyles<typeof styles> {
 const Navigation: FC<Props> = ({ classes, children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const match = useRouteMatch<{ page: string }>();
-  const configs = navigationConfig as NavigationConfig;
+  const { configuration, slugExist, getBookTypeFromUrlSlug } =
+    useConfiguration();
 
   const { params } = match;
   const { page } = params;
@@ -55,49 +54,51 @@ const Navigation: FC<Props> = ({ classes, children }) => {
   };
 
   const getPage = () => {
-    const article = Object.values(configs.books.bookItems).find(
+    const article = Object.values(configuration.books.bookItems).find(
       (item) => item.urlSlug === page
     );
     if (article) {
-      const bookType = Object.keys(navigationConfig.books.bookItems)[
-        Object.values(navigationConfig.books.bookItems)
-          .map((item) => item.urlSlug)
-          .indexOf(page)
-      ] as BookType;
-      return <Articles title={article.title} bookType={bookType} />;
+      return (
+        <Articles
+          title={article.title}
+          bookType={getBookTypeFromUrlSlug(page)}
+        />
+      );
     }
     switch (page) {
-      case configs.menu.menuItems.styleguide.urlSlug:
-        return <Styleguide title={configs.menu.menuItems.styleguide.title} />;
-      case configs.menu.menuItems.decisionTree.urlSlug:
+      case configuration.menu.menuItems.styleguide.urlSlug:
         return (
-          <DecisionTree title={configs.menu.menuItems.decisionTree.title} />
+          <Styleguide title={configuration.menu.menuItems.styleguide.title} />
         );
-      case configs.menu.menuItems.calculations.urlSlug:
+      case configuration.menu.menuItems.decisionTree.urlSlug:
         return (
-          <Calculations title={configs.menu.menuItems.calculations.title} />
+          <DecisionTree
+            title={configuration.menu.menuItems.decisionTree.title}
+          />
         );
-      case configs.menu.menuItems.configurations.urlSlug:
+      case configuration.menu.menuItems.calculations.urlSlug:
         return (
-          <Configurations title={configs.menu.menuItems.configurations.title} />
+          <Calculations
+            title={configuration.menu.menuItems.calculations.title}
+          />
         );
-      case configs.menu.menuItems.publications.urlSlug:
+      case configuration.menu.menuItems.configurations.urlSlug:
+        return (
+          <Configurations
+            title={configuration.menu.menuItems.configurations.title}
+          />
+        );
+      case configuration.menu.menuItems.publications.urlSlug:
       default:
         return (
-          <Publications title={configs.menu.menuItems.publications.title} />
+          <Publications
+            title={configuration.menu.menuItems.publications.title}
+          />
         );
     }
   };
 
-  const slugExist = () => {
-    const urlSlugs = [
-      ...Object.values(configs.books.bookItems).map((item) => item.urlSlug),
-      ...Object.values(configs.menu.menuItems).map((item) => item.urlSlug),
-    ];
-    return urlSlugs.find((slug) => slug === page);
-  };
-
-  if (!slugExist() && !children) {
+  if (!slugExist(page) && !children) {
     return <NotFound />;
   }
 

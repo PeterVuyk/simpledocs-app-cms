@@ -16,11 +16,7 @@ export interface MenuItem {
 }
 
 interface BookItems {
-  instructionManual: MenuItem;
-  RVV1990: MenuItem;
-  regelingOGS2009: MenuItem;
-  ontheffingGoedeTaakuitoefening: MenuItem;
-  brancherichtlijnMedischeHulpverlening: MenuItem;
+  [key: string]: MenuItem;
 }
 
 interface MenuItems {
@@ -41,7 +37,7 @@ export interface MenuConfig {
   menuItems: MenuItems;
 }
 
-export interface NavigationConfig {
+export interface CmsConfiguration {
   books: BookConfig;
   menu: MenuConfig;
   externalLinks: MenuLinkConfig;

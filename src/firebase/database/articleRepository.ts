@@ -1,10 +1,9 @@
 import firebase from 'firebase/app';
 import { database } from '../firebaseConnection';
-import { BookType } from '../../model/BookType';
 import { Article } from '../../model/Article';
 
 async function createArticle(
-  bookType: BookType,
+  bookType: string,
   article: Article
 ): Promise<void> {
   await database
@@ -15,7 +14,7 @@ async function createArticle(
 }
 
 async function deleteArticle(
-  bookType: BookType,
+  bookType: string,
   articleId: string
 ): Promise<void> {
   await database
@@ -27,7 +26,7 @@ async function deleteArticle(
 }
 
 async function markArticleForDeletion(
-  bookType: BookType,
+  bookType: string,
   articleId: string
 ): Promise<void> {
   await database
@@ -39,7 +38,7 @@ async function markArticleForDeletion(
 }
 
 async function removeMarkForDeletion(
-  bookType: BookType,
+  bookType: string,
   articleId: string
 ): Promise<void> {
   const articleRef = database
@@ -53,7 +52,7 @@ async function removeMarkForDeletion(
 }
 
 async function getArticles(
-  bookType: BookType,
+  bookType: string,
   draftArticles: boolean
 ): Promise<Article[]> {
   const querySnapshot = await database
@@ -74,7 +73,7 @@ async function getArticles(
 }
 
 async function getArticleById(
-  bookType: BookType,
+  bookType: string,
   id: string
 ): Promise<Article | null> {
   const documentSnapshot = await database
@@ -89,7 +88,7 @@ async function getArticleById(
 }
 
 async function getArticlesByField(
-  bookType: BookType,
+  bookType: string,
   fieldName: string,
   fieldValue: string
 ): Promise<Article[]> {
@@ -105,7 +104,7 @@ async function getArticlesByField(
 }
 
 async function updateArticle(
-  bookType: BookType,
+  bookType: string,
   chapter: string,
   article: Article
 ): Promise<void> {

@@ -9,7 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ArticleListItem from './ArticleListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { BookType } from '../../../model/BookType';
 import { Article } from '../../../model/Article';
 
 const useStyles = makeStyles({
@@ -25,7 +24,7 @@ interface Props {
   articles?: Article[] | null;
   onLoadArticles: () => void;
   editStatus: EditStatus;
-  bookType: BookType;
+  bookType: string;
 }
 
 const ArticlesList: FC<Props> = ({

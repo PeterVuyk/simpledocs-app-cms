@@ -17,15 +17,23 @@ import EditArticle from '../pages/articles/EditArticle';
 import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
+import useConfiguration from '../configuration/useConfiguration';
 
 const AppRouter: FC = () => {
+  const { configuration, getSlugFromBookType } = useConfiguration();
+
+  const getDefaultRedirectUrl = () => {
+    const bookType = Object.keys(configuration.books.bookItems)[0];
+    return `/books/${getSlugFromBookType(bookType)}`;
+  };
+
   return (
     <AuthProvider>
       <SnackbarNotification />
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
-          <Redirect exact from="/" to="/books/instruction-manual" />
+          <Redirect exact from="/" to={getDefaultRedirectUrl()} />
           <PrivateRoute
             exact
             path="/books/:page?"
