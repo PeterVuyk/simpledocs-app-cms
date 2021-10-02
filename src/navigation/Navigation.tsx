@@ -92,7 +92,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
       case configuration.menu.menuItems.cmsConfigurations.urlSlug:
         return (
           <CmsConfigurations
-            title={configuration.menu.menuItems.appConfigurations.title}
+            title={configuration.menu.menuItems.cmsConfigurations.title}
           />
         );
       case configuration.menu.menuItems.publications.urlSlug:

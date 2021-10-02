@@ -6,10 +6,11 @@ import 'jsoneditor-react/es/editor.min.css';
 import { Tooltip } from '@material-ui/core';
 import { connect } from 'react-redux';
 import configurationRepository from '../../firebase/database/configurationRepository';
-import ConfirmationDialog from '../../components/dialog/ConfirmationDialog';
+import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import logger from '../../helper/logger';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import notification from '../../redux/actions/notification';
+import { ConfigurationType } from '../../model/ConfigurationType';
 
 const useStyles = makeStyles({
   button: {
@@ -18,10 +19,14 @@ const useStyles = makeStyles({
 });
 
 interface Props {
+  configurationType: ConfigurationType;
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const RemoveConfigurationButton: FC<Props> = ({ setNotification }) => {
+const RemoveConfigurationButton: FC<Props> = ({
+  configurationType,
+  setNotification,
+}) => {
   const [openRemoveConfirmationDialog, setRemoveSubmitConfirmationDialog] =
     useState<boolean>(false);
   const classes = useStyles();
@@ -29,7 +34,7 @@ const RemoveConfigurationButton: FC<Props> = ({ setNotification }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const removeConfigDraft = (val: string) => {
     configurationRepository
-      .removeConfigurationDraft()
+      .removeConfigurationDraft(configurationType)
       .then(() => window.location.reload())
       .then(() =>
         setNotification({

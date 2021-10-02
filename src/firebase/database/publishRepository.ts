@@ -2,6 +2,7 @@ import { database } from '../firebaseConnection';
 import {
   AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CALCULATIONS,
+  AGGREGATE_CMS_CONFIGURATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
@@ -11,7 +12,10 @@ import artifactsRepository from './artifactsRepository';
 import {
   APP_CONFIGURATIONS,
   APP_CONFIGURATIONS_DRAFT,
-} from '../../model/Configurations';
+  CMS_CONFIGURATIONS,
+  ConfigurationType,
+  getDraftFromConfigurationType,
+} from '../../model/ConfigurationType';
 import cmsConfiguration from '../../configuration/cmsConfiguration.json';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
 
@@ -119,7 +123,8 @@ async function publishDecisionTree(
   return batch.commit();
 }
 
-async function publishUpdatedConfigurations(
+async function publishUpdatedAppConfigurations(
+  configurationType: ConfigurationType,
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
@@ -133,10 +138,10 @@ async function publishUpdatedConfigurations(
   batch.update(DocumentSnapshotAggregate.ref, {
     [versioning.aggregate]: newVersion,
   });
-  // 2: if a draft from the appConfiguration does not exist, return
+  // 2: if a draft from the app/cmsConfiguration does not exist, return
   const draftConfigurationRef = database
     .collection('configurations')
-    .doc(APP_CONFIGURATIONS_DRAFT);
+    .doc(getDraftFromConfigurationType(configurationType));
   const docSnapshot = await draftConfigurationRef.get();
   if (!docSnapshot.exists) {
     return batch.commit();
@@ -148,7 +153,7 @@ async function publishUpdatedConfigurations(
   // 4: overwrite published met draft
   const publishedConfigurationRef = database
     .collection('configurations')
-    .doc(APP_CONFIGURATIONS);
+    .doc(configurationType);
   batch.set(publishedConfigurationRef, draftConfig.data());
 
   return batch.commit();
@@ -265,7 +270,18 @@ async function updateVersion(
       await publishDecisionTree(versioning, newVersion);
       break;
     case AGGREGATE_APP_CONFIGURATIONS:
-      await publishUpdatedConfigurations(versioning, newVersion);
+      await publishUpdatedAppConfigurations(
+        APP_CONFIGURATIONS,
+        versioning,
+        newVersion
+      );
+      break;
+    case AGGREGATE_CMS_CONFIGURATIONS:
+      await publishUpdatedAppConfigurations(
+        CMS_CONFIGURATIONS,
+        versioning,
+        newVersion
+      );
       break;
     case AGGREGATE_CALCULATIONS:
       await publishUpdatedCalculations(versioning, newVersion);

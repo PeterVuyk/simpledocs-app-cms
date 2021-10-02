@@ -2,8 +2,9 @@ import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import 'jsoneditor-react/es/editor.min.css';
-import ConfirmationDialog from '../../components/dialog/ConfirmationDialog';
+import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import { AppConfigurations } from '../../model/AppConfigurations';
+import { CmsConfiguration } from '../../model/CmsConfiguration';
 
 const useStyles = makeStyles({
   button: {
@@ -12,14 +13,11 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  appConfigurations: AppConfigurations;
+  configurations: AppConfigurations | CmsConfiguration;
   onSubmit: (val: string) => void;
 }
 
-const RemoveConfigurationButton: FC<Props> = ({
-  appConfigurations,
-  onSubmit,
-}) => {
+const RemoveConfigurationButton: FC<Props> = ({ configurations, onSubmit }) => {
   const [openSubmitConfirmationDialog, setOpenSubmitConfirmationDialog] =
     useState<boolean>(false);
   const classes = useStyles();
@@ -30,10 +28,8 @@ const RemoveConfigurationButton: FC<Props> = ({
         className={classes.button}
         variant="contained"
         color="primary"
-        disabled={appConfigurations === null}
-        onClick={() =>
-          appConfigurations && setOpenSubmitConfirmationDialog(true)
-        }
+        disabled={configurations === null}
+        onClick={() => configurations && setOpenSubmitConfirmationDialog(true)}
       >
         Wijzigingen opslaan
       </Button>

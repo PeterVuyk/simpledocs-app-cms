@@ -1,15 +1,18 @@
 import React, { FC } from 'react';
-import Typography from '@material-ui/core/Typography';
+import ConfigurationsOverview from '../../components/configuration/ConfigurationsOverview';
+import { CMS_CONFIGURATIONS } from '../../model/ConfigurationType';
 
 interface Props {
   title: string;
 }
-const CmsConfigurations: FC<Props> = ({ title }) => {
+
+const CmsConfigurationsPage: FC<Props> = ({ title }) => {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {title}
-    </Typography>
+    <ConfigurationsOverview
+      configurationType={CMS_CONFIGURATIONS}
+      title={title}
+    />
   );
 };
 
-export default CmsConfigurations;
+export default CmsConfigurationsPage;

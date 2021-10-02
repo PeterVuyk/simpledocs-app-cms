@@ -1,4 +1,4 @@
-Hier kun je app configuratie beheren. Na publicatie wordt het automatisch in de apps geupdate.
+Hier kun je de app configuratie beheren. Na publicatie wordt het automatisch in de apps geupdate.
 
 Het volgende kan in grote lijnen gewijzigd worden:
 
