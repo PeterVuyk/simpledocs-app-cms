@@ -18,6 +18,7 @@ import {
 import cmsConfiguration from '../../configuration/cmsConfiguration.json';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
 import { VERSIONING_STATUS_REMOVED } from '../../model/VersioningStatus';
+import logger from '../../helper/logger';
 
 const configuration = cmsConfiguration as CmsConfiguration;
 const versioningFirestoreCollection = 'versioning';
@@ -33,6 +34,30 @@ async function getVersions(): Promise<Versioning[]> {
         .filter((version) => version.status !== VERSIONING_STATUS_REMOVED)
     );
   return versioning.sort((a, b) => a.aggregate.localeCompare(b.aggregate));
+}
+
+async function addVersion(versioning: Versioning): Promise<void> {
+  await database
+    .collection(versioningFirestoreCollection)
+    .add(versioning)
+    .catch((reason) =>
+      logger.errorWithReason(
+        'failed adding new version for publication',
+        reason
+      )
+    );
+}
+
+async function removeVersion(versioning: Versioning): Promise<void> {
+  const querySnapshot = await database
+    .collection(versioningFirestoreCollection)
+    .where('aggregate', '==', versioning.aggregate)
+    .get();
+
+  await database
+    .collection(versioningFirestoreCollection)
+    .doc(querySnapshot.docs[0].id)
+    .delete();
 }
 
 async function publishDecisionTree(
@@ -309,6 +334,8 @@ async function updateVersion(
 
 const publishRepository = {
   getVersions,
+  addVersion,
+  removeVersion,
   updateVersion,
 };
 
