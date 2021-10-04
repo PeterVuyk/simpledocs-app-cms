@@ -23,6 +23,8 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import useConfiguration from '../../configuration/useConfiguration';
+import { Versioning } from '../../model/Versioning';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -33,6 +35,7 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
+  versions: Versioning[];
   openDialog: boolean;
   setOpenDialog: (openDialog: boolean) => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
@@ -40,6 +43,7 @@ interface Props {
 }
 
 const PublishDialog: FC<Props> = ({
+  versions,
   openDialog,
   setOpenDialog,
   setNotification,
@@ -47,6 +51,7 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { configuration, isBookType } = useConfiguration();
 
   const versionRef = useRef<TextFieldProps>();
 
@@ -64,12 +69,25 @@ const PublishDialog: FC<Props> = ({
   }, [openDialog, setOpenDialog]);
 
   const handleSubmit = () => {
+    setLoading(true);
+    if (!isBookType((versionRef.current?.value ?? '') as string)) {
+      setError('Geef een valide bookType op.');
+      setLoading(false);
+      return;
+    }
+    const bookType = versionRef.current?.value;
+    if (versions.find((value) => value.aggregate === bookType)) {
+      setError(
+        'Het opgegeven bookType bestaat al. Geef een nog niet opgegeven bookType op.'
+      );
+      setLoading(false);
+      return;
+    }
+
     publishRepository
       .addVersion({
         version: getNextVersion(),
         aggregate: 'bla',
-        status: 'published',
-        //  TODO: Remove 'published' statuses
       })
       .then(() => {
         setLoading(false);
@@ -83,7 +101,7 @@ const PublishDialog: FC<Props> = ({
       })
       .catch(() => {
         logger.error('handleSubmit CreateVersionDialog failed');
-        setError('Het updaten van de versie is mislukt');
+        setError('Het toevoegen van een nieuwe versie is mislukt');
         setLoading(false);
       });
   };
@@ -105,7 +123,8 @@ const PublishDialog: FC<Props> = ({
           style={{ whiteSpace: 'pre-line' }}
           id="alert-dialog-slide-description"
         >
-          Geef een bookType op, deze is te vinden in de app en cms configuratie:
+          Geef een bookType als identifier van het boek op, deze is te vinden in
+          de app en cms configuratie:
         </DialogContentText>
         <TextField
           inputRef={versionRef}
@@ -116,7 +135,7 @@ const PublishDialog: FC<Props> = ({
           required
           fullWidth
           id="version"
-          label="booktype"
+          label="bookType"
           name="version"
           autoFocus
         />

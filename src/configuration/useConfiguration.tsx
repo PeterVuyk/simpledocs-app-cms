@@ -1,8 +1,7 @@
-import cmsConfiguration from './cmsConfiguration.json';
-import { CmsConfiguration } from '../model/CmsConfiguration';
+import { getCmsConfiguration } from './cmsConfiguration';
 
 function useConfiguration() {
-  const configuration = cmsConfiguration as CmsConfiguration;
+  const configuration = getCmsConfiguration();
 
   const getBookTypeFromUrlSlug = (urlSlug: string): string => {
     return Object.keys(configuration.books.bookItems)[
@@ -10,6 +9,17 @@ function useConfiguration() {
         .map((item) => item.urlSlug)
         .indexOf(urlSlug)
     ];
+  };
+
+  const getTitleByAggregate = (aggregate: string) => {
+    if (Object.keys(configuration.books.bookItems).includes(aggregate)) {
+      // @ts-ignore
+      return configuration.books.bookItems[aggregate].title;
+    }
+    if (Object.keys(configuration.menu.menuItems).includes(aggregate)) {
+      return configuration.menu.menuItems[aggregate].title;
+    }
+    return '';
   };
 
   const getSlugFromBookType = (bookType: string): string => {
@@ -22,10 +32,6 @@ function useConfiguration() {
 
   const isBookType = (value: string): boolean => {
     return Object.keys(configuration.books.bookItems).includes(value);
-  };
-
-  const isMenuAggregate = (value: string) => {
-    return Object.keys(configuration.menu.menuItems).includes(value);
   };
 
   const slugExist = (value: string) => {
@@ -43,9 +49,9 @@ function useConfiguration() {
   return {
     configuration,
     getSlugFromBookType,
+    getTitleByAggregate,
     getBookTypeFromUrlSlug,
     isBookType,
-    isMenuAggregate,
     slugExist,
   };
 }

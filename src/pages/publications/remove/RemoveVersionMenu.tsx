@@ -3,6 +3,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
 import RemoveVersionDialog from './RemoveVersionDialog';
 import { Versioning } from '../../../model/Versioning';
+import useConfiguration from '../../../configuration/useConfiguration';
 
 interface Props {
   removeMenu: HTMLElement | null;
@@ -19,6 +20,7 @@ const RemoveVersionMenu: FC<Props> = ({
 }) => {
   const [removeVersionDialog, setRemoveVersionDialog] =
     useState<Versioning | null>(null);
+  const { getTitleByAggregate } = useConfiguration();
 
   const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const version = versions!.find(
@@ -54,12 +56,13 @@ const RemoveVersionMenu: FC<Props> = ({
             key={version.aggregate.toString()}
             onClick={handleMenuItemClick}
           >
-            {version.aggregate}
+            {getTitleByAggregate(version.aggregate)}
           </MenuItem>
         ))}
       </Menu>
       {removeVersionDialog && (
         <RemoveVersionDialog
+          bookTitle={getTitleByAggregate(removeVersionDialog.aggregate)}
           onClose={() => setRemoveMenu(null)}
           removeDialog={removeVersionDialog}
           setRemoveDialog={setRemoveVersionDialog}

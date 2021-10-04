@@ -29,6 +29,7 @@ interface Props {
   onReloadPublications: () => void;
   onClose: () => void;
   setNotification: (notificationOptions: NotificationOptions) => void;
+  bookTitle: string;
 }
 
 const RemoveVersionDialog: FC<Props> = ({
@@ -37,6 +38,7 @@ const RemoveVersionDialog: FC<Props> = ({
   setNotification,
   onReloadPublications,
   onClose,
+  bookTitle,
 }) => {
   const handleClose = () => {
     setRemoveDialog(null);
@@ -80,14 +82,14 @@ const RemoveVersionDialog: FC<Props> = ({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
-        Nieuwe versie toevoegen
+        Boek versie verwijderen
       </DialogTitle>
       <DialogContent>
         <DialogContentText
           style={{ whiteSpace: 'pre-line' }}
           id="alert-dialog-slide-description"
         >
-          Geef een bookType op, deze is te vinden in de app en cms configuratie:
+          {`Weet je zeker dat je het boek '${bookTitle}' met bookType identifier '${removeDialog.aggregate}' wilt verwijderen?`}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

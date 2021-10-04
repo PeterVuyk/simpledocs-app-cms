@@ -1,4 +1,5 @@
 interface MenuLinkItemConfig {
+  navigationIndex: number;
   id: string;
   url: string;
   icon: string;
@@ -10,6 +11,7 @@ export interface MenuLinkConfig {
 }
 
 export interface MenuItem {
+  navigationIndex: number;
   title: string;
   urlSlug: string;
   icon: string;

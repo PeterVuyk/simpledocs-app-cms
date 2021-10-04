@@ -15,23 +15,17 @@ import {
   ConfigurationType,
   getDraftFromConfigurationType,
 } from '../../model/ConfigurationType';
-import cmsConfiguration from '../../configuration/cmsConfiguration.json';
-import { CmsConfiguration } from '../../model/CmsConfiguration';
-import { VERSIONING_STATUS_REMOVED } from '../../model/VersioningStatus';
 import logger from '../../helper/logger';
+import { CmsConfiguration } from '../../model/CmsConfiguration';
 
-const configuration = cmsConfiguration as CmsConfiguration;
 const versioningFirestoreCollection = 'versioning';
 
-// TODO: Translations should come from the config (search for 'Onbekend').
 async function getVersions(): Promise<Versioning[]> {
   const versioning = await database
     .collection(versioningFirestoreCollection)
     .get()
     .then((query) =>
-      query.docs
-        .map((document) => document.data() as Versioning)
-        .filter((version) => version.status !== VERSIONING_STATUS_REMOVED)
+      query.docs.map((document) => document.data() as Versioning)
     );
   return versioning.sort((a, b) => a.aggregate.localeCompare(b.aggregate));
 }
@@ -152,7 +146,7 @@ async function publishDecisionTree(
   return batch.commit();
 }
 
-async function publishUpdatedAppConfigurations(
+async function publishUpdatedConfigurations(
   configurationType: ConfigurationType,
   versioning: Versioning,
   newVersion: string
@@ -295,6 +289,7 @@ async function publishUpdatedCalculations(
 }
 
 async function updateVersion(
+  configuration: CmsConfiguration,
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
@@ -309,14 +304,14 @@ async function updateVersion(
       await publishDecisionTree(versioning, newVersion);
       break;
     case AGGREGATE_APP_CONFIGURATIONS:
-      await publishUpdatedAppConfigurations(
+      await publishUpdatedConfigurations(
         APP_CONFIGURATIONS,
         versioning,
         newVersion
       );
       break;
     case AGGREGATE_CMS_CONFIGURATIONS:
-      await publishUpdatedAppConfigurations(
+      await publishUpdatedConfigurations(
         CMS_CONFIGURATIONS,
         versioning,
         newVersion

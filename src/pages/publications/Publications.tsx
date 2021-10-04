@@ -65,6 +65,7 @@ const Publications: FC<Props> = ({ title }) => {
         </Button>
         {createVersionDialog && (
           <CreateVersionDialog
+            versions={versions ?? []}
             openDialog={createVersionDialog}
             setOpenDialog={setCreateVersionDialog}
             onReloadPublications={handleReloadPublications}
@@ -89,7 +90,7 @@ const Publications: FC<Props> = ({ title }) => {
               versions.map((row) => (
                 <TableRow key={row.aggregate.toString()}>
                   <PublicationItem
-                    version={row}
+                    currentVersion={row}
                     onReloadPublications={handleReloadPublications}
                   />
                 </TableRow>

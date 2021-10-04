@@ -96,59 +96,63 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
   };
 
   const getListItem = (title: string, menuItems: MenuItem[]) => {
-    return menuItems.map((menuItem) => (
-      <ListItem
-        key={menuItem.title}
-        button
-        onClick={() => {
-          if (title === 'Boeken') {
-            history.push(`/books/${menuItem.urlSlug}`);
-          } else {
-            history.push(`/${menuItem.urlSlug}`);
-          }
-        }}
-        className={clsx(
-          classes.item,
-          currentPage === menuItem.urlSlug && classes.itemActiveItem
-        )}
-      >
-        <ListItemIcon className={classes.itemIcon}>
-          <Icon>{menuItem.icon}</Icon>
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            primary: classes.itemPrimary,
+    return menuItems
+      .sort((a, b) => a.navigationIndex - b.navigationIndex)
+      .map((menuItem) => (
+        <ListItem
+          key={menuItem.title}
+          button
+          onClick={() => {
+            if (title === 'Boeken') {
+              history.push(`/books/${menuItem.urlSlug}`);
+            } else {
+              history.push(`/${menuItem.urlSlug}`);
+            }
           }}
+          className={clsx(
+            classes.item,
+            currentPage === menuItem.urlSlug && classes.itemActiveItem
+          )}
         >
-          {menuItem.title}
-        </ListItemText>
-      </ListItem>
-    ));
+          <ListItemIcon className={classes.itemIcon}>
+            <Icon>{menuItem.icon}</Icon>
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classes.itemPrimary,
+            }}
+          >
+            {menuItem.title}
+          </ListItemText>
+        </ListItem>
+      ));
   };
 
   const getLinkListItem = (menuConfig: MenuLinkConfig) => {
-    return menuConfig.listItems.map(({ id: childId, url, icon }) => (
-      <ListItem
-        key={childId}
-        button
-        onClick={() => window.open(url, '_blank')}
-        className={clsx(classes.item)}
-      >
-        <ListItemIcon className={classes.itemIcon}>
-          <Icon>{icon}</Icon>
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            primary: classes.itemPrimary,
-          }}
+    return menuConfig.listItems
+      .sort((a, b) => a.navigationIndex - b.navigationIndex)
+      .map(({ id: childId, url, icon }) => (
+        <ListItem
+          key={childId}
+          button
+          onClick={() => window.open(url, '_blank')}
+          className={clsx(classes.item)}
         >
-          {childId}
-        </ListItemText>
-        <ListItemIcon className={classes.itemIcon}>
-          <OpenInNewIcon />
-        </ListItemIcon>
-      </ListItem>
-    ));
+          <ListItemIcon className={classes.itemIcon}>
+            <Icon>{icon}</Icon>
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classes.itemPrimary,
+            }}
+          >
+            {childId}
+          </ListItemText>
+          <ListItemIcon className={classes.itemIcon}>
+            <OpenInNewIcon />
+          </ListItemIcon>
+        </ListItem>
+      ));
   };
 
   return (

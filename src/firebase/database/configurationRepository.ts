@@ -37,7 +37,7 @@ async function updateConfigurations(
     if (docSnapshot.exists) {
       await database
         .collection('configurations')
-        .doc(configurationType)
+        .doc(getDraftFromConfigurationType(configurationType))
         .set(configurations);
     } else {
       await configurationRef.set(configurations);

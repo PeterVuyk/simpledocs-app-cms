@@ -22,6 +22,8 @@ import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import useConfiguration from '../../configuration/useConfiguration';
+import { AGGREGATE_CMS_CONFIGURATIONS } from '../../model/Aggregate';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -52,6 +54,7 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { configuration } = useConfiguration();
   const handleClose = () => {
     setOpenDialog(null);
   };
@@ -75,7 +78,7 @@ const PublishDialog: FC<Props> = ({
     setLoading(true);
     publishRepository
       // @ts-ignore
-      .updateVersion(openDialog, getNextVersion())
+      .updateVersion(configuration, openDialog, getNextVersion())
       .then(() => {
         onSubmit(openDialog?.aggregate ?? '');
         setLoading(false);
@@ -87,6 +90,12 @@ const PublishDialog: FC<Props> = ({
             openDialog?.aggregate ?? ''
           )} is gepubliceerd.`,
         });
+      })
+      .then(() => {
+        // If the cms configuration is updated, then we need to reload the page so the updated configuration can be reloaded.
+        if (openDialog?.aggregate === AGGREGATE_CMS_CONFIGURATIONS) {
+          window.location.reload();
+        }
       })
       .catch(() => {
         logger.error('Update version in PublishDialog.handleSubmit failed');
