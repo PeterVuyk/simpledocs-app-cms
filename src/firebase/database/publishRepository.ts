@@ -27,7 +27,7 @@ async function getVersions(): Promise<Versioning[]> {
     .then((query) =>
       query.docs.map((document) => document.data() as Versioning)
     );
-  return versioning.sort((a, b) => a.aggregate.localeCompare(b.aggregate));
+  return versioning;
 }
 
 async function addVersion(versioning: Versioning): Promise<void> {

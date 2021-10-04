@@ -51,7 +51,7 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { configuration, isBookType } = useConfiguration();
+  const { isBookType } = useConfiguration();
 
   const versionRef = useRef<TextFieldProps>();
 
@@ -87,7 +87,8 @@ const PublishDialog: FC<Props> = ({
     publishRepository
       .addVersion({
         version: getNextVersion(),
-        aggregate: 'bla',
+        aggregate: bookType as string,
+        isBookType: true,
       })
       .then(() => {
         setLoading(false);

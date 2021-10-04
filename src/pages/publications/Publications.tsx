@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,7 +15,8 @@ import { Versioning } from '../../model/Versioning';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_PUBLICATIONS } from '../../model/DocumentationType';
 import CreateVersionDialog from './CreateVersionDialog';
-import RemoveVersionButton from './remove/RemoveVersionButton';
+import useConfiguration from '../../configuration/useConfiguration';
+import RemoveVersionButton from './RemoveVersionButton';
 
 const useStyles = makeStyles({
   table: {
@@ -37,16 +38,51 @@ const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[] | null>(null);
   const [createVersionDialog, setCreateVersionDialog] =
     useState<boolean>(false);
+  const { configuration, isBookType, isMenuItem } = useConfiguration();
 
   const classes = useStyles();
 
-  const handleReloadPublications = (): void => {
-    publishRepository.getVersions().then((result) => setVersions(result));
-  };
+  const sortVersionOnIndex = useCallback(
+    (versioning: Versioning[]): Versioning[] => {
+      const books = versioning
+        .filter((value) => value.isBookType)
+        .filter((value) => isBookType(value.aggregate))
+        .sort((a, b) => {
+          return (
+            configuration.books.bookItems[a.aggregate].navigationIndex -
+            configuration.books.bookItems[b.aggregate].navigationIndex
+          );
+        });
+      const menuItems = versioning
+        .filter((value) => !value.isBookType)
+        .filter((value) => isMenuItem(value.aggregate))
+        .sort((a, b) => {
+          return (
+            configuration.menu.menuItems[a.aggregate].navigationIndex -
+            configuration.menu.menuItems[b.aggregate].navigationIndex
+          );
+        });
+
+      return [...books, ...menuItems];
+    },
+    [
+      configuration.books.bookItems,
+      configuration.menu.menuItems,
+      isBookType,
+      isMenuItem,
+    ]
+  );
+
+  const handleReloadPublications = useCallback((): void => {
+    publishRepository
+      .getVersions()
+      .then(sortVersionOnIndex)
+      .then((result) => setVersions(result));
+  }, [sortVersionOnIndex]);
 
   useEffect(() => {
     handleReloadPublications();
-  }, []);
+  }, [handleReloadPublications]);
 
   return (
     <>

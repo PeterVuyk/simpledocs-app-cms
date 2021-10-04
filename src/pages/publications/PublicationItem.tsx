@@ -19,7 +19,7 @@ const PublicationItem: FC<Props> = ({
   const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
     null
   );
-  const { getTitleByAggregate, isBookType } = useConfiguration();
+  const { getTitleByAggregate } = useConfiguration();
 
   const getDialogTitle = (dialogVersion: Versioning): string => {
     const title = getTitleByAggregate(dialogVersion.aggregate);
@@ -30,9 +30,7 @@ const PublicationItem: FC<Props> = ({
     <>
       <TableCell>
         {getTitleByAggregate(currentVersion.aggregate)}&nbsp;
-        {isBookType(currentVersion.aggregate) && (
-          <Chip label="Boek" variant="outlined" />
-        )}
+        {currentVersion.isBookType && <Chip label="Boek" variant="outlined" />}
       </TableCell>
       <TableCell>{currentVersion.version}</TableCell>
       <TableCell align="right">

@@ -13,7 +13,6 @@ function useConfiguration() {
 
   const getTitleByAggregate = (aggregate: string) => {
     if (Object.keys(configuration.books.bookItems).includes(aggregate)) {
-      // @ts-ignore
       return configuration.books.bookItems[aggregate].title;
     }
     if (Object.keys(configuration.menu.menuItems).includes(aggregate)) {
@@ -34,6 +33,10 @@ function useConfiguration() {
     return Object.keys(configuration.books.bookItems).includes(value);
   };
 
+  const isMenuItem = (value: string): boolean => {
+    return Object.keys(configuration.menu.menuItems).includes(value);
+  };
+
   const slugExist = (value: string) => {
     const urlSlugs = [
       ...Object.values(configuration.books.bookItems).map(
@@ -52,6 +55,7 @@ function useConfiguration() {
     getTitleByAggregate,
     getBookTypeFromUrlSlug,
     isBookType,
+    isMenuItem,
     slugExist,
   };
 }
