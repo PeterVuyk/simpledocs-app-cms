@@ -7,16 +7,15 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
 import publishRepository from '../../firebase/database/publishRepository';
 import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_PUBLICATIONS } from '../../model/DocumentationType';
-import CreateVersionDialog from './CreateVersionDialog';
 import useConfiguration from '../../configuration/useConfiguration';
 import RemoveVersionButton from './RemoveVersionButton';
+import CreateVersionButton from './CreateVersionButton';
 
 const useStyles = makeStyles({
   table: {
@@ -36,8 +35,6 @@ interface Props {
 
 const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[] | null>(null);
-  const [createVersionDialog, setCreateVersionDialog] =
-    useState<boolean>(false);
   const { configuration, isBookType, isMenuItem } = useConfiguration();
 
   const classes = useStyles();
@@ -91,22 +88,10 @@ const Publications: FC<Props> = ({ title }) => {
           onReloadPublications={handleReloadPublications}
           versions={versions ?? []}
         />
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => setCreateVersionDialog(true)}
-        >
-          Boek versie toevoegen
-        </Button>
-        {createVersionDialog && (
-          <CreateVersionDialog
-            versions={versions ?? []}
-            openDialog={createVersionDialog}
-            setOpenDialog={setCreateVersionDialog}
-            onReloadPublications={handleReloadPublications}
-          />
-        )}
+        <CreateVersionButton
+          onReloadPublications={handleReloadPublications}
+          versions={versions ?? []}
+        />
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="publications table">

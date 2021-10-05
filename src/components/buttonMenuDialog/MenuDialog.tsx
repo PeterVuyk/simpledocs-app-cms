@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 import Alert from '@material-ui/lab/Alert';
-import { MenuListDialog } from '../../model/buttonMenuDialog/MenuListDialog';
+import { MenuListDialog } from './model/MenuListDialog';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props

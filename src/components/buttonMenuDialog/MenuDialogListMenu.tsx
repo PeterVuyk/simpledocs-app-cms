@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { MenuListItem } from '../../model/buttonMenuDialog/MenuListItem';
-import { MenuListDialog } from '../../model/buttonMenuDialog/MenuListDialog';
+import { MenuListItem } from './model/MenuListItem';
+import { MenuListDialog } from './model/MenuListDialog';
 import MenuDialog from './MenuDialog';
 
 interface Props {

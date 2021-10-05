@@ -1,9 +1,9 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
 import { connect } from 'react-redux';
-import { MenuListItem } from '../../model/buttonMenuDialog/MenuListItem';
-import { MenuListDialog } from '../../model/buttonMenuDialog/MenuListDialog';
+import { MenuListItem } from '../../components/buttonMenuDialog/model/MenuListItem';
+import { MenuListDialog } from '../../components/buttonMenuDialog/model/MenuListDialog';
 import MenuDialogButton from '../../components/buttonMenuDialog/MenuDialogButton';
 import { Versioning } from '../../model/Versioning';
 import useConfiguration from '../../configuration/useConfiguration';
@@ -25,7 +25,7 @@ const RemoveVersionButton: FC<Props> = ({
 }) => {
   const { getTitleByAggregate } = useConfiguration();
 
-  const menuListItems = (): MenuListItem[] => {
+  const menuListItems = useCallback((): MenuListItem[] => {
     return versions
       .filter((value) => value.isBookType)
       .map((value) => {
@@ -34,7 +34,7 @@ const RemoveVersionButton: FC<Props> = ({
           value: getTitleByAggregate(value.aggregate),
         };
       });
-  };
+  }, [getTitleByAggregate, versions]);
 
   const dialogContent = (key: string): ReactNode => {
     return (
@@ -84,7 +84,7 @@ const RemoveVersionButton: FC<Props> = ({
 
   const menuListDialog = (): MenuListDialog => {
     return {
-      dialogTitle: 'Boek versie verwijderen',
+      dialogTitle: 'Boek verwijderen',
       closeButtonText: 'Annuleren',
       submitButtonText: 'Verwijderen',
       onSubmit,
@@ -96,7 +96,7 @@ const RemoveVersionButton: FC<Props> = ({
     <MenuDialogButton
       buttonColor="secondary"
       iconName="delete_one_tone"
-      buttonText="Boek versie verwijderen"
+      buttonText="Boek verwijderen"
       MenuListItems={menuListItems()}
       menuListDialog={menuListDialog()}
     />

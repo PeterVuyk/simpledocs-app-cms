@@ -57,7 +57,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             new Date(authTime)
           );
           const millisecondsUntilExpiration =
-            sessionDuration + (Date.now() - authTime);
+            (sessionDuration - (Date.now() - authTime)) * 2;
           setTimeout(() => auth.signOut(), millisecondsUntilExpiration);
         });
       }

@@ -3,8 +3,8 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Icon, PropTypes, Tooltip } from '@material-ui/core';
 import MenuDialogListMenu from './MenuDialogListMenu';
-import { MenuListItem } from '../../model/buttonMenuDialog/MenuListItem';
-import { MenuListDialog } from '../../model/buttonMenuDialog/MenuListDialog';
+import { MenuListItem } from './model/MenuListItem';
+import { MenuListDialog } from './model/MenuListDialog';
 
 const useStyles = makeStyles({
   button: {
@@ -44,6 +44,7 @@ const MenuDialogButton: FC<Props> = ({
           variant="contained"
           color={buttonColor}
           onClick={openMenu}
+          disabled={MenuListItems.length === 0}
         >
           {iconName && <Icon>{iconName}&nbsp;</Icon>}
           {buttonText && buttonText}

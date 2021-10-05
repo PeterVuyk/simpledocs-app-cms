@@ -2,9 +2,9 @@ import React, { FC, ReactNode } from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
 import { connect } from 'react-redux';
-import MenuDialogButton from './MenuDialogButton';
-import { MenuListItem } from '../../model/buttonMenuDialog/MenuListItem';
-import { MenuListDialog } from '../../model/buttonMenuDialog/MenuListDialog';
+import { MenuListItem } from '../../components/buttonMenuDialog/model/MenuListItem';
+import { MenuListDialog } from '../../components/buttonMenuDialog/model/MenuListDialog';
+import MenuDialogButton from '../../components/buttonMenuDialog/MenuDialogButton';
 import { Versioning } from '../../model/Versioning';
 import useConfiguration from '../../configuration/useConfiguration';
 import publishRepository from '../../firebase/database/publishRepository';
@@ -18,22 +18,25 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const CreateBookTypeVersion: FC<Props> = ({
+const CreateVersionButton: FC<Props> = ({
   versions,
   onReloadPublications,
   setNotification,
 }) => {
-  const { getTitleByAggregate } = useConfiguration();
+  const { configuration, getTitleByAggregate } = useConfiguration();
 
   const menuListItems = (): MenuListItem[] => {
-    return versions
-      .filter((value) => value.isBookType)
-      .map((value) => {
-        return {
-          key: value.aggregate,
-          value: getTitleByAggregate(value.aggregate),
-        };
-      });
+    const bookTypesWithoutVersion = Object.keys(
+      configuration.books.bookItems
+    ).filter(
+      (bookType) => !versions.find((version) => version.aggregate === bookType)
+    );
+    return bookTypesWithoutVersion.map((bookType) => {
+      return {
+        key: bookType,
+        value: configuration.books.bookItems[bookType].title,
+      } as MenuListItem;
+    });
   };
 
   const dialogContent = (key: string): ReactNode => {
@@ -43,50 +46,49 @@ const CreateBookTypeVersion: FC<Props> = ({
           style={{ whiteSpace: 'pre-line' }}
           id="alert-dialog-slide-description"
         >
-          {`Weet je zeker dat je het boek '${getTitleByAggregate(
+          {`Weet je zeker dat je een versie voor het boek '${getTitleByAggregate(
             key
-          )}' met bookType identifier '${key}' wilt verwijderen?`}
+          )}' wilt toevoegen?`}
         </DialogContentText>
       </DialogContent>
     );
   };
 
+  const getNextVersion = (): string => {
+    const currentDate = new Date();
+    return `${currentDate.getFullYear()}.${currentDate.getMonth() + 1}.1`;
+  };
+
   const onSubmit = (key: string): string => {
     const version = versions.find((value) => value.aggregate === key);
-    if (!version) {
-      return 'Het verwijderen van het boek is mislukt';
+    if (version) {
+      return 'Een versie van het opgegeven boek bestaat al en kan niet opnieuw toegevoegd worden.';
     }
     publishRepository
-      .removeVersion(version)
-      .then(() =>
+      .addVersion({
+        version: getNextVersion(),
+        aggregate: key,
+        isBookType: true,
+      })
+      .then(() => {
+        onReloadPublications();
         setNotification({
           notificationType: 'success',
           notificationOpen: true,
-          notificationMessage: 'De versie is verwijderd.',
-        })
-      )
-      .then(() => {
-        onReloadPublications();
-      })
-      .catch((error) => {
-        logger.errorWithReason(
-          `failed to remove version from publications handleSubmit for aggregate ${key}`,
-          error
-        );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het verwijderen van de versie is mislukt.`,
+          notificationMessage: 'De nieuwe versie is toegevoegd',
         });
+      })
+      .catch(() => {
+        logger.error('handleSubmit CreateVersionButton failed');
       });
     return '';
   };
 
   const menuListDialog = (): MenuListDialog => {
     return {
-      dialogTitle: 'Boek versie verwijderen',
+      dialogTitle: 'Nieuwe versie toevoegen',
       closeButtonText: 'Annuleren',
-      submitButtonText: 'Verwijderen',
+      submitButtonText: 'Toevoegen',
       onSubmit,
       dialogContent,
     };
@@ -94,9 +96,8 @@ const CreateBookTypeVersion: FC<Props> = ({
 
   return (
     <MenuDialogButton
-      buttonColor="secondary"
-      iconName="delete_one_tone"
-      buttonText="Boek versie verwijderen"
+      buttonColor="primary"
+      buttonText="Boek toevoegen"
       MenuListItems={menuListItems()}
       menuListDialog={menuListDialog()}
     />
@@ -120,4 +121,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateBookTypeVersion);
+)(CreateVersionButton);

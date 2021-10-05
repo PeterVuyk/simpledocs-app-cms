@@ -9,9 +9,7 @@ versie naar de andere is gewijzigd hierom is de versie als volgt opgebouwd:
 2. de maand
 3. En de uitgebrachte versie van de maand
 
-**Versie toevoegen of verwijderen**
+**Boek toevoegen of verwijderen**
 
-In de cms configuratie kan je nieuwe boeken toevoegen of verwijderen.
-Deze kan je vervolgens toevoegen of verwijderen aan versiebeheer via 'Boek versie toevoegen' of 'Boek versie verwijderen'.
-Indien je een boek wilt toevoegen, geef dan de unieke identifier van het boek op; de zogenoemde 'bookType'.
-Deze vind je in de genoemde configuratie bestanden.
+Wil je een nieuw boek toevoegen? Voeg deze eerst aan de cms configuratie en publiceer de wijzigingen.
+Voeg vervolgens de pagina's toe die je wilt tonen in de app en klik in dit overzicht op 'Boek toevoegen'.
