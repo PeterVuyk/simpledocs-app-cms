@@ -16,7 +16,7 @@ interface Props {
   toolTip?: string;
   iconName?: string;
   buttonText?: string;
-  MenuListItems: MenuListItem[];
+  menuListItems: MenuListItem[];
   menuListDialog: MenuListDialog;
   buttonColor: PropTypes.Color;
 }
@@ -25,7 +25,7 @@ const MenuDialogButton: FC<Props> = ({
   toolTip,
   iconName,
   buttonText,
-  MenuListItems,
+  menuListItems,
   menuListDialog,
   buttonColor,
 }) => {
@@ -44,7 +44,7 @@ const MenuDialogButton: FC<Props> = ({
           variant="contained"
           color={buttonColor}
           onClick={openMenu}
-          disabled={MenuListItems.length === 0}
+          disabled={menuListItems.length === 0}
         >
           {iconName && <Icon>{iconName}&nbsp;</Icon>}
           {buttonText && buttonText}
@@ -52,7 +52,7 @@ const MenuDialogButton: FC<Props> = ({
       </Tooltip>
       <MenuDialogListMenu
         menuListDialog={menuListDialog}
-        menuListItems={MenuListItems}
+        menuListItems={menuListItems}
         menu={menu}
         setMenu={setMenu}
       />

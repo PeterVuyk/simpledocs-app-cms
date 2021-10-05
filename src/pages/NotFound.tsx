@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import useConfiguration from '../configuration/useConfiguration';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -15,11 +16,13 @@ const useStyles = makeStyles((theme) => ({
 
 const NotFound: FC = () => {
   const classes = useStyles();
+  const { configuration } = useConfiguration();
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.container}>
-        <img src="https://firebasestorage.googleapis.com/v0/b/ambulancezorg-app.appspot.com/o/app-management%2Fazn-logo.svg?alt=media&token=1b2f7054-4df9-49c6-b733-54a7d1d3ec2f" />
+        <img src={configuration.cms.logoUrl} />
         <div className={classes.notFoundContainer}>
           <Typography align="center" variant="h1">
             404

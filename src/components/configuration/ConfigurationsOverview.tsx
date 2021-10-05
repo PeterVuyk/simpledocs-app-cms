@@ -76,9 +76,13 @@ const ConfigurationsOverview: FC<Props> = ({
 
   useEffect(() => {
     configurationRepository
-      .getConfigurations(APP_CONFIGURATIONS_DRAFT)
+      .getConfigurations(
+        configurationType === APP_CONFIGURATIONS
+          ? APP_CONFIGURATIONS_DRAFT
+          : CMS_CONFIGURATIONS_DRAFT
+      )
       .then((value) => setHasDraft(value !== undefined));
-  }, []);
+  }, [configurationType]);
 
   useEffect(() => {
     configurationRepository

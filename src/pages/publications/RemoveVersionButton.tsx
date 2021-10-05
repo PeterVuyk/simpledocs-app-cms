@@ -97,7 +97,7 @@ const RemoveVersionButton: FC<Props> = ({
       buttonColor="secondary"
       iconName="delete_one_tone"
       buttonText="Boek verwijderen"
-      MenuListItems={menuListItems()}
+      menuListItems={menuListItems()}
       menuListDialog={menuListDialog()}
     />
   );

@@ -36,6 +36,7 @@ const HelpAction: FC<Props> = ({ documentationType }) => {
       </Tooltip>
       {openHelpDialog && (
         <HelpDialog
+          dialogCharCount={documentation.length}
           openDialog={openHelpDialog}
           dialogTitle={title}
           setOpenDialog={setOpenHelpDialog}

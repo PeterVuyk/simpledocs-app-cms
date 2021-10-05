@@ -35,8 +35,14 @@ export interface MenuConfig {
   menuItems: MenuItems;
 }
 
+interface Cms {
+  logoUrl: string;
+  title: string;
+}
+
 export interface CmsConfiguration {
   books: BookConfig;
   menu: MenuConfig;
   externalLinks: MenuLinkConfig;
+  cms: Cms;
 }

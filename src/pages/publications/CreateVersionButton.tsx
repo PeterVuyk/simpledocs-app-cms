@@ -98,7 +98,7 @@ const CreateVersionButton: FC<Props> = ({
     <MenuDialogButton
       buttonColor="primary"
       buttonText="Boek toevoegen"
-      MenuListItems={menuListItems()}
+      menuListItems={menuListItems()}
       menuListDialog={menuListDialog()}
     />
   );

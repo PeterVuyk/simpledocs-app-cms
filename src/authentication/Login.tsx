@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE } from '../navigation/UrlSlugs';
+import useConfiguration from '../configuration/useConfiguration';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +38,7 @@ const Login: FC = () => {
   const history = useHistory();
   const classes = useStyles();
   const { currentUser } = useAuth();
+  const { configuration } = useConfiguration();
 
   useEffect(() => {
     if (currentUser !== null) {
@@ -66,7 +68,7 @@ const Login: FC = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.logo}>
-        <img src="https://firebasestorage.googleapis.com/v0/b/ambulancezorg-app.appspot.com/o/app-management%2Fazn-logo.svg?alt=media&token=1b2f7054-4df9-49c6-b733-54a7d1d3ec2f" />
+        <img src={configuration.cms.logoUrl} />
       </div>
       <div className={classes.paper}>
         {error && <Alert severity="error">{error}</Alert>}

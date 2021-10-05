@@ -21,6 +21,7 @@ interface Props {
   children: ReactNode;
   openDialog: boolean;
   setOpenDialog: (showDialog: boolean) => void;
+  dialogCharCount: number;
 }
 
 const HelpDialog: FC<Props> = ({
@@ -28,13 +29,22 @@ const HelpDialog: FC<Props> = ({
   children,
   openDialog,
   setOpenDialog,
+  dialogCharCount,
 }) => {
   const handleClose = () => {
     setOpenDialog(false);
   };
 
+  const getDialogWidth = (): 'sm' | 'md' => {
+    if (dialogCharCount < 1000) {
+      return 'sm';
+    }
+    return 'md';
+  };
+
   return (
     <Dialog
+      maxWidth={getDialogWidth()}
       open={openDialog}
       TransitionComponent={Transition}
       keepMounted

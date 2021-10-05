@@ -163,7 +163,7 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
           // @ts-ignore
           onClick={props.onClose}
         >
-          Ambulance App CMS
+          {configuration.cms.title}
         </ListItem>
         {getCategoryItem(
           configuration.books.title,
