@@ -1,6 +1,6 @@
 # App CMS
 
-The purpose of the CMS is to manage the content from the Ambulance app, like the instruction manual, regulations, decision tree and calculation info. 
+The purpose of the CMS is to manage the content for the app, you can add, remove and update the content of the books. 
 The CMS is build in React and uses the Firestore database from Firebase.
 
 ## Available Scripts
@@ -11,10 +11,10 @@ In the project directory, you can run:
 
     npm start
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 When you are done with the code changes you can run the following command to build the app for production to the `build` folder.

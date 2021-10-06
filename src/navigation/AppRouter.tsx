@@ -18,6 +18,7 @@ import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
 import useConfiguration from '../configuration/useConfiguration';
+import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
 
 const AppRouter: FC = () => {
   const { configuration, getSlugFromBookType } = useConfiguration();
@@ -44,16 +45,24 @@ const AppRouter: FC = () => {
             path="/:page?"
             Component={(props: any) => <Navigation {...props} />}
           />
-          <PrivateRoute
-            exact
-            path="/calculations/stopping-distance/edit"
-            Component={EditStoppingDistance}
-          />
-          <PrivateRoute
-            exact
-            path="/calculations/overtaking-distance/edit"
-            Component={EditOvertakingDistance}
-          />
+          {Object.keys(configuration.menu.menuItems).includes(
+            AGGREGATE_CALCULATIONS
+          ) && (
+            <Route path="/calculations">
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/stopping-distance/edit"
+                  Component={EditStoppingDistance}
+                />
+                <PrivateRoute
+                  exact
+                  path="/overtaking-distance/edit"
+                  Component={EditOvertakingDistance}
+                />
+              </Switch>
+            </Route>
+          )}
           <PrivateRoute
             exact
             path="/books/:aggregatePath/add"

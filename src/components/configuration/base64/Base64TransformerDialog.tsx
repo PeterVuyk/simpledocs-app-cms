@@ -20,10 +20,10 @@ import { Tooltip } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Alert from '@material-ui/lab/Alert';
 import FileSaver from 'file-saver';
-import FileDropzoneArea from '../../../components/form/FileDropzoneArea';
-import CopyToClipboardAction from '../../../components/CopyToClipboardAction';
-import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
 import { DOCUMENTATION_TRANSFORM_BASE64 } from '../../../model/DocumentationType';
+import HelpAction from '../../ItemAction/helpAction/HelpAction';
+import CopyToClipboardAction from '../../CopyToClipboardAction';
+import FileDropzoneArea from '../../form/FileDropzoneArea';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props

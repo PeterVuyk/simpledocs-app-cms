@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -33,7 +33,7 @@ const EditArticle: FC<Props> = ({ setNotification }) => {
     articleRepository
       .getArticleById(getBookTypeFromUrlSlug(aggregatePath), articleId)
       .then((result) => setArticle(result));
-  }, [aggregatePath, articleId]);
+  }, [aggregatePath, articleId, getBookTypeFromUrlSlug]);
 
   const handleSubmit = async (
     values: FormikValues,

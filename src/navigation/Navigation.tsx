@@ -20,6 +20,7 @@ import Styleguide from '../pages/styleguide/Styleguide';
 import useConfiguration from '../configuration/useConfiguration';
 import AppConfigurationsPage from '../pages/appConfigurations/AppConfigurationsPage';
 import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
+import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
 
 const drawerWidth = 240;
 
@@ -66,6 +67,18 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         />
       );
     }
+
+    if (
+      Object.keys(configuration.menu.menuItems).includes(
+        AGGREGATE_CALCULATIONS
+      ) &&
+      configuration.menu.menuItems.calculations.urlSlug === page
+    ) {
+      return (
+        <Calculations title={configuration.menu.menuItems.calculations.title} />
+      );
+    }
+
     switch (page) {
       case configuration.menu.menuItems.styleguide.urlSlug:
         return (
@@ -75,12 +88,6 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         return (
           <DecisionTree
             title={configuration.menu.menuItems.decisionTree.title}
-          />
-        );
-      case configuration.menu.menuItems.calculations.urlSlug:
-        return (
-          <Calculations
-            title={configuration.menu.menuItems.calculations.title}
           />
         );
       case configuration.menu.menuItems.appConfigurations.urlSlug:

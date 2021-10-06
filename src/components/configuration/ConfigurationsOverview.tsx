@@ -24,7 +24,6 @@ import useStatusToggle from '../hooks/useStatusToggle';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
   DOCUMENTATION_CMS_CONFIGURATIONS,
-  DocumentationType,
 } from '../../model/DocumentationType';
 import {
   APP_CONFIGURATIONS,

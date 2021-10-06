@@ -14,7 +14,6 @@ import DownloadContentAction from '../../../components/ItemAction/DownloadConten
 import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
-import useConfiguration from '../../../configuration/useConfiguration';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,6 +30,7 @@ interface Props {
   setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: EditStatus;
   bookType: string;
+  bookTypeSlug: string;
 }
 
 const ArticleListItem: FC<Props> = ({
@@ -39,9 +39,9 @@ const ArticleListItem: FC<Props> = ({
   setNotification,
   editStatus,
   bookType,
+  bookTypeSlug,
 }) => {
   const classes = useStyles();
-  const { getSlugFromBookType } = useConfiguration();
 
   const getLevel = (level: string): string => {
     const levels = {
@@ -109,8 +109,7 @@ const ArticleListItem: FC<Props> = ({
       );
   };
 
-  const getEditUrl = () =>
-    `/books/${getSlugFromBookType(bookType)}/${article.id}`;
+  const getEditUrl = () => `/books/${bookTypeSlug}/${article.id}`;
 
   const getDeleteTitle = () => {
     return editStatus === EDIT_STATUS_DRAFT

@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import ArticleListItem from './ArticleListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
+import useConfiguration from '../../../configuration/useConfiguration';
 
 const useStyles = makeStyles({
   table: {
@@ -34,6 +35,7 @@ const ArticlesList: FC<Props> = ({
   bookType,
 }) => {
   const classes = useStyles();
+  const { getSlugFromBookType } = useConfiguration();
 
   return (
     <TableContainer component={Paper}>
@@ -74,6 +76,7 @@ const ArticlesList: FC<Props> = ({
                 key={row.id}
               >
                 <ArticleListItem
+                  bookTypeSlug={getSlugFromBookType(bookType)}
                   editStatus={editStatus}
                   article={row}
                   onLoadArticles={onLoadArticles}
