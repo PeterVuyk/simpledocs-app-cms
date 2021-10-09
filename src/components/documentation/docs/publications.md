@@ -17,10 +17,9 @@ _Stap 1:_ Voeg het boek toe aan de cms configuratie en publiceer deze waarna het
 
 _Stap 2:_ Voeg de gewenste pagina's met titels, ondertiteling, illustraties etc. voor het boek toe.
 
-_Stap 3:_ Wanneer je het boek wilt publiceren, ga naar het publiceren overzicht en klik op 'Boek toevoegen'. 
+_Stap 3:_ Wanneer je het boek wilt publiceren, voeg dan een record voor versionering toe aan de publicatie pagina. Ga naar het publiceren overzicht en klik op 'Boek toevoegen'. 
 
-_Stap 4:_ Na het toevoegen wordt het boek aan het overzicht toegevoegd. De aangemaakte pagina's staan nog op conceptModus. 
-Klik op de publicatie knop om deze pagina's te publiceren.
+_Stap 4:_ De aangemaakte pagina's staan nog op conceptModus. Klik op de publicatie knop om deze pagina's te publiceren.
 
 _Stap 5:_ Om het ook weer te geven in de app, voeg het boek toe aan de app configuratie en publiceer deze.
 Zodra de gebruikers de app opstarten dan wordt het boek automatisch in het overzicht getoond.

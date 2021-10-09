@@ -9,6 +9,7 @@ import { AppConfigurations } from '../../model/AppConfigurations';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
 
 const CONFIGURATION_COLLECTION = 'configurations';
+
 async function getConfigurations(
   configurationTypeStatus: ConfigurationTypeStatus
 ): Promise<AppConfigurations | CmsConfiguration | void> {

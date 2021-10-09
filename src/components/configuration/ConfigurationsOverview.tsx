@@ -87,11 +87,23 @@ const ConfigurationsOverview: FC<Props> = ({
     configurationRepository
       .getConfigurations(getConfigurationTypeStatus())
       .then((value) => {
+        if (value !== undefined) {
+          const appConfigurations = value as any;
+          delete appConfigurations.versioning;
+        }
+        return value;
+      })
+      .then((config) => {
         setShowEditor(false);
-        setInitialConfigurations(value);
+        setInitialConfigurations(config);
         setShowEditor(true);
       });
-  }, [editStatus, getConfigurationTypeStatus, setShowEditor]);
+  }, [
+    configurationType,
+    editStatus,
+    getConfigurationTypeStatus,
+    setShowEditor,
+  ]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (val: string) => {

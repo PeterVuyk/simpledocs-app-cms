@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { database } from '../firebaseConnection';
 import {
   AGGREGATE_APP_CONFIGURATIONS,
@@ -5,7 +6,7 @@ import {
   AGGREGATE_CMS_CONFIGURATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
-import { Versioning } from '../../model/Versioning';
+import { Versioning, Versions } from '../../model/Versioning';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { CalculationInfo } from '../../model/CalculationInfo';
 import artifactsRepository from './artifactsRepository';
@@ -15,43 +16,28 @@ import {
   ConfigurationType,
   getDraftFromConfigurationType,
 } from '../../model/ConfigurationType';
-import logger from '../../helper/logger';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
-
-const versioningFirestoreCollection = 'versioning';
-
-async function getVersions(): Promise<Versioning[]> {
-  const versioning = await database
-    .collection(versioningFirestoreCollection)
-    .get()
-    .then((query) =>
-      query.docs.map((document) => document.data() as Versioning)
-    );
-  return versioning;
-}
 
 async function addVersion(versioning: Versioning): Promise<void> {
   await database
-    .collection(versioningFirestoreCollection)
-    .add(versioning)
-    .catch((reason) =>
-      logger.errorWithReason(
-        'failed adding new version for publication',
-        reason
-      )
-    );
+    .collection('configurations')
+    .doc('appConfigurations')
+    .update({
+      [`versioning.${versioning.aggregate}`]: {
+        version: versioning.version,
+        isBookType: versioning.isBookType,
+      },
+    });
 }
 
 async function removeVersion(versioning: Versioning): Promise<void> {
-  const querySnapshot = await database
-    .collection(versioningFirestoreCollection)
-    .where('aggregate', '==', versioning.aggregate)
-    .get();
-
   await database
-    .collection(versioningFirestoreCollection)
-    .doc(querySnapshot.docs[0].id)
-    .delete();
+    .collection('configurations')
+    .doc('appConfigurations')
+    .update({
+      [`versioning.${versioning.aggregate}`]:
+        firebase.firestore.FieldValue.delete(),
+    });
 }
 
 async function publishDecisionTree(
@@ -61,16 +47,13 @@ async function publishDecisionTree(
   const batch = database.batch();
 
   // 1: Update version
-  const documentSnapshotAggregate = await database
-    .collection(versioningFirestoreCollection)
-    .where('aggregate', '==', versioning.aggregate)
-    .limit(1)
+  const snapshot = await database
+    .collection('configurations')
+    .doc('appConfigurations')
     .get();
-  documentSnapshotAggregate.forEach((result) =>
-    batch.update(result.ref, {
-      version: newVersion,
-    })
-  );
+  batch.update(snapshot.ref, {
+    [`versioning.${versioning.aggregate}.version`]: newVersion,
+  });
 
   // 2: Remove markedForDeletion steps
   const querySnapshot = await database.collection(versioning.aggregate).get();
@@ -154,15 +137,12 @@ async function publishUpdatedConfigurations(
   const batch = database.batch();
 
   // 1: Update version
-  const documentSnapshotAggregate = await database
-    .collection(versioningFirestoreCollection)
-    .where('aggregate', '==', versioning.aggregate)
-    .limit(1)
+  const snapshot = await database
+    .collection('configurations')
+    .doc(configurationType)
     .get();
-  documentSnapshotAggregate.forEach((result) => {
-    batch.update(result.ref, {
-      version: newVersion,
-    });
+  batch.update(snapshot.ref, {
+    [`versioning.${versioning.aggregate}.version`]: newVersion,
   });
 
   // 2: if a draft from the app/cmsConfiguration does not exist, return
@@ -177,11 +157,20 @@ async function publishUpdatedConfigurations(
   const draftConfig = await draftConfigurationRef.get();
   batch.delete(draftConfigurationRef);
 
+  const config = snapshot.data() as any;
+  const configVersioning = config.versioning as Versions;
+
   // 4: overwrite published met draft
   const publishedConfigurationRef = database
     .collection('configurations')
     .doc(configurationType);
-  batch.set(publishedConfigurationRef, draftConfig.data());
+  batch.set(publishedConfigurationRef, {
+    ...draftConfig.data(),
+    versioning: configVersioning,
+  });
+  batch.update(snapshot.ref, {
+    [`versioning.${versioning.aggregate}.version`]: newVersion,
+  });
 
   return batch.commit();
 }
@@ -193,16 +182,13 @@ async function publishUpdatedArticles(
   const batch = database.batch();
 
   // 1: Update version
-  const documentSnapshotAggregate = await database
-    .collection(versioningFirestoreCollection)
-    .where('aggregate', '==', versioning.aggregate)
-    .limit(1)
+  const snapshot = await database
+    .collection('configurations')
+    .doc('appConfigurations')
     .get();
-  documentSnapshotAggregate.forEach((result) =>
-    batch.update(result.ref, {
-      version: newVersion,
-    })
-  );
+  batch.update(snapshot.ref, {
+    [`versioning.${versioning.aggregate}.version`]: newVersion,
+  });
 
   // 2: Remove articles that are marked for deletion:
   const querySnapshotDeletion = await database
@@ -237,16 +223,13 @@ async function publishUpdatedCalculations(
   const batch = database.batch();
 
   // 1: Update version
-  const documentSnapshotAggregate = await database
-    .collection(versioningFirestoreCollection)
-    .where('aggregate', '==', versioning.aggregate)
-    .limit(1)
+  const snapshot = await database
+    .collection('configurations')
+    .doc('appConfigurations')
     .get();
-  documentSnapshotAggregate.forEach((result) =>
-    batch.update(result.ref, {
-      version: newVersion,
-    })
-  );
+  batch.update(snapshot.ref, {
+    [`versioning.${versioning.aggregate}.version`]: newVersion,
+  });
 
   // 2: if drafts from the calculations does not exist, return
   const querySnapshot = await database
@@ -328,7 +311,6 @@ async function updateVersion(
 }
 
 const publishRepository = {
-  getVersions,
   addVersion,
   removeVersion,
   updateVersion,

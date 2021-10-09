@@ -1,3 +1,5 @@
+import { Versions } from './Versioning';
+
 interface MenuLinkItemConfig {
   navigationIndex: number;
   id: string;
@@ -45,4 +47,5 @@ export interface CmsConfiguration {
   menu: MenuConfig;
   externalLinks: MenuLinkConfig;
   cms: Cms;
+  versioning: Versions;
 }

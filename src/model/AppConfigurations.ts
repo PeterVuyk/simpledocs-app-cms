@@ -1,4 +1,5 @@
 import { IconFamilyType } from './IconFamilyType';
+import { Versions } from './Versioning';
 
 export interface BottomTab {
   familyType: IconFamilyType;
@@ -35,4 +36,5 @@ export interface AppConfigurations {
   secondTab: TabInfo;
   decisionsTab: DecisionsTab;
   defaultBookTypeSearch: string;
+  versioning: Versions;
 }
