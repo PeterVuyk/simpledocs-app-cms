@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,7 @@ import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useConfiguration from '../../../configuration/useConfiguration';
+import UpdateStylesheet from '../stylesheet/UpdateStylesheetButton';
 
 const useStyles = makeStyles({
   table: {
@@ -37,25 +38,26 @@ const Articles: FC<Props> = ({ title, bookType }) => {
   const history = useHistory();
   const { getSlugFromBookType } = useConfiguration();
 
-  const handleLoadArticles = (): void => {
-    setArticles(null);
-    articleRepository
-      .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
-      .then((result) => setArticles(result));
-  };
-
-  useEffect(() => {
+  const loadArticles = useCallback(() => {
     setArticles(null);
     articleRepository
       .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
       .then((result) => setArticles(result));
   }, [bookType, editStatus]);
 
+  useEffect(() => {
+    loadArticles();
+  }, [bookType, editStatus, loadArticles]);
+
   const getAddArticlePath = () => {
     return {
       pathname: `/books/${getSlugFromBookType(bookType)}/add`,
       bookType,
     };
+  };
+
+  const handleStylesheetUpdate = () => {
+    loadArticles();
   };
 
   return (
@@ -66,11 +68,17 @@ const Articles: FC<Props> = ({ title, bookType }) => {
           setEditStatus={setEditStatus}
         />
         {articles && articles.length !== 0 && (
-          <DownloadArticlesMenuButton
-            articles={articles}
-            bookType={bookType}
-            editStatus={editStatus}
-          />
+          <>
+            <UpdateStylesheet
+              onStylesheetUpdate={handleStylesheetUpdate}
+              bookType={bookType}
+            />
+            <DownloadArticlesMenuButton
+              articles={articles}
+              bookType={bookType}
+              editStatus={editStatus}
+            />
+          </>
         )}
         <Button
           className={classes.button}
@@ -83,7 +91,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
       </PageHeading>
       <ArticlesList
         editStatus={editStatus}
-        onLoadArticles={handleLoadArticles}
+        onLoadArticles={loadArticles}
         articles={articles}
         bookType={bookType}
       />

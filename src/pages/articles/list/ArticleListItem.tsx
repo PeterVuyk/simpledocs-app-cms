@@ -57,9 +57,9 @@ const ArticleListItem: FC<Props> = ({
     return level in levels ? levels[level] : '';
   };
 
-  const onDelete = (id: string): void => {
+  const onDelete = async (id: string): Promise<void> => {
     if (article.isDraft) {
-      articleRepository
+      await articleRepository
         .deleteArticle(bookType, id)
         .then(onLoadArticles)
         .then(() =>
@@ -74,7 +74,7 @@ const ArticleListItem: FC<Props> = ({
         );
       return;
     }
-    articleRepository
+    await articleRepository
       .markArticleForDeletion(bookType, id)
       .then(onLoadArticles)
       .then(() =>
@@ -89,8 +89,8 @@ const ArticleListItem: FC<Props> = ({
       );
   };
 
-  const undoMarkDeletion = () => {
-    articleRepository
+  const undoMarkDeletion = async () => {
+    await articleRepository
       .removeMarkForDeletion(bookType, article.id ?? '')
       .then(onLoadArticles)
       .then(() =>

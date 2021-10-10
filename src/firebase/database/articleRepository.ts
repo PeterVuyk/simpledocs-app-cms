@@ -51,6 +51,19 @@ async function removeMarkForDeletion(
   });
 }
 
+async function getAllArticles(bookType: string): Promise<Article[]> {
+  const querySnapshot = await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .orderBy('pageIndex', 'asc')
+    .get();
+  const articles = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Article;
+  });
+  return articles;
+}
+
 async function getArticles(
   bookType: string,
   draftArticles: boolean
@@ -130,15 +143,48 @@ async function updateArticle(
   }
 }
 
+async function updateArticles(
+  bookType: string,
+  articles: Article[]
+): Promise<void> {
+  const batch = database.batch();
+  await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .get()
+    .then((querySnapshot) => {
+      console.log('a');
+      querySnapshot.forEach((doc) => batch.delete(doc.ref));
+    });
+  console.log('b');
+  articles.forEach((article) => {
+    console.log('1');
+    const doc = article as any;
+    delete doc.id;
+    const docRef = database
+      .collection('books')
+      .doc(bookType)
+      .collection(bookType)
+      .doc();
+    batch.set(docRef, doc);
+  });
+
+  console.log('2');
+  return batch.commit();
+}
+
 const articleRepository = {
   createArticle,
   getArticles,
+  getAllArticles,
   getArticleById,
   getArticlesByField,
   deleteArticle,
   removeMarkForDeletion,
   markArticleForDeletion,
   updateArticle,
+  updateArticles,
 };
 
 export default articleRepository;
