@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
 import { AppConfigurations } from '../../model/AppConfigurations';
@@ -33,6 +34,8 @@ import {
   ConfigurationType,
 } from '../../model/ConfigurationType';
 import { CmsConfiguration } from '../../model/CmsConfiguration';
+import cmsConfigurationValidator from '../../validators/cmsConfigurationValidator';
+import AlertBox from '../AlertBox';
 
 const useStyles = makeStyles({
   paper: {
@@ -53,6 +56,7 @@ const ConfigurationsOverview: FC<Props> = ({
 }) => {
   const { editStatus, setEditStatus } = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
+  const [error, setError] = useState('');
   const [initialConfigurations, setInitialConfigurations] = useState<
     AppConfigurations | CmsConfiguration | null | void
   >();
@@ -107,6 +111,11 @@ const ConfigurationsOverview: FC<Props> = ({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (val: string) => {
+    const errorMessage = cmsConfigurationValidator.validate(configurations);
+    setError(errorMessage);
+    if (errorMessage) {
+      return;
+    }
     configurationRepository
       .updateConfigurations(configurationType, configurations!)
       .then(() => {
@@ -177,6 +186,7 @@ const ConfigurationsOverview: FC<Props> = ({
           />
         )}
       </PageHeading>
+      {error && <AlertBox severity="error" message={error} />}
       {showEditor && initialConfigurations && (
         <Editor value={initialConfigurations} onChange={setConfigurations} />
       )}

@@ -18,7 +18,6 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import { connect } from 'react-redux';
 import Papa from 'papaparse';
 import { TextField } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import notification from '../../redux/actions/notification';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
@@ -27,6 +26,7 @@ import logger from '../../helper/logger';
 import decisionTreeValidator from '../../validators/decisionTreevalidator';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import { NotificationOptions } from '../../model/NotificationOptions';
+import AlertBox from '../../components/AlertBox';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -163,11 +163,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
         >
           {dialogText}
         </DialogContentText>
-        {error && (
-          <Alert style={{ whiteSpace: 'pre-line' }} severity="error">
-            {error}
-          </Alert>
-        )}
+        {error && <AlertBox severity="error" message={error} />}
         <TextField
           inputRef={titleRef}
           variant="outlined"

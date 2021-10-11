@@ -7,8 +7,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import Alert from '@material-ui/lab/Alert';
 import { MenuListDialog } from './model/MenuListDialog';
+import AlertBox from '../AlertBox';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -51,7 +51,7 @@ const MenuDialog: FC<Props> = ({ dialog, onClose, menuListDialog }) => {
         {menuListDialog.dialogTitle}
       </DialogTitle>
       <DialogContent>
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && <AlertBox severity="error" message={error} />}
         {menuListDialog.dialogContent(dialog)}
       </DialogContent>
       <DialogActions>

@@ -16,7 +16,6 @@ import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 import { connect } from 'react-redux';
-import Alert from '@material-ui/lab/Alert';
 import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
@@ -24,6 +23,7 @@ import { Versioning } from '../../model/Versioning';
 import { NotificationOptions } from '../../model/NotificationOptions';
 import useConfiguration from '../../configuration/useConfiguration';
 import { AGGREGATE_CMS_CONFIGURATIONS } from '../../model/Aggregate';
+import AlertBox from '../../components/AlertBox';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -115,12 +115,7 @@ const PublishDialog: FC<Props> = ({
     >
       <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
       <DialogContent>
-        {error && (
-          <>
-            <Alert severity="error">{error}</Alert>
-            <br />
-          </>
-        )}
+        {error && <AlertBox severity="error" message={error} />}
         <DialogContentText
           style={{ whiteSpace: 'pre-line' }}
           id="alert-dialog-slide-description"

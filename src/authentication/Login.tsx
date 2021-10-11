@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE } from '../navigation/UrlSlugs';
 import useConfiguration from '../configuration/useConfiguration';
+import AlertBox from '../components/AlertBox';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,7 +71,7 @@ const Login: FC = () => {
         <img src={configuration.cms.logoUrl} />
       </div>
       <div className={classes.paper}>
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && <AlertBox severity="error" message={error} />}
         <form className={classes.form} noValidate>
           <TextField
             inputRef={emailRef}

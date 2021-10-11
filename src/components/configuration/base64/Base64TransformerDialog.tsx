@@ -18,12 +18,12 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { Tooltip } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import Alert from '@material-ui/lab/Alert';
 import FileSaver from 'file-saver';
 import { DOCUMENTATION_TRANSFORM_BASE64 } from '../../../model/DocumentationType';
 import HelpAction from '../../ItemAction/helpAction/HelpAction';
 import CopyToClipboardAction from '../../CopyToClipboardAction';
 import FileDropzoneArea from '../../form/FileDropzoneArea';
+import AlertBox from '../../AlertBox';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -86,11 +86,7 @@ const Base64TransformerDialog: FC<Props> = ({
           Voer eenvoudig de Base64 data in of upload het gewenste bestand en
           druk op &apos;transform&apos; om het te en- of decoderen.
         </DialogContentText>
-        {error && (
-          <Alert severity="error" style={{ marginBottom: 16 }}>
-            {error}
-          </Alert>
-        )}
+        {error && <AlertBox severity="error" message={error} />}
         <CopyToClipboardAction
           textToCopy={(base64Ref.current?.value as string) ?? ''}
           disabled={base64Input === ''}

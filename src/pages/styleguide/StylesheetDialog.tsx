@@ -19,7 +19,6 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
-import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
@@ -30,6 +29,7 @@ import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
 import stylesheetHelper from '../../helper/stylesheetHelper';
+import AlertBox from '../../components/AlertBox';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 const useStyles = makeStyles(() => ({
@@ -134,14 +134,7 @@ const StylesheetDialog: FC<Props> = ({
       </DialogTitle>
       <DialogContent>
         <div>
-          {error && (
-            <Alert
-              style={{ whiteSpace: 'pre-line', marginBottom: 8 }}
-              severity="error"
-            >
-              {error}
-            </Alert>
-          )}
+          {error && <AlertBox severity="error" message={error} />}
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item sm={8}>
               <DialogContentText

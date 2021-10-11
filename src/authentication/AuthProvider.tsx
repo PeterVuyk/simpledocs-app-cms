@@ -37,15 +37,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     return auth.signOut();
   }
 
-  function getMillisecondsUntilMidnight(authTime: Date) {
-    const midnight = authTime;
-    midnight.setHours(24);
-    midnight.setMinutes(0);
-    midnight.setSeconds(0);
-    midnight.setMilliseconds(0);
-    return midnight.getTime() - new Date().getTime();
-  }
-
   useEffect(() => {
     return auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -53,9 +44,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       if (user !== null) {
         user.getIdTokenResult().then((idTokenResult) => {
           const authTime = idTokenResult.claims.auth_time * 1000;
-          const sessionDuration = getMillisecondsUntilMidnight(
-            new Date(authTime)
-          );
+          const sessionDuration = 1000 * 60 * 60 * 24;
           const millisecondsUntilExpiration =
             (sessionDuration - (Date.now() - authTime)) * 2;
           setTimeout(() => auth.signOut(), millisecondsUntilExpiration);
