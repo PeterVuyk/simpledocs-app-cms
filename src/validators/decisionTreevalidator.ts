@@ -99,15 +99,6 @@ const validateOnlyLastLeafHasContentId = (
       '- Alleen de laatste en niet de tussenliggende antwoorden/vragen mag een contentId hebben.'
     );
   }
-
-  const finalAnswersHasContentId = steps
-    .filter((step) => !parentIds.includes(step.id))
-    .every((step) => step.contentId !== null);
-  if (!finalAnswersHasContentId) {
-    errorMessages.push(
-      '- Het laatste antwoord is verplicht om een contentId te hebben, deze ontbreek bij 1 of meerdere.'
-    );
-  }
   return errorMessages;
 };
 

@@ -14,3 +14,4 @@ De volgende Markdown functionaliteiten worden niet ondersteund in de app:
 - HTML tags
 - Footnote
 - Definition Lists
+- Tekst selecteren en kopiëren

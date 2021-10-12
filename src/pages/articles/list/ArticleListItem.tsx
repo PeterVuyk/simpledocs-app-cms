@@ -50,8 +50,6 @@ const ArticleListItem: FC<Props> = ({
       subSection: 'Subparagraaf',
       subSubSection: 'Sub-subparagraaf',
       subHead: 'Tussenkop',
-      attachment: 'Bijlage',
-      legislation: 'Wetgeving',
     };
     // @ts-ignore
     return level in levels ? levels[level] : '';

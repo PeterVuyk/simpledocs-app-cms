@@ -193,8 +193,6 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                     subSection: 'Subparagraaf',
                     subSubSection: 'Sub-subparagraaf',
                     subHead: 'Tussenkop',
-                    attachment: 'Bijlage',
-                    legislation: 'Wetgeving',
                   }}
                 />
               </Grid>
