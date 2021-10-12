@@ -3,9 +3,7 @@ import { Tooltip } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import TemplateMenu from './TemplateMenu';
-import SnippetsMenu from './SnippetsMenu';
 import logger from '../../../../../helper/logger';
 import {
   ARTIFACT_TYPE_SNIPPET,
@@ -13,6 +11,7 @@ import {
 } from '../../../../../model/ArtifactType';
 import { Artifact, ContentType } from '../../../../../model/Artifact';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
+import SnippetsDialogButton from './SnippetsDialogButton';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,7 +28,6 @@ interface Props {
 
 const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
-  const [snippetsMenu, setSnippetsMenu] = useState<null | HTMLElement>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   const classes = useStyles();
 
@@ -49,33 +47,21 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
     setTemplateMenu(event.currentTarget);
   };
 
-  const openSnippetsMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setSnippetsMenu(event.currentTarget);
-  };
-
   if (artifacts === null) {
     return null;
   }
 
   return (
     <>
-      <Tooltip title="Snippets gebruiken">
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={openSnippetsMenu}
-        >
-          <LoyaltyIcon />
-        </Button>
-      </Tooltip>
-      <SnippetsMenu
-        contentType={contentType}
-        snippetsMenu={snippetsMenu}
-        setSnippetsMenu={setSnippetsMenu}
-        snippets={artifacts.filter(
-          (value) => value.type === ARTIFACT_TYPE_SNIPPET
-        )}
-      />
+      {artifacts && (
+        <SnippetsDialogButton
+          artifacts={artifacts.filter(
+            (value) =>
+              value.type === ARTIFACT_TYPE_SNIPPET &&
+              value.contentType === contentType
+          )}
+        />
+      )}
       <Tooltip title="Template gebruiken">
         <Button
           className={classes.button}

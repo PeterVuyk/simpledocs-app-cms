@@ -43,6 +43,7 @@ const MenuDialog: FC<Props> = ({ dialog, onClose, menuListDialog }) => {
       open={dialog !== null}
       TransitionComponent={Transition}
       keepMounted
+      maxWidth="lg"
       onClose={onClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"

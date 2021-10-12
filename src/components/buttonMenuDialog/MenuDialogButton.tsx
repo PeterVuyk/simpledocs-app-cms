@@ -18,7 +18,7 @@ interface Props {
   buttonText?: string;
   menuListItems: MenuListItem[];
   menuListDialog: MenuListDialog;
-  buttonColor: PropTypes.Color;
+  buttonColor?: PropTypes.Color;
 }
 
 const MenuDialogButton: FC<Props> = ({
@@ -42,7 +42,7 @@ const MenuDialogButton: FC<Props> = ({
         <Button
           className={classes.button}
           variant="contained"
-          color={buttonColor}
+          color={buttonColor ?? undefined}
           onClick={openMenu}
           disabled={menuListItems.length === 0}
         >
