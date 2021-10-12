@@ -153,13 +153,10 @@ async function updateArticles(
     .doc(bookType)
     .collection(bookType)
     .get()
-    .then((querySnapshot) => {
-      console.log('a');
-      querySnapshot.forEach((doc) => batch.delete(doc.ref));
-    });
-  console.log('b');
+    .then((querySnapshot) =>
+      querySnapshot.forEach((doc) => batch.delete(doc.ref))
+    );
   articles.forEach((article) => {
-    console.log('1');
     const doc = article as any;
     delete doc.id;
     const docRef = database
@@ -170,7 +167,6 @@ async function updateArticles(
     batch.set(docRef, doc);
   });
 
-  console.log('2');
   return batch.commit();
 }
 

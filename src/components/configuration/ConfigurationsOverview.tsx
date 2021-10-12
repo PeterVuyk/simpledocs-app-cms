@@ -36,6 +36,7 @@ import {
 import { CmsConfiguration } from '../../model/CmsConfiguration';
 import cmsConfigurationValidator from '../../validators/cmsConfigurationValidator';
 import AlertBox from '../AlertBox';
+import appConfigurationValidator from '../../validators/appConfigurationValidator';
 
 const useStyles = makeStyles({
   paper: {
@@ -109,9 +110,19 @@ const ConfigurationsOverview: FC<Props> = ({
     setShowEditor,
   ]);
 
+  const validateConfiguration = (): string => {
+    if (configurationType === CMS_CONFIGURATIONS) {
+      return cmsConfigurationValidator.validate(configurations);
+    }
+    if (configurationType === APP_CONFIGURATIONS) {
+      return appConfigurationValidator.validate(configurations);
+    }
+    return '';
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (val: string) => {
-    const errorMessage = cmsConfigurationValidator.validate(configurations);
+    const errorMessage = validateConfiguration();
     setError(errorMessage);
     if (errorMessage) {
       return;
