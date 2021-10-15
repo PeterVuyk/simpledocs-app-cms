@@ -117,6 +117,35 @@ const validateBookTypeTab = (
   return result;
 };
 
+const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
+  if (!('drawer' in appConfiguration)) {
+    errorMessages.push(`- 'drawer' ontbreekt.`);
+    return errorMessages;
+  }
+  if (!('links' in appConfiguration.drawer)) {
+    errorMessages.push(`- 'drawer.links' ontbreekt.`);
+    return errorMessages;
+  }
+  for (const link of appConfiguration.drawer.links) {
+    if (!('iconName' in link)) {
+      errorMessages.push(`- 'drawer.links[].iconName' ontbreekt.`);
+    }
+    if (!('iconType' in link)) {
+      errorMessages.push(`- 'drawer.links[].iconType' ontbreekt.`);
+    }
+    if (!('index' in link)) {
+      errorMessages.push(`- 'drawer.links[].index' ontbreekt.`);
+    }
+    if (!('title' in link)) {
+      errorMessages.push(`- 'drawer.links[].title' ontbreekt.`);
+    }
+    if (!('url' in link)) {
+      errorMessages.push(`- 'drawer.links[].url' ontbreekt.`);
+    }
+  }
+  return errorMessages;
+};
+
 const validateConfig = (appConfiguration: any, errorMessages: string[]) => {
   if (!('defaultBookTypeSearch' in appConfiguration)) {
     errorMessages.push(`- 'defaultBookTypeSearch' ontbreekt.`);
@@ -140,6 +169,8 @@ const validate = (appConfiguration: any) => {
   let errorMessages: string[] = [];
 
   errorMessages = validateConfig(appConfiguration, errorMessages);
+  errorMessages = validateDrawer(appConfiguration, errorMessages);
+
   if ('decisionsTab' in appConfiguration) {
     errorMessages = validateDecisionTab(appConfiguration, errorMessages);
   }

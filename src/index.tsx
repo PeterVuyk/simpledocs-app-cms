@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 Bugsnag.start({
   apiKey: process.env.REACT_APP_BUGSNAG_API_KEY ?? '',
   plugins: [new BugsnagPluginReact()],
+  metadata: { company: process.env.REACT_APP_PROJECT_ID ?? 'unknown-cms' },
 });
 
 // @ts-ignore

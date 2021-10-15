@@ -18,7 +18,10 @@ import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
 import useConfiguration from '../configuration/useConfiguration';
-import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
+import {
+  AGGREGATE_CALCULATIONS,
+  AGGREGATE_DECISION_TREE,
+} from '../model/Aggregate';
 
 const AppRouter: FC = () => {
   const { configuration, getSlugFromBookType } = useConfiguration();
@@ -78,16 +81,25 @@ const AppRouter: FC = () => {
             path="/styleguide/:artifactType/:artifactId"
             Component={StyleEditor}
           />
-          <PrivateRoute
-            exact
-            path="/artifacts/decision-tree/add"
-            Component={DecisionTreeArtifactEditor}
-          />
-          <PrivateRoute
-            exact
-            path="/artifacts/decision-tree/:artifactId"
-            Component={DecisionTreeArtifactEditor}
-          />
+          {Object.keys(configuration.menu.menuItems).includes(
+            AGGREGATE_DECISION_TREE
+          ) && (
+            <Route path="/artifacts/decision-tree">
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/add"
+                  Component={DecisionTreeArtifactEditor}
+                />
+                <PrivateRoute
+                  exact
+                  path="/:artifactId"
+                  Component={DecisionTreeArtifactEditor}
+                />
+              </Switch>
+            </Route>
+          )}
+
           <PrivateRoute
             exact
             path="/books/:aggregatePath/:articleId"

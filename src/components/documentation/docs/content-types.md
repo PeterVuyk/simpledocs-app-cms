@@ -5,13 +5,12 @@ te lezen en begrijpen maar bied minder flexibiliteit ten
 opzichte van HTML. HTML heeft een hogere leercurve, maar daartegen
 bied het je meer flexibiliteit over het eindresultaat.
 
-#### Performance in de app
-Zowel HTML als Markdown heeft een goede performance, HTML ten opzichte van Markdown heeft een kleine vertraging bij het initiele laden van de eerste pagina. Dit in verband met de afhankelijkheid van het onderliggende component die het mogelijk maakt om HTML te tonen in de app.
+Zowel HTML als Markdown hebben een goede performance waarbij markdown pagina's bijna direct inlaad.
+Daarbij is het bij HTML mogelijk om tekst te selecteren en kopiëren in de app.
 
 #### Markdown
-De volgende Markdown functionaliteiten worden niet ondersteund in de app:
+De volgende Markdown functionaliteiten werken niet in de app:
 - Highlighting (Deze is gereserveerd voor de zoek-hits in de app).
-- HTML tags
+- HTML-tags (Gebruik de markdown variant hiervoor in de plaats)
 - Footnote
 - Definition Lists
-- Tekst selecteren en kopiëren
