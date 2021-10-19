@@ -88,7 +88,7 @@ const Base64TransformerDialog: FC<Props> = ({
         </DialogContentText>
         {error && <AlertBox severity="error" message={error} />}
         <CopyToClipboardAction
-          textToCopy={(base64Ref.current?.value as string) ?? ''}
+          textToCopy={base64Input}
           disabled={base64Input === ''}
         />
         <div
