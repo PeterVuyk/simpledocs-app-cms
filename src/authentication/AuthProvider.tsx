@@ -38,7 +38,10 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   }
 
   useEffect(() => {
-    return auth.onAuthStateChanged((user) => {
+    return auth.onAuthStateChanged(async (user) => {
+      if (user && user.isAnonymous) {
+        return auth.signOut();
+      }
       setCurrentUser(user);
       setLoading(false);
       if (user !== null) {

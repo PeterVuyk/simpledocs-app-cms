@@ -24,11 +24,13 @@ import {
 } from '../model/Aggregate';
 
 const AppRouter: FC = () => {
-  const { configuration, getSlugFromBookType } = useConfiguration();
+  const { configuration } = useConfiguration();
 
   const getDefaultRedirectUrl = () => {
-    const bookType = Object.keys(configuration.books.bookItems)[0];
-    return `/books/${getSlugFromBookType(bookType)}`;
+    const { urlSlug } = Object.entries(configuration.books.bookItems).sort(
+      (a, b) => a[1].navigationIndex - b[1].navigationIndex
+    )[0][1];
+    return `/books/${urlSlug}`;
   };
 
   return (
