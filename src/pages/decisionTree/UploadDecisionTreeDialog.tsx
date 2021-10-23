@@ -68,7 +68,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
     title: string
   ): DecisionTreeStep[] => {
     const base64String = csvFile.split('data:text/csv;base64,')[1];
-    const csv = Papa.parse(atob(base64String), {
+    const csv = Papa.parse(decodeURIComponent(escape(atob(base64String))), {
       header: true,
       dynamicTyping: true,
     });

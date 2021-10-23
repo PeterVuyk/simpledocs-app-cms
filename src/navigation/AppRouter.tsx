@@ -86,16 +86,16 @@ const AppRouter: FC = () => {
           {Object.keys(configuration.menu.menuItems).includes(
             AGGREGATE_DECISION_TREE
           ) && (
-            <Route path="/artifacts/decision-tree">
+            <Route path="/">
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/add"
+                  path="/artifacts/decision-tree/add"
                   Component={DecisionTreeArtifactEditor}
                 />
                 <PrivateRoute
                   exact
-                  path="/:artifactId"
+                  path="/artifacts/decision-tree/:artifactId"
                   Component={DecisionTreeArtifactEditor}
                 />
               </Switch>
