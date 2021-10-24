@@ -13,5 +13,4 @@ export interface DecisionTreeStep {
   contentId?: string;
   content?: string;
   contentType?: ContentType;
-  bla: string;
 }

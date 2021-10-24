@@ -57,12 +57,12 @@ const AppRouter: FC = () => {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/stopping-distance/edit"
+                  path="/calculations/stopping-distance/edit"
                   Component={EditStoppingDistance}
                 />
                 <PrivateRoute
                   exact
-                  path="/overtaking-distance/edit"
+                  path="/calculations/overtaking-distance/edit"
                   Component={EditOvertakingDistance}
                 />
               </Switch>
@@ -86,7 +86,7 @@ const AppRouter: FC = () => {
           {Object.keys(configuration.menu.menuItems).includes(
             AGGREGATE_DECISION_TREE
           ) && (
-            <Route path="/">
+            <Route path="/artifacts">
               <Switch>
                 <PrivateRoute
                   exact
@@ -101,7 +101,6 @@ const AppRouter: FC = () => {
               </Switch>
             </Route>
           )}
-
           <PrivateRoute
             exact
             path="/books/:aggregatePath/:articleId"
