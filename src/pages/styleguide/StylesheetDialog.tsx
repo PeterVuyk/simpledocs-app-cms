@@ -19,17 +19,16 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
-import { connect } from 'react-redux';
 import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import { Artifact, CONTENT_TYPE_CSS } from '../../model/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
 import stylesheetHelper from '../../helper/stylesheetHelper';
 import AlertBox from '../../components/AlertBox';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 const useStyles = makeStyles(() => ({
@@ -65,18 +64,17 @@ const Transition = forwardRef(function Transition(
 interface Props {
   openStylesheetDialog: Artifact;
   oncloseDialog: () => void;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const StylesheetDialog: FC<Props> = ({
   openStylesheetDialog,
   oncloseDialog,
-  setNotification,
 }) => {
   const [cssInput, setCSSInput] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const handleUpdateFileFromBase64 = useCallback((file: string | null) => {
     setCSSInput(
@@ -99,11 +97,13 @@ const StylesheetDialog: FC<Props> = ({
       .updateArtifact(updatedArtifact)
       .then(() => setLoading(false))
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'De stylesheet is gewijzigd.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De stylesheet is gewijzigd.',
+          })
+        )
       )
       .then(oncloseDialog)
       .catch((reason) => {
@@ -186,18 +186,4 @@ const StylesheetDialog: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(StylesheetDialog);
+export default StylesheetDialog;

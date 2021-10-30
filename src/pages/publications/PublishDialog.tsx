@@ -15,15 +15,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { connect } from 'react-redux';
-import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
-import { NotificationOptions } from '../../model/NotificationOptions';
 import useConfiguration from '../../configuration/useConfiguration';
 import { AGGREGATE_CMS_CONFIGURATIONS } from '../../model/Aggregate';
 import AlertBox from '../../components/AlertBox';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -40,7 +39,6 @@ interface Props {
   openDialog: Versioning | null;
   setOpenDialog: (versioning: Versioning | null) => void;
   onSubmit: (id: string) => void;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const PublishDialog: FC<Props> = ({
@@ -50,11 +48,12 @@ const PublishDialog: FC<Props> = ({
   openDialog,
   setOpenDialog,
   onSubmit,
-  setNotification,
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { configuration } = useConfiguration();
+  const dispatch = useAppDispatch();
+
   const handleClose = () => {
     setOpenDialog(null);
   };
@@ -83,13 +82,15 @@ const PublishDialog: FC<Props> = ({
         onSubmit(openDialog?.aggregate ?? '');
         setLoading(false);
         setOpenDialog(null);
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: `${onTranslation(
-            openDialog?.aggregate ?? ''
-          )} is gepubliceerd.`,
-        });
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: `${onTranslation(
+              openDialog?.aggregate ?? ''
+            )} is gepubliceerd.`,
+          })
+        );
       })
       .then(() => {
         // If the cms configuration is updated, then we need to reload the page so the updated configuration can be reloaded.
@@ -142,18 +143,4 @@ const PublishDialog: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PublishDialog);
+export default PublishDialog;

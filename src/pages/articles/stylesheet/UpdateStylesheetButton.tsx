@@ -3,15 +3,13 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
-import { connect } from 'react-redux';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
-import { Article } from '../../../model/Article';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 import { CONTENT_TYPE_HTML } from '../../../model/Artifact';
-import { NotificationOptions } from '../../../model/NotificationOptions';
-import notification from '../../../redux/actions/notification';
 import articleRepository from '../../../firebase/database/articleRepository';
 import logger from '../../../helper/logger';
+import { useAppDispatch } from '../../../redux/hooks';
+import { notify } from '../../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   button: {
@@ -22,17 +20,16 @@ const useStyles = makeStyles({
 interface Props {
   bookType: string;
   onStylesheetUpdate: () => void;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
 const UpdateStylesheetButton: FC<Props> = ({
   bookType,
   onStylesheetUpdate,
-  setNotification,
 }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { modifyHtmlForStorage, modifyHtmlAfterUpload } = useHtmlModifier();
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const updateStylesheetForAllArticles = async () => {
     const articles = await articleRepository.getAllArticles(bookType);
@@ -70,11 +67,13 @@ const UpdateStylesheetButton: FC<Props> = ({
     await articleRepository
       .updateArticles(bookType, await updateStylesheetForAllArticles())
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: `De stylesheet voor de html pagina's zijn bijgewerkt.`,
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: `De stylesheet voor de html pagina's zijn bijgewerkt.`,
+          })
+        )
       )
       .then(() => onStylesheetUpdate())
       .catch((error) => {
@@ -82,11 +81,13 @@ const UpdateStylesheetButton: FC<Props> = ({
           `Update articles with new stylesheet has failed for handleSubmit bookType ${bookType}`,
           error
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het updaten van de html pagina's met de nieuwe stylesheet is mislukt, neem contact op met de beheerder.`,
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het updaten van de html pagina's met de nieuwe stylesheet is mislukt, neem contact op met de beheerder.`,
+          })
+        );
       });
   };
 
@@ -112,21 +113,4 @@ const UpdateStylesheetButton: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpdateStylesheetButton);
+export default UpdateStylesheetButton;

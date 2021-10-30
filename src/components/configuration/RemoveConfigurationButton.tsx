@@ -4,13 +4,12 @@ import Button from '@material-ui/core/Button';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import 'jsoneditor-react/es/editor.min.css';
 import { Tooltip } from '@material-ui/core';
-import { connect } from 'react-redux';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import logger from '../../helper/logger';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
 import { ConfigurationType } from '../../model/ConfigurationType';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   button: {
@@ -20,16 +19,13 @@ const useStyles = makeStyles({
 
 interface Props {
   configurationType: ConfigurationType;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const RemoveConfigurationButton: FC<Props> = ({
-  configurationType,
-  setNotification,
-}) => {
+const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
   const [openRemoveConfirmationDialog, setRemoveSubmitConfirmationDialog] =
     useState<boolean>(false);
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const removeConfigDraft = (val: string) => {
@@ -37,19 +33,24 @@ const RemoveConfigurationButton: FC<Props> = ({
       .removeConfigurationDraft(configurationType)
       .then(() => window.location.reload())
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'Aanpassingen op de configuratie is verwijderd.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage:
+              'Aanpassingen op de configuratie is verwijderd.',
+          })
+        )
       )
       .catch((reason) => {
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage:
-            'Het verwijderen van de aanpassingen op de configuratie is mislukt, neem contact op met de beheerder.',
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage:
+              'Het verwijderen van de aanpassingen op de configuratie is mislukt, neem contact op met de beheerder.',
+          })
+        );
         logger.errorWithReason('Failed to remove configuration draft', reason);
       });
   };
@@ -79,21 +80,4 @@ const RemoveConfigurationButton: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RemoveConfigurationButton);
+export default RemoveConfigurationButton;

@@ -1,7 +1,6 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
-import { connect } from 'react-redux';
 import { MenuListItem } from '../../components/buttonMenuDialog/model/MenuListItem';
 import { MenuListDialog } from '../../components/buttonMenuDialog/model/MenuListDialog';
 import MenuDialogButton from '../../components/buttonMenuDialog/MenuDialogButton';
@@ -9,21 +8,17 @@ import { Versioning } from '../../model/Versioning';
 import useConfiguration from '../../configuration/useConfiguration';
 import publishRepository from '../../firebase/database/publishRepository';
 import logger from '../../helper/logger';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 interface Props {
   onReloadPublications: () => void;
   versions: Versioning[];
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const RemoveVersionButton: FC<Props> = ({
-  versions,
-  onReloadPublications,
-  setNotification,
-}) => {
+const RemoveVersionButton: FC<Props> = ({ versions, onReloadPublications }) => {
   const { getTitleByAggregate } = useConfiguration();
+  const dispatch = useAppDispatch();
 
   const menuListItems = useCallback((): MenuListItem[] => {
     return versions
@@ -59,11 +54,13 @@ const RemoveVersionButton: FC<Props> = ({
     publishRepository
       .removeVersion(version)
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'De versie is verwijderd.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De versie is verwijderd.',
+          })
+        )
       )
       .then(() => {
         onReloadPublications();
@@ -73,11 +70,13 @@ const RemoveVersionButton: FC<Props> = ({
           `failed to remove version from publications handleSubmit for aggregate ${key}`,
           error
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het verwijderen van de versie is mislukt.`,
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het verwijderen van de versie is mislukt.`,
+          })
+        );
       });
     return '';
   };
@@ -103,21 +102,4 @@ const RemoveVersionButton: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RemoveVersionButton);
+export default RemoveVersionButton;

@@ -1,11 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
 import { FormikValues } from 'formik';
-import { NotificationOptions } from '../../model/NotificationOptions';
 import PageHeading from '../../layout/PageHeading';
-import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import ContentPageForm from '../form/ContentPageForm';
 import Navigation from '../../navigation/Navigation';
@@ -24,18 +21,15 @@ import { Artifact, CONTENT_TYPE_HTML } from '../../model/Artifact';
 import useContentTypeToggle from '../content/useContentTypeToggle';
 import useHtmlModifier from '../hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 interface Props {
   artifactId?: string;
   artifactType: ArtifactType;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const ArtifactEditor: FC<Props> = ({
-  artifactType,
-  artifactId,
-  setNotification,
-}) => {
+const ArtifactEditor: FC<Props> = ({ artifactType, artifactId }) => {
   const [isNewFile, setIsNewFile] = useState<boolean>(false);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
@@ -43,6 +37,7 @@ const ArtifactEditor: FC<Props> = ({
   );
   const history = useHistory();
   const { modifyHtmlForStorage } = useHtmlModifier();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (artifactId === undefined) {
@@ -83,22 +78,26 @@ const ArtifactEditor: FC<Props> = ({
         )
       )
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: `De pagina is ${addOrEditText}.`,
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: `De pagina is ${addOrEditText}.`,
+          })
+        )
       )
       .catch((error) => {
         logger.errorWithReason(
           `Edit/Add ${artifactType} has failed in ArtifactEditor.handleSubmit`,
           error
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het ${addOrEditText} van is mislukt, neem contact op met de beheerder.`,
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het ${addOrEditText} van is mislukt, neem contact op met de beheerder.`,
+          })
+        );
       });
   };
 
@@ -130,18 +129,4 @@ const ArtifactEditor: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArtifactEditor);
+export default ArtifactEditor;

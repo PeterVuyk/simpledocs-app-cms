@@ -1,19 +1,18 @@
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import { connect } from 'react-redux';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import { Tooltip } from '@material-ui/core';
 import articleRepository from '../../../firebase/database/articleRepository';
-import notification from '../../../redux/actions/notification';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
-import { NotificationOptions } from '../../../model/NotificationOptions';
 import DownloadContentAction from '../../../components/ItemAction/DownloadContentAction';
 import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
+import { useAppDispatch } from '../../../redux/hooks';
+import { notify } from '../../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   icon: {
@@ -27,7 +26,6 @@ const useStyles = makeStyles({
 interface Props {
   article: Article;
   onLoadArticles: () => void;
-  setNotification: (notificationOptions: NotificationOptions) => void;
   editStatus: EditStatus;
   bookType: string;
   bookTypeSlug: string;
@@ -36,12 +34,12 @@ interface Props {
 const ArticleListItem: FC<Props> = ({
   article,
   onLoadArticles,
-  setNotification,
   editStatus,
   bookType,
   bookTypeSlug,
 }) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const getLevel = (level: string): string => {
     const levels = {
@@ -61,11 +59,13 @@ const ArticleListItem: FC<Props> = ({
         .deleteArticle(bookType, id)
         .then(onLoadArticles)
         .then(() =>
-          setNotification({
-            notificationType: 'success',
-            notificationOpen: true,
-            notificationMessage: 'Pagina is verwijderd.',
-          })
+          dispatch(
+            notify({
+              notificationType: 'success',
+              notificationOpen: true,
+              notificationMessage: 'Pagina is verwijderd.',
+            })
+          )
         )
         .catch((reason) =>
           logger.errorWithReason('Failed deleting article', reason)
@@ -76,11 +76,13 @@ const ArticleListItem: FC<Props> = ({
       .markArticleForDeletion(bookType, id)
       .then(onLoadArticles)
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'Pagina is gemarkeerd voor verwijdering.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'Pagina is gemarkeerd voor verwijdering.',
+          })
+        )
       )
       .catch((reason) =>
         logger.errorWithReason('Failed marking article for deletion', reason)
@@ -92,12 +94,14 @@ const ArticleListItem: FC<Props> = ({
       .removeMarkForDeletion(bookType, article.id ?? '')
       .then(onLoadArticles)
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage:
-            'De markering voor het verwijderen van het artikel is ongedaan gemaakt.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage:
+              'De markering voor het verwijderen van het artikel is ongedaan gemaakt.',
+          })
+        )
       )
       .catch((reason) =>
         logger.errorWithReason(
@@ -172,18 +176,4 @@ const ArticleListItem: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleListItem);
+export default ArticleListItem;

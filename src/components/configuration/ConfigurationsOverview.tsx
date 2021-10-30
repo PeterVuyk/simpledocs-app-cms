@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 // @ts-ignore
 import { JsonEditor as Editor } from 'jsoneditor-react';
-import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,8 +15,6 @@ import {
 } from '../../model/EditStatus';
 import RemoveConfigurationButton from './RemoveConfigurationButton';
 import EditConfigurationButton from './EditConfigurationButton';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
 import Base64TransformerButton from './base64/Base64TransformerButton';
 import useStatusToggle from '../hooks/useStatusToggle';
@@ -36,6 +33,8 @@ import { CmsConfiguration } from '../../model/CmsConfiguration';
 import cmsConfigurationValidator from '../../validators/cmsConfigurationValidator';
 import AlertBox from '../AlertBox';
 import appConfigurationValidator from '../../validators/appConfigurationValidator';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   paper: {
@@ -44,16 +43,11 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  setNotification: (notificationOptions: NotificationOptions) => void;
   title: string;
   configurationType: ConfigurationType;
 }
 
-const ConfigurationsOverview: FC<Props> = ({
-  title,
-  setNotification,
-  configurationType,
-}) => {
+const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
   const { editStatus, setEditStatus } = useStatusToggle();
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [error, setError] = useState('');
@@ -65,6 +59,7 @@ const ConfigurationsOverview: FC<Props> = ({
     AppConfigurations | CmsConfiguration | null | void
   >(null);
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const getConfigurationTypeStatus = useCallback(() => {
     if (configurationType === APP_CONFIGURATIONS) {
@@ -133,23 +128,27 @@ const ConfigurationsOverview: FC<Props> = ({
         setConfigurations(null);
       })
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'Configuratie gewijzigd.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'Configuratie gewijzigd.',
+          })
+        )
       )
-      .catch((error) => {
+      .catch((reason) => {
         logger.errorWithReason(
           `Edit configuration has failed in onSubmit for ${configurationType}`,
-          error
+          reason
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage:
-            'Het wijzigen van de configuratie is mislukt, neem contact op met de beheerder.',
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage:
+              'Het wijzigen van de configuratie is mislukt, neem contact op met de beheerder.',
+          })
+        );
       });
   };
 
@@ -209,21 +208,4 @@ const ConfigurationsOverview: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigurationsOverview);
+export default ConfigurationsOverview;

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,8 +7,6 @@ import StyleIcon from '@material-ui/icons/Style';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import ArtifactsTable from '../../components/artifact/ArtifactsTable';
 import logger from '../../helper/logger';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
 import PageHeading from '../../layout/PageHeading';
 import { AGGREGATE_STYLEGUIDE } from '../../model/Aggregate';
 import { ADD_SNIPPETS, ADD_TEMPLATE } from '../../navigation/UrlSlugs';
@@ -22,6 +19,8 @@ import {
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
 } from '../../model/ArtifactType';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   button: {
@@ -30,14 +29,14 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  setNotification: (notificationOptions: NotificationOptions) => void;
   title: string;
 }
 
-const Styleguide: FC<Props> = ({ title, setNotification }) => {
+const Styleguide: FC<Props> = ({ title }) => {
   const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
   const [openStylesheetDialog, setOpenStylesheetDialog] =
     useState<Artifact | null>(null);
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
   const classes = useStyles();
@@ -62,11 +61,13 @@ const Styleguide: FC<Props> = ({ title, setNotification }) => {
       .then(loadArtifacts)
       .catch(() => {
         logger.error(`Failed removing the file from artifacts with id ${id}`);
-        setNotification({
-          notificationOpen: true,
-          notificationType: 'error',
-          notificationMessage: 'Het verwijderen van het bestand is mislukt',
-        });
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'error',
+            notificationMessage: 'Het verwijderen van het bestand is mislukt',
+          })
+        );
       });
   };
 
@@ -127,18 +128,4 @@ const Styleguide: FC<Props> = ({ title, setNotification }) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Styleguide);
+export default Styleguide;

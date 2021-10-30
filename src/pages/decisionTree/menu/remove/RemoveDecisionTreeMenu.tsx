@@ -1,21 +1,19 @@
 import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { connect } from 'react-redux';
 import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
 import RemoveConfirmationDialog from '../../../../components/dialog/RemoveConfirmationDialog';
-import notification from '../../../../redux/actions/notification';
 import logger from '../../../../helper/logger';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
-import { NotificationOptions } from '../../../../model/NotificationOptions';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { notify } from '../../../../redux/slice/notificationSlice';
 
 interface Props {
   editStatus: EditStatus;
   removeMenuElement: null | HTMLElement;
   setRemoveMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
-  setNotification: (notificationOptions: NotificationOptions) => void;
   onSubmitAction: () => void;
 }
 
@@ -23,7 +21,6 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   editStatus,
   removeMenuElement,
   setRemoveMenuElement,
-  setNotification,
   decisionTreeSteps,
   onSubmitAction,
 }) => {
@@ -31,6 +28,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
     setRemoveMenuElement(null);
   };
   const [openDialog, setOpenDialog] = useState<string>('');
+  const dispatch = useAppDispatch();
 
   const getDialogTitle =
     editStatus === EDIT_STATUS_DRAFT
@@ -51,22 +49,26 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
     decisionTreeRepository
       .deleteByTitle(title, editStatus)
       .then(() =>
-        setNotification({
-          notificationOpen: true,
-          notificationType: 'success',
-          notificationMessage: notificationSuccessMessage,
-        })
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'success',
+            notificationMessage: notificationSuccessMessage,
+          })
+        )
       )
       .then(onSubmitAction)
       .catch(() => {
         logger.error(
           'delete decisionTree by title RemoveDecisionTreeMenu.handleDeleteDecisionTree failed.'
         );
-        setNotification({
-          notificationOpen: true,
-          notificationType: 'error',
-          notificationMessage: notificationFailureMessage,
-        });
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'error',
+            notificationMessage: notificationFailureMessage,
+          })
+        );
       });
   };
 
@@ -113,21 +115,4 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RemoveDecisionTreeMenu);
+export default RemoveDecisionTreeMenu;

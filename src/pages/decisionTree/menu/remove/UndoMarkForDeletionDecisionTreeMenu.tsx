@@ -1,29 +1,27 @@
 import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { connect } from 'react-redux';
 import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
 import RemoveConfirmationDialog from '../../../../components/dialog/RemoveConfirmationDialog';
-import notification from '../../../../redux/actions/notification';
 import logger from '../../../../helper/logger';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
-import { NotificationOptions } from '../../../../model/NotificationOptions';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { notify } from '../../../../redux/slice/notificationSlice';
 
 interface Props {
   removeMarkForDeleteMenuElement: null | HTMLElement;
   setRemoveMarkForDeleteMenuElement: (anchorEL: null | HTMLElement) => void;
   decisionTreeSteps: DecisionTreeStep[];
-  setNotification: (notificationOptions: NotificationOptions) => void;
   onSubmitAction: () => void;
 }
 
 const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
   removeMarkForDeleteMenuElement,
   setRemoveMarkForDeleteMenuElement,
-  setNotification,
   decisionTreeSteps,
   onSubmitAction,
 }) => {
+  const dispatch = useAppDispatch();
   const handleClose = () => {
     setRemoveMarkForDeleteMenuElement(null);
   };
@@ -33,23 +31,28 @@ const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
     decisionTreeRepository
       .removeMarkForDeletion(title)
       .then(() =>
-        setNotification({
-          notificationOpen: true,
-          notificationType: 'success',
-          notificationMessage: 'De markering voor verwijdering is verwijderd.',
-        })
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'success',
+            notificationMessage:
+              'De markering voor verwijdering is verwijderd.',
+          })
+        )
       )
       .then(onSubmitAction)
       .catch(() => {
         logger.error(
           'delete decisionTree by title UndoMarkForDeletionDecisionTreeMenu.handleDeleteDecisionTree failed.'
         );
-        setNotification({
-          notificationOpen: true,
-          notificationType: 'error',
-          notificationMessage:
-            'Het verwijderen van de markering voor verwijdering is mislukt',
-        });
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'error',
+            notificationMessage:
+              'Het verwijderen van de markering voor verwijdering is mislukt',
+          })
+        );
       });
   };
 
@@ -96,21 +99,4 @@ const UndoMarkForDeletionDecisionTreeMenu: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UndoMarkForDeletionDecisionTreeMenu);
+export default UndoMarkForDeletionDecisionTreeMenu;

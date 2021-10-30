@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationList from './CalculationList';
 import PageHeading from '../../layout/PageHeading';
@@ -16,9 +15,9 @@ import EditStatusToggle from '../../components/form/EditStatusToggle';
 import { EDIT_STATUS_DRAFT } from '../../model/EditStatus';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import RemoveCalculationsButton from './remove/RemoveCalculationsButton';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
 import logger from '../../helper/logger';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
   button: {
@@ -30,16 +29,16 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  setNotification: (notificationOptions: NotificationOptions) => void;
   title: string;
 }
 
-const Calculations: FC<Props> = ({ title, setNotification }) => {
+const Calculations: FC<Props> = ({ title }) => {
   const [calculations, setCalculations] = useState<CalculationInfo[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const classes = useStyles();
   const history = useHistory();
   const { editStatus, setEditStatus } = useStatusToggle();
+  const dispatch = useAppDispatch();
 
   const handleReloadPublications = useCallback((): void => {
     setLoading(true);
@@ -59,22 +58,26 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
       .removeCalculationsDraft(calculationInfo.calculationType)
       .then(handleReloadPublications)
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: `Berekening ${calculationInfo.title} verwijderd.`,
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: `Berekening ${calculationInfo.title} verwijderd.`,
+          })
+        )
       )
       .catch((error) => {
         logger.errorWithReason(
           'Edit configuration has failed in Calculations.handleSubmitRemove',
           error
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het verwijderen van de berekening ${calculationInfo.title} is mislukt, neem contact op met de beheerder.`,
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het verwijderen van de berekening ${calculationInfo.title} is mislukt, neem contact op met de beheerder.`,
+          })
+        );
       });
   };
 
@@ -116,18 +119,4 @@ const Calculations: FC<Props> = ({ title, setNotification }) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Calculations);
+export default Calculations;

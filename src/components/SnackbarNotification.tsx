@@ -2,9 +2,8 @@ import React, { FC, SyntheticEvent } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import notification from '../redux/actions/notification';
-import { NotificationOptions } from '../model/NotificationOptions';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { notify } from '../redux/slice/notificationSlice';
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -19,28 +18,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface Props {
-  setNotification: (notificationOptions: NotificationOptions) => void;
-  notificationOptions: NotificationOptions;
-}
-
-const SnackbarNotification: FC<Props> = ({
-  setNotification,
-  notificationOptions,
-}) => {
+const SnackbarNotification: FC = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const { notificationMessage, notificationType, notificationOpen } =
-    notificationOptions;
+    useAppSelector((state) => state.notification);
 
   const handleClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-    setNotification({
-      notificationOpen: false,
-      notificationType: 'success',
-      notificationMessage: '',
-    });
+    dispatch(
+      notify({
+        notificationOpen: false,
+        notificationType: 'success',
+        notificationMessage: '',
+      })
+    );
   };
 
   return (
@@ -59,21 +53,4 @@ const SnackbarNotification: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SnackbarNotification);
+export default SnackbarNotification;

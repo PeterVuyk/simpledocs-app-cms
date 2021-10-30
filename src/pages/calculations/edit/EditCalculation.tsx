@@ -1,20 +1,17 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
 import PageHeading from '../../../layout/PageHeading';
-import notification from '../../../redux/actions/notification';
 import TextField from '../../../components/form/formik/TextField';
 import FileDropZoneArea from '../../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../../components/form/formik/SubmitButton';
 import Navigation from '../../../navigation/Navigation';
 import logger from '../../../helper/logger';
 import calculationsRepository from '../../../firebase/database/calculationsRepository';
-import { NotificationOptions } from '../../../model/NotificationOptions';
 import { CalculationInfo } from '../../../model/CalculationInfo';
 import { CalculationType } from '../../../model/CalculationType';
 import { CALCULATIONS_PAGE } from '../../../navigation/UrlSlugs';
@@ -29,6 +26,8 @@ import validateYupMarkdownContent from '../../../components/form/formik/validato
 import validateYupHtmlContent from '../../../components/form/formik/validators/validateYupHtmlContent';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../../helper/markdownHelper';
+import { useAppDispatch } from '../../../redux/hooks';
+import { notify } from '../../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -38,14 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   calculationType: CalculationType;
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const EditCalculation: FC<Props> = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setNotification,
-  calculationType,
-}) => {
+const EditCalculation: FC<Props> = ({ calculationType }) => {
   const [calculationInfo, setCalculationInfo] =
     useState<CalculationInfo | null>(null);
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
@@ -54,6 +48,7 @@ const EditCalculation: FC<Props> = ({
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const classes = useStyles();
   const { setEditStatus } = useStatusToggle();
   const { modifyHtmlForStorage } = useHtmlModifier();
@@ -63,18 +58,20 @@ const EditCalculation: FC<Props> = ({
       .getCalculationsInfoToEdit(calculationType)
       .then((result) => {
         if (!result) {
-          setNotification({
-            notificationType: 'error',
-            notificationOpen: true,
-            notificationMessage:
-              'Het openen van de wijzigingspagina is mislukt',
-          });
+          dispatch(
+            notify({
+              notificationType: 'error',
+              notificationOpen: true,
+              notificationMessage:
+                'Het openen van de wijzigingspagina is mislukt',
+            })
+          );
           history.push(CALCULATIONS_PAGE);
           return;
         }
         setCalculationInfo(result);
       });
-  }, [calculationType, history, setNotification]);
+  }, [calculationType, dispatch, history]);
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
@@ -112,23 +109,27 @@ const EditCalculation: FC<Props> = ({
       .then(() => setEditStatus(EDIT_STATUS_DRAFT))
       .then(() => history.push(CALCULATIONS_PAGE))
       .then(() =>
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'De berekening pagina is gewijzigd.',
-        })
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De berekening pagina is gewijzigd.',
+          })
+        )
       )
       .catch((error) => {
         logger.errorWithReason(
           'Edit stopping distance has failed in EditCalculation.handleSubmit',
           error
         );
-        setNotification({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage:
-            'Het wijzigen is mislukt. Neem contact op met de beheerder.',
-        });
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage:
+              'Het wijzigen is mislukt. Neem contact op met de beheerder.',
+          })
+        );
       });
   };
 
@@ -238,18 +239,4 @@ const EditCalculation: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditCalculation);
+export default EditCalculation;

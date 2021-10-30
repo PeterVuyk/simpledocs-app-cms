@@ -5,6 +5,7 @@ module.exports = {
         'react/destructuring-assignment': 0,
         'react/static-property-placement': 0,
         'jsx-a11y/alt-text': 0,
+        'no-param-reassign': 0,
         'react/jsx-props-no-spreading': 0,
         '@typescript-eslint/ban-ts-comment': 0,
         'no-plusplus': 0,

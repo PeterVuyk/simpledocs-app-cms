@@ -15,18 +15,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { connect } from 'react-redux';
 import Papa from 'papaparse';
 import { TextField } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
-import notification from '../../redux/actions/notification';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import logger from '../../helper/logger';
 import decisionTreeValidator from '../../validators/decisionTreevalidator';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
-import { NotificationOptions } from '../../model/NotificationOptions';
 import AlertBox from '../../components/AlertBox';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 const Transition = forwardRef(function Transition(
   // eslint-disable-next-line react/require-default-props
@@ -39,14 +38,12 @@ const Transition = forwardRef(function Transition(
 interface Props {
   dialogText: string;
   setOpenUploadDialog: (openUploadDialog: boolean) => void;
-  setNotification: (notificationOptions: NotificationOptions) => void;
   onLoadDecisionTree: () => void;
 }
 
 const UploadDecisionTreeDialog: FC<Props> = ({
   dialogText,
   setOpenUploadDialog,
-  setNotification,
   onLoadDecisionTree,
 }) => {
   const [error, setError] = useState('');
@@ -54,6 +51,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
   const titleRef = useRef<TextFieldProps>();
   const csvUploadRef = useRef<string>('');
   const iconUploadRef = useRef<string>('');
+  const dispatch = useAppDispatch();
 
   const setCSVUploadRef = (file: string) => {
     csvUploadRef.current = file;
@@ -129,11 +127,13 @@ const UploadDecisionTreeDialog: FC<Props> = ({
     decisionTreeRepository
       .updateDecisionTreeSteps(addIconToFirstStep(steps))
       .then(() => {
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'beslisboom is gepubliceerd.',
-        });
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'beslisboom is gepubliceerd.',
+          })
+        );
         setOpenUploadDialog(false);
         onLoadDecisionTree();
       })
@@ -203,21 +203,4 @@ const UploadDecisionTreeDialog: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UploadDecisionTreeDialog);
+export default UploadDecisionTreeDialog;

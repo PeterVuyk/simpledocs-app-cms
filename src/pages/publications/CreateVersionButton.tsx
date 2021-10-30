@@ -1,7 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
-import { connect } from 'react-redux';
 import { MenuListItem } from '../../components/buttonMenuDialog/model/MenuListItem';
 import { MenuListDialog } from '../../components/buttonMenuDialog/model/MenuListDialog';
 import MenuDialogButton from '../../components/buttonMenuDialog/MenuDialogButton';
@@ -9,21 +8,17 @@ import { Versioning } from '../../model/Versioning';
 import useConfiguration from '../../configuration/useConfiguration';
 import publishRepository from '../../firebase/database/publishRepository';
 import logger from '../../helper/logger';
-import { NotificationOptions } from '../../model/NotificationOptions';
-import notification from '../../redux/actions/notification';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
 
 interface Props {
   onReloadPublications: () => void;
   versions: Versioning[];
-  setNotification: (notificationOptions: NotificationOptions) => void;
 }
 
-const CreateVersionButton: FC<Props> = ({
-  versions,
-  onReloadPublications,
-  setNotification,
-}) => {
+const CreateVersionButton: FC<Props> = ({ versions, onReloadPublications }) => {
   const { configuration, getTitleByAggregate } = useConfiguration();
+  const dispatch = useAppDispatch();
 
   const menuListItems = (): MenuListItem[] => {
     const bookTypesWithoutVersion = Object.keys(
@@ -72,11 +67,13 @@ const CreateVersionButton: FC<Props> = ({
       })
       .then(() => {
         onReloadPublications();
-        setNotification({
-          notificationType: 'success',
-          notificationOpen: true,
-          notificationMessage: 'De nieuwe versie is toegevoegd',
-        });
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De nieuwe versie is toegevoegd',
+          })
+        );
       })
       .catch(() => {
         logger.error('handleSubmit CreateVersionButton failed');
@@ -104,21 +101,4 @@ const CreateVersionButton: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    notificationOptions: state.notification.notificationOptions,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setNotification: (notificationOptions: NotificationOptions) =>
-      // eslint-disable-next-line import/no-named-as-default-member
-      dispatch(notification.setNotification(notificationOptions)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateVersionButton);
+export default CreateVersionButton;
