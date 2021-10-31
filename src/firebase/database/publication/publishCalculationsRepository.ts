@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { AGGREGATE_CALCULATIONS } from '../../../model/Aggregate';
 import { Versioning } from '../../../model/Versioning';
