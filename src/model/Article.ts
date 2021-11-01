@@ -4,7 +4,7 @@ export interface Article {
   id?: string;
   pageIndex: number;
   chapter: string;
-  level: string;
+  chapterDivision: string;
   title: string;
   subTitle: string;
   searchText: string;

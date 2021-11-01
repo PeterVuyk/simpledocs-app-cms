@@ -11,8 +11,8 @@ export interface BookInfo {
   index: number;
   bookType: string;
   title: string;
-  showLevelsInList: string[];
-  showLevelsInIntermediateList: string[];
+  chapterDivisionsInList: string[];
+  chapterDivisionsInIntermediateList: string[];
   subTitle?: string;
   iconFile?: string;
 }

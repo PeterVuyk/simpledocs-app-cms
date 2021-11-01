@@ -29,7 +29,7 @@ const CreateArticle: FC = () => {
       .createArticle(getBookTypeFromUrlSlug(aggregatePath), {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
-        level: values.level,
+        chapterDivision: values.chapterDivision,
         title: values.title,
         subTitle: values.subTitle,
         searchText: values.searchText,

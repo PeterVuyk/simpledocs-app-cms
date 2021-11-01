@@ -49,7 +49,7 @@ const ArticlesList: FC<Props> = ({
               <strong>Titel</strong>
             </TableCell>
             <TableCell>
-              <strong>Markering</strong>
+              <strong>Hoofdstukindeling</strong>
             </TableCell>
             <TableCell>
               <strong>Index</strong>

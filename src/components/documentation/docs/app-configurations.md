@@ -7,8 +7,8 @@ Het volgende kan in grote lijnen gewijzigd worden:
 - Welke boeken je op welk tabblad wilt tonen
 - De volgorde van boeken in het overzichtspagina van het tabblad
 - Indien je meer dan 1 boek per tabblad wilt tonen; illustratie boek, de titel en ondertitel van de overzichtspagina
-- Per boek welke markeringen getoond dienen te worden in de lijstweergave
-- Per boek welke markeringen getoond dienen te worden in de tweede lijstweergave (voordat de pagina getoond wordt)
+- Per boek welke hoofdstukindeling getoond dienen te worden in de lijstweergave
+- Per boek welke hoofdstukindeling getoond dienen te worden in de tweede lijstweergave (voordat de pagina getoond wordt)
 - De titel en ondertitel van de afwegingen tabblad
 - Volgorde van de beslisboom en berekeningen op de afwegingen tab
 

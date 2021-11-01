@@ -46,7 +46,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
       title: '',
       subTitle: '',
       pageIndex: '',
-      level: '',
+      chapterDivision: '',
       markdownContent: '',
       htmlContent: '',
       iconFile: '',
@@ -115,7 +115,9 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
           return isEditFromDraft || isFieldUnique('pageIndex', index);
         }
       ),
-    level: Yup.string().required('Soort markering is een verplicht veld.'),
+    chapterDivision: Yup.string().required(
+      'Hoofdstukindeling is een verplicht veld.'
+    ),
     searchText: Yup.string().required('Zoektekst is een verplicht veld'),
     markdownContent: validateYupMarkdownContent(contentTypeToggle),
     htmlContent: validateYupHtmlContent(contentTypeToggle),
@@ -184,8 +186,8 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <Select
-                  name="level"
-                  label="Soort markering"
+                  name="chapterDivision"
+                  label="Hoofdstukindeling"
                   showError={showError}
                   options={{
                     chapter: 'Hoofdstuk',

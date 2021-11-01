@@ -94,14 +94,14 @@ const validateBookTypeTab = (
         `- 'subTitle' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
       );
     }
-    if (!('showLevelsInIntermediateList' in bookInfo)) {
+    if (!('chapterDivisionsInIntermediateList' in bookInfo)) {
       result.push(
-        `- 'showLevelsInIntermediateList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
+        `- 'chapterDivisionsInIntermediateList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
       );
     }
-    if (!('showLevelsInList' in bookInfo)) {
+    if (!('chapterDivisionsInList' in bookInfo)) {
       result.push(
-        `- 'showLevelsInList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
+        `- 'chapterDivisionsInList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
       );
     }
   }

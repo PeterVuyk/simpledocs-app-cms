@@ -41,16 +41,18 @@ const ArticleListItem: FC<Props> = ({
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const getLevel = (level: string): string => {
-    const levels = {
+  const getChapterDivision = (chapterDivision: string): string => {
+    const chapterDivisions = {
       chapter: 'Hoofdstuk',
       section: 'Paragraaf',
       subSection: 'Subparagraaf',
       subSubSection: 'Sub-subparagraaf',
       subHead: 'Tussenkop',
     };
-    // @ts-ignore
-    return level in levels ? levels[level] : '';
+    return chapterDivision in chapterDivisions
+      ? // @ts-ignore
+        chapterDivisions[chapterDivision]
+      : '';
   };
 
   const onDelete = async (id: string): Promise<void> => {
@@ -125,7 +127,7 @@ const ArticleListItem: FC<Props> = ({
         {article.chapter}
       </TableCell>
       <TableCell>{article.title}</TableCell>
-      <TableCell>{getLevel(article.level)}</TableCell>
+      <TableCell>{getChapterDivision(article.chapterDivision)}</TableCell>
       <TableCell>
         {article.pageIndex
           .toString()
@@ -166,7 +168,9 @@ const ArticleListItem: FC<Props> = ({
             title={getDeleteTitle()}
             dialogText={`Hoofdstuk: ${article.chapter}\nTitel: ${
               article.title
-            }\nMarkering: ${getLevel(article.level)}`}
+            }\nHoofdstuk indeling: ${getChapterDivision(
+              article.chapterDivision
+            )}`}
             onSubmit={onDelete}
             itemId={article.id}
           />

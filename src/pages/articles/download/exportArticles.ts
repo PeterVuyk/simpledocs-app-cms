@@ -50,7 +50,7 @@ const csvFile = (
   const fields = [
     'pageIndex',
     'chapter',
-    'level',
+    'chapterDivision',
     'title',
     'subTitle',
     'searchText',
