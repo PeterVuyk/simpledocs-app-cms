@@ -15,7 +15,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { Icon } from '@material-ui/core';
-import { MenuItem, MenuLinkConfig } from '../model/CmsConfiguration';
+import {
+  MenuItem,
+  MenuLinkConfig,
+} from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 
 const styles = (theme: Theme) =>

@@ -3,7 +3,7 @@ import { Versioning, Versions } from '../../../model/Versioning';
 import {
   ConfigurationType,
   getDraftFromConfigurationType,
-} from '../../../model/ConfigurationType';
+} from '../../../model/configurations/ConfigurationType';
 
 const getConfigurationSnapshot = async (
   configurationType: ConfigurationType

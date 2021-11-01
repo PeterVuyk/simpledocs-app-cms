@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import ConfigurationsOverview from '../../components/configuration/ConfigurationsOverview';
-import { APP_CONFIGURATIONS } from '../../model/ConfigurationType';
+import { APP_CONFIGURATIONS } from '../../model/configurations/ConfigurationType';
 
 interface Props {
   title: string;

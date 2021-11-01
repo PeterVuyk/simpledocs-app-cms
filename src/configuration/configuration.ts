@@ -1,10 +1,10 @@
-import { CmsConfiguration } from '../model/CmsConfiguration';
-import { AppConfigurations } from '../model/AppConfigurations';
+import { CmsConfigurations } from '../model/configurations/CmsConfigurations';
+import { AppConfigurations } from '../model/configurations/AppConfigurations';
 
-let cmsConfig: CmsConfiguration;
+let cmsConfig: CmsConfigurations;
 let appConfig: AppConfigurations;
 
-export const setCmsConfiguration = (configuration: CmsConfiguration) => {
+export const setCmsConfiguration = (configuration: CmsConfigurations) => {
   cmsConfig = configuration;
 };
 

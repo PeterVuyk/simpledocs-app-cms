@@ -7,7 +7,7 @@ import { Tooltip } from '@material-ui/core';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import logger from '../../helper/logger';
-import { ConfigurationType } from '../../model/ConfigurationType';
+import { ConfigurationType } from '../../model/configurations/ConfigurationType';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 

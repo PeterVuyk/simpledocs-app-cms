@@ -1,7 +1,7 @@
 import { AppConfigurations } from './AppConfigurations';
-import { CmsConfiguration } from './CmsConfiguration';
+import { CmsConfigurations } from './CmsConfigurations';
 
 export interface Configurations {
   appConfigurations: AppConfigurations | null;
-  cmsConfigurations: CmsConfiguration | null;
+  cmsConfigurations: CmsConfigurations | null;
 }

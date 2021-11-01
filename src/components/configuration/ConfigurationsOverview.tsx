@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
-import { AppConfigurations } from '../../model/AppConfigurations';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import EditStatusToggle from '../form/EditStatusToggle';
 import {
@@ -28,8 +28,8 @@ import {
   CMS_CONFIGURATIONS,
   CMS_CONFIGURATIONS_DRAFT,
   ConfigurationType,
-} from '../../model/ConfigurationType';
-import { CmsConfiguration } from '../../model/CmsConfiguration';
+} from '../../model/configurations/ConfigurationType';
+import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
 import cmsConfigurationValidator from '../../validators/cmsConfigurationValidator';
 import AlertBox from '../AlertBox';
 import appConfigurationValidator from '../../validators/appConfigurationValidator';
@@ -52,11 +52,11 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
   const [hasDraft, setHasDraft] = useState<boolean | null>(null);
   const [error, setError] = useState('');
   const [initialConfigurations, setInitialConfigurations] = useState<
-    AppConfigurations | CmsConfiguration | null | void
+    AppConfigurations | CmsConfigurations | null | void
   >();
   const [showEditor, setShowEditor] = useState<boolean>(false);
   const [configurations, setConfigurations] = useState<
-    AppConfigurations | CmsConfiguration | null | void
+    AppConfigurations | CmsConfigurations | null | void
   >(null);
   const classes = useStyles();
   const dispatch = useAppDispatch();

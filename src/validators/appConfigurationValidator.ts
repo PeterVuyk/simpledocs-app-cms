@@ -1,3 +1,5 @@
+import { getNonBookAggregates } from '../model/Aggregate';
+
 const validateBottomTab = (
   config: any,
   tabName: string,
@@ -78,6 +80,15 @@ const validateBookTypeTab = (
         `- 'bookType' in 1 van de bookTypes in '${tabName}.bookTypes' ontbreekt.`
       );
       return result;
+    }
+    if (getNonBookAggregates().includes(bookInfo.bookType)) {
+      result.push(
+        `- Één van de toegevoegde boeken '${
+          bookInfo.bookType
+        }' gebruikt voor 'bookType' een gereserveerde benaming (lijst van gereserveerde benamingen: ${getNonBookAggregates().join(
+          ', '
+        )}).`
+      );
     }
     if (!('index' in bookInfo)) {
       result.push(

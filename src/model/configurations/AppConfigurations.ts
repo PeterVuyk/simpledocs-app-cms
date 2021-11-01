@@ -1,5 +1,5 @@
-import { IconFamilyType } from './IconFamilyType';
-import { Versions } from './Versioning';
+import { IconFamilyType } from '../IconFamilyType';
+import { Versions } from '../Versioning';
 
 export interface BottomTab {
   familyType: IconFamilyType;

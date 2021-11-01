@@ -7,10 +7,10 @@ import {
   ConfigurationType,
   ConfigurationTypeStatus,
   getDraftFromConfigurationType,
-} from '../../model/ConfigurationType';
-import { AppConfigurations } from '../../model/AppConfigurations';
-import { CmsConfiguration } from '../../model/CmsConfiguration';
-import { Configurations } from '../../model/Configurations';
+} from '../../model/configurations/ConfigurationType';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
+import { Configurations } from '../../model/configurations/Configurations';
 
 const CONFIGURATION_COLLECTION = 'configurations';
 
@@ -36,7 +36,7 @@ async function getAllConfigurations(): Promise<Configurations | null> {
     .map((value) => value.data() as AppConfigurations);
   const cmsConfigurations = querySnapshot.docs
     .filter((value) => value.id === CMS_CONFIGURATIONS)
-    .map((value) => value.data() as CmsConfiguration);
+    .map((value) => value.data() as CmsConfigurations);
   return {
     appConfigurations:
       appConfigurations.length === 1 ? appConfigurations[0] : null,
@@ -47,12 +47,12 @@ async function getAllConfigurations(): Promise<Configurations | null> {
 
 async function getConfigurations(
   configurationTypeStatus: ConfigurationTypeStatus
-): Promise<AppConfigurations | CmsConfiguration | void> {
+): Promise<AppConfigurations | CmsConfigurations | void> {
   return database
     .collection(CONFIGURATION_COLLECTION)
     .doc(configurationTypeStatus)
     .get()
-    .then((value) => value.data() as AppConfigurations | CmsConfiguration)
+    .then((value) => value.data() as AppConfigurations | CmsConfigurations)
     .catch((reason) =>
       logger.errorWithReason(
         'Failed collecting configurations from firestore',
@@ -63,7 +63,7 @@ async function getConfigurations(
 
 async function updateConfigurations(
   configurationType: ConfigurationType,
-  configurations: AppConfigurations | CmsConfiguration
+  configurations: AppConfigurations | CmsConfigurations
 ): Promise<void> {
   const configurationRef = database
     .collection(CONFIGURATION_COLLECTION)

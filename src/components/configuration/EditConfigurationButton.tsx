@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import 'jsoneditor-react/es/editor.min.css';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
-import { AppConfigurations } from '../../model/AppConfigurations';
-import { CmsConfiguration } from '../../model/CmsConfiguration';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
 
 const useStyles = makeStyles({
   button: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  configurations: AppConfigurations | CmsConfiguration;
+  configurations: AppConfigurations | CmsConfigurations;
   onSubmit: (val: string) => void;
 }
 

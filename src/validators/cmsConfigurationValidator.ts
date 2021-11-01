@@ -1,3 +1,5 @@
+import { getNonBookAggregates } from '../model/Aggregate';
+
 const validateBooks = (cmsConfiguration: any, errorMessages: string[]) => {
   if (!('books' in cmsConfiguration)) {
     errorMessages.push(`- 'books' ontbreekt.`);
@@ -15,6 +17,13 @@ const validateBooks = (cmsConfiguration: any, errorMessages: string[]) => {
   }
   for (const bookType of Object.keys(cmsConfiguration.books.bookItems)) {
     const bookInfo = cmsConfiguration.books.bookItems[bookType];
+    if (getNonBookAggregates().includes(bookType)) {
+      errorMessages.push(
+        `- Één van de toegevoegde boeken '${bookType}' gebruikt voor 'bookType' een gereserveerde benaming (lijst van gereserveerde benamingen: ${getNonBookAggregates().join(
+          ', '
+        )}).`
+      );
+    }
     if (!('title' in bookInfo)) {
       errorMessages.push(`- 'books.bookItems.${bookType}.title' ontbreekt.`);
     }

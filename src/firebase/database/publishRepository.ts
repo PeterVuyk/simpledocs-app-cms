@@ -10,8 +10,8 @@ import { Versioning } from '../../model/Versioning';
 import {
   APP_CONFIGURATIONS,
   CMS_CONFIGURATIONS,
-} from '../../model/ConfigurationType';
-import { CmsConfiguration } from '../../model/CmsConfiguration';
+} from '../../model/configurations/ConfigurationType';
+import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
 import publishArticlesRepository from './publication/publishArticlesRepository';
 import publishDecisionTreeRepository from './publication/publishDecisionTreeRepository';
 import publishConfigurationsRepository from './publication/publishConfigurationsRepository';
@@ -40,7 +40,7 @@ async function removeVersion(versioning: Versioning): Promise<void> {
 }
 
 async function updateVersion(
-  configuration: CmsConfiguration,
+  configuration: CmsConfigurations,
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {

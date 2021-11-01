@@ -17,7 +17,7 @@ import RemoveVersionButton from './RemoveVersionButton';
 import CreateVersionButton from './CreateVersionButton';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import { AGGREGATE_APP_CONFIGURATIONS } from '../../model/Aggregate';
-import { AppConfigurations } from '../../model/AppConfigurations';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 
 const useStyles = makeStyles({
   table: {

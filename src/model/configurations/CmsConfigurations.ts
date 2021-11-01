@@ -1,4 +1,4 @@
-import { Versions } from './Versioning';
+import { Versions } from '../Versioning';
 
 interface MenuLinkItemConfig {
   navigationIndex: number;
@@ -42,7 +42,7 @@ interface Cms {
   title: string;
 }
 
-export interface CmsConfiguration {
+export interface CmsConfigurations {
   books: BookConfig;
   menu: MenuConfig;
   externalLinks: MenuLinkConfig;
