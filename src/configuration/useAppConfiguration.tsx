@@ -12,10 +12,10 @@ function useAppConfiguration() {
       ];
       const book = books.find((value) => value.bookType === bookType);
       if (book?.chapterDivisionsInList.includes(chapterDivision)) {
-        return 'Topniveau';
+        return '(Topniveau)';
       }
       if (book?.chapterDivisionsInIntermediateList.includes(chapterDivision)) {
-        return 'Tussenliggende pagina';
+        return '(Tussenliggende pagina)';
       }
       return '';
     },

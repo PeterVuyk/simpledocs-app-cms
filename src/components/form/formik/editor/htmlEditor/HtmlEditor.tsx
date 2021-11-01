@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   meta: any;
   initialFile: string | null;
-  formik: any;
+  formik: React.MutableRefObject<any>;
   showError: boolean;
 }
 

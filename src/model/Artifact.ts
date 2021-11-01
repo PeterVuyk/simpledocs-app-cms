@@ -6,7 +6,9 @@ export const CONTENT_TYPE_MARKDOWN = 'markdown';
 
 export type ContentType = 'html' | 'css' | 'markdown';
 
-export const getExtensionFromContentType = (contentType: ContentType) => {
+export const getExtensionFromContentType = (
+  contentType: ContentType
+): string => {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
       return 'html';

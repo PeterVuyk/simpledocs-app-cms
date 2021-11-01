@@ -192,26 +192,26 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                   label="Hoofdstukindeling"
                   showError={showError}
                   options={{
-                    chapter: `Hoofdstuk (${getPageHierarchy(
+                    chapter: `Hoofdstuk ${getPageHierarchy(
                       bookType,
                       'chapter'
-                    )})`,
-                    section: `Paragraaf (${getPageHierarchy(
+                    )}`,
+                    section: `Paragraaf ${getPageHierarchy(
                       bookType,
                       'section'
-                    )})`,
-                    subSection: `Subparagraaf (${getPageHierarchy(
+                    )}`,
+                    subSection: `Subparagraaf ${getPageHierarchy(
                       bookType,
                       'subSection'
-                    )})`,
-                    subSubSection: `Sub-subparagraaf (${getPageHierarchy(
+                    )}`,
+                    subSubSection: `Sub-subparagraaf ${getPageHierarchy(
                       bookType,
                       'subSubSection'
-                    )})`,
-                    subHead: `Tussenkop (${getPageHierarchy(
+                    )}`,
+                    subHead: `Tussenkop ${getPageHierarchy(
                       bookType,
                       'subHead'
-                    )})`,
+                    )}`,
                   }}
                 />
               </Grid>

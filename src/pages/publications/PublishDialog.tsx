@@ -19,14 +19,16 @@ import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
-import { AGGREGATE_CMS_CONFIGURATIONS } from '../../model/Aggregate';
+import {
+  AGGREGATE_APP_CONFIGURATIONS,
+  AGGREGATE_CMS_CONFIGURATIONS,
+} from '../../model/Aggregate';
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
 const Transition = forwardRef(function Transition(
-  // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: ReactElement<any, any> },
+  props: TransitionProps & { children?: ReactElement },
   ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -94,7 +96,10 @@ const PublishDialog: FC<Props> = ({
       })
       .then(() => {
         // If the cms configuration is updated, then we need to reload the page so the updated configuration can be reloaded.
-        if (openDialog?.aggregate === AGGREGATE_CMS_CONFIGURATIONS) {
+        if (
+          openDialog?.aggregate === AGGREGATE_CMS_CONFIGURATIONS ||
+          openDialog?.aggregate === AGGREGATE_APP_CONFIGURATIONS
+        ) {
           window.location.reload();
         }
       })

@@ -53,6 +53,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
           setTimeout(() => auth.signOut(), millisecondsUntilExpiration);
         });
       }
+      return null;
     });
   }, []);
 

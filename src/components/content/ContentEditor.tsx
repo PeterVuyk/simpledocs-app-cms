@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 interface Props {
   contentTypeToggle: ContentType | undefined;
   showError: boolean;
-  formik: any;
+  formik: React.MutableRefObject<any>;
   initialFile: string | null;
   initialFileType: ContentType | undefined;
 }

@@ -5,7 +5,7 @@ export const AGGREGATE_APP_CONFIGURATIONS = 'appConfigurations';
 export const AGGREGATE_CMS_CONFIGURATIONS = 'cmsConfigurations';
 export const AGGREGATE_STYLEGUIDE = 'styleguide';
 
-export const getNonBookAggregates = () => {
+export const getNonBookAggregates = (): string[] => {
   return [
     AGGREGATE_ARTIFACTS,
     AGGREGATE_DECISION_TREE,

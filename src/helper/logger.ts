@@ -2,7 +2,7 @@ import Bugsnag from '@bugsnag/js';
 
 const isDevelopmentEnv = (): boolean => process.env.NODE_ENV === 'development';
 
-const errorWithReason = (errorMessage: string, reason: string) => {
+const errorWithReason = (errorMessage: string, reason: string): void => {
   if (isDevelopmentEnv()) {
     console.error('errorMessage', errorMessage, 'reason', reason);
     return;
@@ -12,7 +12,7 @@ const errorWithReason = (errorMessage: string, reason: string) => {
   );
 };
 
-const error = (errorMessage: string) => {
+const error = (errorMessage: string): void => {
   if (isDevelopmentEnv()) {
     console.error('errorMessage', errorMessage);
     return;

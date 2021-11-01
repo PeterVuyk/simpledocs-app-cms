@@ -28,8 +28,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
 const Transition = forwardRef(function Transition(
-  // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: ReactElement<any, any> },
+  props: TransitionProps & { children?: ReactElement },
   ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;

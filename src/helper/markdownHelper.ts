@@ -31,7 +31,7 @@ const replaceIndentationWithBackticks = (text: string) => {
   return updatedLines.join('\n');
 };
 
-const modifyMarkdownForStorage = (text: string) => {
+const modifyMarkdownForStorage = (text: string): string => {
   return replaceIndentationWithBackticks(replaceSingleBackticks(text));
 };
 
@@ -116,7 +116,7 @@ const stripMarkdownPrefixes = (text: string) => {
   return line;
 };
 
-const getTextFromMarkdown = (text: string) => {
+const getTextFromMarkdown = (text: string): string => {
   const updatedLines: string[] = [];
   const lines = text.split('\n');
   for (const line of lines) {

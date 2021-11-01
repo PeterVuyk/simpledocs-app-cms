@@ -1,7 +1,10 @@
 import * as Yup from 'yup';
+import { StringSchema } from 'yup';
 import { CONTENT_TYPE_HTML, ContentType } from '../../../../model/Artifact';
 
-const validateYupHtmlContent = (contentType: ContentType) => {
+const validateYupHtmlContent = (
+  contentType: ContentType
+): StringSchema<string | null | undefined> => {
   return Yup.string()
     .nullable()
     .test(

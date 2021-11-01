@@ -108,7 +108,7 @@ const createValidationErrorMessage = (errorMessages: string[]): string => {
   )}`;
 };
 
-const validate = (steps: DecisionTreeStep[]) => {
+const validate = (steps: DecisionTreeStep[]): string => {
   const rootQuestion = steps[0];
   if (steps.length < 3 || !rootQuestion) {
     return 'Het ontvangen csv bestand is leeg en dient tenminste 1 vraag en 2 antwoorden te hebben (ja en nee).';

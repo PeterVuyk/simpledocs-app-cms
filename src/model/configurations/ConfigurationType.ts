@@ -13,7 +13,7 @@ export type ConfigurationTypeStatus =
 
 export const getDraftFromConfigurationType = (
   configurationType: ConfigurationType
-) => {
+): 'appConfigurationsDraft' | 'cmsConfigurationsDraft' => {
   return configurationType === APP_CONFIGURATIONS
     ? APP_CONFIGURATIONS_DRAFT
     : CMS_CONFIGURATIONS_DRAFT;

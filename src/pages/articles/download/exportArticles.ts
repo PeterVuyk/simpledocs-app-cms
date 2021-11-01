@@ -10,7 +10,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 
-const icons = (articles: Article[], filename: string) => {
+const icons = (articles: Article[], filename: string): void => {
   const zip = new JSZip();
 
   articles.forEach((article) => {
@@ -26,7 +26,7 @@ const icons = (articles: Article[], filename: string) => {
   });
 };
 
-const exportContent = (articles: Article[], filename: string) => {
+const exportContent = (articles: Article[], filename: string): void => {
   const zip = new JSZip();
 
   articles.forEach((article) => {
@@ -46,7 +46,7 @@ const csvFile = (
   articles: Article[],
   editStatus: EditStatus,
   filename: string
-) => {
+): void => {
   const fields = [
     'pageIndex',
     'chapter',
