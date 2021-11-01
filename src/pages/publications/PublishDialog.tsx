@@ -18,7 +18,7 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { AGGREGATE_CMS_CONFIGURATIONS } from '../../model/Aggregate';
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
@@ -51,7 +51,7 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { configuration } = useConfiguration();
+  const { configuration } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   const handleClose = () => {

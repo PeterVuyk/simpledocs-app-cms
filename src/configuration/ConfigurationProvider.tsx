@@ -1,36 +1,43 @@
-import React, { useEffect, useState, FC, ReactNode } from 'react';
-import { CmsConfiguration } from '../model/CmsConfiguration';
+import React, { useEffect, useState, FC, ReactNode, useCallback } from 'react';
 import configurationRepository from '../firebase/database/configurationRepository';
-import { CMS_CONFIGURATIONS } from '../model/ConfigurationType';
 import logger from '../helper/logger';
-import { setCmsConfiguration } from './cmsConfiguration';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { setAppConfiguration, setCmsConfiguration } from './configuration';
 
 interface Props {
   children: ReactNode;
 }
 
 const ConfigurationProvider: FC<Props> = ({ children }) => {
-  const [cmsConfigurations, setCmsConfigurations] =
-    useState<CmsConfiguration | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
+  const getConfigurations = useCallback(() => {
     configurationRepository
-      .getConfigurations(CMS_CONFIGURATIONS)
-      .then((result) => result as CmsConfiguration)
+      .getAllConfigurations()
       .then((configuration) => {
-        setCmsConfiguration(configuration);
-        setCmsConfigurations(configuration);
+        if (
+          !configuration ||
+          configuration.appConfigurations === null ||
+          !configuration.cmsConfigurations
+        ) {
+          throw new Error(
+            'failed to get the one or more of the configurations from the database'
+          );
+        }
+        setCmsConfiguration(configuration.cmsConfigurations);
+        setAppConfiguration(configuration.appConfigurations);
+        setLoading(false);
       })
       .catch((reason) =>
-        logger.errorWithReason(
-          'Failed to get cmsConfigurations from firebase storage',
-          reason
-        )
+        logger.errorWithReason(`ConfigurationProvider failed`, reason)
       );
   }, []);
 
-  if (!cmsConfigurations) {
+  useEffect(() => {
+    getConfigurations();
+  }, [getConfigurations]);
+
+  if (loading) {
     return <LoadingSpinner />;
   }
 

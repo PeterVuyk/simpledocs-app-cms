@@ -17,7 +17,7 @@ import Calculations from '../pages/calculations/Calculations';
 import Publications from '../pages/publications/Publications';
 import NotFound from '../pages/NotFound';
 import Styleguide from '../pages/styleguide/Styleguide';
-import useConfiguration from '../configuration/useConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AppConfigurationsPage from '../pages/appConfigurations/AppConfigurationsPage';
 import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
 import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
@@ -46,7 +46,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const match = useRouteMatch<{ page: string }>();
   const { configuration, slugExist, getBookTypeFromUrlSlug } =
-    useConfiguration();
+    useCmsConfiguration();
 
   const { params } = match;
   const { page } = params;

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { getCmsConfiguration } from './cmsConfiguration';
+import { getCmsConfiguration } from './configuration';
 
-function useConfiguration() {
+function useCmsConfiguration() {
   const configuration = getCmsConfiguration();
 
   const getBookTypeFromUrlSlug = useCallback(
@@ -78,4 +78,4 @@ function useConfiguration() {
   };
 }
 
-export default useConfiguration;
+export default useCmsConfiguration;

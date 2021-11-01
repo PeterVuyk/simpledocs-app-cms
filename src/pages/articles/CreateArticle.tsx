@@ -10,7 +10,7 @@ import ArticleForm from './ArticleForm';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
@@ -18,7 +18,7 @@ const CreateArticle: FC = () => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
   const { modifyHtmlForStorage } = useHtmlModifier();
-  const { getBookTypeFromUrlSlug } = useConfiguration();
+  const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   const handleSubmit = (

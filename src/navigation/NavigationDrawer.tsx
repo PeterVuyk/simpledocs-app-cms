@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { Icon } from '@material-ui/core';
 import { MenuItem, MenuLinkConfig } from '../model/CmsConfiguration';
-import useConfiguration from '../configuration/useConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -75,7 +75,7 @@ export interface Props
 const NavigationDrawer: FC<Props> = (props: Props) => {
   const { classes, currentPage, ...other } = props;
   const history = useHistory();
-  const { configuration } = useConfiguration();
+  const { configuration } = useCmsConfiguration();
 
   const getCategoryItem = (title: string, children: ReactNode) => {
     return (

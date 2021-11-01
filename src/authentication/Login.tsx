@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE } from '../navigation/UrlSlugs';
-import useConfiguration from '../configuration/useConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AlertBox from '../components/AlertBox';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +38,7 @@ const Login: FC = () => {
   const history = useHistory();
   const classes = useStyles();
   const { currentUser } = useAuth();
-  const { configuration } = useConfiguration();
+  const { configuration } = useCmsConfiguration();
 
   useEffect(() => {
     if (currentUser !== null) {

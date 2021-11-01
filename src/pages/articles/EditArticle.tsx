@@ -14,7 +14,7 @@ import NotFound from '../NotFound';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { notify } from '../../redux/slice/notificationSlice';
 
 const EditArticle: FC = () => {
@@ -22,7 +22,7 @@ const EditArticle: FC = () => {
   const history = useHistory();
   const { articleId, aggregatePath } =
     useParams<{ articleId: string; aggregatePath: string }>();
-  const { getBookTypeFromUrlSlug } = useConfiguration();
+  const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   useEffect(() => {

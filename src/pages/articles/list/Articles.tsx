@@ -11,7 +11,7 @@ import { Article } from '../../../model/Article';
 import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import useConfiguration from '../../../configuration/useConfiguration';
+import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import UpdateStylesheet from '../stylesheet/UpdateStylesheetButton';
 
 const useStyles = makeStyles({
@@ -36,7 +36,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
   const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();
-  const { getSlugFromBookType } = useConfiguration();
+  const { getSlugFromBookType } = useCmsConfiguration();
 
   const loadArticles = useCallback(() => {
     setArticles(null);

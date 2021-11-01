@@ -8,6 +8,7 @@ module.exports = {
         'no-param-reassign': 0,
         'react/jsx-props-no-spreading': 0,
         '@typescript-eslint/ban-ts-comment': 0,
+        'react/require-default-props': 0,
         'no-plusplus': 0,
         'no-continue': 0,
         'no-restricted-syntax': 0,

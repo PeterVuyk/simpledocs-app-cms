@@ -5,7 +5,7 @@ import { Tooltip } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import PublishDialog from './PublishDialog';
 import { Versioning } from '../../model/Versioning';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 
 interface Props {
   currentVersion: Versioning;
@@ -19,7 +19,7 @@ const PublicationItem: FC<Props> = ({
   const [openPublishDialog, setOpenPublishDialog] = useState<Versioning | null>(
     null
   );
-  const { getTitleByAggregate } = useConfiguration();
+  const { getTitleByAggregate } = useCmsConfiguration();
 
   const getDialogTitle = (dialogVersion: Versioning): string => {
     const title = getTitleByAggregate(dialogVersion.aggregate);

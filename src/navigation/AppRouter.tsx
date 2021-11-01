@@ -17,14 +17,14 @@ import EditArticle from '../pages/articles/EditArticle';
 import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
-import useConfiguration from '../configuration/useConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../model/Aggregate';
 
 const AppRouter: FC = () => {
-  const { configuration } = useConfiguration();
+  const { configuration } = useCmsConfiguration();
 
   const getDefaultRedirectUrl = () => {
     const { urlSlug } = Object.entries(configuration.books.bookItems).sort(

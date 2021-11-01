@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import useConfiguration from '../configuration/useConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NotFound: FC = () => {
   const classes = useStyles();
-  const { configuration } = useConfiguration();
+  const { configuration } = useCmsConfiguration();
 
   return (
     <Container component="main" maxWidth="xs">

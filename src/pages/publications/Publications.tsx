@@ -12,7 +12,7 @@ import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_PUBLICATIONS } from '../../model/DocumentationType';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import RemoveVersionButton from './RemoveVersionButton';
 import CreateVersionButton from './CreateVersionButton';
 import configurationRepository from '../../firebase/database/configurationRepository';
@@ -37,7 +37,7 @@ interface Props {
 
 const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[] | null>(null);
-  const { configuration, isBookType, isMenuItem } = useConfiguration();
+  const { configuration, isBookType, isMenuItem } = useCmsConfiguration();
 
   const classes = useStyles();
 

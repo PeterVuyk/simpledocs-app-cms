@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import ArticleListItem from './ArticleListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
-import useConfiguration from '../../../configuration/useConfiguration';
+import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 
 const useStyles = makeStyles({
   table: {
@@ -35,7 +35,7 @@ const ArticlesList: FC<Props> = ({
   bookType,
 }) => {
   const classes = useStyles();
-  const { getSlugFromBookType } = useConfiguration();
+  const { getSlugFromBookType } = useCmsConfiguration();
 
   return (
     <TableContainer component={Paper}>

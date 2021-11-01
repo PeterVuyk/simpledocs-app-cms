@@ -5,7 +5,7 @@ import { MenuListItem } from '../../components/buttonMenuDialog/model/MenuListIt
 import { MenuListDialog } from '../../components/buttonMenuDialog/model/MenuListDialog';
 import MenuDialogButton from '../../components/buttonMenuDialog/MenuDialogButton';
 import { Versioning } from '../../model/Versioning';
-import useConfiguration from '../../configuration/useConfiguration';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import publishRepository from '../../firebase/database/publishRepository';
 import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const RemoveVersionButton: FC<Props> = ({ versions, onReloadPublications }) => {
-  const { getTitleByAggregate } = useConfiguration();
+  const { getTitleByAggregate } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   const menuListItems = useCallback((): MenuListItem[] => {

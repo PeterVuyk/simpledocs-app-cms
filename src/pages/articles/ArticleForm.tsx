@@ -15,6 +15,7 @@ import useContentTypeToggle from '../../components/content/useContentTypeToggle'
 import { ContentType } from '../../model/Artifact';
 import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
+import useAppConfiguration from '../../configuration/useAppConfiguration';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => void;
@@ -28,6 +29,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   );
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
+  const { getPageHierarchy } = useAppConfiguration();
 
   const handleSubmitForm = (
     values: FormikValues,
@@ -190,11 +192,26 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                   label="Hoofdstukindeling"
                   showError={showError}
                   options={{
-                    chapter: 'Hoofdstuk',
-                    section: 'Paragraaf',
-                    subSection: 'Subparagraaf',
-                    subSubSection: 'Sub-subparagraaf',
-                    subHead: 'Tussenkop',
+                    chapter: `Hoofdstuk (${getPageHierarchy(
+                      bookType,
+                      'chapter'
+                    )})`,
+                    section: `Paragraaf (${getPageHierarchy(
+                      bookType,
+                      'section'
+                    )})`,
+                    subSection: `Subparagraaf (${getPageHierarchy(
+                      bookType,
+                      'subSection'
+                    )})`,
+                    subSubSection: `Sub-subparagraaf (${getPageHierarchy(
+                      bookType,
+                      'subSubSection'
+                    )})`,
+                    subHead: `Tussenkop (${getPageHierarchy(
+                      bookType,
+                      'subHead'
+                    )})`,
                   }}
                 />
               </Grid>
