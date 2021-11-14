@@ -12,7 +12,7 @@ import {
   Artifact,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
-} from '../../../../../model/Artifact';
+} from '../../../../../model/artifacts/Artifact';
 import MenuDialogButton from '../../../../buttonMenuDialog/MenuDialogButton';
 
 interface Props {

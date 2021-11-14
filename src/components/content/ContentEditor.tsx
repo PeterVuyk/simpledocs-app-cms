@@ -8,7 +8,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/Artifact';
+} from '../../model/artifacts/Artifact';
 import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
 import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 

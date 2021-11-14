@@ -8,8 +8,8 @@ import logger from '../../../../../helper/logger';
 import {
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
-} from '../../../../../model/ArtifactType';
-import { Artifact, ContentType } from '../../../../../model/Artifact';
+} from '../../../../../model/artifacts/ArtifactType';
+import { Artifact, ContentType } from '../../../../../model/artifacts/Artifact';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import SnippetsDialogButton from './SnippetsDialogButton';
 

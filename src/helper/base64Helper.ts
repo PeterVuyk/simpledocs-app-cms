@@ -3,7 +3,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../model/Artifact';
+} from '../model/artifacts/Artifact';
 
 function getBodyFromBase64(
   base64Blob: string,

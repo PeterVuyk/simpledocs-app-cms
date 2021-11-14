@@ -6,7 +6,7 @@ import { Article } from '../../../model/Article';
 import {
   CONTENT_TYPE_HTML,
   getExtensionFromContentType,
-} from '../../../model/Artifact';
+} from '../../../model/artifacts/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

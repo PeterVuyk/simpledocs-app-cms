@@ -4,8 +4,8 @@ import JSZip from 'jszip';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
-import { ARTIFACT_TYPE_DECISION_TREE } from '../../../../model/ArtifactType';
-import { getExtensionFromContentType } from '../../../../model/Artifact';
+import { ARTIFACT_TYPE_DECISION_TREE } from '../../../../model/artifacts/ArtifactType';
+import { getExtensionFromContentType } from '../../../../model/artifacts/Artifact';
 
 interface Props {
   editStatus: EditStatus;

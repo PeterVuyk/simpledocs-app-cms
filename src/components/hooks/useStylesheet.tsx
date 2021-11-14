@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Artifact } from '../../model/Artifact';
+import { Artifact } from '../../model/artifacts/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
-import { ARTIFACT_TYPE_CSS_STYLESHEET } from '../../model/ArtifactType';
+import { ARTIFACT_TYPE_CSS_STYLESHEET } from '../../model/artifacts/ArtifactType';
 import logger from '../../helper/logger';
 
 function useStylesheet() {

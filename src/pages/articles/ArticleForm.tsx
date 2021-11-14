@@ -12,7 +12,7 @@ import SearchTextField from '../../components/form/formik/SearchTextField';
 import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
-import { ContentType } from '../../model/Artifact';
+import { ContentType } from '../../model/artifacts/Artifact';
 import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 import useAppConfiguration from '../../configuration/useAppConfiguration';

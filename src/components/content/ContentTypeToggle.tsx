@@ -6,7 +6,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/Artifact';
+} from '../../model/artifacts/Artifact';
 import HelpAction from '../ItemAction/helpAction/HelpAction';
 import { DOCUMENTATION_CONTENT_TYPES } from '../../model/DocumentationType';
 

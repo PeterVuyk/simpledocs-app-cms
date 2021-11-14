@@ -1,4 +1,4 @@
-import { Artifact } from '../model/Artifact';
+import { Artifact } from '../model/artifacts/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

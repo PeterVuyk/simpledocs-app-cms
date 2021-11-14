@@ -5,7 +5,7 @@ import { Tooltip } from '@material-ui/core';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
-import { CONTENT_TYPE_HTML } from '../../../model/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../model/artifacts/Artifact';
 import articleRepository from '../../../firebase/database/articleRepository';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';

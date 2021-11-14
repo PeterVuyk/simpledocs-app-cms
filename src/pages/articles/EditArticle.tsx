@@ -12,7 +12,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import htmlContentHelper from '../../helper/htmlContentHelper';
 import NotFound from '../NotFound';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { notify } from '../../redux/slice/notificationSlice';

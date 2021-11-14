@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { CalculationInfo } from '../../../model/CalculationInfo';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 
 interface Props {
   removeMenuElement: null | HTMLElement;

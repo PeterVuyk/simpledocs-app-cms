@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { CONTENT_TYPE_HTML } from '../../model/Artifact';
+import { CONTENT_TYPE_HTML } from '../../model/artifacts/Artifact';
 
 function useContentTypeToggle(initialValue: any) {
   const [contentType, setContentType] = useLocalStorage(

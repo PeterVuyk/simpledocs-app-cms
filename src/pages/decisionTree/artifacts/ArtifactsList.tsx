@@ -3,8 +3,8 @@ import ArtifactsTable from '../../../components/artifact/ArtifactsTable';
 import logger from '../../../helper/logger';
 import { AGGREGATE_DECISION_TREE } from '../../../model/Aggregate';
 import artifactsRepository from '../../../firebase/database/artifactsRepository';
-import { ARTIFACT_TYPE_DECISION_TREE } from '../../../model/ArtifactType';
-import { Artifact } from '../../../model/Artifact';
+import { ARTIFACT_TYPE_DECISION_TREE } from '../../../model/artifacts/ArtifactType';
+import { Artifact } from '../../../model/artifacts/Artifact';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
 

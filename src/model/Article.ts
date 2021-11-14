@@ -1,4 +1,4 @@
-import { ContentType } from './Artifact';
+import { ContentType } from './artifacts/Artifact';
 
 export interface Article {
   id?: string;

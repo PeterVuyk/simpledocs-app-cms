@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import { Tooltip } from '@material-ui/core';
 import ContentPreview from '../dialog/ContentPreview';
-import { ContentType } from '../../model/Artifact';
+import { ContentType } from '../../model/artifacts/Artifact';
 
 interface Props {
   content: string;

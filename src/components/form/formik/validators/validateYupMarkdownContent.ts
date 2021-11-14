@@ -1,6 +1,9 @@
 import * as Yup from 'yup';
 import { StringSchema } from 'yup';
-import { CONTENT_TYPE_MARKDOWN, ContentType } from '../../../../model/Artifact';
+import {
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../../../model/artifacts/Artifact';
 
 const validateYupMarkdownContent = (
   contentType: ContentType

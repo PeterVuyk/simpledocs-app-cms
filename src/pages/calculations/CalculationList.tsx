@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
-import { CalculationInfo } from '../../model/CalculationInfo';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import CalculationListItem from './CalculationListItem';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,7 @@
 import { database } from '../firebaseConnection';
 import { AGGREGATE_ARTIFACTS } from '../../model/Aggregate';
-import { Artifact, ContentType } from '../../model/Artifact';
-import { ArtifactType } from '../../model/ArtifactType';
+import { Artifact, ContentType } from '../../model/artifacts/Artifact';
+import { ArtifactType } from '../../model/artifacts/ArtifactType';
 
 async function getArtifactByTitle(
   title: string,

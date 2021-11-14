@@ -6,13 +6,13 @@ import ViewContentAction from '../ItemAction/ViewContentAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
 import DownloadContentAction from '../ItemAction/DownloadContentAction';
 import { AGGREGATE_DECISION_TREE } from '../../model/Aggregate';
-import { Artifact } from '../../model/Artifact';
+import { Artifact } from '../../model/artifacts/Artifact';
 import {
   ARTIFACT_TYPE_CSS_STYLESHEET,
   ARTIFACT_TYPE_DECISION_TREE,
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
-} from '../../model/ArtifactType';
+} from '../../model/artifacts/ArtifactType';
 import HelpAction from '../ItemAction/helpAction/HelpAction';
 import EditItemAction from '../ItemAction/EditItemAction';
 import {

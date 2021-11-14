@@ -1,7 +1,7 @@
 import { database } from '../firebaseConnection';
 import { AGGREGATE_CALCULATIONS } from '../../model/Aggregate';
-import { CalculationInfo } from '../../model/CalculationInfo';
-import { CalculationType } from '../../model/CalculationType';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
+import { CalculationType } from '../../model/calculations/CalculationType';
 
 async function removeCalculationsDraft(
   calculationType: CalculationType

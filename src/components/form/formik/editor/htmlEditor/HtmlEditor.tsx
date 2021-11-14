@@ -6,10 +6,10 @@ import FileDropzoneArea from '../../../FileDropzoneArea';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
 import LoadingSpinner from '../../../../LoadingSpinner';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
-import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/ArtifactType';
+import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
 import base64Helper from '../../../../../helper/base64Helper';
 import useStylesheet from '../../../../hooks/useStylesheet';
-import { CONTENT_TYPE_HTML } from '../../../../../model/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../../../model/artifacts/Artifact';
 import SaveIndicator from '../../SaveIndicator';
 import useHtmlModifier from '../../../../hooks/useHtmlModifier';
 

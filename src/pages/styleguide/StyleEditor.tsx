@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import ArtifactEditor from '../../components/artifact/ArtifactEditor';
-import { ArtifactType } from '../../model/ArtifactType';
+import { ArtifactType } from '../../model/artifacts/ArtifactType';
 
 const StyleEditor: FC = () => {
   const { artifactType, artifactId } =

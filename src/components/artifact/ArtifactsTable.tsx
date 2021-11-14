@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Artifact } from '../../model/Artifact';
+import { Artifact } from '../../model/artifacts/Artifact';
 import ArtifactsTableRow from './ArtifactsTableRow';
 
 const useStyles = makeStyles({

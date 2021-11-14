@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
 import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
-import { Artifact, CONTENT_TYPE_CSS } from '../../model/Artifact';
+import { Artifact, CONTENT_TYPE_CSS } from '../../model/artifacts/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';

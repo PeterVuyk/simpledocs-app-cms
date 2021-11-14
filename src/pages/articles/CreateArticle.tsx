@@ -7,7 +7,7 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
 import ArticleForm from './ArticleForm';
-import { CONTENT_TYPE_HTML, ContentType } from '../../model/Artifact';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';

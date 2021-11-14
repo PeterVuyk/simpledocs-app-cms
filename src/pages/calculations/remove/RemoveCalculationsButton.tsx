@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { Tooltip } from '@material-ui/core';
 import RemoveCalculationsMenu from './RemoveCalculationsMenu';
-import { CalculationInfo } from '../../../model/CalculationInfo';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 
 const useStyles = makeStyles({
   button: {

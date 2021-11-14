@@ -5,7 +5,10 @@ import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import CodeIcon from '@material-ui/icons/Code';
 import { Tooltip } from '@material-ui/core';
 import TextField from './TextField';
-import { CONTENT_TYPE_MARKDOWN, ContentType } from '../../../model/Artifact';
+import {
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../../model/artifacts/Artifact';
 import markdownHelper from '../../../helper/markdownHelper';
 
 interface Props {

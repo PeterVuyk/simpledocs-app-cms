@@ -2,7 +2,7 @@ import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { AGGREGATE_CALCULATIONS } from '../../../model/Aggregate';
 import { Versioning } from '../../../model/Versioning';
-import { CalculationInfo } from '../../../model/CalculationInfo';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,

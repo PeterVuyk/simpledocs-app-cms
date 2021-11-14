@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import { CalculationInfo } from '../../model/CalculationInfo';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import DownloadContentAction from '../../components/ItemAction/DownloadContentAction';
-import { OVERTAKING_DISTANCE } from '../../model/CalculationType';
+import { OVERTAKING_DISTANCE } from '../../model/calculations/CalculationType';
 
 interface Props {
   calculationInfo: CalculationInfo;

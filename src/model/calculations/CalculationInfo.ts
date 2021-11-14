@@ -1,5 +1,5 @@
 import { CalculationType } from './CalculationType';
-import { ContentType } from './Artifact';
+import { ContentType } from '../artifacts/Artifact';
 
 export interface CalculationInfo {
   listIndex: number;

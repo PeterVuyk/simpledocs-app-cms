@@ -9,7 +9,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/Artifact';
+} from '../../model/artifacts/Artifact';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },

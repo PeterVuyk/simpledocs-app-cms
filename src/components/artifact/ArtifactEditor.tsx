@@ -16,8 +16,8 @@ import {
   ARTIFACT_TYPE_DECISION_TREE,
   ArtifactType,
   isArtifactType,
-} from '../../model/ArtifactType';
-import { Artifact, CONTENT_TYPE_HTML } from '../../model/Artifact';
+} from '../../model/artifacts/ArtifactType';
+import { Artifact, CONTENT_TYPE_HTML } from '../../model/artifacts/Artifact';
 import useContentTypeToggle from '../content/useContentTypeToggle';
 import useHtmlModifier from '../hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';

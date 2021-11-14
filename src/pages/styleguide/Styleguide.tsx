@@ -12,13 +12,13 @@ import { AGGREGATE_STYLEGUIDE } from '../../model/Aggregate';
 import { ADD_SNIPPETS, ADD_TEMPLATE } from '../../navigation/UrlSlugs';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import StylesheetDialog from './StylesheetDialog';
-import { Artifact } from '../../model/Artifact';
+import { Artifact } from '../../model/artifacts/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import {
   ARTIFACT_TYPE_CSS_STYLESHEET,
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
-} from '../../model/ArtifactType';
+} from '../../model/artifacts/ArtifactType';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 

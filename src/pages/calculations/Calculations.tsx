@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationList from './CalculationList';
 import PageHeading from '../../layout/PageHeading';
-import { CalculationInfo } from '../../model/CalculationInfo';
+import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import {
   EDIT_CALCULATIONS_OVERTAKING_DISTANCE,
   EDIT_CALCULATIONS_STOPPING_DISTANCE,
