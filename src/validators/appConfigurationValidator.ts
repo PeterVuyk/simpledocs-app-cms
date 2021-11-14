@@ -185,16 +185,16 @@ const validate = (appConfiguration: any) => {
   if ('decisionsTab' in appConfiguration) {
     errorMessages = validateDecisionTab(appConfiguration, errorMessages);
   }
-  if ('firstTab' in appConfiguration) {
+  if ('firstBookTab' in appConfiguration) {
     errorMessages = validateBookTypeTab(
-      'firstTab',
+      'firstBookTab',
       appConfiguration,
       errorMessages
     );
   }
-  if ('secondTab' in appConfiguration) {
+  if ('secondBookTab' in appConfiguration) {
     errorMessages = validateBookTypeTab(
-      'secondTab',
+      'secondBookTab',
       appConfiguration,
       errorMessages
     );

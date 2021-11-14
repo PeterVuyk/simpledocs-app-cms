@@ -7,8 +7,8 @@ function useAppConfiguration() {
   const getPageHierarchy = useCallback(
     (bookType: string, chapterDivision: string): string => {
       const books = [
-        ...configuration.firstTab.bookTypes,
-        ...configuration.secondTab.bookTypes,
+        ...configuration.firstBookTab.bookTypes,
+        ...configuration.secondBookTab.bookTypes,
       ];
       const book = books.find((value) => value.bookType === bookType);
       if (book?.chapterDivisionsInList.includes(chapterDivision)) {
