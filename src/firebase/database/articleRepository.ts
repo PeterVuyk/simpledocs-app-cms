@@ -2,6 +2,10 @@ import firebase from 'firebase/compat/app';
 import { database } from '../firebaseConnection';
 import { Article } from '../../model/Article';
 
+function createDatabaseId() {
+  return database.collection('books').doc().id;
+}
+
 async function createArticle(
   bookType: string,
   article: Article
@@ -10,7 +14,21 @@ async function createArticle(
     .collection('books')
     .doc(bookType)
     .collection(bookType)
-    .add(article);
+    .doc(`${createDatabaseId()}-draft`)
+    .set(article);
+}
+
+async function updateOrCreateArticle(
+  bookType: string,
+  article: Article,
+  articleId: string
+): Promise<void> {
+  await database
+    .collection('books')
+    .doc(bookType)
+    .collection(bookType)
+    .doc(articleId)
+    .set(article);
 }
 
 async function deleteArticle(
@@ -121,25 +139,17 @@ async function updateArticle(
   chapter: string,
   article: Article
 ): Promise<void> {
-  const isDraft = await getArticlesByField(bookType, 'chapter', chapter).then(
-    (result) => result.some((value) => value.isDraft)
+  const originalArticle = await getArticleById(
+    bookType,
+    article.id?.replace('-draft', '') ?? ''
   );
-
   const articleId = article.id;
   const updatedArticle = article;
   delete updatedArticle.id;
 
-  if (isDraft) {
-    await database
-      .collection('books')
-      .doc(bookType)
-      .collection(bookType)
-      .doc(articleId)
-      .set(updatedArticle);
-  } else {
-    await createArticle(bookType, updatedArticle).then(() =>
-      markArticleForDeletion(bookType, articleId ?? '')
-    );
+  await updateOrCreateArticle(bookType, updatedArticle, articleId ?? '');
+  if (originalArticle) {
+    await markArticleForDeletion(bookType, originalArticle.id ?? '');
   }
 }
 
@@ -158,12 +168,13 @@ async function updateArticles(
     );
   articles.forEach((article) => {
     const doc = article as any;
+    const docId = doc.id;
     delete doc.id;
     const docRef = database
       .collection('books')
       .doc(bookType)
       .collection(bookType)
-      .doc();
+      .doc(docId);
     batch.set(docRef, doc);
   });
 

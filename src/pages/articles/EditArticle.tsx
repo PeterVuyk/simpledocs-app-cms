@@ -40,7 +40,7 @@ const EditArticle: FC = () => {
         getBookTypeFromUrlSlug(aggregatePath),
         article?.chapter ?? '',
         {
-          id: article?.id,
+          id: `${article?.id?.replaceAll('-draft', '')}-draft`,
           pageIndex: values.pageIndex,
           chapter: values.chapter,
           chapterDivision: values.chapterDivision,

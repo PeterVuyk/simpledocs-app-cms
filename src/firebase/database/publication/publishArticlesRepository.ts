@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { Versioning } from '../../../model/Versioning';
+import { Article } from '../../../model/Article';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,
@@ -43,7 +44,15 @@ const publishDraftArticles = async (
     .get();
 
   querySnapshotToBePublished.forEach((documentSnapshot) => {
-    batch.update(documentSnapshot.ref, { isDraft: false });
+    const article = documentSnapshot.data() as Article;
+    article.isDraft = false;
+    const documentReference = database
+      .collection('books')
+      .doc(versioning.aggregate)
+      .collection(versioning.aggregate)
+      .doc(documentSnapshot.ref.id.replace('-draft', ''));
+    batch.set(documentReference, article);
+    batch.delete(documentSnapshot.ref);
   });
 };
 
@@ -60,8 +69,8 @@ async function publish(
   return batch.commit();
 }
 
-const publishRepository = {
+const publishArticlesRepository = {
   publish,
 };
 
-export default publishRepository;
+export default publishArticlesRepository;

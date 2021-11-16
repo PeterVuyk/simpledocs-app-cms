@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
@@ -38,6 +38,8 @@ const ArticleListItem: FC<Props> = ({
   bookType,
   bookTypeSlug,
 }) => {
+  const [showMarkForDeletion, setShowMarkForDeletion] =
+    useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
@@ -54,6 +56,22 @@ const ArticleListItem: FC<Props> = ({
         chapterDivisions[chapterDivision]
       : '';
   };
+
+  useEffect(() => {
+    const markedForDeletionArticleHasDraft = async () => {
+      if (!article.markedForDeletion || editStatus !== EDIT_STATUS_DRAFT) {
+        setShowMarkForDeletion(false);
+        return;
+      }
+
+      const draft = await articleRepository.getArticleById(
+        bookType,
+        `${article.id}-draft`
+      );
+      setShowMarkForDeletion(draft === null);
+    };
+    markedForDeletionArticleHasDraft();
+  }, [article.id, article.markedForDeletion, bookType, editStatus]);
 
   const onDelete = async (id: string): Promise<void> => {
     if (article.isDraft) {
@@ -155,7 +173,7 @@ const ArticleListItem: FC<Props> = ({
           content={article.content}
           contentType={article.contentType}
         />
-        {article.markedForDeletion && editStatus === EDIT_STATUS_DRAFT && (
+        {showMarkForDeletion && (
           <Tooltip title="Markering voor verwijdering opheffen">
             <RestoreFromTrashTwoToneIcon
               style={{ cursor: 'pointer', color: '#099000FF' }}

@@ -114,7 +114,10 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
             article !== undefined &&
             article.isDraft &&
             article.pageIndex === index;
-          return isEditFromDraft || isFieldUnique('pageIndex', index);
+          return (
+            // !differentChapterWithSameIndex &&
+            isEditFromDraft || isFieldUnique('pageIndex', index)
+          );
         }
       ),
     chapterDivision: Yup.string().required(

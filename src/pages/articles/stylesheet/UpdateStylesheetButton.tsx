@@ -52,10 +52,13 @@ const UpdateStylesheetButton: FC<Props> = ({
         updatedArticles.push(article);
         continue;
       }
-      const newArticle = article;
-      const draftArticle = { ...newArticle };
+      const draftArticle = { ...article };
       draftArticle.isDraft = true;
-      newArticle.markedForDeletion = true;
+      draftArticle.id += '-draft';
+      draftArticle.content = modifyHtmlForStorage(
+        modifyHtmlAfterUpload(draftArticle.content)
+      );
+      article.markedForDeletion = true;
       updatedArticles.push(article);
       updatedArticles.push(draftArticle);
     }

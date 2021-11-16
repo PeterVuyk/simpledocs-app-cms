@@ -3,7 +3,7 @@ import { Color } from '@material-ui/lab';
 
 interface NotificationState {
   notificationOpen: boolean;
-  notificationType: Color; // TODO: success / ailue...
+  notificationType: Color;
   notificationMessage: string;
 }
 
