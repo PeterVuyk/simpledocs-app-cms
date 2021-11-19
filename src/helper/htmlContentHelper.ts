@@ -38,7 +38,7 @@ function addSpacingBottom(htmlContent: string): string {
   if (html.length !== 2) {
     return htmlContent;
   }
-  return `${html[0]}${bottomSpacingHtml}${html[1]}`;
+  return `${html[0]}${bottomSpacingHtml}</body>${html[1]}`;
 }
 
 function addMetaTags(htmlContent: string): string {

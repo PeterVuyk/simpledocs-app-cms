@@ -76,10 +76,9 @@ async function getAllArticles(bookType: string): Promise<Article[]> {
     .collection(bookType)
     .orderBy('pageIndex', 'asc')
     .get();
-  const articles = querySnapshot.docs.map((doc) => {
+  return querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() } as Article;
   });
-  return articles;
 }
 
 async function getArticles(
