@@ -158,8 +158,8 @@ const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
 };
 
 const validateConfig = (appConfiguration: any, errorMessages: string[]) => {
-  if (!('defaultBookTypeSearch' in appConfiguration)) {
-    errorMessages.push(`- 'defaultBookTypeSearch' ontbreekt.`);
+  if (!('defaultSearchChip' in appConfiguration)) {
+    errorMessages.push(`- 'defaultSearchChip' ontbreekt.`);
   }
   if (!('defaultInitialTab' in appConfiguration)) {
     errorMessages.push(`- 'defaultInitialTab' ontbreekt.`);

@@ -35,6 +35,6 @@ export interface AppConfigurations {
   firstBookTab: BookTabInfo;
   secondBookTab: BookTabInfo;
   decisionsTab: DecisionsTab;
-  defaultBookTypeSearch: string;
+  defaultSearchChip: string;
   versioning: Versions;
 }
