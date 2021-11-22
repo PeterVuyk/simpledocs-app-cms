@@ -6,7 +6,6 @@ import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
-import articleRepository from '../../firebase/database/articleRepository';
 import { Article } from '../../model/Article';
 import SearchTextField from '../../components/form/formik/SearchTextField';
 import ContentEditor from '../../components/content/ContentEditor';
@@ -16,6 +15,8 @@ import { ContentType } from '../../model/artifacts/Artifact';
 import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
+import validateBookChapter from '../../components/form/formik/validators/validateBookChapter';
+import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => void;
@@ -56,70 +57,11 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
     };
   };
 
-  async function isFieldUnique(
-    fieldName: string,
-    fieldValue: any
-  ): Promise<boolean> {
-    if (fieldValue === undefined) {
-      return true;
-    }
-    const articles: Article[] = await articleRepository.getArticlesByField(
-      bookType,
-      fieldName,
-      fieldValue
-    );
-    return (
-      articles.length === 0 ||
-      (article !== undefined &&
-        articles.filter((value) => value.id !== article.id).length === 0)
-    );
-  }
-
   const formValidation = Yup.object().shape({
-    chapter: Yup.string()
-      .required('Hoofdstuk is een verplicht veld.')
-      .test(
-        'title',
-        'De titel mag geen spaties of slash (/) bevatten.',
-        async (title) => {
-          if (title === undefined) {
-            return true;
-          }
-          const includeInvalidChar = title.includes(' ') || title.includes('/');
-          return !includeInvalidChar;
-        }
-      )
-      .test(
-        'chapter',
-        'Het opgegeven hoofdstuk bestaat al en moet uniek zijn',
-        async (chapter) => {
-          const isEditFromDraft =
-            article !== undefined &&
-            article.isDraft &&
-            article.chapter === chapter;
-          return isEditFromDraft || isFieldUnique('chapter', chapter);
-        }
-      ),
+    chapter: validateBookChapter(article),
     title: Yup.string().required('Titel is een verplicht veld.'),
     subTitle: Yup.string(),
-    pageIndex: Yup.number()
-      .integer()
-      .positive()
-      .required('Pagina index is een verplicht veld.')
-      .test(
-        'pageIndex',
-        'Het opgegeven pagina index bestaat al en moet uniek zijn',
-        async (index) => {
-          const isEditFromDraft =
-            article !== undefined &&
-            article.isDraft &&
-            article.pageIndex === index;
-          return (
-            // !differentChapterWithSameIndex &&
-            isEditFromDraft || isFieldUnique('pageIndex', index)
-          );
-        }
-      ),
+    pageIndex: validatePageIndex(article),
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),

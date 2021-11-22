@@ -13,13 +13,14 @@ import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
+import CopyArticleAction from '../../../components/ItemAction/copyArticleAction/CopyArticleAction';
 
 const useStyles = makeStyles({
   icon: {
     width: 20,
   },
   toolBox: {
-    width: 150,
+    width: 230,
   },
 });
 
@@ -164,6 +165,7 @@ const ArticleListItem: FC<Props> = ({
         {!article.markedForDeletion && (
           <EditItemAction urlSlug={getEditUrl()} />
         )}
+        <CopyArticleAction bookType={bookType} article={article} />
         <DownloadContentAction
           content={article.content}
           contentType={article.contentType}
