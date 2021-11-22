@@ -22,7 +22,15 @@ async function isPageIndexUnique(
   );
 }
 
-const validatePageIndex = (article: Article | undefined) => {
+/**
+ * Both params are undefined when it is about a new (draft) article
+ * @param article
+ * @param bookType
+ */
+const validatePageIndex = (
+  article: Article | undefined,
+  bookType: string | undefined
+) => {
   return Yup.number()
     .integer()
     .positive()
@@ -38,7 +46,7 @@ const validatePageIndex = (article: Article | undefined) => {
         return (
           // !differentChapterWithSameIndex &&
           isEditFromDraft ||
-          isPageIndexUnique(index, context.parent.bookType, article)
+          isPageIndexUnique(index, bookType ?? context.parent.bookType, article)
         );
       }
     );

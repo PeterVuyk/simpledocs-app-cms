@@ -23,8 +23,14 @@ async function isChapterUnique(
   );
 }
 
+/**
+ * Both params are undefined when it is about a new (draft) article
+ * @param article
+ * @param bookType
+ */
 const validateBookChapter = (
-  article: Article | undefined
+  article: Article | undefined,
+  bookType: string | undefined
 ): StringSchema<string | null | undefined> => {
   return Yup.string()
     .required('Hoofdstuk is een verplicht veld.')
@@ -49,7 +55,7 @@ const validateBookChapter = (
           article.chapter === chapter;
         return (
           isEditFromDraft ||
-          isChapterUnique(chapter, context.parent.bookType, article)
+          isChapterUnique(chapter, bookType ?? context.parent.bookType, article)
         );
       }
     );

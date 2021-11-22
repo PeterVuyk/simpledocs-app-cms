@@ -60,6 +60,9 @@ const ArticlesList: FC<Props> = ({
             <TableCell>
               <strong>Inhoudstype</strong>
             </TableCell>
+            <TableCell>
+              <strong>ID link</strong>
+            </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

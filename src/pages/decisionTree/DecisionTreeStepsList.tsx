@@ -92,7 +92,7 @@ const DecisionTreeStepsList: FC<Props> = ({
                   {row.title}&nbsp;
                   {row.iconFile && (
                     <img
-                      style={{ width: 30 }}
+                      style={{ width: 35 }}
                       src={`${row.iconFile}`}
                       alt={row.title}
                     />

@@ -58,10 +58,10 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   };
 
   const formValidation = Yup.object().shape({
-    chapter: validateBookChapter(article),
+    chapter: validateBookChapter(article, bookType),
     title: Yup.string().required('Titel is een verplicht veld.'),
     subTitle: Yup.string(),
-    pageIndex: validatePageIndex(article),
+    pageIndex: validatePageIndex(article, bookType),
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),

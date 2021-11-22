@@ -24,7 +24,7 @@ const CalculationListItem: FC<Props> = ({ calculationInfo }) => {
       <TableCell>
         <img
           alt="illustratie"
-          style={{ width: 30 }}
+          style={{ width: 35 }}
           src={`${calculationInfo.iconFile}`}
         />
       </TableCell>

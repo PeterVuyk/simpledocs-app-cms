@@ -17,7 +17,7 @@ import CopyArticleAction from '../../../components/ItemAction/copyArticleAction/
 
 const useStyles = makeStyles({
   icon: {
-    width: 20,
+    width: 35,
   },
   toolBox: {
     width: 230,
@@ -161,6 +161,7 @@ const ArticleListItem: FC<Props> = ({
         />
       </TableCell>
       <TableCell>{article.contentType}</TableCell>
+      <TableCell>{article.id?.replaceAll('-draft', '') ?? ''}</TableCell>
       <TableCell align="right" className={classes.toolBox}>
         {!article.markedForDeletion && (
           <EditItemAction urlSlug={getEditUrl()} />

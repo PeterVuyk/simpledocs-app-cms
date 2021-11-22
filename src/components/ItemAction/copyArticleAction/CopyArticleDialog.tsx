@@ -18,6 +18,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { DialogContent } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import { Article } from '../../../model/Article';
 import TextField from '../../form/formik/TextField';
 import validatePageIndex from '../../form/formik/validators/validatePageIndex';
@@ -104,8 +105,8 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
   };
 
   const formValidation = Yup.object().shape({
-    chapter: validateBookChapter(undefined),
-    pageIndex: validatePageIndex(undefined),
+    chapter: validateBookChapter(undefined, undefined),
+    pageIndex: validatePageIndex(undefined, undefined),
     bookType: Yup.string()
       .required('Het opgeven van een boek is verplicht.')
       .test(
@@ -156,6 +157,16 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
         {({ isSubmitting, dirty, submitForm }) => (
           <>
             <DialogContent>
+              <DialogContentText
+                color="textPrimary"
+                style={{ whiteSpace: 'pre-line' }}
+                id="alert-dialog-slide-description"
+              >
+                Kopieer de pagina en geef een nieuw hoofdstuk en index op. De
+                nieuwe pagina krijgt een nieuw ID toegewezen, Favorieten van
+                gebruikers en verwijzingen in andere pagina&#39;s naar deze
+                pagina blijft verwijzen naar de originele pagina.
+              </DialogContentText>
               <Form>
                 <Grid
                   container
