@@ -11,6 +11,8 @@ import ArticleListItem from './ArticleListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Article } from '../../../model/Article';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
+import { DOCUMENTATION_ID_LINK_ARTICLE } from '../../../model/DocumentationType';
+import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
 
 const useStyles = makeStyles({
   table: {
@@ -61,7 +63,8 @@ const ArticlesList: FC<Props> = ({
               <strong>Inhoudstype</strong>
             </TableCell>
             <TableCell>
-              <strong>ID link</strong>
+              <strong>ID link</strong>&nbsp;
+              <HelpAction documentationType={DOCUMENTATION_ID_LINK_ARTICLE} />
             </TableCell>
             <TableCell />
           </TableRow>

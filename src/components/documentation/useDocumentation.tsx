@@ -7,7 +7,19 @@ import decisionTree from './docs/decision-tree.md';
 import publications from './docs/publications.md';
 import styleguide from './docs/styleguide.md';
 import transformBase64 from './docs/transform-base64.md';
-import { DocumentationType } from '../../model/DocumentationType';
+import idLinkArticle from './docs/id-link-article.md';
+import {
+  DOCUMENTATION_APP_CONFIGURATIONS,
+  DOCUMENTATION_CMS_CONFIGURATIONS,
+  DOCUMENTATION_CONTENT_TYPES,
+  DOCUMENTATION_DECISION_TREE,
+  DOCUMENTATION_DEFAULT_TEMPLATE,
+  DOCUMENTATION_ID_LINK_ARTICLE,
+  DOCUMENTATION_PUBLICATIONS,
+  DOCUMENTATION_STYLEGUIDE,
+  DOCUMENTATION_TRANSFORM_BASE64,
+  DocumentationType,
+} from '../../model/DocumentationType';
 
 function useDocumentation(documentationType: DocumentationType) {
   const [documentation, setDocumentation] = useState<string>('');
@@ -17,35 +29,39 @@ function useDocumentation(documentationType: DocumentationType) {
   const getMarkdownFile = useCallback(() => {
     // eslint-disable-next-line default-case
     switch (documentationType) {
-      case 'appConfigurations':
+      case DOCUMENTATION_APP_CONFIGURATIONS:
         setTooltip('Info configuratie app');
         setTitle('Info configuratie app');
         return appConfigurations;
-      case 'cmsConfigurations':
+      case DOCUMENTATION_ID_LINK_ARTICLE:
+        setTooltip('Info ID link');
+        setTitle('Info ID link');
+        return idLinkArticle;
+      case DOCUMENTATION_CMS_CONFIGURATIONS:
         setTooltip('Info configuratie cms');
         setTitle('Info configuratie cms');
         return cmsConfigurations;
-      case 'contentTypes':
+      case DOCUMENTATION_CONTENT_TYPES:
         setTooltip('Info HTML en Markdown');
         setTitle('HTML en Markdown');
         return contentTypes;
-      case 'decisionTree':
+      case DOCUMENTATION_DECISION_TREE:
         setTooltip('Info beslisboom');
         setTitle('Info beslisboom');
         return decisionTree;
-      case 'defaultTemplate':
+      case DOCUMENTATION_DEFAULT_TEMPLATE:
         setTooltip('Info default template');
         setTitle('Info default template');
         return defaultTemplate;
-      case 'publications':
+      case DOCUMENTATION_PUBLICATIONS:
         setTooltip('Info publicatie');
         setTitle('Info publicatie');
         return publications;
-      case 'styleguide':
+      case DOCUMENTATION_STYLEGUIDE:
         setTooltip('Info gebruik CSS Stylesheet');
         setTitle('Info gebruik CSS Stylesheet');
         return styleguide;
-      case 'transformBase64':
+      case DOCUMENTATION_TRANSFORM_BASE64:
         setTooltip('Info base64 transformatie');
         setTitle('Info base64 transformatie');
         return transformBase64;
