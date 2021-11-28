@@ -1,34 +1,34 @@
 import * as Yup from 'yup';
-import { Article } from '../../../../model/Article';
-import articleRepository from '../../../../firebase/database/articleRepository';
+import { Page } from '../../../../model/Page';
+import bookRepository from '../../../../firebase/database/bookRepository';
 
 async function isPageIndexUnique(
   index: any,
   bookType: string,
-  article: Article | undefined
+  page: Page | undefined
 ): Promise<boolean> {
   if (index === undefined) {
     return true;
   }
-  const articles: Article[] = await articleRepository.getArticlesByField(
+  const pages: Page[] = await bookRepository.getPagesByField(
     bookType,
     'pageIndex',
     index
   );
   return (
-    articles.length === 0 ||
-    (article !== undefined &&
-      articles.filter((value) => value.id !== article.id).length === 0)
+    pages.length === 0 ||
+    (page !== undefined &&
+      pages.filter((value) => value.id !== page.id).length === 0)
   );
 }
 
 /**
- * Both params are undefined when it is about a new (draft) article
- * @param article
+ * Both params are undefined when it is about a new (draft) page
+ * @param page
  * @param bookType
  */
 const validatePageIndex = (
-  article: Article | undefined,
+  page: Page | undefined,
   bookType: string | undefined
 ) => {
   return Yup.number()
@@ -40,13 +40,11 @@ const validatePageIndex = (
       'Het opgegeven pagina index bestaat al en moet uniek zijn',
       async (index, context) => {
         const isEditFromDraft =
-          article !== undefined &&
-          article.isDraft &&
-          article.pageIndex === index;
+          page !== undefined && page.isDraft && page.pageIndex === index;
         return (
           // !differentChapterWithSameIndex &&
           isEditFromDraft ||
-          isPageIndexUnique(index, bookType ?? context.parent.bookType, article)
+          isPageIndexUnique(index, bookType ?? context.parent.bookType, page)
         );
       }
     );

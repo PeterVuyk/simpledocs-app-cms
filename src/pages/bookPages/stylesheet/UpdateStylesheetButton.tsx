@@ -6,7 +6,7 @@ import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 import { CONTENT_TYPE_HTML } from '../../../model/artifacts/Artifact';
-import articleRepository from '../../../firebase/database/articleRepository';
+import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
@@ -31,44 +31,44 @@ const UpdateStylesheetButton: FC<Props> = ({
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const updateStylesheetForAllArticles = async () => {
-    const articles = await articleRepository.getAllArticles(bookType);
-    const unchangedArticles = articles.filter(
-      (article) => article.contentType !== CONTENT_TYPE_HTML
+  const updateStylesheetForAllPages = async () => {
+    const pages = await bookRepository.getAllPages(bookType);
+    const unchangedPages = pages.filter(
+      (page) => page.contentType !== CONTENT_TYPE_HTML
     );
-    const updatedArticles = [...unchangedArticles];
-    const articlesToEdit = articles.filter(
-      (article) => article.contentType === CONTENT_TYPE_HTML
+    const updatedPages = [...unchangedPages];
+    const pagesToEdit = pages.filter(
+      (page) => page.contentType === CONTENT_TYPE_HTML
     );
-    for (const article of articlesToEdit) {
-      if (article.isDraft) {
-        article.content = modifyHtmlForStorage(
-          modifyHtmlAfterUpload(article.content)
+    for (const page of pagesToEdit) {
+      if (page.isDraft) {
+        page.content = modifyHtmlForStorage(
+          modifyHtmlAfterUpload(page.content)
         );
-        updatedArticles.push(article);
+        updatedPages.push(page);
         continue;
       }
-      if (article.markedForDeletion) {
-        updatedArticles.push(article);
+      if (page.markedForDeletion) {
+        updatedPages.push(page);
         continue;
       }
-      const draftArticle = { ...article };
-      draftArticle.isDraft = true;
-      draftArticle.id += '-draft';
-      draftArticle.content = modifyHtmlForStorage(
-        modifyHtmlAfterUpload(draftArticle.content)
+      const draftPage = { ...page };
+      draftPage.isDraft = true;
+      draftPage.id += '-draft';
+      draftPage.content = modifyHtmlForStorage(
+        modifyHtmlAfterUpload(draftPage.content)
       );
-      article.markedForDeletion = true;
-      updatedArticles.push(article);
-      updatedArticles.push(draftArticle);
+      page.markedForDeletion = true;
+      updatedPages.push(page);
+      updatedPages.push(draftPage);
     }
-    return updatedArticles;
+    return updatedPages;
   };
 
   const handleSubmit = async () => {
     // if marked for delete , then add it but don't change it.
-    await articleRepository
-      .updateArticles(bookType, await updateStylesheetForAllArticles())
+    await bookRepository
+      .updatePages(bookType, await updateStylesheetForAllPages())
       .then(() =>
         dispatch(
           notify({
@@ -81,7 +81,7 @@ const UpdateStylesheetButton: FC<Props> = ({
       .then(() => onStylesheetUpdate())
       .catch((error) => {
         logger.errorWithReason(
-          `Update articles with new stylesheet has failed for handleSubmit bookType ${bookType}`,
+          `Update pages with new stylesheet has failed for handleSubmit bookType ${bookType}`,
           error
         );
         dispatch(

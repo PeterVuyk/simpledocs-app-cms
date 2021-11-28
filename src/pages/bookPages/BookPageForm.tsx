@@ -6,7 +6,7 @@ import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
-import { Article } from '../../model/Article';
+import { Page } from '../../model/Page';
 import SearchTextField from '../../components/form/formik/SearchTextField';
 import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
@@ -20,13 +20,13 @@ import validatePageIndex from '../../components/form/formik/validators/validateP
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => void;
-  article?: Article;
+  page?: Page;
   bookType: string;
 }
 
-const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
+const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
-    article?.contentType
+    page?.contentType
   );
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
@@ -41,8 +41,8 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   };
 
   const initialFormState = () => {
-    if (article !== undefined) {
-      return article;
+    if (page !== undefined) {
+      return page;
     }
     return {
       chapter: '',
@@ -58,10 +58,10 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   };
 
   const formValidation = Yup.object().shape({
-    chapter: validateBookChapter(article, bookType),
+    chapter: validateBookChapter(page, bookType),
     title: Yup.string().required('Titel is een verplicht veld.'),
     subTitle: Yup.string(),
-    pageIndex: validatePageIndex(article, bookType),
+    pageIndex: validatePageIndex(page, bookType),
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),
@@ -173,7 +173,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                   showError={showError}
                   dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
                   allowedMimeTypes={['image/svg+xml']}
-                  initialFile={article?.iconFile ?? null}
+                  initialFile={page?.iconFile ?? null}
                 />
               </Grid>
             </Grid>
@@ -187,8 +187,8 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
                   contentTypeToggle={contentTypeToggle}
                   showError={showError}
                   formik={formikRef}
-                  initialFileType={article?.contentType}
-                  initialFile={article?.content ?? null}
+                  initialFileType={page?.contentType}
+                  initialFile={page?.content ?? null}
                 />
               </Grid>
             </Grid>
@@ -197,7 +197,7 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
             setShowError={setShowError}
             disabled={isSubmitting || !dirty}
           >
-            {article === undefined ? 'Toevoegen' : 'Wijzigen'}
+            {page === undefined ? 'Toevoegen' : 'Wijzigen'}
           </SubmitButton>
         </Form>
       )}
@@ -205,4 +205,4 @@ const ArticleForm: FC<Props> = ({ onSubmit, article, bookType }) => {
   );
 };
 
-export default ArticleForm;
+export default BookPageForm;

@@ -11,7 +11,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Header from '../components/header/Header';
 import NavigationDrawer from './NavigationDrawer';
-import Articles from '../pages/articles/list/Articles';
 import DecisionTree from '../pages/decisionTree/DecisionTree';
 import Calculations from '../pages/calculations/Calculations';
 import Publications from '../pages/publications/Publications';
@@ -21,6 +20,7 @@ import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AppConfigurationsPage from '../pages/appConfigurations/AppConfigurationsPage';
 import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
 import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
+import BookPages from '../pages/bookPages/list/BookPages';
 
 const drawerWidth = 240;
 
@@ -56,13 +56,13 @@ const Navigation: FC<Props> = ({ classes, children }) => {
   };
 
   const getPage = () => {
-    const article = Object.values(configuration.books.bookItems).find(
+    const bookPage = Object.values(configuration.books.bookItems).find(
       (item) => item.urlSlug === page
     );
-    if (article) {
+    if (bookPage) {
       return (
-        <Articles
-          title={article.title}
+        <BookPages
+          title={bookPage.title}
           bookType={getBookTypeFromUrlSlug(page)}
         />
       );
@@ -78,6 +78,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         <Calculations title={configuration.menu.menuItems.calculations.title} />
       );
     }
+    page;
 
     switch (page) {
       case configuration.menu.menuItems.styleguide.urlSlug:

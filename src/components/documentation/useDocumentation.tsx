@@ -7,14 +7,14 @@ import decisionTree from './docs/decision-tree.md';
 import publications from './docs/publications.md';
 import styleguide from './docs/styleguide.md';
 import transformBase64 from './docs/transform-base64.md';
-import idLinkArticle from './docs/id-link-article.md';
+import idLinkBookPage from './docs/id-link-book-page.md';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
   DOCUMENTATION_CMS_CONFIGURATIONS,
   DOCUMENTATION_CONTENT_TYPES,
   DOCUMENTATION_DECISION_TREE,
   DOCUMENTATION_DEFAULT_TEMPLATE,
-  DOCUMENTATION_ID_LINK_ARTICLE,
+  DOCUMENTATION_ID_LINK_BOOK_PAGE,
   DOCUMENTATION_PUBLICATIONS,
   DOCUMENTATION_STYLEGUIDE,
   DOCUMENTATION_TRANSFORM_BASE64,
@@ -33,10 +33,10 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Info configuratie app');
         setTitle('Info configuratie app');
         return appConfigurations;
-      case DOCUMENTATION_ID_LINK_ARTICLE:
+      case DOCUMENTATION_ID_LINK_BOOK_PAGE:
         setTooltip('Info ID link');
         setTitle('Info ID link');
-        return idLinkArticle;
+        return idLinkBookPage;
       case DOCUMENTATION_CMS_CONFIGURATIONS:
         setTooltip('Info configuratie cms');
         setTitle('Info configuratie cms');

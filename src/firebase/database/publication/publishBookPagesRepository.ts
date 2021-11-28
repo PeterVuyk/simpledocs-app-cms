@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { Versioning } from '../../../model/Versioning';
-import { Article } from '../../../model/Article';
+import { Page } from '../../../model/Page';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,
@@ -17,7 +17,7 @@ const updateVersion = async (
   });
 };
 
-const removeMarkedForDeletionArticles = async (
+const removeMarkedForDeletionPages = async (
   batch: firebase.firestore.WriteBatch,
   versioning: Versioning
 ) => {
@@ -32,7 +32,7 @@ const removeMarkedForDeletionArticles = async (
   });
 };
 
-const publishDraftArticles = async (
+const publishDraftPages = async (
   batch: firebase.firestore.WriteBatch,
   versioning: Versioning
 ) => {
@@ -44,14 +44,14 @@ const publishDraftArticles = async (
     .get();
 
   querySnapshotToBePublished.forEach((documentSnapshot) => {
-    const article = documentSnapshot.data() as Article;
-    article.isDraft = false;
+    const page = documentSnapshot.data() as Page;
+    page.isDraft = false;
     const documentReference = database
       .collection('books')
       .doc(versioning.aggregate)
       .collection(versioning.aggregate)
       .doc(documentSnapshot.ref.id.replace('-draft', ''));
-    batch.set(documentReference, article);
+    batch.set(documentReference, page);
     batch.delete(documentSnapshot.ref);
   });
 };
@@ -63,14 +63,14 @@ async function publish(
   const batch = database.batch();
 
   await updateVersion(batch, versioning, newVersion);
-  await removeMarkedForDeletionArticles(batch, versioning);
-  await publishDraftArticles(batch, versioning);
+  await removeMarkedForDeletionPages(batch, versioning);
+  await publishDraftPages(batch, versioning);
 
   return batch.commit();
 }
 
-const publishArticlesRepository = {
+const publishBookPagesRepository = {
   publish,
 };
 
-export default publishArticlesRepository;
+export default publishBookPagesRepository;

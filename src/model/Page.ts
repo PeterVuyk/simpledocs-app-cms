@@ -1,6 +1,6 @@
 import { ContentType } from './artifacts/Artifact';
 
-export interface Article {
+export interface Page {
   id?: string;
   pageIndex: number;
   chapter: string;

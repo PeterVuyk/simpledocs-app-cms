@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Tooltip } from '@material-ui/core';
 import { EditStatus } from '../../../model/EditStatus';
-import { Article } from '../../../model/Article';
-import exportArticles from './exportArticles';
+import { Page } from '../../../model/Page';
+import exportBookPages from './exportBookPages';
 
 const useStyles = makeStyles({
   button: {
@@ -17,13 +17,13 @@ const useStyles = makeStyles({
 
 interface Props {
   editStatus: EditStatus;
-  articles: Article[];
+  pages: Page[];
   bookType: string;
 }
 
-const DownloadArticlesMenuButton: FC<Props> = ({
+const DownloadBookPagesMenuButton: FC<Props> = ({
   editStatus,
-  articles,
+  pages,
   bookType,
 }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
@@ -34,25 +34,18 @@ const DownloadArticlesMenuButton: FC<Props> = ({
   const classes = useStyles();
 
   const exportCsvFile = () => {
-    exportArticles.csvFile(
-      articles,
-      editStatus,
-      `${bookType}-${editStatus}.csv`
-    );
+    exportBookPages.csvFile(pages, editStatus, `${bookType}-${editStatus}.csv`);
   };
 
   const exportContentFiles = () => {
-    exportArticles.exportContent(
-      articles,
+    exportBookPages.exportContent(
+      pages,
       `${bookType}-${editStatus}-content.zip`
     );
   };
 
   const exportIcons = () => {
-    exportArticles.icons(
-      articles,
-      `${bookType}-${editStatus}--illustraties.zip`
-    );
+    exportBookPages.icons(pages, `${bookType}-${editStatus}--illustraties.zip`);
   };
 
   return (
@@ -67,7 +60,7 @@ const DownloadArticlesMenuButton: FC<Props> = ({
         </Button>
       </Tooltip>
       <Menu
-        id="article-download-menu"
+        id="page-download-menu"
         anchorEl={downloadMenuElement}
         keepMounted
         open={Boolean(downloadMenuElement)}
@@ -87,4 +80,4 @@ const DownloadArticlesMenuButton: FC<Props> = ({
   );
 };
 
-export default DownloadArticlesMenuButton;
+export default DownloadBookPagesMenuButton;

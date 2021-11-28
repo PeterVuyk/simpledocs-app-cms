@@ -1,75 +1,69 @@
 import firebase from 'firebase/compat/app';
 import { database } from '../firebaseConnection';
-import { Article } from '../../model/Article';
+import { Page } from '../../model/Page';
 
 function createDatabaseId() {
   return database.collection('books').doc().id;
 }
 
-async function createArticle(
-  bookType: string,
-  article: Article
-): Promise<void> {
+async function createPage(bookType: string, page: Page): Promise<void> {
   await database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
     .doc(`${createDatabaseId()}-draft`)
-    .set(article);
+    .set(page);
 }
 
-async function updateOrCreateArticle(
+async function updateOrCreatePage(
   bookType: string,
-  article: Article,
-  articleId: string
+  page: Page,
+  pageId: string
 ): Promise<void> {
   await database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
-    .doc(articleId)
-    .set(article);
+    .doc(pageId)
+    .set(page);
 }
 
-async function deleteArticle(
-  bookType: string,
-  articleId: string
-): Promise<void> {
+async function deletePage(bookType: string, pageId: string): Promise<void> {
   await database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
-    .doc(articleId)
+    .doc(pageId)
     .delete();
 }
 
-async function markArticleForDeletion(
+async function markPageForDeletion(
   bookType: string,
-  articleId: string
+  pageId: string
 ): Promise<void> {
   await database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
-    .doc(articleId)
+    .doc(pageId)
     .update({ markedForDeletion: true });
 }
 
 async function removeMarkForDeletion(
   bookType: string,
-  articleId: string
+  pageId: string
 ): Promise<void> {
-  const articleRef = database
+  const pageRef = database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
-    .doc(articleId);
-  return articleRef.update({
+    .doc(pageId);
+  return pageRef.update({
     markedForDeletion: firebase.firestore.FieldValue.delete(),
   });
 }
 
-async function getAllArticles(bookType: string): Promise<Article[]> {
+async function getAllPages(bookType: string): Promise<Page[]> {
   const querySnapshot = await database
     .collection('books')
     .doc(bookType)
@@ -77,35 +71,30 @@ async function getAllArticles(bookType: string): Promise<Article[]> {
     .orderBy('pageIndex', 'asc')
     .get();
   return querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as Article;
+    return { id: doc.id, ...doc.data() } as Page;
   });
 }
 
-async function getArticles(
+async function getPages(
   bookType: string,
-  draftArticles: boolean
-): Promise<Article[]> {
+  draftPages: boolean
+): Promise<Page[]> {
   const querySnapshot = await database
     .collection('books')
     .doc(bookType)
     .collection(bookType)
     .orderBy('pageIndex', 'asc')
     .get();
-  const articles = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as Article;
+  const pages = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Page;
   });
-  if (draftArticles) {
-    return articles.filter(
-      (article) => article.isDraft || article.markedForDeletion
-    );
+  if (draftPages) {
+    return pages.filter((page) => page.isDraft || page.markedForDeletion);
   }
-  return articles.filter((article) => !article.isDraft);
+  return pages.filter((page) => !page.isDraft);
 }
 
-async function getArticleById(
-  bookType: string,
-  id: string
-): Promise<Article | null> {
+async function getPageById(bookType: string, id: string): Promise<Page | null> {
   const documentSnapshot = await database
     .collection('books')
     .doc(bookType)
@@ -113,15 +102,15 @@ async function getArticleById(
     .doc(id)
     .get();
   return documentSnapshot.data()
-    ? ({ id: documentSnapshot.id, ...documentSnapshot.data() } as Article)
+    ? ({ id: documentSnapshot.id, ...documentSnapshot.data() } as Page)
     : null;
 }
 
-async function getArticlesByField(
+async function getPagesByField(
   bookType: string,
   fieldName: string,
   fieldValue: string
-): Promise<Article[]> {
+): Promise<Page[]> {
   const querySnapshot = await database
     .collection('books')
     .doc(bookType)
@@ -129,33 +118,30 @@ async function getArticlesByField(
     .where(fieldName, '==', fieldValue)
     .get();
   return querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as Article;
+    return { id: doc.id, ...doc.data() } as Page;
   });
 }
 
-async function updateArticle(
+async function updatePage(
   bookType: string,
   chapter: string,
-  article: Article
+  page: Page
 ): Promise<void> {
-  const originalArticle = await getArticleById(
+  const originalPage = await getPageById(
     bookType,
-    article.id?.replace('-draft', '') ?? ''
+    page.id?.replace('-draft', '') ?? ''
   );
-  const articleId = article.id;
-  const updatedArticle = article;
-  delete updatedArticle.id;
+  const pageId = page.id;
+  const updatedPage = page;
+  delete updatedPage.id;
 
-  await updateOrCreateArticle(bookType, updatedArticle, articleId ?? '');
-  if (originalArticle) {
-    await markArticleForDeletion(bookType, originalArticle.id ?? '');
+  await updateOrCreatePage(bookType, updatedPage, pageId ?? '');
+  if (originalPage) {
+    await markPageForDeletion(bookType, originalPage.id ?? '');
   }
 }
 
-async function updateArticles(
-  bookType: string,
-  articles: Article[]
-): Promise<void> {
+async function updatePages(bookType: string, pages: Page[]): Promise<void> {
   const batch = database.batch();
   await database
     .collection('books')
@@ -165,8 +151,8 @@ async function updateArticles(
     .then((querySnapshot) =>
       querySnapshot.forEach((doc) => batch.delete(doc.ref))
     );
-  articles.forEach((article) => {
-    const doc = article as any;
+  pages.forEach((page) => {
+    const doc = page as any;
     const docId = doc.id;
     delete doc.id;
     const docRef = database
@@ -180,17 +166,17 @@ async function updateArticles(
   return batch.commit();
 }
 
-const articleRepository = {
-  createArticle,
-  getArticles,
-  getAllArticles,
-  getArticleById,
-  getArticlesByField,
-  deleteArticle,
+const bookRepository = {
+  createPage,
+  getPages,
+  getAllPages,
+  getPageById,
+  getPagesByField,
+  deletePage,
   removeMarkForDeletion,
-  markArticleForDeletion,
-  updateArticle,
-  updateArticles,
+  markPageForDeletion,
+  updatePage,
+  updatePages,
 };
 
-export default articleRepository;
+export default bookRepository;

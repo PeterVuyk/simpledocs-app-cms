@@ -2,13 +2,13 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import articleRepository from '../../../firebase/database/articleRepository';
+import bookRepository from '../../../firebase/database/bookRepository';
 import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
-import ArticlesList from './ArticlesList';
+import BookPagesList from './BookPagesList';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
-import { Article } from '../../../model/Article';
-import DownloadArticlesMenuButton from '../download/DownloadArticlesMenuButton';
+import { Page } from '../../../model/Page';
+import DownloadBookPagesMenuButton from '../download/DownloadBookPagesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
@@ -31,25 +31,25 @@ interface Props {
   bookType: string;
 }
 
-const Articles: FC<Props> = ({ title, bookType }) => {
-  const [articles, setArticles] = useState<Article[] | null>(null);
+const BookPages: FC<Props> = ({ title, bookType }) => {
+  const [pages, setPages] = useState<Page[] | null>(null);
   const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();
   const { getSlugFromBookType } = useCmsConfiguration();
 
-  const loadArticles = useCallback(() => {
-    setArticles(null);
-    articleRepository
-      .getArticles(bookType, editStatus === EDIT_STATUS_DRAFT)
-      .then((result) => setArticles(result));
+  const loadPages = useCallback(() => {
+    setPages(null);
+    bookRepository
+      .getPages(bookType, editStatus === EDIT_STATUS_DRAFT)
+      .then((result) => setPages(result));
   }, [bookType, editStatus]);
 
   useEffect(() => {
-    loadArticles();
-  }, [bookType, editStatus, loadArticles]);
+    loadPages();
+  }, [bookType, editStatus, loadPages]);
 
-  const getAddArticlePath = () => {
+  const getAddPagePath = () => {
     return {
       pathname: `/books/${getSlugFromBookType(bookType)}/add`,
       bookType,
@@ -57,7 +57,7 @@ const Articles: FC<Props> = ({ title, bookType }) => {
   };
 
   const handleStylesheetUpdate = () => {
-    loadArticles();
+    loadPages();
   };
 
   return (
@@ -67,14 +67,14 @@ const Articles: FC<Props> = ({ title, bookType }) => {
           editStatus={editStatus}
           setEditStatus={setEditStatus}
         />
-        {articles && articles.length !== 0 && (
+        {pages && pages.length !== 0 && (
           <>
             <UpdateStylesheet
               onStylesheetUpdate={handleStylesheetUpdate}
               bookType={bookType}
             />
-            <DownloadArticlesMenuButton
-              articles={articles}
+            <DownloadBookPagesMenuButton
+              pages={pages}
               bookType={bookType}
               editStatus={editStatus}
             />
@@ -84,20 +84,20 @@ const Articles: FC<Props> = ({ title, bookType }) => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(getAddArticlePath())}
+          onClick={() => history.push(getAddPagePath())}
         >
           Pagina toevoegen
         </Button>
       </PageHeading>
-      <ArticlesList
+      <BookPagesList
         editStatus={editStatus}
-        onLoadArticles={loadArticles}
-        articles={articles}
+        onLoadPages={loadPages}
+        pages={pages}
         bookType={bookType}
       />
-      {articles === null && <LoadingSpinner />}
+      {pages === null && <LoadingSpinner />}
     </>
   );
 };
 
-export default Articles;
+export default BookPages;

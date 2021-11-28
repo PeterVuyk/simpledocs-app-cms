@@ -8,7 +8,7 @@ import {
 } from '../../model/EditStatus';
 
 async function getDecisionTreeSteps(
-  draftArticles: boolean
+  draftPage: boolean
 ): Promise<DecisionTreeStep[]> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
@@ -18,7 +18,7 @@ async function getDecisionTreeSteps(
   const steps = querySnapshot.docs.map((doc) => {
     return doc.data() as DecisionTreeStep;
   });
-  if (draftArticles) {
+  if (draftPage) {
     return steps.filter((step) => step.isDraft || step.markedForDeletion);
   }
   return steps.filter((step) => !step.isDraft);

@@ -19,13 +19,13 @@ import Button from '@material-ui/core/Button';
 import { DialogContent } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { Article } from '../../../model/Article';
+import { Page } from '../../../model/Page';
 import TextField from '../../form/formik/TextField';
 import validatePageIndex from '../../form/formik/validators/validatePageIndex';
 import validateBookChapter from '../../form/formik/validators/validateBookChapter';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import Select from '../../form/formik/Select';
-import articleRepository from '../../../firebase/database/articleRepository';
+import bookRepository from '../../../firebase/database/bookRepository';
 import { notify } from '../../../redux/slice/notificationSlice';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
@@ -39,11 +39,11 @@ const Transition = forwardRef(function Transition(
 
 interface Props {
   bookType: string;
-  article: Article;
+  page: Page;
   onClose: () => void;
 }
 
-const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
+const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const { configuration, getSlugFromBookType } = useCmsConfiguration();
@@ -55,17 +55,17 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
     formik: FormikHelpers<any>
   ) => {
     formik.setSubmitting(false);
-    articleRepository
-      .createArticle(values.bookType, {
+    bookRepository
+      .createPage(values.bookType, {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
-        chapterDivision: article.chapterDivision,
-        title: article.title,
-        subTitle: article.subTitle,
-        searchText: article.searchText,
-        content: article.content,
-        contentType: article.contentType,
-        iconFile: article.iconFile,
+        chapterDivision: page.chapterDivision,
+        title: page.title,
+        subTitle: page.subTitle,
+        searchText: page.searchText,
+        content: page.content,
+        contentType: page.contentType,
+        iconFile: page.iconFile,
         isDraft: true,
       })
       .then(() =>
@@ -83,7 +83,7 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
       .then(onClose)
       .catch((error) => {
         logger.errorWithReason(
-          'Copy article has failed in CopyArticleDialog.handleSubmitForm',
+          'Copy page has failed in CopyPageDialog.handleSubmitForm',
           error
         );
         dispatch(
@@ -98,8 +98,8 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
 
   const initialFormState = () => {
     return {
-      chapter: article.chapter,
-      pageIndex: article.pageIndex,
+      chapter: page.chapter,
+      pageIndex: page.pageIndex,
       bookType,
     };
   };
@@ -224,4 +224,4 @@ const CopyArticleDialog: FC<Props> = ({ bookType, article, onClose }) => {
   );
 };
 
-export default CopyArticleDialog;
+export default CopyPageDialog;

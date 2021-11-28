@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import { Tooltip } from '@material-ui/core';
-import { Article } from '../../../model/Article';
-import CopyArticleDialog from './CopyArticleDialog';
+import { Page } from '../../../model/Page';
+import CopyPageDialog from './CopyPageDialog';
 
 interface Props {
-  article: Article;
+  page: Page;
   bookType: string;
 }
 
-const CopyArticleAction: FC<Props> = ({ bookType, article }) => {
+const CopyPageAction: FC<Props> = ({ bookType, page }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   return (
     <>
@@ -22,9 +22,9 @@ const CopyArticleAction: FC<Props> = ({ bookType, article }) => {
         />
       </Tooltip>
       {openDialog && (
-        <CopyArticleDialog
+        <CopyPageDialog
           bookType={bookType}
-          article={article}
+          page={page}
           onClose={() => setOpenDialog(false)}
         />
       )}
@@ -32,4 +32,4 @@ const CopyArticleAction: FC<Props> = ({ bookType, article }) => {
   );
 };
 
-export default CopyArticleAction;
+export default CopyPageAction;

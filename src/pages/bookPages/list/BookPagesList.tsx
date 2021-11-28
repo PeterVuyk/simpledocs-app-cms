@@ -7,11 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ArticleListItem from './ArticleListItem';
+import BookPageListItem from './BookPageListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { Article } from '../../../model/Article';
+import { Page } from '../../../model/Page';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
-import { DOCUMENTATION_ID_LINK_ARTICLE } from '../../../model/DocumentationType';
+import { DOCUMENTATION_ID_LINK_BOOK_PAGE } from '../../../model/DocumentationType';
 import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
 
 const useStyles = makeStyles({
@@ -24,15 +24,15 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  articles?: Article[] | null;
-  onLoadArticles: () => void;
+  pages?: Page[] | null;
+  onLoadPages: () => void;
   editStatus: EditStatus;
   bookType: string;
 }
 
-const ArticlesList: FC<Props> = ({
-  articles,
-  onLoadArticles,
+const BookPagesList: FC<Props> = ({
+  pages,
+  onLoadPages,
   editStatus,
   bookType,
 }) => {
@@ -64,14 +64,14 @@ const ArticlesList: FC<Props> = ({
             </TableCell>
             <TableCell>
               <strong>ID link</strong>&nbsp;
-              <HelpAction documentationType={DOCUMENTATION_ID_LINK_ARTICLE} />
+              <HelpAction documentationType={DOCUMENTATION_ID_LINK_BOOK_PAGE} />
             </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
-          {articles &&
-            articles.map((row) => (
+          {pages &&
+            pages.map((row) => (
               <TableRow
                 style={{
                   backgroundColor:
@@ -81,16 +81,16 @@ const ArticlesList: FC<Props> = ({
                 }}
                 key={row.id}
               >
-                <ArticleListItem
+                <BookPageListItem
                   bookTypeSlug={getSlugFromBookType(bookType)}
                   editStatus={editStatus}
-                  article={row}
-                  onLoadArticles={onLoadArticles}
+                  page={row}
+                  onLoadPages={onLoadPages}
                   bookType={bookType}
                 />
               </TableRow>
             ))}
-          {articles && articles.length === 0 && (
+          {pages && pages.length === 0 && (
             <TableRow key="no-result">
               <TableCell component="th" scope="row" colSpan={8}>
                 Geen resultaten.
@@ -103,4 +103,4 @@ const ArticlesList: FC<Props> = ({
   );
 };
 
-export default ArticlesList;
+export default BookPagesList;

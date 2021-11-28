@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormikValues } from 'formik';
-import articleRepository from '../../firebase/database/articleRepository';
+import bookRepository from '../../firebase/database/bookRepository';
 import PageHeading from '../../layout/PageHeading';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
-import ArticleForm from './ArticleForm';
+import BookPageForm from './BookPageForm';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
@@ -14,7 +14,7 @@ import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
-const CreateArticle: FC = () => {
+const CreatePage: FC = () => {
   const history = useHistory();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
   const { modifyHtmlForStorage } = useHtmlModifier();
@@ -25,8 +25,8 @@ const CreateArticle: FC = () => {
     values: FormikValues,
     contentType: ContentType
   ): void => {
-    articleRepository
-      .createArticle(getBookTypeFromUrlSlug(aggregatePath), {
+    bookRepository
+      .createPage(getBookTypeFromUrlSlug(aggregatePath), {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         chapterDivision: values.chapterDivision,
@@ -53,7 +53,7 @@ const CreateArticle: FC = () => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Create article has failed in CreateArticle.handleSubmit',
+          'Create page has failed in CreatePage.handleSubmit',
           error
         );
         dispatch(
@@ -77,7 +77,7 @@ const CreateArticle: FC = () => {
           Terug
         </Button>
       </PageHeading>
-      <ArticleForm
+      <BookPageForm
         onSubmit={handleSubmit}
         bookType={getBookTypeFromUrlSlug(aggregatePath)}
       />
@@ -85,4 +85,4 @@ const CreateArticle: FC = () => {
   );
 };
 
-export default CreateArticle;
+export default CreatePage;

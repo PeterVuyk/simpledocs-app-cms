@@ -6,7 +6,7 @@ export const DOCUMENTATION_DEFAULT_TEMPLATE = 'defaultTemplate';
 export const DOCUMENTATION_PUBLICATIONS = 'publications';
 export const DOCUMENTATION_STYLEGUIDE = 'styleguide';
 export const DOCUMENTATION_TRANSFORM_BASE64 = 'transformBase64';
-export const DOCUMENTATION_ID_LINK_ARTICLE = 'idLinkArticle';
+export const DOCUMENTATION_ID_LINK_BOOK_PAGE = 'idLinkBookPage';
 
 export type DocumentationType =
   | 'cmsConfigurations'
@@ -16,5 +16,5 @@ export type DocumentationType =
   | 'transformBase64'
   | 'defaultTemplate'
   | 'publications'
-  | 'idLinkArticle'
+  | 'idLinkBookPage'
   | 'styleguide';

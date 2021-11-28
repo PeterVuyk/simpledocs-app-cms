@@ -12,7 +12,7 @@ import {
   CMS_CONFIGURATIONS,
 } from '../../model/configurations/ConfigurationType';
 import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
-import publishArticlesRepository from './publication/publishArticlesRepository';
+import publishBookPagesRepository from './publication/publishBookPagesRepository';
 import publishDecisionTreeRepository from './publication/publishDecisionTreeRepository';
 import publishConfigurationsRepository from './publication/publishConfigurationsRepository';
 import publishCalculationsRepository from './publication/publishCalculationsRepository';
@@ -47,7 +47,7 @@ async function updateVersion(
   if (
     Object.keys(configuration.books.bookItems).includes(versioning.aggregate)
   ) {
-    await publishArticlesRepository.publish(versioning, newVersion);
+    await publishBookPagesRepository.publish(versioning, newVersion);
     return;
   }
   switch (versioning.aggregate) {

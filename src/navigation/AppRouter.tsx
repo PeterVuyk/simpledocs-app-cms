@@ -12,8 +12,8 @@ import SnackbarNotification from '../components/SnackbarNotification';
 import Navigation from './Navigation';
 import EditStoppingDistance from '../pages/calculations/edit/EditStoppingDistance';
 import EditOvertakingDistance from '../pages/calculations/edit/EditOvertakingDistance';
-import CreateArticle from '../pages/articles/CreateArticle';
-import EditArticle from '../pages/articles/EditArticle';
+import CreatePage from '../pages/bookPages/CreatePage';
+import EditPage from '../pages/bookPages/EditPage';
 import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
@@ -71,7 +71,7 @@ const AppRouter: FC = () => {
           <PrivateRoute
             exact
             path="/books/:aggregatePath/add"
-            Component={CreateArticle}
+            Component={CreatePage}
           />
           <PrivateRoute
             exact
@@ -103,8 +103,8 @@ const AppRouter: FC = () => {
           )}
           <PrivateRoute
             exact
-            path="/books/:aggregatePath/:articleId"
-            Component={EditArticle}
+            path="/books/:aggregatePath/:bookPageId"
+            Component={EditPage}
           />
           <Route component={NotFound} />
         </Switch>

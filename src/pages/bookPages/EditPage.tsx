@@ -2,12 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { FormikValues } from 'formik';
-import articleRepository from '../../firebase/database/articleRepository';
+import bookRepository from '../../firebase/database/bookRepository';
 import PageHeading from '../../layout/PageHeading';
 import logger from '../../helper/logger';
-import ArticleForm from './ArticleForm';
+import BookPageForm from './BookPageForm';
 import Navigation from '../../navigation/Navigation';
-import { Article } from '../../model/Article';
+import { Page } from '../../model/Page';
 import { useAppDispatch } from '../../redux/hooks';
 import htmlContentHelper from '../../helper/htmlContentHelper';
 import NotFound from '../NotFound';
@@ -17,47 +17,43 @@ import markdownHelper from '../../helper/markdownHelper';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { notify } from '../../redux/slice/notificationSlice';
 
-const EditArticle: FC = () => {
-  const [article, setArticle] = useState<Article | null>();
+const EditPage: FC = () => {
+  const [page, setPage] = useState<Page | null>();
   const history = useHistory();
-  const { articleId, aggregatePath } =
-    useParams<{ articleId: string; aggregatePath: string }>();
+  const { bookPageId, aggregatePath } =
+    useParams<{ bookPageId: string; aggregatePath: string }>();
   const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    articleRepository
-      .getArticleById(getBookTypeFromUrlSlug(aggregatePath), articleId)
-      .then((result) => setArticle(result));
-  }, [aggregatePath, articleId, getBookTypeFromUrlSlug]);
+    bookRepository
+      .getPageById(getBookTypeFromUrlSlug(aggregatePath), bookPageId)
+      .then((result) => setPage(result));
+  }, [aggregatePath, bookPageId, getBookTypeFromUrlSlug]);
 
   const handleSubmit = async (
     values: FormikValues,
     contentType: ContentType
   ): Promise<void> => {
-    await articleRepository
-      .updateArticle(
-        getBookTypeFromUrlSlug(aggregatePath),
-        article?.chapter ?? '',
-        {
-          id: `${article?.id?.replaceAll('-draft', '')}-draft`,
-          pageIndex: values.pageIndex,
-          chapter: values.chapter,
-          chapterDivision: values.chapterDivision,
-          title: values.title,
-          subTitle: values.subTitle,
-          searchText: values.searchText,
-          content:
-            contentType === CONTENT_TYPE_HTML
-              ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                  values.htmlContent
-                )
-              : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
-          contentType,
-          iconFile: values.iconFile,
-          isDraft: true,
-        }
-      )
+    await bookRepository
+      .updatePage(getBookTypeFromUrlSlug(aggregatePath), page?.chapter ?? '', {
+        id: `${page?.id?.replaceAll('-draft', '')}-draft`,
+        pageIndex: values.pageIndex,
+        chapter: values.chapter,
+        chapterDivision: values.chapterDivision,
+        title: values.title,
+        subTitle: values.subTitle,
+        searchText: values.searchText,
+        content:
+          contentType === CONTENT_TYPE_HTML
+            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+                values.htmlContent
+              )
+            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
+        contentType,
+        iconFile: values.iconFile,
+        isDraft: true,
+      })
       .then(() => history.push(`/books/${aggregatePath}`))
       .then(() =>
         dispatch(
@@ -70,7 +66,7 @@ const EditArticle: FC = () => {
       )
       .catch((error) => {
         logger.errorWithReason(
-          'Edit article has failed in EditArticle.handleSubmit',
+          'Edit page has failed in EditPage.handleSubmit',
           error
         );
         dispatch(
@@ -84,7 +80,7 @@ const EditArticle: FC = () => {
       });
   };
 
-  if (article === null) {
+  if (page === null) {
     return <NotFound />;
   }
 
@@ -99,10 +95,10 @@ const EditArticle: FC = () => {
           Terug
         </Button>
       </PageHeading>
-      {!article && <LoadingSpinner />}
-      {article && (
-        <ArticleForm
-          article={article}
+      {!page && <LoadingSpinner />}
+      {page && (
+        <BookPageForm
+          page={page}
           onSubmit={handleSubmit}
           bookType={getBookTypeFromUrlSlug(aggregatePath)}
         />
@@ -111,4 +107,4 @@ const EditArticle: FC = () => {
   );
 };
 
-export default EditArticle;
+export default EditPage;

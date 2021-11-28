@@ -3,17 +3,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import { Tooltip } from '@material-ui/core';
-import articleRepository from '../../../firebase/database/articleRepository';
+import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { Article } from '../../../model/Article';
+import { Page } from '../../../model/Page';
 import DownloadContentAction from '../../../components/ItemAction/DownloadContentAction';
 import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
 import EditItemAction from '../../../components/ItemAction/EditItemAction';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
-import CopyArticleAction from '../../../components/ItemAction/copyArticleAction/CopyArticleAction';
+import CopyPageAction from '../../../components/ItemAction/copyPageAction/CopyPageAction';
 
 const useStyles = makeStyles({
   icon: {
@@ -25,16 +25,16 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  article: Article;
-  onLoadArticles: () => void;
+  page: Page;
+  onLoadPages: () => void;
   editStatus: EditStatus;
   bookType: string;
   bookTypeSlug: string;
 }
 
-const ArticleListItem: FC<Props> = ({
-  article,
-  onLoadArticles,
+const BookPageListItem: FC<Props> = ({
+  page,
+  onLoadPages,
   editStatus,
   bookType,
   bookTypeSlug,
@@ -59,26 +59,26 @@ const ArticleListItem: FC<Props> = ({
   };
 
   useEffect(() => {
-    const markedForDeletionArticleHasDraft = async () => {
-      if (!article.markedForDeletion || editStatus !== EDIT_STATUS_DRAFT) {
+    const markedForDeletionPageHasDraft = async () => {
+      if (!page.markedForDeletion || editStatus !== EDIT_STATUS_DRAFT) {
         setShowMarkForDeletion(false);
         return;
       }
 
-      const draft = await articleRepository.getArticleById(
+      const draft = await bookRepository.getPageById(
         bookType,
-        `${article.id}-draft`
+        `${page.id}-draft`
       );
       setShowMarkForDeletion(draft === null);
     };
-    markedForDeletionArticleHasDraft();
-  }, [article.id, article.markedForDeletion, bookType, editStatus]);
+    markedForDeletionPageHasDraft();
+  }, [page.id, page.markedForDeletion, bookType, editStatus]);
 
   const onDelete = async (id: string): Promise<void> => {
-    if (article.isDraft) {
-      await articleRepository
-        .deleteArticle(bookType, id)
-        .then(onLoadArticles)
+    if (page.isDraft) {
+      await bookRepository
+        .deletePage(bookType, id)
+        .then(onLoadPages)
         .then(() =>
           dispatch(
             notify({
@@ -89,13 +89,13 @@ const ArticleListItem: FC<Props> = ({
           )
         )
         .catch((reason) =>
-          logger.errorWithReason('Failed deleting article', reason)
+          logger.errorWithReason('Failed deleting page', reason)
         );
       return;
     }
-    await articleRepository
-      .markArticleForDeletion(bookType, id)
-      .then(onLoadArticles)
+    await bookRepository
+      .markPageForDeletion(bookType, id)
+      .then(onLoadPages)
       .then(() =>
         dispatch(
           notify({
@@ -106,14 +106,14 @@ const ArticleListItem: FC<Props> = ({
         )
       )
       .catch((reason) =>
-        logger.errorWithReason('Failed marking article for deletion', reason)
+        logger.errorWithReason('Failed marking page for deletion', reason)
       );
   };
 
   const undoMarkDeletion = async () => {
-    await articleRepository
-      .removeMarkForDeletion(bookType, article.id ?? '')
-      .then(onLoadArticles)
+    await bookRepository
+      .removeMarkForDeletion(bookType, page.id ?? '')
+      .then(onLoadPages)
       .then(() =>
         dispatch(
           notify({
@@ -126,13 +126,13 @@ const ArticleListItem: FC<Props> = ({
       )
       .catch((reason) =>
         logger.errorWithReason(
-          `Failed removing the mark for deletion from the article id${article.id}`,
+          `Failed removing the mark for deletion from the page id${page.id}`,
           reason
         )
       );
   };
 
-  const getEditUrl = () => `/books/${bookTypeSlug}/${article.id}`;
+  const getEditUrl = () => `/books/${bookTypeSlug}/${page.id}`;
 
   const getDeleteTitle = () => {
     return editStatus === EDIT_STATUS_DRAFT
@@ -143,12 +143,12 @@ const ArticleListItem: FC<Props> = ({
   return (
     <>
       <TableCell component="th" scope="row">
-        {article.chapter}
+        {page.chapter}
       </TableCell>
-      <TableCell>{article.title}</TableCell>
-      <TableCell>{getChapterDivision(article.chapterDivision)}</TableCell>
+      <TableCell>{page.title}</TableCell>
+      <TableCell>{getChapterDivision(page.chapterDivision)}</TableCell>
       <TableCell>
-        {article.pageIndex
+        {page.pageIndex
           .toString()
           .replace(/(.{2})/g, '$1•')
           .trim()}
@@ -156,25 +156,23 @@ const ArticleListItem: FC<Props> = ({
       <TableCell>
         <img
           className={classes.icon}
-          src={`${article.iconFile}`}
-          alt={article.chapter}
+          src={`${page.iconFile}`}
+          alt={page.chapter}
         />
       </TableCell>
-      <TableCell>{article.contentType}</TableCell>
-      <TableCell>{article.id?.replaceAll('-draft', '') ?? ''}</TableCell>
+      <TableCell>{page.contentType}</TableCell>
+      <TableCell>{page.id?.replaceAll('-draft', '') ?? ''}</TableCell>
       <TableCell align="right" className={classes.toolBox}>
-        {!article.markedForDeletion && (
-          <EditItemAction urlSlug={getEditUrl()} />
-        )}
-        <CopyArticleAction bookType={bookType} article={article} />
+        {!page.markedForDeletion && <EditItemAction urlSlug={getEditUrl()} />}
+        <CopyPageAction bookType={bookType} page={page} />
         <DownloadContentAction
-          content={article.content}
-          contentType={article.contentType}
-          fileName={article.chapter}
+          content={page.content}
+          contentType={page.contentType}
+          fileName={page.chapter}
         />
         <ViewContentAction
-          content={article.content}
-          contentType={article.contentType}
+          content={page.content}
+          contentType={page.contentType}
         />
         {showMarkForDeletion && (
           <Tooltip title="Markering voor verwijdering opheffen">
@@ -184,16 +182,14 @@ const ArticleListItem: FC<Props> = ({
             />
           </Tooltip>
         )}
-        {!article.markedForDeletion && article.id && (
+        {!page.markedForDeletion && page.id && (
           <DeleteItemAction
             title={getDeleteTitle()}
-            dialogText={`Hoofdstuk: ${article.chapter}\nTitel: ${
-              article.title
-            }\nHoofdstuk indeling: ${getChapterDivision(
-              article.chapterDivision
-            )}`}
+            dialogText={`Hoofdstuk: ${page.chapter}\nTitel: ${
+              page.title
+            }\nHoofdstuk indeling: ${getChapterDivision(page.chapterDivision)}`}
             onSubmit={onDelete}
-            itemId={article.id}
+            itemId={page.id}
           />
         )}
       </TableCell>
@@ -201,4 +197,4 @@ const ArticleListItem: FC<Props> = ({
   );
 };
 
-export default ArticleListItem;
+export default BookPageListItem;
