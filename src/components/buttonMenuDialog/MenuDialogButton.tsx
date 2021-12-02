@@ -39,16 +39,18 @@ const MenuDialogButton: FC<Props> = ({
   return (
     <>
       <Tooltip title={toolTip ?? ''}>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color={buttonColor ?? undefined}
-          onClick={openMenu}
-          disabled={menuListItems.length === 0}
-        >
-          {iconName && <Icon>{iconName}&nbsp;</Icon>}
-          {buttonText && buttonText}
-        </Button>
+        <span>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color={buttonColor ?? undefined}
+            onClick={openMenu}
+            disabled={menuListItems.length === 0}
+          >
+            {iconName && <Icon>{iconName}&nbsp;</Icon>}
+            {buttonText && buttonText}
+          </Button>
+        </span>
       </Tooltip>
       <MenuDialogListMenu
         menuListDialog={menuListDialog}

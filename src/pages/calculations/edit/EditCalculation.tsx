@@ -158,7 +158,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                 container
                 spacing={0}
                 alignItems="flex-start"
-                justify="flex-start"
+                justifyContent="flex-start"
                 direction="row"
               >
                 <Grid container item xs={12} sm={6} spacing={2}>
@@ -184,8 +184,8 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                     <TextField
                       showError={showError}
                       multiline
-                      rows={3}
-                      rowsMax={8}
+                      minRows={3}
+                      maxRows={8}
                       required
                       id="explanation"
                       label="Toelichting"

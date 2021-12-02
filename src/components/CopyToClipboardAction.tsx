@@ -31,13 +31,15 @@ const CopyToClipboardAction: FC<Props> = ({ textToCopy, disabled }) => {
     >
       <Tooltip title="Kopieer naar klembord">
         <div>
-          <Button
-            onClick={copyText}
-            variant="contained"
-            disabled={disabled === undefined ? false : disabled}
-          >
-            <FilterNoneIcon />
-          </Button>
+          <span>
+            <Button
+              onClick={copyText}
+              variant="contained"
+              disabled={disabled === undefined ? false : disabled}
+            >
+              <FilterNoneIcon />
+            </Button>
+          </span>
         </div>
       </Tooltip>
     </div>

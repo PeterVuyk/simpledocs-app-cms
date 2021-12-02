@@ -98,13 +98,15 @@ const Base64TransformerDialog: FC<Props> = ({
         >
           <Tooltip title="Download als bestand">
             <div>
-              <Button
-                onClick={handleDownloadFileFromBase64}
-                variant="contained"
-                disabled={base64Input === ''}
-              >
-                <GetAppIcon />
-              </Button>
+              <span>
+                <Button
+                  onClick={handleDownloadFileFromBase64}
+                  variant="contained"
+                  disabled={base64Input === ''}
+                >
+                  <GetAppIcon />
+                </Button>
+              </span>
             </div>
           </Tooltip>
         </div>

@@ -45,6 +45,7 @@ const Login: FC = () => {
       history.push(HOME_PAGE);
     }
   }, [currentUser, history]);
+
   async function onSubmit(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> {

@@ -117,8 +117,8 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
         value={formikProps.values.searchText}
         onChange={formikProps.handleChange}
         showError={showError}
-        rows={5}
-        rowsMax={12}
+        minRows={5}
+        maxRows={12}
         required
         id="searchText"
         label="Zoektekst"

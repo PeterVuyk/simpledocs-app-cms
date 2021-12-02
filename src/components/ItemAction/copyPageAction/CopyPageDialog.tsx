@@ -172,7 +172,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
                   container
                   spacing={2}
                   alignItems="flex-start"
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   direction="row"
                 >
                   <Grid item xs={6}>

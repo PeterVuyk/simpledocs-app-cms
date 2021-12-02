@@ -86,7 +86,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
             container
             spacing={0}
             alignItems="flex-start"
-            justify="flex-start"
+            justifyContent="flex-start"
             direction="row"
           >
             <Grid container item xs={12} sm={6} spacing={2}>
@@ -124,8 +124,8 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                 <TextField
                   id="subTitle"
                   multiline
-                  rows={3}
-                  rowsMax={3}
+                  minRows={3}
+                  maxRows={3}
                   showError={showError}
                   label="Subtitel"
                   name="subTitle"
