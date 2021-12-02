@@ -1,12 +1,13 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { pure } from 'recompose';
+import { useFormikContext } from 'formik';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/artifacts/Artifact';
 import base64Helper from '../../../../../helper/base64Helper';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
 import FileDropzoneArea from '../../../FileDropzoneArea';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import SaveIndicator from '../../SaveIndicator';
 import BottomToolbox from '../toolbox/BottomToolbox';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
@@ -40,9 +41,9 @@ const MarkdownEditor: FC<Props> = ({
   meta,
 }) => {
   const [content, setContent] = useState<string | null>(null);
-  const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
   const classes = useStyles();
   const editorRef = useRef<any>();
+  const formikProps = useFormikContext();
 
   useEffect(() => {
     async function setInitialHtmlContent() {
@@ -89,26 +90,27 @@ const MarkdownEditor: FC<Props> = ({
     [formik]
   );
 
-  const showSaveButton = () => {
-    setSaveButtonVisible(true);
-    setTimeout(() => {
-      setSaveButtonVisible(false);
-    }, 5000);
-  };
-
   const handleUpdateFile = (file: string) => {
     if (file !== 'markdown') {
       editorRef.current?.editorInst.setMarkdown(file);
+      formikProps.setFieldValue('markdownContent', file);
       setContent(file);
-      showSaveButton();
       return;
     }
     const markdown = editorRef.current?.editorInst.getMarkdown();
     if (content !== markdown) {
-      formik.current?.setFieldValue('markdownContent', markdown);
-      setContent(markdown);
-      showSaveButton();
+      formikProps.setFieldValue('markdownContent', markdown);
     }
+  };
+
+  const debounce = (func: (file: string) => void, ms: number) => {
+    let timeout: any;
+    return (file: string) => {
+      // handleUpdateFile(file);
+      clearTimeout(timeout);
+      // @ts-ignore
+      timeout = setTimeout(() => func(file), ms);
+    };
   };
 
   return (
@@ -116,7 +118,6 @@ const MarkdownEditor: FC<Props> = ({
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      {saveButtonVisible && <SaveIndicator />}
       {content !== null && (
         <div className={classes.relativeContainer}>
           <div className={classes.formControl}>
@@ -128,13 +129,13 @@ const MarkdownEditor: FC<Props> = ({
           <Editor
             previewHighlight={false}
             ref={editorRef}
-            initialValue={content ?? ''}
+            initialValue={content}
             previewStyle="vertical"
             height="600px"
             initialEditType="markdown"
             useCommandShortcut
             usageStatistics={false}
-            onBlur={handleUpdateFile}
+            onChange={debounce(handleUpdateFile, 1000)}
           />
         </div>
       )}
@@ -148,4 +149,4 @@ const MarkdownEditor: FC<Props> = ({
   );
 };
 
-export default MarkdownEditor;
+export default pure(MarkdownEditor);

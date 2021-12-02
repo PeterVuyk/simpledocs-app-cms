@@ -41,6 +41,7 @@ const ContentEditor: FC<Props> = ({
   contentTypeToggle,
 }) => {
   const classes = useStyles();
+
   return (
     <>
       <div

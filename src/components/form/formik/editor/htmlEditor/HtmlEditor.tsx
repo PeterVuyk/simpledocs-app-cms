@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
-import JoditEditor from 'jodit-react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useFormikContext } from 'formik';
+import { pure } from 'recompose';
 import BottomToolbox from '../toolbox/BottomToolbox';
 import FileDropzoneArea from '../../../FileDropzoneArea';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
@@ -10,8 +11,8 @@ import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactT
 import base64Helper from '../../../../../helper/base64Helper';
 import useStylesheet from '../../../../hooks/useStylesheet';
 import { CONTENT_TYPE_HTML } from '../../../../../model/artifacts/Artifact';
-import SaveIndicator from '../../SaveIndicator';
 import useHtmlModifier from '../../../../hooks/useHtmlModifier';
+import JoditEditorWrapper from './JoditEditorWrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,12 +40,12 @@ interface Props {
 }
 
 const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
-  const editor = useRef<JoditEditor | null>(null);
   const [content, setContent] = useState<string | null>(null);
-  const [saveButtonVisible, setSaveButtonVisible] = useState<boolean>(false);
+  const currentContent = useRef<string>('');
   const stylesheet = useStylesheet();
   const { modifyHtmlAfterUpload } = useHtmlModifier();
   const classes = useStyles();
+  const formikProps = useFormikContext();
 
   const getErrorMessage = (): string => {
     if (showError && meta.error) {
@@ -53,21 +54,17 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     return '';
   };
 
-  const showSaveButton = () => {
-    setSaveButtonVisible(true);
-    setTimeout(() => {
-      setSaveButtonVisible(false);
-    }, 5000);
-  };
-
-  const handleUpdateFile = (file: string) => {
-    if (content === file) {
+  const handleUpdateFromStylesheet = (file: string) => {
+    if (currentContent.current === file) {
       return;
     }
     const html = modifyHtmlAfterUpload(file);
-    formik.current?.setFieldValue('htmlContent', html);
+    formikProps.setFieldValue('htmlContent', html);
     setContent(html);
-    showSaveButton();
+  };
+
+  const handleEditorOnChange = (file: string) => {
+    formikProps.setFieldValue('htmlContent', file);
   };
 
   const handleUpdateFileFromBase64 = useCallback(
@@ -77,6 +74,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
         : '';
       html = modifyHtmlAfterUpload(html);
       formik.current?.setFieldValue('htmlContent', html);
+      currentContent.current = html;
       setContent(html);
     },
     [formik, modifyHtmlAfterUpload]
@@ -113,19 +111,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
           );
       }
       formik.current?.setFieldValue('htmlContent', html);
+      currentContent.current = html ?? '';
       setContent(html);
     }
     setInitialHtmlContent();
   }, [content, formik, initialFile, modifyHtmlAfterUpload, stylesheet]);
-
-  const config = {
-    // all options check: https://xdsoft.net/jodit/doc/
-    height: 600,
-    readonly: false,
-    iframe: true,
-    askBeforePasteHTML: false,
-    askBeforePasteFromWord: false,
-  };
 
   if (content === null || stylesheet === null) {
     return <LoadingSpinner />;
@@ -136,20 +126,16 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      {saveButtonVisible && <SaveIndicator />}
       <div className={classes.relativeContainer}>
         <div className={classes.formControl}>
           <BottomToolbox
             contentType={CONTENT_TYPE_HTML}
-            onUpdateFile={handleUpdateFile}
+            onUpdateFile={handleUpdateFromStylesheet}
           />
         </div>
-        <JoditEditor
-          ref={editor}
-          value={content ?? ''}
-          // @ts-ignore
-          config={config}
-          onBlur={handleUpdateFile}
+        <JoditEditorWrapper
+          onChange={handleEditorOnChange}
+          content={content ?? ''}
         />
       </div>
       <FileDropzoneArea
@@ -162,4 +148,4 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   );
 };
 
-export default HtmlEditor;
+export default pure(HtmlEditor);
