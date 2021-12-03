@@ -9,7 +9,8 @@ Make sure you are using node 12, we recommend you to use node version manager (n
 
 In the project directory, you can run:
 
-    npm start
+    npx env-cmd -f .env npm start
+    npx env-cmd -f .env.development npm start
 
 Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -26,8 +27,16 @@ Your app is ready to be deployed!
 
 Finaly deploy your hosting content and config to the live channel
 
-    firebase deploy
+    firebase deploy -P default|development
 
 ## User management
 
 Users can be created and managed in the [firebase console](https://console.firebase.google.com/) in the tab Authentication.
+
+## Import / export data between projects:
+
+To import a backup from another project, define first which backup you would like to import: [backups](https://console.cloud.google.com/storage/browser?project=ambulancezorg-app&prefix=).
+Also make sure the IAM roles are [configured correctly](https://firebase.google.com/docs/firestore/manage-data/move-data).
+Then run the following command:
+
+    gcloud firestore import gs://ambulancezorg_app_firebase_backup/<backup folder> --async
