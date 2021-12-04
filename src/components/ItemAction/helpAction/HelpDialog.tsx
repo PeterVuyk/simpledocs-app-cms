@@ -35,7 +35,7 @@ const HelpDialog: FC<Props> = ({
   };
 
   const getDialogWidth = (): 'sm' | 'md' => {
-    if (dialogCharCount < 1000) {
+    if (dialogCharCount < 900) {
       return 'sm';
     }
     return 'md';

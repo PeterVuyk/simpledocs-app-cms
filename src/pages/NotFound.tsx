@@ -9,6 +9,11 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(24),
   },
+  logo: {
+    maxWidth: '700px',
+    margin: 'auto',
+    display: 'block',
+  },
   notFoundContainer: {
     marginTop: theme.spacing(8),
   },
@@ -19,10 +24,10 @@ const NotFound: FC = () => {
   const { configuration } = useCmsConfiguration();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="md">
       <CssBaseline />
       <div className={classes.container}>
-        <img src={configuration.cms.logoUrl} />
+        <img src={configuration.cms.logoUrl} className={classes.logo} />
         <div className={classes.notFoundContainer}>
           <Typography align="center" variant="h1">
             404

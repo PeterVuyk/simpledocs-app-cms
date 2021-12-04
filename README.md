@@ -9,8 +9,8 @@ Make sure you are using node 12, we recommend you to use node version manager (n
 
 In the project directory, you can run:
 
-    npx env-cmd -f .env npm start
     npx env-cmd -f .env.development npm start
+    npx env-cmd -f .env.academie-voor-ambulancezorg npm start   # customer specific
 
 Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -28,8 +28,8 @@ Your app is ready to be deployed!
 
 Deploy finally your hosting content and config to the live channel
 
-    npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg
     npx env-cmd -f .env.development firebase deploy -P development
+    npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg
 
 ## User management
 

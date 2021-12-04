@@ -9,6 +9,7 @@ import { useAuth } from './AuthProvider';
 import { HOME_PAGE } from '../navigation/UrlSlugs';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AlertBox from '../components/AlertBox';
+import Copyright from '../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  logo: {
+  logoContainer: {
     marginTop: theme.spacing(16),
   },
   form: {
@@ -66,51 +67,54 @@ const Login: FC = () => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="md">
       <CssBaseline />
-      <div className={classes.logo}>
-        <img src={configuration.cms.logoUrl} />
-      </div>
       <div className={classes.paper}>
-        {error && <AlertBox severity="error" message={error} />}
-        <form className={classes.form} noValidate>
-          <TextField
-            inputRef={emailRef}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="E-mailadres"
-            name="E-mailadres"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            inputRef={passwordRef}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="Wachtwoord"
-            label="Wachtwoord"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={onSubmit}
-            disabled={loading}
-          >
-            Inloggen
-          </Button>
-        </form>
+        <div className={classes.logoContainer}>
+          <img src={configuration.cms.logoUrl} style={{ maxWidth: '700px' }} />
+        </div>
+        <Container component="main" maxWidth="xs">
+          {error && <AlertBox severity="error" message={error} />}
+          <form className={classes.form} noValidate>
+            <TextField
+              inputRef={emailRef}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="E-mailadres"
+              name="E-mailadres"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              inputRef={passwordRef}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="Wachtwoord"
+              label="Wachtwoord"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={onSubmit}
+              disabled={loading}
+            >
+              Inloggen
+            </Button>
+          </form>
+        </Container>
       </div>
+      <Copyright />
     </Container>
   );
 };
