@@ -78,7 +78,6 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         <Calculations title={configuration.menu.menuItems.calculations.title} />
       );
     }
-    page;
 
     switch (page) {
       case configuration.menu.menuItems.styleguide.urlSlug:

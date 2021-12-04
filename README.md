@@ -23,11 +23,13 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
-    npm run build
+    npx env-cmd -f .env.development npm run build
+    npx env-cmd -f .env.academie-voor-ambulancezorg npm run build   # customer specific
 
-Finaly deploy your hosting content and config to the live channel
+Deploy finally your hosting content and config to the live channel
 
-    firebase deploy -P default|development
+    npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg
+    npx env-cmd -f .env.development firebase deploy -P development
 
 ## User management
 
@@ -36,7 +38,8 @@ Users can be created and managed in the [firebase console](https://console.fireb
 ## Import / export data between projects:
 
 To import a backup from another project, define first which backup you would like to import: [backups](https://console.cloud.google.com/storage/browser?project=ambulancezorg-app&prefix=).
-Also make sure the IAM roles are [configured correctly](https://firebase.google.com/docs/firestore/manage-data/move-data).
+Also make sure the IAM roles are [configured correctly](https://firebase.google.com/docs/firestore/manage-data/move-data) (also in the project from where you perform the export).
 Then run the following command:
 
+    gcloud config set project <project-id> # make sure the cli is configured to the right project
     gcloud firestore import gs://ambulancezorg_app_firebase_backup/<backup folder> --async

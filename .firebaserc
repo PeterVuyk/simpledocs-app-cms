@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "ambulancezorg-app",
+    "academie-voor-ambulancezorg": "academie-voor-ambulancezorg",
     "development": "simpledocs-eu"
   },
   "targets": {}
