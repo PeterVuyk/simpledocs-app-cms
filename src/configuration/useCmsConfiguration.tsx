@@ -55,6 +55,7 @@ function useCmsConfiguration() {
   const slugExist = useCallback(
     (value: string) => {
       const urlSlugs = [
+        'users',
         ...Object.values(configuration.books.bookItems).map(
           (item) => item.urlSlug
         ),

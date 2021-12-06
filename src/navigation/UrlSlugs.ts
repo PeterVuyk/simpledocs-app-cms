@@ -1,4 +1,5 @@
 export const HOME_PAGE = '/';
+export const USERS_PAGE = '/users';
 export const LOGIN_PAGE = '/login';
 export const HTML_LAYOUT_PAGE = '/styleguide';
 export const CALCULATIONS_PAGE = '/calculations';

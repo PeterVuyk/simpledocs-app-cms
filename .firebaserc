@@ -1,7 +1,8 @@
 {
   "projects": {
     "academie-voor-ambulancezorg": "academie-voor-ambulancezorg",
-    "development": "simpledocs-eu"
+    "development": "simpledocs-eu",
+    "default": "academie-voor-ambulancezorg"
   },
   "targets": {}
 }

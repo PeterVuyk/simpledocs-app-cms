@@ -21,6 +21,7 @@ import AppConfigurationsPage from '../pages/appConfigurations/AppConfigurationsP
 import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
 import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
 import BookPages from '../pages/bookPages/list/BookPages';
+import Users from '../pages/users/Users';
 
 const drawerWidth = 240;
 
@@ -109,6 +110,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             title={configuration.menu.menuItems.publications.title}
           />
         );
+      case 'users':
+        return <Users title="Gebruikers" />;
     }
   };
 

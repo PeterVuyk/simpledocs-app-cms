@@ -3,9 +3,28 @@
 The purpose of the CMS is to manage the content for the app, you can add, remove and update the content of the books. 
 The CMS is build in React and uses the Firestore database from Firebase.
 
-## Available Scripts
+## Local development & deployment
 
 Make sure you are using node 12, we recommend you to use node version manager (nvm).
+
+### Functions
+
+Go to the functions directory, then make sure you copy the secrets to a json file in order to invoke it locally: 
+
+    cd functions && firebase functions:config:get -P development > .runtimeconfig.json
+    cd functions && firebase functions:config:get -P academie-voor-ambulancezorg > .runtimeconfig.json
+
+Then start the emulator:
+
+    firebase emulators:start --only functions -P simpledocs-eu
+    firebase emulators:start --only functions -P academie-voor-ambulancezorg
+
+When ready run the following commands to deploy the functions to Firebase:
+
+    firebase deploy --only functions:bla -P simpledocs-eu
+    firebase deploy --only functions:bla -P academie-voor-ambulancezorg
+
+### Hosting
 
 In the project directory, you can run:
 

@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../authentication/AuthProvider';
-import { LOGIN_PAGE } from '../../navigation/UrlSlugs';
+import { LOGIN_PAGE, USERS_PAGE } from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles(() => ({
   headerItem: {
@@ -66,6 +66,9 @@ const UserProfile: FC = () => {
             open={open}
             onClose={handleCloseProfile}
           >
+            <MenuItem onClick={() => history.push(USERS_PAGE)}>
+              Gebruikers
+            </MenuItem>
             <MenuItem onClick={handleLogout}>Uitloggen</MenuItem>
           </Menu>
         </div>
