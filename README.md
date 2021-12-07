@@ -16,13 +16,19 @@ Go to the functions directory, then make sure you copy the secrets to a json fil
 
 Then start the emulator:
 
-    firebase emulators:start --only functions -P simpledocs-eu
+    firebase emulators:start --only functions -P development
     firebase emulators:start --only functions -P academie-voor-ambulancezorg
+
+In a separate terminal run typescript in the background:
+
+    tsc --watch
 
 When ready run the following commands to deploy the functions to Firebase:
 
-    firebase deploy --only functions:bla -P simpledocs-eu
-    firebase deploy --only functions:bla -P academie-voor-ambulancezorg
+    npm run build
+
+    firebase deploy --only functions:cms -P development
+    firebase deploy --only functions:cms -P academie-voor-ambulancezorg
 
 ### Hosting
 

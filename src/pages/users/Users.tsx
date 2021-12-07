@@ -7,9 +7,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import { makeStyles } from '@material-ui/core/styles';
-import { functions } from '../../firebase/firebaseConnection';
+import { useHistory } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';
 import { User } from '../../model/User';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import dateTimeHelper from '../../helper/dateTimeHelper';
+import listAllUsers from '../../firebase/functions/listAllUsers';
+import logger from '../../helper/logger';
+import { useAppDispatch } from '../../redux/hooks';
+import { notify } from '../../redux/slice/notificationSlice';
+import { CALCULATIONS_PAGE } from '../../navigation/UrlSlugs';
 
 const useStyles = makeStyles({
   table: {
@@ -27,19 +34,25 @@ interface Props {
 const Users: FC<Props> = ({ title }) => {
   const [users, setUsers] = useState<User[]>([]);
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const history = useHistory();
 
-  // TODO: Move function call to another client function
   useEffect(() => {
-    functions
-      .httpsCallable('cms-listAllUsers')()
-      .then((value) => {
-        if (value.data.success) {
-          setUsers(value.data.result);
-        }
-        // TODO: Add proper error handling
-      })
-      .catch(console.log);
-  }, []);
+    listAllUsers()
+      .then(setUsers)
+      .catch((reason) => {
+        logger.errorWithReason('Failed to list all users to UI', reason);
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage:
+              'Het openen van de gebruikers pagina is mislukt',
+          })
+        );
+        history.push(CALCULATIONS_PAGE);
+      });
+  }, [dispatch, history]);
 
   return (
     <>
@@ -52,6 +65,9 @@ const Users: FC<Props> = ({ title }) => {
                 <strong>Email</strong>
               </TableCell>
               <TableCell>
+                <strong>Laatste keer ingelogd</strong>
+              </TableCell>
+              <TableCell>
                 <strong>Actief</strong>
               </TableCell>
             </TableRow>
@@ -59,14 +75,22 @@ const Users: FC<Props> = ({ title }) => {
           <TableBody>
             {users.length !== 0 &&
               users.map((user) => (
-                <TableRow key={user.email}>
+                <TableRow key={user.userId}>
                   <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    {user.lastSignInTime
+                      ? dateTimeHelper.dateString(
+                          dateTimeHelper.convertTimezone(user.lastSignInTime)
+                        )
+                      : 'Nog niet eerder ingelogd'}
+                  </TableCell>
                   <TableCell>{user.disabled ? 'Inactief' : 'Actief'}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {users.length === 0 && <LoadingSpinner />}
     </>
   );
 };
