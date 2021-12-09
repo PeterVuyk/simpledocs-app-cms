@@ -73,7 +73,7 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
           dialogText="Weet je zeker dat je de aanpassing op de configuratie wilt verwijderen?"
           openDialog={openRemoveConfirmationDialog}
           setOpenDialog={setRemoveSubmitConfirmationDialog}
-          onSubmit={() => removeConfigDraft('')}
+          onSubmit={() => new Promise(() => removeConfigDraft(''))}
         />
       )}
     </>

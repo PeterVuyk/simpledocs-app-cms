@@ -39,7 +39,7 @@ const RemoveConfigurationButton: FC<Props> = ({ configurations, onSubmit }) => {
           dialogText="Weet je zeker dat je de aangebrachte wijzigingen als concept wilt opslaan?"
           openDialog={openSubmitConfirmationDialog}
           setOpenDialog={setOpenSubmitConfirmationDialog}
-          onSubmit={() => onSubmit('')}
+          onSubmit={() => new Promise(() => onSubmit(''))}
         />
       )}
     </>

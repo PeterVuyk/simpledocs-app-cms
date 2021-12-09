@@ -19,16 +19,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
 import Generate from 'generate-password';
-import SubmitButton from '../../../components/form/formik/SubmitButton';
-import TextField from '../../../components/form/formik/TextField';
-import createUser from '../../../firebase/functions/createUser';
-import { User } from '../../../model/users/User';
-import { notify } from '../../../redux/slice/notificationSlice';
-import logger from '../../../helper/logger';
-import { useAppDispatch } from '../../../redux/hooks';
-import validateYupUserEmail from '../../../components/form/formik/validators/validateYupUserEmail';
-import AlertBox from '../../../components/AlertBox';
-import CopyToClipboardAction from '../../../components/CopyToClipboardAction';
+import SubmitButton from '../../components/form/formik/SubmitButton';
+import TextField from '../../components/form/formik/TextField';
+import createUser from '../../firebase/functions/createUser';
+import { User } from '../../model/users/User';
+import { notify } from '../../redux/slice/notificationSlice';
+import logger from '../../helper/logger';
+import { useAppDispatch } from '../../redux/hooks';
+import validateYupUserEmail from '../../components/form/formik/validators/validateYupUserEmail';
+import AlertBox from '../../components/AlertBox';
+import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {

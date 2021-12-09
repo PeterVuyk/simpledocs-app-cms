@@ -18,7 +18,8 @@ import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import { CALCULATIONS_PAGE } from '../../navigation/UrlSlugs';
-import CreateUserFormDialog from './create/CreateUserFormDialog';
+import CreateUserFormDialog from './CreateUserFormDialog';
+import DeleteUser from './DeleteUser';
 
 const useStyles = makeStyles({
   table: {
@@ -45,6 +46,7 @@ const Users: FC<Props> = ({ title }) => {
   const history = useHistory();
 
   const loadUsers = useCallback(() => {
+    setUsers([]);
     listAllUsers()
       .then(setUsers)
       .catch((reason) => {
@@ -99,6 +101,7 @@ const Users: FC<Props> = ({ title }) => {
               <TableCell>
                 <strong>Actief</strong>
               </TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,6 +117,9 @@ const Users: FC<Props> = ({ title }) => {
                       : 'Nog niet eerder ingelogd'}
                   </TableCell>
                   <TableCell>{user.disabled ? 'Inactief' : 'Actief'}</TableCell>
+                  <TableCell>
+                    <DeleteUser userInfo={user} onSubmit={loadUsers} />
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

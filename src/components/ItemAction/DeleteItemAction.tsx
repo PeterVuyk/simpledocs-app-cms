@@ -6,7 +6,7 @@ import ConfirmationDialog from '../dialog/ConfirmationDialog';
 interface Props {
   title: string;
   dialogText: string;
-  onSubmit: (itemId: string) => void;
+  onSubmit: (itemId: string) => Promise<void>;
   itemId: string;
 }
 

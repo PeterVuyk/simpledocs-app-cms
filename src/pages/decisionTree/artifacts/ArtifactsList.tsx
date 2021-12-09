@@ -24,8 +24,8 @@ const ArtifactsList: FC = () => {
     loadArtifacts();
   }, []);
 
-  const handleDeleteArtifact = (id: string) => {
-    artifactsRepository
+  const handleDeleteArtifact = async (id: string) => {
+    await artifactsRepository
       .deleteArtifact(id)
       .then(loadArtifacts)
       .then(() =>

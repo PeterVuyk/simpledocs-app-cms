@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 interface Props {
   aggregate: string;
   artifacts: Artifact[] | null;
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<void>;
   showIdColumn: boolean;
   showArtifactType: boolean;
 }
