@@ -225,6 +225,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
               </Grid>
               <div className={classes.submit}>
                 <SubmitButton
+                  showInBottomBar
                   setShowError={setShowError}
                   disabled={isSubmitting || !dirty}
                 >

@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import {admin} from './firebase';
+import {admin} from '../firebase';
 
 export const listAllUsers = functions
     .region(functions.config().api.firebase_region)
@@ -27,7 +27,7 @@ const getUsers = () => {
     return {success: true, message: null, result: users};
   })
       .catch((error) => {
-        functions.logger.info('Error listing users:', error);
+        functions.logger.error('Error listing users:', error);
         return {success: false, message: 'Error listing users', result: null};
       });
 };

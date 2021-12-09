@@ -27,12 +27,15 @@ interface Props {
   children: string;
   setShowError: (showError: boolean) => void;
   disabled: boolean;
+  showInBottomBar: boolean;
+  [x: string]: any;
 }
 
 const SubmitButton: FC<Props> = ({
   children,
   setShowError,
   disabled,
+  showInBottomBar,
   ...otherProps
 }) => {
   const classes = useStyles();
@@ -43,13 +46,17 @@ const SubmitButton: FC<Props> = ({
   };
 
   const configButton: any = {
-    ...otherProps,
     variant: 'contained',
     color: 'primary',
-    fullWidth: true,
+    fullWidth: !!showInBottomBar,
     disabled,
     onClick: handleSubmit,
+    ...otherProps,
   };
+
+  if (!showInBottomBar) {
+    return <Button {...configButton}>{children}</Button>;
+  }
 
   return (
     <>

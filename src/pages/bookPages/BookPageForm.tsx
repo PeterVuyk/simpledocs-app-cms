@@ -194,6 +194,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
             </Grid>
           </Grid>
           <SubmitButton
+            showInBottomBar
             setShowError={setShowError}
             disabled={isSubmitting || !dirty}
           >

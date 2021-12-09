@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -8,8 +8,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
-import { User } from '../../model/User';
+import { UserInfo } from '../../model/users/UserInfo';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import dateTimeHelper from '../../helper/dateTimeHelper';
 import listAllUsers from '../../firebase/functions/listAllUsers';
@@ -17,6 +18,7 @@ import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import { CALCULATIONS_PAGE } from '../../navigation/UrlSlugs';
+import CreateUserFormDialog from './create/CreateUserFormDialog';
 
 const useStyles = makeStyles({
   table: {
@@ -25,6 +27,9 @@ const useStyles = makeStyles({
   head: {
     backgroundColor: '#ddd',
   },
+  button: {
+    marginLeft: 8,
+  },
 });
 
 interface Props {
@@ -32,12 +37,14 @@ interface Props {
 }
 
 const Users: FC<Props> = ({ title }) => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserInfo[]>([]);
+  const [showCreateUserDialog, setShowCreateUserDialog] =
+    useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  useEffect(() => {
+  const loadUsers = useCallback(() => {
     listAllUsers()
       .then(setUsers)
       .catch((reason) => {
@@ -54,9 +61,31 @@ const Users: FC<Props> = ({ title }) => {
       });
   }, [dispatch, history]);
 
+  useEffect(() => {
+    loadUsers();
+  }, [dispatch, history, loadUsers]);
+
   return (
     <>
-      <PageHeading title={title} />
+      <PageHeading title={title}>
+        <>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={() => setShowCreateUserDialog(true)}
+          >
+            Gebruiker toevoegen
+          </Button>
+          {showCreateUserDialog && (
+            <CreateUserFormDialog
+              oncloseDialog={() => setShowCreateUserDialog(false)}
+              openCreateUserDialog={showCreateUserDialog}
+              onSubmit={loadUsers}
+            />
+          )}
+        </>
+      </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

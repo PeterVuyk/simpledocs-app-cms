@@ -53,8 +53,8 @@ Your app is ready to be deployed!
 
 Deploy finally your hosting content and config to the live channel
 
-    npx env-cmd -f .env.development firebase deploy -P development
-    npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg
+    npx env-cmd -f .env.development firebase deploy -P development --only hosting
+    npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg --only hosting
 
 ## User management
 

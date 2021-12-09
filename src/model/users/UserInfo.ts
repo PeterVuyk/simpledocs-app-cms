@@ -1,4 +1,4 @@
-export interface User {
+export interface UserInfo {
   userId: string;
   email: string;
   disabled: boolean;

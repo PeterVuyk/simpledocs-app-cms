@@ -108,6 +108,7 @@ const ContentPageForm: FC<Props> = ({
           </Grid>
           <div className={classes.submit}>
             <SubmitButton
+              showInBottomBar
               setShowError={setShowError}
               disabled={isSubmitting || !dirty}
             >
