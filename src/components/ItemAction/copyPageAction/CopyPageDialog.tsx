@@ -10,7 +10,7 @@ import Dialog from '@material-ui/core/Dialog';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
 import Slide from '@material-ui/core/Slide';
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { Form, Formik, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -50,11 +50,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const handleSubmitForm = (
-    values: FormikValues,
-    formik: FormikHelpers<any>
-  ) => {
-    formik.setSubmitting(false);
+  const handleSubmitForm = (values: FormikValues) => {
     bookRepository
       .createPage(values.bookType, {
         pageIndex: values.pageIndex,

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { Form, Formik, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
@@ -87,11 +87,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
     ),
   });
 
-  const handleSubmit = (
-    values: FormikValues,
-    formik: FormikHelpers<any>
-  ): void => {
-    formik.setSubmitting(false);
+  const handleSubmit = (values: FormikValues): void => {
     calculationsRepository
       .updateCalculationsInfo({
         calculationType,

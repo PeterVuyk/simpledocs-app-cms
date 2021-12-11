@@ -20,6 +20,7 @@ import { notify } from '../../redux/slice/notificationSlice';
 import { CALCULATIONS_PAGE } from '../../navigation/UrlSlugs';
 import CreateUserFormDialog from './CreateUserFormDialog';
 import DeleteUser from './DeleteUser';
+import { useAuth } from '../../authentication/AuthProvider';
 
 const useStyles = makeStyles({
   table: {
@@ -44,6 +45,7 @@ const Users: FC<Props> = ({ title }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const { currentUser } = useAuth();
 
   const loadUsers = useCallback(() => {
     setUsers([]);
@@ -118,7 +120,9 @@ const Users: FC<Props> = ({ title }) => {
                   </TableCell>
                   <TableCell>{user.disabled ? 'Inactief' : 'Actief'}</TableCell>
                   <TableCell>
-                    <DeleteUser userInfo={user} onSubmit={loadUsers} />
+                    {user.userId !== currentUser?.uid && (
+                      <DeleteUser userInfo={user} onSubmit={loadUsers} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

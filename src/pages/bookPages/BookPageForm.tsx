@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
+import { Formik, Form, FormikValues } from 'formik';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
@@ -32,11 +32,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
   const formikRef = useRef<any>();
   const { getPageHierarchy } = useAppConfiguration();
 
-  const handleSubmitForm = (
-    values: FormikValues,
-    formik: FormikHelpers<any>
-  ) => {
-    formik.setSubmitting(false);
+  const handleSubmitForm = (values: FormikValues) => {
     onSubmit(values, contentTypeToggle);
   };
 

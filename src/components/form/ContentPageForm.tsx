@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FormikHelpers } from 'formik';
+import { Formik, Form, FormikValues } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
@@ -36,11 +36,7 @@ const ContentPageForm: FC<Props> = ({
   const formikRef = useRef<any>();
   const classes = useStyles();
 
-  const handleSubmitForm = (
-    values: FormikValues,
-    formik: FormikHelpers<any>
-  ) => {
-    formik.setSubmitting(false);
+  const handleSubmitForm = (values: FormikValues) => {
     onSubmit(values);
   };
 

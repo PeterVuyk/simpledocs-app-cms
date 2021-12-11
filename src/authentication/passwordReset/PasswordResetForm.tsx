@@ -30,8 +30,8 @@ const PasswordResetForm: FC<Props> = ({ onReset }) => {
   const handleSubmitForm = async (values: FormikValues) => {
     await auth
       .sendPasswordResetEmail(values.email)
-      .catch(() => {
-        // continue
+      .catch((error) => {
+        const mute = error;
       })
       .then(onReset);
   };
