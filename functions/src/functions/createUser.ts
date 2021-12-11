@@ -11,7 +11,11 @@ export const createUser = functions
       }
       return admin
           .auth()
-          .createUser({email: data.user.email, password: data.user.password, emailVerified: false, disabled: false})
+          .createUser({
+            email: data.user.email,
+            emailVerified: false,
+            disabled: false,
+          })
           .then(() => {
             return {success: true, message: null, result: null};
           })

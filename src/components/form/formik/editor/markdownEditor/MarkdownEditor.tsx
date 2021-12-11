@@ -135,7 +135,7 @@ const MarkdownEditor: FC<Props> = ({
             initialEditType="markdown"
             useCommandShortcut
             usageStatistics={false}
-            onChange={debounce(handleUpdateFile, 1000)}
+            onChange={debounce(handleUpdateFile, 500)}
           />
         </div>
       )}

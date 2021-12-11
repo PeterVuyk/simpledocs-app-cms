@@ -1,6 +1,6 @@
-const convertTimezone = (date: Date | string) => {
+const convertTimezone = (date: Date) => {
   return new Date(
-    (typeof date === 'string' ? new Date(date) : date).toLocaleString('nl-NL', {
+    date.toLocaleString('nl-NL', {
       timeZone: 'europe/amsterdam',
     })
   );

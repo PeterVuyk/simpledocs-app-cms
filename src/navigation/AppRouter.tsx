@@ -22,6 +22,7 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../model/Aggregate';
+import PasswordReset from '../authentication/passwordReset/PasswordReset';
 
 const AppRouter: FC = () => {
   const { configuration } = useCmsConfiguration();
@@ -39,6 +40,7 @@ const AppRouter: FC = () => {
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/password-reset" component={PasswordReset} />
           <Redirect exact from="/" to={getDefaultRedirectUrl()} />
           <PrivateRoute
             exact

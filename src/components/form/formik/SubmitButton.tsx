@@ -41,7 +41,8 @@ const SubmitButton: FC<Props> = ({
   const classes = useStyles();
   const { submitForm } = useFormikContext();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     submitForm().then(() => setShowError(true));
   };
 

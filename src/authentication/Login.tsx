@@ -5,8 +5,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import { Link } from '@material-ui/core';
 import { useAuth } from './AuthProvider';
-import { HOME_PAGE } from '../navigation/UrlSlugs';
+import { HOME_PAGE, PASSWORD_RESET_PAGE } from '../navigation/UrlSlugs';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AlertBox from '../components/AlertBox';
 import Copyright from '../components/Copyright';
@@ -83,8 +85,8 @@ const Login: FC = () => {
               required
               fullWidth
               id="email"
-              label="E-mailadres"
-              name="E-mailadres"
+              label="Emailadres"
+              name="Emailadres"
               autoComplete="email"
               autoFocus
             />
@@ -111,6 +113,18 @@ const Login: FC = () => {
             >
               Inloggen
             </Button>
+            <Typography
+              align="center"
+              style={{ marginBottom: 100, textDecoration: 'underline' }}
+            >
+              <Link
+                href={PASSWORD_RESET_PAGE}
+                color="textSecondary"
+                variant="body2"
+              >
+                Wachtwoord vergeten?
+              </Link>
+            </Typography>
           </form>
         </Container>
       </div>

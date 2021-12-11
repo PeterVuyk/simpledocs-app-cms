@@ -30,7 +30,7 @@ const JoditEditorWrapper = ({ content, onChange }) => {
         ref={editor}
         value={content}
         config={config}
-        onChange={debounce(onChange, 1000)}
+        onChange={debounce(onChange, 500)}
       />
     ),
     [content, onChange]
