@@ -17,15 +17,14 @@ import { Dialog } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
-import SubmitButton from '../../components/form/formik/SubmitButton';
-import TextField from '../../components/form/formik/TextField';
-import createUser from '../../firebase/functions/createUser';
-import { notify } from '../../redux/slice/notificationSlice';
-import logger from '../../helper/logger';
-import { useAppDispatch } from '../../redux/hooks';
-import validateYupUserEmail from '../../components/form/formik/validators/validateYupUserEmail';
-import AlertBox from '../../components/AlertBox';
-import { auth } from '../../firebase/firebaseConnection';
+import SubmitButton from '../components/form/formik/SubmitButton';
+import TextField from '../components/form/formik/TextField';
+import { notify } from '../redux/slice/notificationSlice';
+import logger from '../helper/logger';
+import { useAppDispatch } from '../redux/hooks';
+import AlertBox from '../components/AlertBox';
+import updateUser from '../firebase/functions/updateUser';
+import validateYupPassword from '../components/form/formik/validators/validateYupPassword';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -41,45 +40,37 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
-  openCreateUserDialog: boolean;
   oncloseDialog: () => void;
-  onSubmit: () => void;
 }
 
-const CreateUserFormDialog: FC<Props> = ({
-  openCreateUserDialog,
-  oncloseDialog,
-  onSubmit,
-}) => {
+const UpdatePasswordDialog: FC<Props> = ({ oncloseDialog }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
-    createUser(values.email)
-      .then(() => auth.sendPasswordResetEmail(values.email))
+    updateUser(values.password)
       .then(() =>
         dispatch(
           notify({
             notificationType: 'success',
             notificationOpen: true,
-            notificationMessage: 'Gebruiker is toegevoegd.',
+            notificationMessage: 'Wachtwoord is gewijzigd.',
           })
         )
       )
       .then(oncloseDialog)
-      .then(onSubmit)
       .catch((error) => {
         logger.errorWithReason(
-          'Create user failed in CreateUserFormDialog.handleSubmitForm',
+          'update user failed for password in UpdatePasswordDialog.handleSubmitForm',
           error
         );
         dispatch(
           notify({
             notificationType: 'error',
             notificationOpen: true,
-            notificationMessage: `Het toevoegen van de gebruiker is mislukt, bestaat de gebruiker mogelijk al?`,
+            notificationMessage: `Het wijzigen van het wachtwoord is mislukt.`,
           })
         );
       });
@@ -87,12 +78,12 @@ const CreateUserFormDialog: FC<Props> = ({
 
   const initialFormState = () => {
     return {
-      email: '',
+      password: '',
     };
   };
 
   const formValidation = Yup.object().shape({
-    email: validateYupUserEmail(),
+    password: validateYupPassword(),
   });
 
   return (
@@ -105,7 +96,7 @@ const CreateUserFormDialog: FC<Props> = ({
       {({ isSubmitting, dirty }) => (
         <Dialog
           fullWidth
-          open={openCreateUserDialog}
+          open
           TransitionComponent={Transition}
           keepMounted
           onClose={() => !isSubmitting && oncloseDialog()}
@@ -113,7 +104,7 @@ const CreateUserFormDialog: FC<Props> = ({
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            Gebruiker toevoegen
+            Wachtwoord wijzigen
           </DialogTitle>
           <Form>
             <DialogContent>
@@ -121,13 +112,7 @@ const CreateUserFormDialog: FC<Props> = ({
                 style={{ whiteSpace: 'pre-line' }}
                 id="description"
               >
-                Via deze optie voeg je een nieuwe gebruiker aan het CMS toe. De
-                nieuwe gebruiker ontvangt per mail een link waar hij zijn
-                wachtwoord kan opgeven, waarmee hij vervolgens kan inloggen in
-                deze omgeving. De link in deze email zal 6 uur geldig zijn, lukt
-                het de nieuwe gebruiker niet om in deze tijd het account te
-                activeren dan kan hij een nieuwe link aanvragen via de login
-                pagina &#39;wachtwoord vergeten &#39;.
+                Geef uw nieuwe wachtwoord op.
               </DialogContentText>
               {isSubmitting && (
                 <AlertBox severity="info" message="Een moment geduld..." />
@@ -136,11 +121,10 @@ const CreateUserFormDialog: FC<Props> = ({
                 showError={showError}
                 className={classes.textFieldStyle}
                 required
-                id="email"
-                label="Emailadres"
-                name="email"
-                autoComplete="email"
-                disabled={isSubmitting}
+                id="password"
+                label="Wachtwoord"
+                name="password"
+                autoFocus
               />
             </DialogContent>
             <DialogActions>
@@ -159,7 +143,7 @@ const CreateUserFormDialog: FC<Props> = ({
                 color="secondary"
                 variant="contained"
               >
-                Toevoegen
+                Wijzigen
               </SubmitButton>
             </DialogActions>
           </Form>
@@ -169,4 +153,4 @@ const CreateUserFormDialog: FC<Props> = ({
   );
 };
 
-export default CreateUserFormDialog;
+export default UpdatePasswordDialog;

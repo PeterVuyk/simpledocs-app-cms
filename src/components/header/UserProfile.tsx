@@ -8,6 +8,7 @@ import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../authentication/AuthProvider';
 import { LOGIN_PAGE, USERS_PAGE } from '../../navigation/UrlSlugs';
+import UpdatePasswordDialog from '../../authentication/UpdatePasswordDialog';
 
 const useStyles = makeStyles(() => ({
   headerItem: {
@@ -16,6 +17,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const UserProfile: FC = () => {
+  const [showUpdatePasswordDialog, setShowUpdatePasswordDialog] =
+    useState<boolean>(false);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const { currentUser, logout } = useAuth();
@@ -69,8 +72,19 @@ const UserProfile: FC = () => {
             <MenuItem onClick={() => history.push(USERS_PAGE)}>
               Gebruikers
             </MenuItem>
+            <MenuItem onClick={() => setShowUpdatePasswordDialog(true)}>
+              Wachtwoord wijzigen
+            </MenuItem>
             <MenuItem onClick={handleLogout}>Uitloggen</MenuItem>
           </Menu>
+          {showUpdatePasswordDialog && (
+            <UpdatePasswordDialog
+              oncloseDialog={() => {
+                setShowUpdatePasswordDialog(false);
+                setAnchorEl(null);
+              }}
+            />
+          )}
         </div>
       )}
     </>
