@@ -3,6 +3,7 @@ import { Tooltip } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { CloudUpload } from '@material-ui/icons';
 import TemplateMenu from './TemplateMenu';
 import logger from '../../../../../helper/logger';
 import {
@@ -12,6 +13,7 @@ import {
 import { Artifact, ContentType } from '../../../../../model/artifacts/Artifact';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import SnippetsDialogButton from './SnippetsDialogButton';
+import ImageUploadDialog from './uploadImage/ImageUploadDialog';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,6 +31,8 @@ interface Props {
 const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
+  const [showImageUploadDialog, setShowImageUploadDialog] =
+    useState<boolean>(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -53,6 +57,22 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
 
   return (
     <>
+      <Tooltip title="Afbeelding uploaden">
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={() => setShowImageUploadDialog(true)}
+        >
+          {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
+          <CloudUpload />
+        </Button>
+      </Tooltip>
+      {showImageUploadDialog && (
+        <ImageUploadDialog
+          contentType={contentType}
+          onCloseDialog={() => setShowImageUploadDialog(false)}
+        />
+      )}
       {artifacts && (
         <SnippetsDialogButton
           artifacts={artifacts.filter(

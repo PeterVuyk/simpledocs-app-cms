@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';

@@ -10,6 +10,8 @@ interface Props {
   allowedMimeTypes: string[];
   dropzoneText: string;
   initialFile: string | null;
+  uploadCallback?: (file: File) => void;
+  disabled?: boolean;
   [x: string]: any;
 }
 
@@ -20,6 +22,8 @@ const FileDropzoneArea: FC<Props> = ({
   allowedMimeTypes,
   dropzoneText,
   initialFile,
+  disabled,
+  uploadCallback,
 }) => {
   const [field, meta] = useField(name);
 
@@ -51,6 +55,9 @@ const FileDropzoneArea: FC<Props> = ({
     reader.onloadend = () => {
       const base64data = reader.result;
       formik.current?.setFieldValue(name, base64data);
+      if (uploadCallback !== undefined) {
+        uploadCallback(files[0]);
+      }
     };
   };
 
@@ -74,6 +81,8 @@ const FileDropzoneArea: FC<Props> = ({
     <div style={{ position: 'relative' }}>
       <ErrorTextTypography>{configDropzoneArea.helperText}</ErrorTextTypography>
       <DropzoneArea
+        dropzoneProps={{ disabled }}
+        showPreviewsInDropzone={!disabled}
         {...configDropzoneArea}
         dropzoneText={dropzoneText}
         acceptedFiles={allowedMimeTypes}

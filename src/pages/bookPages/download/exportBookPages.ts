@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import FileSaver from 'file-saver';
+import FileSaver, { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Page } from '../../../model/Page';
