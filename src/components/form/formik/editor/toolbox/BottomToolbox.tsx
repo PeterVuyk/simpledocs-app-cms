@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { CloudUpload } from '@material-ui/icons';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import TemplateMenu from './TemplateMenu';
 import logger from '../../../../../helper/logger';
 import {
@@ -14,6 +15,7 @@ import { Artifact, ContentType } from '../../../../../model/artifacts/Artifact';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import SnippetsDialogButton from './SnippetsDialogButton';
 import ImageUploadDialog from './uploadImage/ImageUploadDialog';
+import ImageLibraryDialog from './imageLibrary/ImageLibraryDialog';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -32,6 +34,8 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   const [artifacts, setArtifacts] = useState<Artifact[] | null>(null);
   const [templateMenu, setTemplateMenu] = useState<null | HTMLElement>(null);
   const [showImageUploadDialog, setShowImageUploadDialog] =
+    useState<boolean>(false);
+  const [showImageLibraryDialog, setShowImageLibraryDialog] =
     useState<boolean>(false);
   const classes = useStyles();
 
@@ -57,16 +61,29 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
 
   return (
     <>
-      <Tooltip title="Afbeelding uploaden">
+      <Tooltip title="Afbeeldingen bibliotheek">
         <Button
           className={classes.button}
           variant="contained"
-          onClick={() => setShowImageUploadDialog(true)}
+          onClick={() => setShowImageLibraryDialog(true)}
         >
-          {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
-          <CloudUpload />
+          <PhotoLibraryIcon />
         </Button>
       </Tooltip>
+      {showImageLibraryDialog && (
+        <ImageLibraryDialog
+          onCloseDialog={() => setShowImageLibraryDialog(false)}
+          contentType={contentType}
+        />
+      )}
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={() => setShowImageUploadDialog(true)}
+      >
+        {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
+        <CloudUpload />
+      </Button>
       {showImageUploadDialog && (
         <ImageUploadDialog
           contentType={contentType}

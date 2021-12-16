@@ -1,0 +1,115 @@
+import React, { FC, forwardRef, ReactElement, Ref, useState } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+} from '@material-ui/core';
+// eslint-disable-next-line import/no-unresolved
+import { TransitionProps } from '@material-ui/core/transitions';
+import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
+import AlertBox from '../../../../../AlertBox';
+import deleteImageFromCategory from '../../../../../../firebase/storage/deleteImageFromCategory';
+import { notify } from '../../../../../../redux/slice/notificationSlice';
+import logger from '../../../../../../helper/logger';
+import { useAppDispatch } from '../../../../../../redux/hooks';
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & { children?: ReactElement },
+  ref: Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+interface Props {
+  onCloseDialog: () => void;
+  imageInfo: ImageInfo;
+  handleLoadImages: () => void;
+}
+
+const DeleteImageDialog: FC<Props> = ({
+  handleLoadImages,
+  onCloseDialog,
+  imageInfo,
+}) => {
+  const [isRemoving, setRemoving] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const handleDelete = () => {
+    setRemoving(true);
+    deleteImageFromCategory(imageInfo)
+      .then(onCloseDialog)
+      .then(handleLoadImages)
+      .then(() =>
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De afbeelding is verwijderd.',
+          })
+        )
+      )
+      .catch((error) => {
+        logger.errorWithReason(
+          'Failed removing image in DeleteImageDialog.handleDelete',
+          error
+        );
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het verwijderen van de afbeelding is mislukt.`,
+          })
+        );
+        setRemoving(false);
+      });
+  };
+
+  return (
+    <Dialog
+      fullWidth
+      open
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={() => !isRemoving && onCloseDialog()}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle id="alert-dialog-slide-title">
+        Afbeelding verwijderen
+      </DialogTitle>
+      <DialogContent>
+        {isRemoving && (
+          <AlertBox severity="info" message="Een moment geduld..." />
+        )}
+        <DialogContentText style={{ whiteSpace: 'pre-line' }} id="description">
+          Weet je zeker dat je de afbeelding {imageInfo.filename} wilt
+          verwijderen?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={onCloseDialog}
+          color="primary"
+          variant="contained"
+          disabled={isRemoving}
+        >
+          Annuleren
+        </Button>
+        <Button
+          onClick={handleDelete}
+          color="secondary"
+          variant="contained"
+          disabled={isRemoving}
+        >
+          Verwijderen
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default DeleteImageDialog;

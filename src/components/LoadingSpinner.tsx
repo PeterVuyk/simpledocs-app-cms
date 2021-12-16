@@ -6,7 +6,7 @@ const useStyles = makeStyles({
   center: {
     position: 'absolute',
     left: '50%',
-    top: 300,
+    top: 250,
   },
   relativeContainer: {
     position: 'relative',

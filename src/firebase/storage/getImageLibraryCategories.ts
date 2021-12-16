@@ -5,9 +5,9 @@ import { storage } from '../firebaseConnection';
 const listRef = ref(storage, 'image-library/');
 
 const getImageLibraryCategories = async (): Promise<string[]> => {
-  return listAll(listRef).then((res) =>
-    res.prefixes.map((folderRef) => folderRef.name)
-  );
+  return listAll(listRef)
+    .then((res) => res.prefixes.map((folderRef) => folderRef.name))
+    .then((result) => result.sort((a, b) => a.localeCompare(b)));
 };
 
 export default getImageLibraryCategories;

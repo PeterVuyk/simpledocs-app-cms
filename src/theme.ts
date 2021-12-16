@@ -14,7 +14,7 @@ const cmsTheme = createTheme({
     },
   },
   zIndex: {
-    drawer: 1000,
+    drawer: 1100,
   },
   typography: {
     h5: {

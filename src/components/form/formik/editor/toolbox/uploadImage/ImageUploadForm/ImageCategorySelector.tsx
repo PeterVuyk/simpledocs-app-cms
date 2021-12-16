@@ -8,7 +8,6 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ImageLibraryCategory } from '../../../../../../../model/imageLibrary/ImageLibraryCategory';
 import getImageLibraryCategories from '../../../../../../../firebase/storage/getImageLibraryCategories';
 import logger from '../../../../../../../helper/logger';
-import getImageDownloadUrl from '../../../../../../../firebase/storage/fileInImageLibraryExists';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

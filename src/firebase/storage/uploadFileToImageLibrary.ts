@@ -11,7 +11,7 @@ const storageRef = (imageInfo: ImageInfo) =>
   );
 
 const uploadFileToImageLibrary = (imageInfo: ImageInfo): Promise<string> => {
-  return uploadString(storageRef(imageInfo), imageInfo.image, 'data_url').then(
+  return uploadString(storageRef(imageInfo), imageInfo.image!, 'data_url').then(
     (snapshot) => snapshot.ref.fullPath
   );
 };

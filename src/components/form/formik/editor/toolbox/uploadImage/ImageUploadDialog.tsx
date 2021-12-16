@@ -8,9 +8,18 @@ import React, {
 } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikValues } from 'formik';
-import { Dialog, DialogTitle, Slide } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+} from '@material-ui/core';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
+import Highlight from 'react-highlight';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
@@ -22,6 +31,7 @@ import validateYupFilesCategory from '../../../validators/validateYupFilesCatego
 import uploadFileToImageLibrary from '../../../../../../firebase/storage/uploadFileToImageLibrary';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getDownloadUrlFromFilePath from '../../../../../../firebase/storage/getDownloadUrlFromFilePath';
+import utilHelper from '../../../../../../helper/utilHelper';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
@@ -44,7 +54,7 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
     uploadFileToImageLibrary(values as ImageInfo)
       .then(getDownloadUrlFromFilePath)
       .then((link) =>
-        setSubmitted({ ...values, downloadLink: link } as ImageInfo)
+        setSubmitted({ ...values, downloadUrl: link } as ImageInfo)
       )
       .then(() =>
         dispatch(
@@ -107,7 +117,7 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            Afbeelding uploaden isSubmitting
+            Afbeelding uploaden
           </DialogTitle>
           {!submitted && (
             <ImageUploadForm

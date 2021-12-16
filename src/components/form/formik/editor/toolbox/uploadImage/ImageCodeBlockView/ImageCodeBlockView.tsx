@@ -37,10 +37,10 @@ const ImageCodeBlockView: FC<Props> = ({
 
   const getImageHtmlCode = () => {
     if (contentType === CONTENT_TYPE_MARKDOWN) {
-      return pretty(`![${getImageAlt()}](${imageInfo.downloadLink})`);
+      return pretty(`![${getImageAlt()}](${imageInfo.downloadUrl})`);
     }
     return pretty(
-      `<img src="${imageInfo.downloadLink}" alt="${getImageAlt()}">`
+      `<img src="${imageInfo.downloadUrl}" alt="${getImageAlt()}">`
     );
   };
 
@@ -48,8 +48,7 @@ const ImageCodeBlockView: FC<Props> = ({
     <>
       <DialogContent>
         <DialogContentText style={{ whiteSpace: 'pre-line' }} id="description">
-          Gebruik deze snippet om naar de afbeelding te refereren die je zojuist
-          hebt geupload.
+          Gebruik deze snippet om naar de afbeelding te refereren.
         </DialogContentText>
         <Highlight className="markdown">{getImageHtmlCode()}</Highlight>
       </DialogContent>
