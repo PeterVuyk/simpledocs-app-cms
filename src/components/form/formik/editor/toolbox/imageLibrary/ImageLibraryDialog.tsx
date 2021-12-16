@@ -13,6 +13,11 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CategoryList from './CategoryList';
 import ImageViewer from './ImageViewer';
 import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import {
+  DOCUMENTATION_IMAGE_LIBRARY,
+  DOCUMENTATION_STYLEGUIDE,
+} from '../../../../../../model/DocumentationType';
+import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
@@ -51,7 +56,8 @@ const ImageLibraryDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
-        Afbeeldingen bibliotheek
+        Afbeeldingen bibliotheek&ensp;
+        <HelpAction documentationType={DOCUMENTATION_IMAGE_LIBRARY} />
       </DialogTitle>
       <DialogContent>
         <div className={classes.container}>

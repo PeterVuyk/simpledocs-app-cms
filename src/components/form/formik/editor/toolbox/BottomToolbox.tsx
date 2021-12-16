@@ -76,14 +76,16 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
           contentType={contentType}
         />
       )}
-      <Button
-        className={classes.button}
-        variant="contained"
-        onClick={() => setShowImageUploadDialog(true)}
-      >
-        {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
-        <CloudUpload />
-      </Button>
+      <Tooltip title="Afbeelding uploaden">
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={() => setShowImageUploadDialog(true)}
+        >
+          {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
+          <CloudUpload />
+        </Button>
+      </Tooltip>
       {showImageUploadDialog && (
         <ImageUploadDialog
           contentType={contentType}

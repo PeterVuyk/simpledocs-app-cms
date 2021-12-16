@@ -32,6 +32,8 @@ import uploadFileToImageLibrary from '../../../../../../firebase/storage/uploadF
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getDownloadUrlFromFilePath from '../../../../../../firebase/storage/getDownloadUrlFromFilePath';
 import utilHelper from '../../../../../../helper/utilHelper';
+import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
+import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
@@ -117,7 +119,8 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            Afbeelding uploaden
+            Afbeelding uploaden&ensp;
+            <HelpAction documentationType={DOCUMENTATION_IMAGE_LIBRARY} />
           </DialogTitle>
           {!submitted && (
             <ImageUploadForm

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import defaultTemplate from './docs/default-template.md';
 import appConfigurations from './docs/app-configurations.md';
+import imageLibrary from './docs/image-library.md';
 import cmsConfigurations from './docs/cms-configurations.md';
 import contentTypes from './docs/content-types.md';
 import decisionTree from './docs/decision-tree.md';
@@ -15,6 +16,7 @@ import {
   DOCUMENTATION_DECISION_TREE,
   DOCUMENTATION_DEFAULT_TEMPLATE,
   DOCUMENTATION_ID_LINK_BOOK_PAGE,
+  DOCUMENTATION_IMAGE_LIBRARY,
   DOCUMENTATION_PUBLICATIONS,
   DOCUMENTATION_STYLEGUIDE,
   DOCUMENTATION_TRANSFORM_BASE64,
@@ -29,6 +31,10 @@ function useDocumentation(documentationType: DocumentationType) {
   const getMarkdownFile = useCallback(() => {
     // eslint-disable-next-line default-case
     switch (documentationType) {
+      case DOCUMENTATION_IMAGE_LIBRARY:
+        setTooltip('Info afbeeldingen bibliotheek');
+        setTitle('Info afbeeldingen bibliotheek');
+        return imageLibrary;
       case DOCUMENTATION_APP_CONFIGURATIONS:
         setTooltip('Info configuratie app');
         setTitle('Info configuratie app');
