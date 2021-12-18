@@ -8,6 +8,7 @@ const config = {
   iframe: true,
   askBeforePasteHTML: false,
   askBeforePasteFromWord: false,
+  extraButtons: ['source'],
 };
 
 // @ts-ignore
@@ -17,7 +18,6 @@ const JoditEditorWrapper = ({ content, onChange }) => {
   const debounce = (func: (file: string) => void, ms: number) => {
     let timeout: any;
     return (file: string) => {
-      // handleEditorOnChange(file);
       clearTimeout(timeout);
       // @ts-ignore
       timeout = setTimeout(() => func(file), ms);

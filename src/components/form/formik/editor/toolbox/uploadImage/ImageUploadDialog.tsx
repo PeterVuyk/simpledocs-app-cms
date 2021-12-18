@@ -8,18 +8,9 @@ import React, {
 } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikValues } from 'formik';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Slide,
-} from '@material-ui/core';
+import { Dialog, DialogTitle, Slide } from '@material-ui/core';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import Highlight from 'react-highlight';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
@@ -31,7 +22,6 @@ import validateYupFilesCategory from '../../../validators/validateYupFilesCatego
 import uploadFileToImageLibrary from '../../../../../../firebase/storage/uploadFileToImageLibrary';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getDownloadUrlFromFilePath from '../../../../../../firebase/storage/getDownloadUrlFromFilePath';
-import utilHelper from '../../../../../../helper/utilHelper';
 import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
 import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
 

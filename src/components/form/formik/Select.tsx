@@ -23,10 +23,12 @@ const SelectWrapper: FC<Props> = ({
     setFieldValue(name, value);
   };
 
+  const hasOptions = () => Object.keys(options).length !== 0;
+
   const configSelect: OutlinedTextFieldProps = {
     ...field,
     ...otherProps,
-    select: true,
+    select: hasOptions(),
     variant: 'outlined',
     fullWidth: true,
     onChange: handleChange,
@@ -38,15 +40,16 @@ const SelectWrapper: FC<Props> = ({
   }
 
   return (
-    <TextField {...configSelect}>
-      {Object.keys(options).map((item, pos) => {
-        return (
-          // eslint-disable-next-line react/no-array-index-key
-          <MenuItem key={pos} value={item}>
-            {options[item]}
-          </MenuItem>
-        );
-      })}
+    <TextField {...configSelect} disabled={!hasOptions()}>
+      {hasOptions() &&
+        Object.keys(options).map((item, pos) => {
+          return (
+            // eslint-disable-next-line react/no-array-index-key
+            <MenuItem key={pos} value={item}>
+              {options[item]}
+            </MenuItem>
+          );
+        })}
     </TextField>
   );
 };

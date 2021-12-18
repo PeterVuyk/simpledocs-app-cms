@@ -5,6 +5,7 @@ import StyleIcon from '@material-ui/icons/Style';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { CloudUpload } from '@material-ui/icons';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import LinkIcon from '@material-ui/icons/Link';
 import TemplateMenu from './TemplateMenu';
 import logger from '../../../../../helper/logger';
 import {
@@ -16,6 +17,7 @@ import artifactsRepository from '../../../../../firebase/database/artifactsRepos
 import SnippetsDialogButton from './SnippetsDialogButton';
 import ImageUploadDialog from './uploadImage/ImageUploadDialog';
 import ImageLibraryDialog from './imageLibrary/ImageLibraryDialog';
+import CreateLinkPageDialog from './CreateLinkPage/CreateLinkPageDialog';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -36,6 +38,8 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   const [showImageUploadDialog, setShowImageUploadDialog] =
     useState<boolean>(false);
   const [showImageLibraryDialog, setShowImageLibraryDialog] =
+    useState<boolean>(false);
+  const [showCreateLinkDialog, setShowCreateLinkDialog] =
     useState<boolean>(false);
   const classes = useStyles();
 
@@ -61,6 +65,21 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
 
   return (
     <>
+      <Tooltip title="Aanmaken link pagina">
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={() => setShowCreateLinkDialog(true)}
+        >
+          <LinkIcon />
+        </Button>
+      </Tooltip>
+      {showCreateLinkDialog && (
+        <CreateLinkPageDialog
+          onCloseDialog={() => setShowCreateLinkDialog(false)}
+          contentType={contentType}
+        />
+      )}
       <Tooltip title="Afbeeldingen bibliotheek">
         <Button
           className={classes.button}
