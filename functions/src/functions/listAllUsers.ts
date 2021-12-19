@@ -9,7 +9,7 @@ export const listAllUsers = functions
       if (context.auth?.token.email === undefined) {
         return {success: false, message: 'unauthorized to call this function', result: null};
       }
-      return await getUsers();
+      return getUsers();
     });
 
 const getUsers = () => {
