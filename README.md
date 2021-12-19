@@ -14,6 +14,8 @@ Go to the functions directory, then make sure you copy the secrets to a json fil
     cd functions && firebase functions:config:get -P development > .runtimeconfig.json
     cd functions && firebase functions:config:get -P academie-voor-ambulancezorg > .runtimeconfig.json
 
+Then set the environment variable `USE_LOCAL_FUNCTIONS` to `true` in `.env.development`.
+
 Then start the emulator:
 
     firebase emulators:start --only functions -P development
