@@ -13,12 +13,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { Icon } from '@material-ui/core';
-import {
-  MenuItem,
-  MenuLinkConfig,
-} from '../model/configurations/CmsConfigurations';
+import { MenuItem } from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 
 const styles = (theme: Theme) =>
@@ -131,33 +127,6 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
       ));
   };
 
-  const getLinkListItem = (menuConfig: MenuLinkConfig) => {
-    return menuConfig.listItems
-      .sort((a, b) => a.navigationIndex - b.navigationIndex)
-      .map(({ id: childId, url, icon }) => (
-        <ListItem
-          key={childId}
-          button
-          onClick={() => window.open(url, '_blank')}
-          className={clsx(classes.item)}
-        >
-          <ListItemIcon className={classes.itemIcon}>
-            <Icon>{icon}</Icon>
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-            }}
-          >
-            {childId}
-          </ListItemText>
-          <ListItemIcon className={classes.itemIcon}>
-            <OpenInNewIcon />
-          </ListItemIcon>
-        </ListItem>
-      ));
-  };
-
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -166,7 +135,7 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
           // @ts-ignore
           onClick={props.onClose}
         >
-          {configuration.cms.title}
+          CMS APP
         </ListItem>
         {getCategoryItem(
           configuration.books.title,
@@ -181,10 +150,6 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
             configuration.menu.title,
             Object.values(configuration.menu.menuItems)
           )
-        )}
-        {getCategoryItem(
-          configuration.externalLinks.title,
-          getLinkListItem(configuration.externalLinks)
         )}
       </List>
     </Drawer>

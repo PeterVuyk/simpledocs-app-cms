@@ -73,7 +73,11 @@ const Login: FC = () => {
       <CssBaseline />
       <div className={classes.paper}>
         <div className={classes.logoContainer}>
-          <img src={configuration.cms.logoUrl} style={{ maxWidth: '700px' }} />
+          <img
+            style={{ maxWidth: '700px' }}
+            src="/simpledocs-logo.png"
+            alt="SimpleDocs"
+          />
         </div>
         <Container component="main" maxWidth="xs">
           {error && <AlertBox severity="error" message={error} />}

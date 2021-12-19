@@ -77,47 +77,6 @@ const validateMenu = (cmsConfiguration: any, errorMessages: string[]) => {
   return errorMessages;
 };
 
-const validateExternalLinks = (
-  cmsConfiguration: any,
-  errorMessages: string[]
-) => {
-  if (
-    !('externalLinks' in cmsConfiguration) ||
-    cmsConfiguration.externalLinks.length !== 0
-  ) {
-    return errorMessages;
-  }
-  if (!('title' in cmsConfiguration.externalLinks)) {
-    errorMessages.push(`- 'externalLinks.title' ontbreekt.`);
-  }
-  for (const externalLinks of Object.keys(cmsConfiguration.externalLinks)) {
-    const link = cmsConfiguration.externalLinks.listItems[externalLinks];
-    if (!('navigationIndex' in link)) {
-      errorMessages.push(
-        `- 'menu.menuItems.${link}.navigationIndex' ontbreekt.`
-      );
-    }
-    if (!('id' in link)) {
-      errorMessages.push(`- 'externalLinks.listItems.${link}.id' ontbreekt.`);
-    }
-    if (!('url' in link)) {
-      errorMessages.push(`- 'externalLinks.listItems.${link}.url' ontbreekt.`);
-    }
-    if (!('icon' in link)) {
-      errorMessages.push(`- 'externalLinks.listItems.${link}.icon' ontbreekt.`);
-    }
-  }
-  return errorMessages;
-};
-
-const validateCms = (cmsConfiguration: any, errorMessages: string[]) => {
-  if (!('cms' in cmsConfiguration)) {
-    errorMessages.push(`- 'menu' ontbreekt.`);
-    return errorMessages;
-  }
-  return errorMessages;
-};
-
 const createValidationErrorMessage = (errorMessages: string[]): string => {
   return `De aangepaste configuratie is gevalideerd, hierbij zijn de volgende fouten gevonden:\n${errorMessages.join(
     '\n'
@@ -131,8 +90,6 @@ const validate = (cmsConfiguration: any) => {
   let errorMessages: string[] = [];
   errorMessages = validateBooks(cmsConfiguration, errorMessages);
   errorMessages = validateMenu(cmsConfiguration, errorMessages);
-  errorMessages = validateExternalLinks(cmsConfiguration, errorMessages);
-  errorMessages = validateCms(cmsConfiguration, errorMessages);
 
   return errorMessages.length === 0
     ? ''
