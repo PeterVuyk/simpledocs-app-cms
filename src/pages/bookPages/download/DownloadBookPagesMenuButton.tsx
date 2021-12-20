@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Tooltip } from '@material-ui/core';
 import { EditStatus } from '../../../model/EditStatus';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import exportBookPages from './exportBookPages';
 
 const useStyles = makeStyles({
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
 interface Props {
   editStatus: EditStatus;
-  pages: Page[];
+  pages: PageInfo[];
   bookType: string;
 }
 

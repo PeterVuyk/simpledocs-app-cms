@@ -7,7 +7,7 @@ import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';
 import BookPagesList from './BookPagesList';
 import { EDIT_STATUS_DRAFT } from '../../../model/EditStatus';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import DownloadBookPagesMenuButton from '../download/DownloadBookPagesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -32,7 +32,7 @@ interface Props {
 }
 
 const BookPages: FC<Props> = ({ title, bookType }) => {
-  const [pages, setPages] = useState<Page[] | null>(null);
+  const [pages, setPages] = useState<PageInfo[] | null>(null);
   const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const history = useHistory();

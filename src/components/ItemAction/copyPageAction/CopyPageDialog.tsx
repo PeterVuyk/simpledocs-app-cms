@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button';
 import { DialogContent } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import TextField from '../../form/formik/TextField';
 import validatePageIndex from '../../form/formik/validators/validatePageIndex';
 import validateBookChapter from '../../form/formik/validators/validateBookChapter';
@@ -39,7 +39,7 @@ const Transition = forwardRef(function Transition(
 
 interface Props {
   bookType: string;
-  page: Page;
+  page: PageInfo;
   onClose: () => void;
 }
 

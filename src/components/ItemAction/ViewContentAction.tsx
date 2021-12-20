@@ -7,10 +7,9 @@ import { ContentType } from '../../model/artifacts/Artifact';
 interface Props {
   content: string;
   contentType: ContentType;
-  iconStyle?: React.CSSProperties;
 }
 
-const ViewContentAction: FC<Props> = ({ content, contentType, iconStyle }) => {
+const ViewContentAction: FC<Props> = ({ content, contentType }) => {
   const [showPreview, setShowPreview] = useState<boolean>(false);
 
   return (
@@ -18,7 +17,7 @@ const ViewContentAction: FC<Props> = ({ content, contentType, iconStyle }) => {
       <Tooltip title="Preview pagina">
         <FindInPageTwoToneIcon
           color="primary"
-          style={{ cursor: 'pointer', ...iconStyle }}
+          style={{ cursor: 'pointer' }}
           onClick={() => setShowPreview(true)}
         />
       </Tooltip>

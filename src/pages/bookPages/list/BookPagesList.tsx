@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import BookPageListItem from './BookPageListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import { DOCUMENTATION_ID_LINK_BOOK_PAGE } from '../../../model/DocumentationType';
 import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  pages?: Page[] | null;
+  pages?: PageInfo[] | null;
   onLoadPages: () => void;
   editStatus: EditStatus;
   bookType: string;

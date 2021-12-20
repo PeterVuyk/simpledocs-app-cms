@@ -11,22 +11,13 @@ function getBodyFromBase64(
 ): string {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
-      return Buffer.from(
-        base64Blob.split('data:text/html;base64,')[1],
-        'base64'
-      ).toString('utf-8');
+      return atob(base64Blob.split('data:text/html;base64,')[1]);
     case CONTENT_TYPE_CSS:
-      return Buffer.from(
-        base64Blob.split('data:text/css;base64,')[1],
-        'base64'
-      ).toString('utf-8');
+      return atob(base64Blob.split('data:text/css;base64,')[1]);
     case CONTENT_TYPE_MARKDOWN:
-      return Buffer.from(
-        base64Blob.split('data:text/markdown;base64,')[1],
-        'base64'
-      ).toString('utf-8');
+      return atob(base64Blob.split('data:text/markdown;base64,')[1]);
     default:
-      return base64Blob;
+      return atob(base64Blob);
   }
 }
 
@@ -34,13 +25,13 @@ function getBase64FromFile(file: string, contentType: ContentType): string {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
       return `data:text/html;base64,${btoa(
-        unescape(encodeURIComponent(file))
+        decodeURIComponent(encodeURIComponent(file))
       )}`;
     case CONTENT_TYPE_CSS:
       return `data:text/css;base64,${btoa(unescape(encodeURIComponent(file)))}`;
     case CONTENT_TYPE_MARKDOWN:
       return `data:text/markdown;base64,${btoa(
-        unescape(encodeURIComponent(file))
+        decodeURIComponent(encodeURIComponent(file))
       )}`;
     default:
       return file;

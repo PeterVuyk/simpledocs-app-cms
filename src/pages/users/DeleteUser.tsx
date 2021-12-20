@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import DeleteItemAction from '../../components/ItemAction/DeleteItemAction';
 import { UserInfo } from '../../model/users/UserInfo';
 import deleteUser from '../../firebase/functions/deleteUser';

@@ -5,7 +5,7 @@ The CMS is build in React and uses the Firestore database from Firebase.
 
 ## Local development & deployment
 
-Make sure you are using node 12, we recommend you to use node version manager (nvm).
+Make sure you are using node 14, we recommend you to use node version manager (nvm).
 
 ### Functions
 
@@ -14,7 +14,7 @@ Go to the functions directory, then make sure you copy the secrets to a json fil
     cd functions && firebase functions:config:get -P development > .runtimeconfig.json
     cd functions && firebase functions:config:get -P academie-voor-ambulancezorg > .runtimeconfig.json
 
-Then set the environment variable `USE_LOCAL_FUNCTIONS` to `true` in `.env.development`.
+Then set the environment variable `REACT_APP_USE_LOCAL_FUNCTIONS` to `true` in `.env.development`.
 
 Then start the emulator:
 

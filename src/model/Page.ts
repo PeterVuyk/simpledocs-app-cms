@@ -14,3 +14,7 @@ export interface Page {
   isDraft: boolean;
   markedForDeletion?: boolean;
 }
+
+export interface PageInfo extends Page {
+  isNewCreatedPage: boolean;
+}

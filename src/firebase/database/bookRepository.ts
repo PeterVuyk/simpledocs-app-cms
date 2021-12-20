@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import { database } from '../firebaseConnection';
-import { Page } from '../../model/Page';
+import { Page, PageInfo } from '../../model/Page';
 
 function createDatabaseId() {
   return database.collection('books').doc().id;
@@ -78,7 +78,7 @@ async function getAllPages(bookType: string): Promise<Page[]> {
 async function getPages(
   bookType: string,
   draftPages: boolean
-): Promise<Page[]> {
+): Promise<PageInfo[]> {
   const querySnapshot = await database
     .collection('books')
     .doc(bookType)
@@ -88,10 +88,22 @@ async function getPages(
   const pages = querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() } as Page;
   });
+  const pagesInfo = pages.map((page) => {
+    const hasRelatedPage = () => {
+      const id = page.isDraft
+        ? page.id!.replace('-draft', '')
+        : `${page.id}-draft`;
+      return pages.find((value) => value.id === id);
+    };
+    return {
+      ...page,
+      isNewCreatedPage: page.isDraft && !hasRelatedPage(),
+    } as PageInfo;
+  });
   if (draftPages) {
-    return pages.filter((page) => page.isDraft || page.markedForDeletion);
+    return pagesInfo.filter((page) => page.isDraft || page.markedForDeletion);
   }
-  return pages.filter((page) => !page.isDraft);
+  return pagesInfo.filter((page) => !page.isDraft);
 }
 
 async function getPageById(bookType: string, id: string): Promise<Page | null> {

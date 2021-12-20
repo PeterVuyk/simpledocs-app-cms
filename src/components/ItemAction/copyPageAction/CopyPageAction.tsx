@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import { Tooltip } from '@material-ui/core';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import CopyPageDialog from './CopyPageDialog';
 
 interface Props {
-  page: Page;
+  page: PageInfo;
   bookType: string;
 }
 

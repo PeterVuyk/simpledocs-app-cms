@@ -20,7 +20,7 @@ const firebaseConnection = firebase.initializeApp(firebaseConfig);
 // Below works, but due to a bug it could break by a future update of firebase. In that case read: https://github.com/firebase/firebase-tools/issues/3519#issuecomment-865173539
 if (
   process.env.NODE_ENV === 'development' &&
-  process.env.USE_LOCAL_FUNCTIONS === 'true'
+  process.env.REACT_APP_USE_LOCAL_FUNCTIONS === 'true'
 ) {
   firebase.app().functions('europe-west3').useEmulator('localhost', 5001);
 }

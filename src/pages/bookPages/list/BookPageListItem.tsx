@@ -6,7 +6,7 @@ import { Tooltip } from '@material-ui/core';
 import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
-import { Page } from '../../../model/Page';
+import { PageInfo } from '../../../model/Page';
 import DownloadContentAction from '../../../components/ItemAction/DownloadContentAction';
 import ViewContentAction from '../../../components/ItemAction/ViewContentAction';
 import DeleteItemAction from '../../../components/ItemAction/DeleteItemAction';
@@ -14,10 +14,12 @@ import EditItemAction from '../../../components/ItemAction/EditItemAction';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
 import CopyPageAction from '../../../components/ItemAction/copyPageAction/CopyPageAction';
+import DiffPageAction from '../../../components/ItemAction/DiffPageAction/DiffPageAction';
+import ChapterDivisions from '../../../model/ChapterDivisions';
 
 const useStyles = makeStyles({
   icon: {
-    width: 35,
+    width: 45,
   },
   toolBox: {
     width: 230,
@@ -25,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  page: Page;
+  page: PageInfo;
   onLoadPages: () => void;
   editStatus: EditStatus;
   bookType: string;
@@ -45,16 +47,9 @@ const BookPageListItem: FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const getChapterDivision = (chapterDivision: string): string => {
-    const chapterDivisions = {
-      chapter: 'Hoofdstuk',
-      section: 'Paragraaf',
-      subSection: 'Subparagraaf',
-      subSubSection: 'Sub-subparagraaf',
-      subHead: 'Tussenkop',
-    };
-    return chapterDivision in chapterDivisions
+    return chapterDivision in ChapterDivisions
       ? // @ts-ignore
-        chapterDivisions[chapterDivision]
+        ChapterDivisions[chapterDivision]
       : '';
   };
 
@@ -163,6 +158,9 @@ const BookPageListItem: FC<Props> = ({
       <TableCell>{page.contentType}</TableCell>
       <TableCell>{page.id?.replaceAll('-draft', '') ?? ''}</TableCell>
       <TableCell align="right" className={classes.toolBox}>
+        {!page.isNewCreatedPage && page.isDraft && (
+          <DiffPageAction bookType={bookType} pageId={page.id!} />
+        )}
         {!page.markedForDeletion && <EditItemAction urlSlug={getEditUrl()} />}
         <CopyPageAction bookType={bookType} page={page} />
         <DownloadContentAction
