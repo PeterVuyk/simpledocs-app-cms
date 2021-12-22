@@ -5,34 +5,50 @@ import {
   ContentType,
 } from '../model/artifacts/Artifact';
 
+const b64EncodeUnicode = (str: string) => {
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+      return String.fromCharCode(parseInt(p1, 16));
+    })
+  );
+};
+
+const b64DecodeUnicode = (str: string) => {
+  return decodeURIComponent(
+    Array.prototype.map
+      .call(atob(str), (c) => {
+        return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
+      })
+      .join('')
+  );
+};
+
 function getBodyFromBase64(
   base64Blob: string,
   contentType: ContentType
 ): string {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
-      return atob(base64Blob.split('data:text/html;base64,')[1]);
+      return b64DecodeUnicode(base64Blob.split('data:text/html;base64,')[1]);
     case CONTENT_TYPE_CSS:
-      return atob(base64Blob.split('data:text/css;base64,')[1]);
+      return b64DecodeUnicode(base64Blob.split('data:text/css;base64,')[1]);
     case CONTENT_TYPE_MARKDOWN:
-      return atob(base64Blob.split('data:text/markdown;base64,')[1]);
+      return b64DecodeUnicode(
+        base64Blob.split('data:text/markdown;base64,')[1]
+      );
     default:
-      return atob(base64Blob);
+      return b64DecodeUnicode(base64Blob);
   }
 }
 
 function getBase64FromFile(file: string, contentType: ContentType): string {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
-      return `data:text/html;base64,${btoa(
-        unescape(encodeURIComponent(file))
-      )}`;
+      return `data:text/html;base64,${b64EncodeUnicode(file)}`;
     case CONTENT_TYPE_CSS:
-      return `data:text/css;base64,${btoa(unescape(encodeURIComponent(file)))}`;
+      return `data:text/css;base64,${b64EncodeUnicode(file)}`;
     case CONTENT_TYPE_MARKDOWN:
-      return `data:text/markdown;base64,${btoa(
-        unescape(encodeURIComponent(file))
-      )}`;
+      return `data:text/markdown;base64,${b64EncodeUnicode(file)}`;
     default:
       return file;
   }
