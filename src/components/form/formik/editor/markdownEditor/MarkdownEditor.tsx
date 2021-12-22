@@ -91,7 +91,7 @@ const MarkdownEditor: FC<Props> = ({
   );
 
   const handleUpdateFile = (file: string) => {
-    if (file !== 'markdown') {
+    if (file !== 'markdown' && file !== 'wysiwyg') {
       editorRef.current?.editorInst.setMarkdown(file);
       formikProps.setFieldValue('markdownContent', file);
       setContent(file);
@@ -104,9 +104,8 @@ const MarkdownEditor: FC<Props> = ({
   };
 
   const debounce = (func: (file: string) => void, ms: number) => {
-    let timeout: any;
+    let timeout: number;
     return (file: string) => {
-      // handleUpdateFile(file);
       clearTimeout(timeout);
       // @ts-ignore
       timeout = setTimeout(() => func(file), ms);
