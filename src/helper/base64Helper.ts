@@ -25,13 +25,13 @@ function getBase64FromFile(file: string, contentType: ContentType): string {
   switch (contentType) {
     case CONTENT_TYPE_HTML:
       return `data:text/html;base64,${btoa(
-        decodeURIComponent(encodeURIComponent(file))
+        unescape(encodeURIComponent(file))
       )}`;
     case CONTENT_TYPE_CSS:
       return `data:text/css;base64,${btoa(unescape(encodeURIComponent(file)))}`;
     case CONTENT_TYPE_MARKDOWN:
       return `data:text/markdown;base64,${btoa(
-        decodeURIComponent(encodeURIComponent(file))
+        unescape(encodeURIComponent(file))
       )}`;
     default:
       return file;

@@ -50,11 +50,11 @@ function addMetaTags(htmlContent: string): string {
     return htmlContent;
   }
   return `
-    ${html[0]}
+    ${html[0].trim()}
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    ${html[1]}`;
+    ${html[1].trim()}`;
 }
 
 function addHTMLTagsAndBottomSpacingToHtmlContent(htmlContent: string): string {
@@ -76,10 +76,10 @@ function addHTMLTagsAndBottomSpacingToHtmlContent(htmlContent: string): string {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        ${html[0]}</style>
+        ${html[0].trim()}</style>
       </head>
     <body>
-      ${html[1]}
+      ${html[1].trim()}
       ${getBottomSpacing(html[1])}
     </body>
   </html>`;

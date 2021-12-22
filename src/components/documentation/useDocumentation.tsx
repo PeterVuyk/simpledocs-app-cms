@@ -7,6 +7,7 @@ import contentTypes from './docs/content-types.md';
 import decisionTree from './docs/decision-tree.md';
 import publications from './docs/publications.md';
 import styleguide from './docs/styleguide.md';
+import diffChanges from './docs/diff-changes.md';
 import transformBase64 from './docs/transform-base64.md';
 import idLinkBookPage from './docs/id-link-book-page.md';
 import {
@@ -15,6 +16,7 @@ import {
   DOCUMENTATION_CONTENT_TYPES,
   DOCUMENTATION_DECISION_TREE,
   DOCUMENTATION_DEFAULT_TEMPLATE,
+  DOCUMENTATION_DIFF_CHANGES,
   DOCUMENTATION_ID_LINK_BOOK_PAGE,
   DOCUMENTATION_IMAGE_LIBRARY,
   DOCUMENTATION_PUBLICATIONS,
@@ -31,6 +33,10 @@ function useDocumentation(documentationType: DocumentationType) {
   const getMarkdownFile = useCallback(() => {
     // eslint-disable-next-line default-case
     switch (documentationType) {
+      case DOCUMENTATION_DIFF_CHANGES:
+        setTooltip('Info bekijk de wijzigingen');
+        setTitle('Info bekijk de wijzigingen');
+        return diffChanges;
       case DOCUMENTATION_IMAGE_LIBRARY:
         setTooltip('Info afbeeldingen bibliotheek');
         setTitle('Info afbeeldingen bibliotheek');

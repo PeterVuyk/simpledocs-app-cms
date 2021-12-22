@@ -4,12 +4,13 @@ import { useField, useFormikContext } from 'formik';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import CodeIcon from '@material-ui/icons/Code';
 import { Tooltip } from '@material-ui/core';
+import showdown from 'showdown';
 import TextField from './TextField';
 import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../../model/artifacts/Artifact';
-import markdownHelper from '../../../helper/markdownHelper';
+import getTextFromHtml from '../../../firebase/functions/getTextFromHtml';
 
 interface Props {
   contentTypeToggle: ContentType;
@@ -54,28 +55,29 @@ const SearchTextField: FC<Props> = ({ contentTypeToggle, showError }) => {
     formikProps.setFieldValue('searchText', text);
   };
 
-  const importMarkdownContentValue = () => {
-    let markdown = markdownContentField.value as string;
+  const importMarkdownContentValue = (): Promise<void> => {
+    const markdown = markdownContentField.value as string;
     if (markdown === '') {
       formikProps.setFieldValue('searchText', '');
+      return Promise.resolve();
     }
-    markdown = markdownHelper.getTextFromMarkdown(markdown);
-    return removeIndentation(markdown);
+
+    const converter = new showdown.Converter();
+    const html = converter.makeHtml(markdown);
+    return getTextFromHtml(html).then((value) =>
+      formikProps.setFieldValue('searchText', value)
+    );
   };
 
-  const importHtmlContentValue = () => {
-    let html = htmlContentField.value as string;
+  const importHtmlContentValue = (): Promise<void> => {
+    const html = htmlContentField.value as string;
     if (html === '') {
       formikProps.setFieldValue('searchText', '');
-      return;
+      return Promise.resolve();
     }
-    const splitHtml = html.split('</style>');
-    if (splitHtml.length === 2) {
-      // eslint-disable-next-line prefer-destructuring
-      html = splitHtml[1];
-    }
-    const text = html.replace(/<[^>]+>/g, '');
-    removeIndentation(text);
+    return getTextFromHtml(html).then((value) =>
+      formikProps.setFieldValue('searchText', value)
+    );
   };
 
   return (

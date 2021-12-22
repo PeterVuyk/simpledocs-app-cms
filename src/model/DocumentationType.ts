@@ -8,6 +8,7 @@ export const DOCUMENTATION_STYLEGUIDE = 'styleguide';
 export const DOCUMENTATION_TRANSFORM_BASE64 = 'transformBase64';
 export const DOCUMENTATION_ID_LINK_BOOK_PAGE = 'idLinkBookPage';
 export const DOCUMENTATION_IMAGE_LIBRARY = 'imageLibrary';
+export const DOCUMENTATION_DIFF_CHANGES = 'diffChanges';
 
 export type DocumentationType =
   | 'cmsConfigurations'
@@ -19,4 +20,5 @@ export type DocumentationType =
   | 'publications'
   | 'idLinkBookPage'
   | 'imageLibrary'
+  | 'diffChanges'
   | 'styleguide';

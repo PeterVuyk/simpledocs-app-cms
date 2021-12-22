@@ -3,6 +3,9 @@ import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  container: {
+    height: 500,
+  },
   center: {
     position: 'absolute',
     left: '50%',
@@ -16,9 +19,11 @@ const useStyles = makeStyles({
 const LoadingSpinner: FC = () => {
   const classes = useStyles();
   return (
-    <div className={classes.relativeContainer}>
-      <div className={classes.center}>
-        <CircularProgress />
+    <div className={classes.container}>
+      <div className={classes.relativeContainer}>
+        <div className={classes.center}>
+          <CircularProgress />
+        </div>
       </div>
     </div>
   );

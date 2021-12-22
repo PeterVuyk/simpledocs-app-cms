@@ -21,6 +21,8 @@ import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
 import DiffDialogContent from './DiffDialogContent';
 import LoadingSpinner from '../../LoadingSpinner';
+import { DOCUMENTATION_DIFF_CHANGES } from '../../../model/DocumentationType';
+import HelpAction from '../helpAction/HelpAction';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
@@ -71,7 +73,7 @@ const ShowDiffPageDialog: FC<Props> = ({
   return (
     <Dialog
       fullWidth
-      maxWidth="xl"
+      maxWidth="lg"
       open
       TransitionComponent={Transition}
       keepMounted
@@ -80,7 +82,8 @@ const ShowDiffPageDialog: FC<Props> = ({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
-        Bekijk de wijzigingen
+        Bekijk de wijzigingen&ensp;
+        <HelpAction documentationType={DOCUMENTATION_DIFF_CHANGES} />
       </DialogTitle>
       {publishedPage !== null && conceptPage !== null ? (
         <DiffDialogContent
