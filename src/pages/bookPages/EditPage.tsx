@@ -16,6 +16,7 @@ import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { notify } from '../../redux/slice/notificationSlice';
+import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
 
 const EditPage: FC = () => {
   const [page, setPage] = useState<Page | null>();
@@ -35,6 +36,12 @@ const EditPage: FC = () => {
     values: FormikValues,
     contentType: ContentType
   ): Promise<void> => {
+    const content =
+      contentType === CONTENT_TYPE_HTML
+        ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
+            values.htmlContent
+          )
+        : markdownHelper.modifyMarkdownForStorage(values.markdownContent);
     await bookRepository
       .updatePage(getBookTypeFromUrlSlug(aggregatePath), page?.chapter ?? '', {
         id: `${page?.id?.replaceAll('-draft', '')}-draft`,
@@ -43,13 +50,8 @@ const EditPage: FC = () => {
         chapterDivision: values.chapterDivision,
         title: values.title,
         subTitle: values.subTitle,
-        searchText: values.searchText,
-        content:
-          contentType === CONTENT_TYPE_HTML
-            ? htmlContentHelper.addHTMLTagsAndBottomSpacingToHtmlContent(
-                values.htmlContent
-              )
-            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
+        searchText: await getTextFromSourceCode(content, contentType),
+        content,
         contentType,
         iconFile: values.iconFile,
         isDraft: true,

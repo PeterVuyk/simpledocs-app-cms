@@ -7,7 +7,6 @@ import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import { Page } from '../../model/Page';
-import SearchTextField from '../../components/form/formik/SearchTextField';
 import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
@@ -19,7 +18,7 @@ import validateBookChapter from '../../components/form/formik/validators/validat
 import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
 
 interface Props {
-  onSubmit: (values: FormikValues, contentType: ContentType) => void;
+  onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
   page?: Page;
   bookType: string;
 }
@@ -33,7 +32,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
   const { getPageHierarchy } = useAppConfiguration();
 
   const handleSubmitForm = (values: FormikValues) => {
-    onSubmit(values, contentTypeToggle);
+    return onSubmit(values, contentTypeToggle);
   };
 
   const initialFormState = () => {
@@ -61,7 +60,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),
-    searchText: Yup.string().required('Zoektekst is een verplicht veld'),
+    // searchText: Yup.string().required('Zoektekst is een verplicht veld'),
     markdownContent: validateYupMarkdownContent(contentTypeToggle),
     htmlContent: validateYupHtmlContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
@@ -156,12 +155,12 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <SearchTextField
-                  showError={showError}
-                  contentTypeToggle={contentTypeToggle}
-                />
-              </Grid>
+              {/* <Grid item xs={12}> */}
+              {/*  <SearchTextField */}
+              {/*    showError={showError} */}
+              {/*    contentTypeToggle={contentTypeToggle} */}
+              {/*  /> */}
+              {/* </Grid> */}
               <Grid item xs={12}>
                 <FileDropZoneArea
                   name="iconFile"

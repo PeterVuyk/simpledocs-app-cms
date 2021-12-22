@@ -13,6 +13,7 @@ import markdownHelper from '../../helper/markdownHelper';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
+import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
 
 const CreatePage: FC = () => {
   const history = useHistory();
@@ -21,10 +22,14 @@ const CreatePage: FC = () => {
   const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: FormikValues,
     contentType: ContentType
-  ): void => {
+  ): Promise<void> => {
+    const content =
+      contentType === CONTENT_TYPE_HTML
+        ? modifyHtmlForStorage(values.htmlContent)
+        : markdownHelper.modifyMarkdownForStorage(values.markdownContent);
     bookRepository
       .createPage(getBookTypeFromUrlSlug(aggregatePath), {
         pageIndex: values.pageIndex,
@@ -32,11 +37,8 @@ const CreatePage: FC = () => {
         chapterDivision: values.chapterDivision,
         title: values.title,
         subTitle: values.subTitle,
-        searchText: values.searchText,
-        content:
-          contentType === CONTENT_TYPE_HTML
-            ? modifyHtmlForStorage(values.htmlContent)
-            : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
+        searchText: await getTextFromSourceCode(content, contentType),
+        content,
         contentType,
         iconFile: values.iconFile,
         isDraft: true,
