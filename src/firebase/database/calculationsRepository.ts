@@ -34,6 +34,25 @@ async function getCalculationsInfo(
   return querySnapshot.docs.map((result) => result.data() as CalculationInfo);
 }
 
+async function getCalculationsByType(
+  calculationType: CalculationType,
+  isDraft: boolean
+): Promise<CalculationInfo> {
+  const querySnapshot = await database
+    .collection(AGGREGATE_CALCULATIONS)
+    .where('calculationType', '==', calculationType)
+    .where('isDraft', '==', isDraft)
+    .get();
+
+  if (querySnapshot.size !== 1) {
+    throw new Error(
+      `Could not find calculationType by type ${calculationType}, found not 1 but ${querySnapshot.size}.`
+    );
+  }
+
+  return querySnapshot.docs[0].data() as CalculationInfo;
+}
+
 async function getCalculationsInfoToEdit(
   calculationType: CalculationType
 ): Promise<CalculationInfo | null> {
@@ -73,6 +92,7 @@ async function updateCalculationsInfo(
 }
 
 const calculationsRepository = {
+  getCalculationsByType,
   getCalculationsInfoToEdit,
   getCalculationsInfo,
   updateCalculationsInfo,

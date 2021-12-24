@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormikContext } from 'formik';
-import { pure } from 'recompose';
 import BottomToolbox from '../toolbox/BottomToolbox';
 import FileDropzoneArea from '../../../FileDropzoneArea';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
@@ -148,4 +147,4 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   );
 };
 
-export default pure(HtmlEditor);
+export default React.memo(HtmlEditor);

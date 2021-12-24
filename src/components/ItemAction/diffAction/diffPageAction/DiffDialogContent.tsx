@@ -1,11 +1,11 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC } from 'react';
 import { Grid } from '@material-ui/core';
+import { diffWords } from 'diff';
 import { makeStyles } from '@material-ui/core/styles';
-import { Change, diffWords } from 'diff';
-import { Page } from '../../../model/Page';
-import ChapterDivisions from '../../../model/ChapterDivisions';
 import 'diff2html/bundles/css/diff2html.min.css';
-import ContentPageDiff from './ContentPageDiff';
+import useDiff from '../../../hooks/useDiff';
+import DiffContentPage from '../diff/DiffContentPage';
+import { Page } from '../../../../model/Page';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline',
     verticalAlign: 'middle',
   },
-  inlineBlock: { display: 'inline', marginRight: 10 },
 }));
 
 interface Props {
@@ -26,37 +25,8 @@ interface Props {
 }
 
 const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
+  const { mapDiff, getPropertiesDiff } = useDiff();
   const classes = useStyles();
-
-  const mapDiff = (changes: Change[]) => {
-    return changes.map((part, index) => {
-      // eslint-disable-next-line no-nested-ternary
-      const color = part.added ? 'green' : part.removed ? '#ff0000' : '#404854';
-      return (
-        <span key={index.toString()} style={{ color }} color={color}>
-          {part.value.includes('\n')
-            ? part.value.split('\n').map((value, splitIndex) => (
-                <Fragment key={splitIndex.toString()}>
-                  {splitIndex !== 0 ? <br /> : ''}
-                  {value}
-                </Fragment>
-              ))
-            : part.value}
-        </span>
-      );
-    });
-  };
-
-  const getPropertiesDiff = (title: string, elements: JSX.Element[]) => {
-    return (
-      <Grid item xs={12}>
-        <h3 className={classes.inlineBlock}>{title}:</h3>
-        <div className={classes.inlineBlock}>
-          {elements[0].props.children === '' ? '-' : elements}
-        </div>
-      </Grid>
-    );
-  };
 
   return (
     <>
@@ -121,15 +91,12 @@ const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
             </p>
           </Grid>
         </Grid>
-        <Grid container item sm={12} spacing={0}>
-          <Grid item xs={12}>
-            <ContentPageDiff
-              conceptPage={conceptPage}
-              publishedPage={publishedPage}
-              mapContentDiffToElement={mapDiff}
-            />
-          </Grid>
-        </Grid>
+        <DiffContentPage
+          publishedPageContent={publishedPage.content}
+          conceptPageContent={conceptPage.content}
+          conceptContentType={conceptPage.contentType}
+          publishedContentType={publishedPage.contentType}
+        />
       </Grid>
     </>
   );

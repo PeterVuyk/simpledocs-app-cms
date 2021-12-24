@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { pure } from 'recompose';
 import { useFormikContext } from 'formik';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/artifacts/Artifact';
 import base64Helper from '../../../../../helper/base64Helper';
@@ -148,4 +147,4 @@ const MarkdownEditor: FC<Props> = ({
   );
 };
 
-export default pure(MarkdownEditor);
+export default React.memo(MarkdownEditor);

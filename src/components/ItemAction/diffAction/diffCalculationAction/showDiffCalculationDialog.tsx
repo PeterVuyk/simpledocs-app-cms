@@ -14,15 +14,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 // eslint-disable-next-line import/no-unresolved
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Page } from '../../../model/Page';
-import bookRepository from '../../../firebase/database/bookRepository';
-import logger from '../../../helper/logger';
-import { useAppDispatch } from '../../../redux/hooks';
-import { notify } from '../../../redux/slice/notificationSlice';
+import logger from '../../../../helper/logger';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { notify } from '../../../../redux/slice/notificationSlice';
+import LoadingSpinner from '../../../LoadingSpinner';
+import { DOCUMENTATION_DIFF_CHANGES } from '../../../../model/DocumentationType';
+import HelpAction from '../../helpAction/HelpAction';
+import { CalculationInfo } from '../../../../model/calculations/CalculationInfo';
+import calculationsRepository from '../../../../firebase/database/calculationsRepository';
 import DiffDialogContent from './DiffDialogContent';
-import LoadingSpinner from '../../LoadingSpinner';
-import { DOCUMENTATION_DIFF_CHANGES } from '../../../model/DocumentationType';
-import HelpAction from '../helpAction/HelpAction';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
@@ -32,39 +32,36 @@ const Transition = forwardRef(function Transition(
 });
 
 interface Props {
-  bookType: string;
-  pageId: string;
+  conceptCalculationInfo: CalculationInfo;
   setShowDiffDialog: (showDialogPage: boolean) => void;
 }
 
-const ShowDiffPageDialog: FC<Props> = ({
-  bookType,
-  pageId,
+const ShowDiffCalculationDialog: FC<Props> = ({
+  conceptCalculationInfo,
   setShowDiffDialog,
 }) => {
-  const [conceptPage, setConceptPage] = useState<Page | null>(null);
-  const [publishedPage, setPublishedPage] = useState<Page | null>(null);
+  const [publishedCalculationInfo, setPublishedCalculationInfo] =
+    useState<CalculationInfo | null>(null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const id = pageId.replace('-draft', '');
-    Promise.all([
-      bookRepository.getPageById(bookType, id).then(setPublishedPage),
-      bookRepository.getPageById(bookType, `${id}-draft`).then(setConceptPage),
-    ]).catch((reason) => {
-      logger.errorWithReason(
-        'Failed to get page info by id in ShowDiffPageDialog',
-        reason
-      );
-      dispatch(
-        notify({
-          notificationType: 'error',
-          notificationOpen: true,
-          notificationMessage: `Het tonen van het verschil van de pagina is mislukt.`,
-        })
-      );
-    });
-  }, [bookType, dispatch, pageId]);
+    calculationsRepository
+      .getCalculationsByType(conceptCalculationInfo.calculationType, false)
+      .then(setPublishedCalculationInfo)
+      .catch((reason) => {
+        logger.errorWithReason(
+          'Failed to get calculation by id in ShowDiffCalculationDialog',
+          reason
+        );
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het tonen van het verschil van de berekeningen is mislukt.`,
+          })
+        );
+      });
+  }, [conceptCalculationInfo.calculationType, dispatch]);
 
   const handleClose = () => {
     setShowDiffDialog(false);
@@ -85,10 +82,10 @@ const ShowDiffPageDialog: FC<Props> = ({
         Bekijk de wijzigingen&ensp;
         <HelpAction documentationType={DOCUMENTATION_DIFF_CHANGES} />
       </DialogTitle>
-      {publishedPage !== null && conceptPage !== null ? (
+      {publishedCalculationInfo !== null ? (
         <DiffDialogContent
-          publishedPage={publishedPage}
-          conceptPage={conceptPage}
+          conceptCalculationInfo={conceptCalculationInfo}
+          publishedCalculationInfo={publishedCalculationInfo}
         />
       ) : (
         <DialogContent style={{ minHeight: 600 }}>
@@ -104,4 +101,4 @@ const ShowDiffPageDialog: FC<Props> = ({
   );
 };
 
-export default ShowDiffPageDialog;
+export default ShowDiffCalculationDialog;

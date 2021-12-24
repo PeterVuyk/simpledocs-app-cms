@@ -58,10 +58,6 @@ Deploy finally your hosting content and config to the live channel
     npx env-cmd -f .env.development firebase deploy -P development --only hosting
     npx env-cmd -f .env.academie-voor-ambulancezorg firebase deploy -P academie-voor-ambulancezorg --only hosting
 
-## User management
-
-Users can be created and managed in the [firebase console](https://console.firebase.google.com/) in the tab Authentication.
-
 ## Import / export data between projects:
 
 To import a backup from another project, define first which backup you would like to import: [backups](https://console.cloud.google.com/storage/browser?project=ambulancezorg-app&prefix=).
