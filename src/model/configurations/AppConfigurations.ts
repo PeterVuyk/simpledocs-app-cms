@@ -7,6 +7,18 @@ export interface BottomTab {
   title: string;
 }
 
+export interface LinkItem {
+  title: string;
+  url: string;
+  index: 0;
+  iconName: string;
+  iconType: string;
+}
+
+export interface Drawer {
+  links: LinkItem[];
+}
+
 export interface BookInfo {
   index: number;
   bookType: string;
@@ -32,6 +44,7 @@ export interface BookTabInfo {
 }
 
 export interface AppConfigurations {
+  drawer: Drawer;
   firstBookTab: BookTabInfo;
   secondBookTab: BookTabInfo;
   decisionsTab: DecisionsTab;

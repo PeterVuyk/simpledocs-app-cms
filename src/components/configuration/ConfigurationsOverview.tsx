@@ -35,6 +35,7 @@ import AlertBox from '../AlertBox';
 import appConfigurationValidator from '../../validators/appConfigurationValidator';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
+import DiffConfigurationAction from '../ItemAction/diffAction/diffConfigurationAction/DiffConfigurationAction';
 
 const useStyles = makeStyles({
   paper: {
@@ -186,7 +187,10 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
           <Base64TransformerButton />
         )}
         {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
-          <RemoveConfigurationButton configurationType={configurationType} />
+          <>
+            <DiffConfigurationAction configurationType={configurationType} />
+            <RemoveConfigurationButton configurationType={configurationType} />
+          </>
         )}
         {showEditButton() && (
           <EditConfigurationButton

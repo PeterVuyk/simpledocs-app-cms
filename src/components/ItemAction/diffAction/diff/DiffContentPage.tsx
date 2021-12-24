@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
+  disableTextView?: boolean;
   conceptPageContent: string;
   conceptContentType: ContentType;
   publishedPageContent: string;
@@ -34,13 +35,16 @@ interface Props {
 }
 
 const DiffContentPage: FC<Props> = ({
+  disableTextView,
   conceptPageContent,
   conceptContentType,
   publishedPageContent,
   publishedContentType,
 }) => {
   const { mapDiff } = useDiff();
-  const [diffModeToggle, setDiffModeToggle] = useState<string>('text');
+  const [diffModeToggle, setDiffModeToggle] = useState<string>(
+    disableTextView === true ? 'source' : 'text'
+  );
   const [sourceDiff, setSourceDiff] = useState<JSX.Element[]>([]);
   const dispatch = useAppDispatch();
   const classes = useStyles();
@@ -100,12 +104,14 @@ const DiffContentPage: FC<Props> = ({
       <Grid item xs={12}>
         <div style={{ position: 'relative', height: 50 }}>
           <h3 style={{ position: 'absolute', left: 0 }}>Pagina inhoud:</h3>
-          <div style={{ position: 'absolute', right: 0 }}>
-            <ContentPageDiffModeToggle
-              diffModeToggle={diffModeToggle}
-              setDiffModeToggle={setDiffModeToggle}
-            />
-          </div>
+          {disableTextView !== true && (
+            <div style={{ position: 'absolute', right: 0 }}>
+              <ContentPageDiffModeToggle
+                diffModeToggle={diffModeToggle}
+                setDiffModeToggle={setDiffModeToggle}
+              />
+            </div>
+          )}
         </div>
         {diffModeToggle === 'source' && (
           <div dangerouslySetInnerHTML={{ __html: getContentSourceDiff() }} />

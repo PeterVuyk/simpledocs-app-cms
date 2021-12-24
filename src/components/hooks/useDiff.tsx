@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import { Change } from 'diff';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -10,8 +10,7 @@ const useStyles = makeStyles(() => ({
 function useDiff() {
   const classes = useStyles();
 
-  const mapDiff = (changes: Change[]) => {
-    console.log('2');
+  const mapDiff = useCallback((changes: Change[]) => {
     return changes.map((part, index) => {
       // eslint-disable-next-line no-nested-ternary
       const color = part.added ? 'green' : part.removed ? '#ff0000' : '#404854';
@@ -28,19 +27,21 @@ function useDiff() {
         </span>
       );
     });
-  };
+  }, []);
 
-  const getPropertiesDiff = (title: string, elements: JSX.Element[]) => {
-    console.log('1');
-    return (
-      <Grid item xs={12}>
-        <h3 className={classes.inlineBlock}>{title}:</h3>
-        <div className={classes.inlineBlock}>
-          {elements[0].props.children === '' ? '-' : elements}
-        </div>
-      </Grid>
-    );
-  };
+  const getPropertiesDiff = useCallback(
+    (title: string, elements: JSX.Element[]) => {
+      return (
+        <Grid item xs={12}>
+          <h3 className={classes.inlineBlock}>{title}:</h3>
+          <div className={classes.inlineBlock}>
+            {elements[0].props.children === '' ? '-' : elements}
+          </div>
+        </Grid>
+      );
+    },
+    [classes.inlineBlock]
+  );
 
   return { mapDiff, getPropertiesDiff };
 }
