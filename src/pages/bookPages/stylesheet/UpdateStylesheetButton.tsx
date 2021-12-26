@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
@@ -10,12 +9,6 @@ import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
 
 interface Props {
   bookType: string;
@@ -28,7 +21,6 @@ const UpdateStylesheetButton: FC<Props> = ({
 }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { modifyHtmlForStorage, modifyHtmlAfterUpload } = useHtmlModifier();
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const updateStylesheetForAllPages = async () => {
@@ -97,11 +89,7 @@ const UpdateStylesheetButton: FC<Props> = ({
   return (
     <>
       <Tooltip title="Batch stylesheet updaten">
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={() => setOpenDialog(true)}
-        >
+        <Button variant="contained" onClick={() => setOpenDialog(true)}>
           <SystemUpdateAltIcon color="action" />
         </Button>
       </Tooltip>

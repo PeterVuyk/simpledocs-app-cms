@@ -11,26 +11,19 @@ interface Props {
 
 const CopyToClipboardAction: FC<Props> = ({ textToCopy, disabled }) => {
   return (
-    <div
-      style={{
-        float: 'right',
-        marginLeft: 8,
-      }}
-    >
-      <Tooltip title="Kopieer naar klembord">
-        <div>
-          <span>
-            <Button
-              onClick={() => utilHelper.copyText(textToCopy)}
-              variant="contained"
-              disabled={disabled === undefined ? false : disabled}
-            >
-              <FilterNoneIcon />
-            </Button>
-          </span>
-        </div>
-      </Tooltip>
-    </div>
+    <Tooltip title="Kopieer naar klembord">
+      <div>
+        <span>
+          <Button
+            onClick={() => utilHelper.copyText(textToCopy)}
+            variant="contained"
+            disabled={disabled === undefined ? false : disabled}
+          >
+            <FilterNoneIcon />
+          </Button>
+        </span>
+      </div>
+    </Tooltip>
   );
 };
 

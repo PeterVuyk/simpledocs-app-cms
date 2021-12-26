@@ -4,6 +4,7 @@ import { JsonEditor as Editor } from 'jsoneditor-react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
@@ -179,25 +180,29 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
   return (
     <>
       <PageHeading title={title} help={getDocumentationType()}>
-        <EditStatusToggle
-          editStatus={editStatus}
-          setEditStatus={toggleEditStatus}
-        />
-        {configurationType === APP_CONFIGURATIONS && (
-          <Base64TransformerButton />
-        )}
-        {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
-          <>
-            <DiffConfigurationAction configurationType={configurationType} />
-            <RemoveConfigurationButton configurationType={configurationType} />
-          </>
-        )}
-        {showEditButton() && (
-          <EditConfigurationButton
-            configurations={configurations!}
-            onSubmit={onSubmit}
+        <ButtonGroup>
+          <EditStatusToggle
+            editStatus={editStatus}
+            setEditStatus={toggleEditStatus}
           />
-        )}
+          {configurationType === APP_CONFIGURATIONS && (
+            <Base64TransformerButton />
+          )}
+          {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
+            <>
+              <DiffConfigurationAction configurationType={configurationType} />
+              <RemoveConfigurationButton
+                configurationType={configurationType}
+              />
+            </>
+          )}
+          {showEditButton() && (
+            <EditConfigurationButton
+              configurations={configurations!}
+              onSubmit={onSubmit}
+            />
+          )}
+        </ButtonGroup>
       </PageHeading>
       {error && <AlertBox severity="error" message={error} />}
       {showEditor && initialConfigurations && (

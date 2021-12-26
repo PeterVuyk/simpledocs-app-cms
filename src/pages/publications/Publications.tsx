@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
@@ -25,9 +26,6 @@ const useStyles = makeStyles({
   },
   head: {
     backgroundColor: '#ddd',
-  },
-  button: {
-    marginLeft: 8,
   },
 });
 
@@ -104,14 +102,16 @@ const Publications: FC<Props> = ({ title }) => {
   return (
     <>
       <PageHeading title={title} help={DOCUMENTATION_PUBLICATIONS}>
-        <RemoveVersionButton
-          onReloadPublications={handleReloadPublications}
-          versions={versions ?? []}
-        />
-        <CreateVersionButton
-          onReloadPublications={handleReloadPublications}
-          versions={versions ?? []}
-        />
+        <ButtonGroup>
+          <RemoveVersionButton
+            onReloadPublications={handleReloadPublications}
+            versions={versions ?? []}
+          />
+          <CreateVersionButton
+            onReloadPublications={handleReloadPublications}
+            versions={versions ?? []}
+          />
+        </ButtonGroup>
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>

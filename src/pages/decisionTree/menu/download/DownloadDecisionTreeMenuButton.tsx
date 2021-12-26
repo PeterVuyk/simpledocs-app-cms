@@ -1,17 +1,10 @@
 import React, { FC, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Tooltip } from '@material-ui/core';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
 
 interface Props {
   editStatus: EditStatus;
@@ -29,16 +22,10 @@ const DownloadDecisionTreeMenuButton: FC<Props> = ({
     setDownloadMenuElement(event.currentTarget);
   };
 
-  const classes = useStyles();
-
   return (
     <>
       <Tooltip title="Download beslisboom">
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={openDownloadMenu}
-        >
+        <Button variant="contained" onClick={openDownloadMenu}>
           <GetAppIcon color="action" />
         </Button>
       </Tooltip>

@@ -58,6 +58,16 @@ const theme = {
         },
       },
     },
+    MuiButtonGroup: {
+      root: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        '& > *:not(:last-child)': {
+          marginRight: cmsTheme.spacing(1),
+        },
+      },
+    },
     MuiTabs: {
       root: {
         marginLeft: cmsTheme.spacing(1),

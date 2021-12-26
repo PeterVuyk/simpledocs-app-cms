@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
+import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import { DecisionTreeStep } from '../../model/DecisionTreeStep';
@@ -19,18 +20,11 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_DECISION_TREE } from '../../model/DocumentationType';
 import DiffDecisionTreeAction from '../../components/ItemAction/diffAction/diffDecisionTreeAction/DiffDecisionTreeAction';
 
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
-
 interface Props {
   title: string;
 }
 
 const DecisionTree: FC<Props> = ({ title }) => {
-  const classes = useStyles();
   const [decisionTreeSteps, setDecisionTreeSteps] = useState<
     DecisionTreeStep[] | null
   >(null);
@@ -67,41 +61,45 @@ const DecisionTree: FC<Props> = ({ title }) => {
   return (
     <>
       <PageHeading title={title} help={DOCUMENTATION_DECISION_TREE}>
-        <EditStatusToggle
-          editStatus={editStatus}
-          setEditStatus={setEditStatus}
-        />
-        {decisionTreeSteps && hasMarkedForDeletionTitles(decisionTreeSteps) && (
-          <MarkForDeletionDecisionTreeMenuButton
-            decisionTreeSteps={decisionTreeSteps}
-            onSubmitAction={handleLoadDecisionTree}
+        <ButtonGroup>
+          <EditStatusToggle
+            editStatus={editStatus}
+            setEditStatus={setEditStatus}
           />
-        )}
-        {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
-          <>
-            {editStatus === EDIT_STATUS_DRAFT && (
-              <DiffDecisionTreeAction decisionTreeSteps={decisionTreeSteps} />
+          {decisionTreeSteps &&
+            hasMarkedForDeletionTitles(decisionTreeSteps) && (
+              <MarkForDeletionDecisionTreeMenuButton
+                decisionTreeSteps={decisionTreeSteps}
+                onSubmitAction={handleLoadDecisionTree}
+              />
             )}
-            <RemoveDecisionTreeMenuButton
-              editStatus={editStatus}
-              decisionTreeSteps={decisionTreeSteps}
-              onSubmitAction={handleLoadDecisionTree}
-            />
-            <DownloadDecisionTreeMenuButton
-              editStatus={editStatus}
-              decisionTreeSteps={decisionTreeSteps}
-            />
-          </>
-        )}
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(ADD_DECISION_TREE)}
-        >
-          Toelichting bestand uploaden
-        </Button>
-        <UploadDecisionTreeButton onLoadDecisionTree={handleLoadDecisionTree} />
+          {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
+            <>
+              {editStatus === EDIT_STATUS_DRAFT && (
+                <DiffDecisionTreeAction decisionTreeSteps={decisionTreeSteps} />
+              )}
+              <RemoveDecisionTreeMenuButton
+                editStatus={editStatus}
+                decisionTreeSteps={decisionTreeSteps}
+                onSubmitAction={handleLoadDecisionTree}
+              />
+              <DownloadDecisionTreeMenuButton
+                editStatus={editStatus}
+                decisionTreeSteps={decisionTreeSteps}
+              />
+            </>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push(ADD_DECISION_TREE)}
+          >
+            Toelichting bestand uploaden
+          </Button>
+          <UploadDecisionTreeButton
+            onLoadDecisionTree={handleLoadDecisionTree}
+          />
+        </ButtonGroup>
       </PageHeading>
       <DecisionTreeStepsList
         editStatus={editStatus}

@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import StyleIcon from '@material-ui/icons/Style';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
+import { ButtonGroup } from '@material-ui/core';
 import ArtifactsTable from '../../components/artifact/ArtifactsTable';
 import logger from '../../helper/logger';
 import PageHeading from '../../layout/PageHeading';
@@ -22,12 +22,6 @@ import {
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
-
 interface Props {
   title: string;
 }
@@ -39,7 +33,6 @@ const Styleguide: FC<Props> = ({ title }) => {
   const dispatch = useAppDispatch();
 
   const history = useHistory();
-  const classes = useStyles();
 
   const loadArtifacts = () => {
     artifactsRepository
@@ -74,47 +67,46 @@ const Styleguide: FC<Props> = ({ title }) => {
   return (
     <>
       <PageHeading title={title}>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(ADD_TEMPLATE)}
-        >
-          <StyleIcon />
-          &nbsp;Template uploaden
-        </Button>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(ADD_SNIPPETS)}
-        >
-          <LoyaltyIcon />
-          &nbsp;Snippet uploaden
-        </Button>
-        {artifacts && (
+        <ButtonGroup>
           <Button
-            className={classes.button}
             variant="contained"
             color="primary"
-            onClick={() =>
-              setOpenStylesheetDialog(
-                artifacts?.find(
-                  (value) => value.type === ARTIFACT_TYPE_CSS_STYLESHEET
-                ) ?? null
-              )
-            }
+            onClick={() => history.push(ADD_TEMPLATE)}
           >
-            <CodeIcon />
-            &nbsp;CSS stylesheet wijzigen
+            <StyleIcon />
+            &nbsp;Template uploaden
           </Button>
-        )}
-        {openStylesheetDialog && (
-          <StylesheetDialog
-            openStylesheetDialog={openStylesheetDialog}
-            oncloseDialog={() => setOpenStylesheetDialog(null)}
-          />
-        )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push(ADD_SNIPPETS)}
+          >
+            <LoyaltyIcon />
+            &nbsp;Snippet uploaden
+          </Button>
+          {artifacts && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                setOpenStylesheetDialog(
+                  artifacts?.find(
+                    (value) => value.type === ARTIFACT_TYPE_CSS_STYLESHEET
+                  ) ?? null
+                )
+              }
+            >
+              <CodeIcon />
+              &nbsp;CSS stylesheet wijzigen
+            </Button>
+          )}
+          {openStylesheetDialog && (
+            <StylesheetDialog
+              openStylesheetDialog={openStylesheetDialog}
+              oncloseDialog={() => setOpenStylesheetDialog(null)}
+            />
+          )}
+        </ButtonGroup>
       </PageHeading>
       <ArtifactsTable
         aggregate={AGGREGATE_STYLEGUIDE}

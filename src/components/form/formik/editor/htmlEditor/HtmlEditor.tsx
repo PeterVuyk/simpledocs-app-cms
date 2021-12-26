@@ -15,9 +15,6 @@ import JoditEditorWrapper from './JoditEditorWrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    button: {
-      marginLeft: 8,
-    },
     relativeContainer: {
       position: 'relative',
     },

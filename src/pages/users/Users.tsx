@@ -9,6 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import { UserInfo } from '../../model/users/UserInfo';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -28,9 +29,6 @@ const useStyles = makeStyles({
   },
   head: {
     backgroundColor: '#ddd',
-  },
-  button: {
-    marginLeft: 8,
   },
 });
 
@@ -72,9 +70,8 @@ const Users: FC<Props> = ({ title }) => {
   return (
     <>
       <PageHeading title={title}>
-        <>
+        <ButtonGroup>
           <Button
-            className={classes.button}
             variant="contained"
             color="primary"
             onClick={() => setShowCreateUserDialog(true)}
@@ -88,7 +85,7 @@ const Users: FC<Props> = ({ title }) => {
               onSubmit={loadUsers}
             />
           )}
-        </>
+        </ButtonGroup>
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>

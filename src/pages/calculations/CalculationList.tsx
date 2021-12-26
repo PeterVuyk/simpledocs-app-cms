@@ -17,9 +17,6 @@ const useStyles = makeStyles((theme) => ({
   table: {
     width: '100%',
   },
-  button: {
-    marginLeft: 8,
-  },
   head: {
     backgroundColor: '#ddd',
   },

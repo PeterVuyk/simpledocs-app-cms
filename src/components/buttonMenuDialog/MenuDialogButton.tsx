@@ -1,16 +1,9 @@
 import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import { Icon, PropTypes, Tooltip } from '@material-ui/core';
 import MenuDialogListMenu from './MenuDialogListMenu';
 import { MenuListItem } from './model/MenuListItem';
 import { MenuListDialog } from './model/MenuListDialog';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
 
 interface Props {
   toolTip?: string;
@@ -30,7 +23,6 @@ const MenuDialogButton: FC<Props> = ({
   buttonColor,
 }) => {
   const [menu, setMenu] = useState<null | HTMLElement>(null);
-  const classes = useStyles();
 
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenu(event.currentTarget);
@@ -41,7 +33,6 @@ const MenuDialogButton: FC<Props> = ({
       <Tooltip title={toolTip ?? ''}>
         <span>
           <Button
-            className={classes.button}
             variant="contained"
             color={buttonColor ?? undefined}
             onClick={openMenu}

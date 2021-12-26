@@ -1,16 +1,9 @@
 import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
 import UndoMarkForDeletionDecisionTreeMenu from './UndoMarkForDeletionDecisionTreeMenu';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
 
 interface Props {
   onSubmitAction: () => void;
@@ -23,7 +16,6 @@ const MarkForDeletionDecisionTreeMenuButton: FC<Props> = ({
 }) => {
   const [removeMarkForDeleteMenuElement, setRemoveMarkForDeleteMenuElement] =
     useState<null | HTMLElement>(null);
-  const classes = useStyles();
 
   const openRemoveMarkForDeletionMenu = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -35,7 +27,6 @@ const MarkForDeletionDecisionTreeMenuButton: FC<Props> = ({
     <>
       <Tooltip title="Verwijder markering voor verwijdering">
         <Button
-          className={classes.button}
           variant="contained"
           style={{ backgroundColor: '#099000FF' }}
           onClick={openRemoveMarkForDeletionMenu}

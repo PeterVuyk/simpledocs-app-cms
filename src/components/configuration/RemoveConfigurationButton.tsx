@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import 'jsoneditor-react/es/editor.min.css';
@@ -11,12 +10,6 @@ import { ConfigurationType } from '../../model/configurations/ConfigurationType'
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
-
 interface Props {
   configurationType: ConfigurationType;
 }
@@ -24,7 +17,6 @@ interface Props {
 const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
   const [openRemoveConfirmationDialog, setRemoveSubmitConfirmationDialog] =
     useState<boolean>(false);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,7 +51,6 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
     <>
       <Tooltip title="Aanpassing verwijderen">
         <Button
-          className={classes.button}
           variant="contained"
           color="secondary"
           onClick={() => setRemoveSubmitConfirmationDialog(true)}

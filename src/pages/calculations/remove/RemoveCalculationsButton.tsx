@@ -1,16 +1,9 @@
 import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { Tooltip } from '@material-ui/core';
 import RemoveCalculationsMenu from './RemoveCalculationsMenu';
 import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
-
-const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
-});
 
 interface Props {
   onSubmitAction: (calculationInfo: CalculationInfo) => void;
@@ -28,17 +21,10 @@ const RemoveCalculationsButton: FC<Props> = ({
     setDeleteMenuElement(event.currentTarget);
   };
 
-  const classes = useStyles();
-
   return (
     <>
       <Tooltip title="Aanpassing verwijderen">
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="secondary"
-          onClick={openDeleteMenu}
-        >
+        <Button variant="contained" color="secondary" onClick={openDeleteMenu}>
           <DeleteTwoToneIcon />
         </Button>
       </Tooltip>

@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Tooltip } from '@material-ui/core';
+import { ButtonGroup, Tooltip } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import StyleIcon from '@material-ui/icons/Style';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { CloudUpload } from '@material-ui/icons';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import LinkIcon from '@material-ui/icons/Link';
@@ -19,14 +18,6 @@ import ImageUploadDialog from './uploadImage/ImageUploadDialog';
 import ImageLibraryDialog from './imageLibrary/ImageLibraryDialog';
 import CreateLinkPageDialog from './CreateLinkPage/CreateLinkPageDialog';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    button: {
-      marginLeft: 8,
-    },
-  })
-);
-
 interface Props {
   onUpdateFile: (file: any) => void;
   contentType: ContentType;
@@ -41,7 +32,6 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
     useState<boolean>(false);
   const [showCreateLinkDialog, setShowCreateLinkDialog] =
     useState<boolean>(false);
-  const classes = useStyles();
 
   useEffect(() => {
     artifactsRepository
@@ -64,10 +54,9 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
   }
 
   return (
-    <>
+    <ButtonGroup>
       <Tooltip title="Aanmaken link pagina">
         <Button
-          className={classes.button}
           variant="contained"
           onClick={() => setShowCreateLinkDialog(true)}
         >
@@ -82,7 +71,6 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
       )}
       <Tooltip title="Afbeeldingen bibliotheek">
         <Button
-          className={classes.button}
           variant="contained"
           onClick={() => setShowImageLibraryDialog(true)}
         >
@@ -97,7 +85,6 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
       )}
       <Tooltip title="Afbeelding uploaden">
         <Button
-          className={classes.button}
           variant="contained"
           onClick={() => setShowImageUploadDialog(true)}
         >
@@ -121,11 +108,7 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
         />
       )}
       <Tooltip title="Template gebruiken">
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={openTemplateMenu}
-        >
+        <Button variant="contained" onClick={openTemplateMenu}>
           <StyleIcon />
         </Button>
       </Tooltip>
@@ -138,7 +121,7 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
           (value) => value.type === ARTIFACT_TYPE_TEMPLATE
         )}
       />
-    </>
+    </ButtonGroup>
   );
 };
 

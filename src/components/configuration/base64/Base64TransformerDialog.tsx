@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { Tooltip } from '@material-ui/core';
+import { ButtonGroup, Tooltip } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileSaver from 'file-saver';
 import { DOCUMENTATION_TRANSFORM_BASE64 } from '../../../model/DocumentationType';
@@ -68,30 +68,6 @@ const Base64TransformerDialog: FC<Props> = ({
           druk op &apos;transform&apos; om het te en- of decoderen.
         </DialogContentText>
         {error && <AlertBox severity="error" message={error} />}
-        <CopyToClipboardAction
-          textToCopy={base64Input}
-          disabled={base64Input === ''}
-        />
-        <div
-          style={{
-            float: 'right',
-            marginLeft: 8,
-          }}
-        >
-          <Tooltip title="Download als bestand">
-            <div>
-              <span>
-                <Button
-                  onClick={handleDownloadFileFromBase64}
-                  variant="contained"
-                  disabled={base64Input === ''}
-                >
-                  <GetAppIcon />
-                </Button>
-              </span>
-            </div>
-          </Tooltip>
-        </div>
         <TextField
           inputRef={base64Ref}
           variant="outlined"
@@ -103,6 +79,25 @@ const Base64TransformerDialog: FC<Props> = ({
           onChange={(event) => setBase64Input(event.target.value)}
           value={base64Input}
           autoFocus
+          InputProps={{
+            endAdornment: (
+              <ButtonGroup>
+                <CopyToClipboardAction
+                  textToCopy={base64Input}
+                  disabled={base64Input === ''}
+                />
+                <Tooltip title="Download als bestand">
+                  <Button
+                    onClick={handleDownloadFileFromBase64}
+                    variant="contained"
+                    disabled={base64Input === ''}
+                  >
+                    <GetAppIcon />
+                  </Button>
+                </Tooltip>
+              </ButtonGroup>
+            ),
+          }}
         />
         <FileDropzoneArea
           allowedMimeTypes={['image/svg+xml']}

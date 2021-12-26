@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { ButtonGroup } from '@material-ui/core';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationList from './CalculationList';
 import PageHeading from '../../layout/PageHeading';
@@ -20,9 +21,6 @@ import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 
 const useStyles = makeStyles({
-  button: {
-    marginLeft: 8,
-  },
   paper: {
     padding: '6px 16px',
   },
@@ -84,34 +82,34 @@ const Calculations: FC<Props> = ({ title }) => {
   return (
     <>
       <PageHeading title={title}>
-        <EditStatusToggle
-          editStatus={editStatus}
-          setEditStatus={setEditStatus}
-        />
-        {editStatus === EDIT_STATUS_DRAFT &&
-          calculations &&
-          calculations.length !== 0 && (
-            <RemoveCalculationsButton
-              calculationInfos={calculations}
-              onSubmitAction={handleSubmitRemove}
-            />
-          )}
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(EDIT_CALCULATIONS_STOPPING_DISTANCE)}
-        >
-          Stopafstand updaten
-        </Button>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(EDIT_CALCULATIONS_OVERTAKING_DISTANCE)}
-        >
-          Inhaalafstand updaten
-        </Button>
+        <ButtonGroup>
+          <EditStatusToggle
+            editStatus={editStatus}
+            setEditStatus={setEditStatus}
+          />
+          {editStatus === EDIT_STATUS_DRAFT &&
+            calculations &&
+            calculations.length !== 0 && (
+              <RemoveCalculationsButton
+                calculationInfos={calculations}
+                onSubmitAction={handleSubmitRemove}
+              />
+            )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push(EDIT_CALCULATIONS_STOPPING_DISTANCE)}
+          >
+            Stopafstand updaten
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push(EDIT_CALCULATIONS_OVERTAKING_DISTANCE)}
+          >
+            Inhaalafstand updaten
+          </Button>
+        </ButtonGroup>
       </PageHeading>
       {isLoading && calculations.length === 0 && <LoadingSpinner />}
       <CalculationList calculationInfos={calculations} />
