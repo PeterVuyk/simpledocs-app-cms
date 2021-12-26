@@ -1,4 +1,4 @@
-import React, { FC, forwardRef, ReactElement, Ref, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -6,23 +6,14 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
 } from '@material-ui/core';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import AlertBox from '../../../../../AlertBox';
 import deleteImageFromCategory from '../../../../../../firebase/storage/deleteImageFromCategory';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../../../../dialog/DialogTransition';
 
 interface Props {
   onCloseDialog: () => void;
@@ -72,11 +63,9 @@ const DeleteImageDialog: FC<Props> = ({
     <Dialog
       fullWidth
       open
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={() => !isRemoving && onCloseDialog()}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         Afbeelding verwijderen

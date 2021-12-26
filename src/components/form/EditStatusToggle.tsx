@@ -33,12 +33,11 @@ const EditStatusToggle: FC<Props> = ({ editStatus, setEditStatus }) => {
         value={editStatus}
         exclusive
         onChange={handleStatus}
-        aria-label="text alignment"
       >
-        <ToggleButton value="draft" aria-label="left aligned">
+        <ToggleButton value="draft">
           <EditIcon />
         </ToggleButton>
-        <ToggleButton value="published" aria-label="right aligned">
+        <ToggleButton value="published">
           <PublicIcon />
         </ToggleButton>
       </ToggleButtonGroup>

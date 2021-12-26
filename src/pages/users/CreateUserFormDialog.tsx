@@ -1,18 +1,9 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import { TransitionProps } from '@material-ui/core/transitions';
-import Slide from '@material-ui/core/Slide';
 import { Dialog } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -26,19 +17,13 @@ import { useAppDispatch } from '../../redux/hooks';
 import validateYupUserEmail from '../../components/form/formik/validators/validateYupUserEmail';
 import AlertBox from '../../components/AlertBox';
 import { auth } from '../../firebase/firebaseConnection';
+import DialogTransition from '../../components/dialog/DialogTransition';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
     marginBottom: theme.spacing(2),
   },
 }));
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 interface Props {
   openCreateUserDialog: boolean;
@@ -106,11 +91,9 @@ const CreateUserFormDialog: FC<Props> = ({
         <Dialog
           fullWidth
           open={openCreateUserDialog}
-          TransitionComponent={Transition}
+          TransitionComponent={DialogTransition}
           keepMounted
           onClose={() => !isSubmitting && oncloseDialog()}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
             Gebruiker toevoegen

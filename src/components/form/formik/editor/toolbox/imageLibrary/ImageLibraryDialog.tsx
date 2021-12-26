@@ -1,30 +1,18 @@
-import React, { FC, forwardRef, ReactElement, Ref, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Slide,
 } from '@material-ui/core';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CategoryList from './CategoryList';
 import ImageViewer from './ImageViewer';
 import { ContentType } from '../../../../../../model/artifacts/Artifact';
-import {
-  DOCUMENTATION_IMAGE_LIBRARY,
-  DOCUMENTATION_STYLEGUIDE,
-} from '../../../../../../model/DocumentationType';
+import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
 import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../../../../dialog/DialogTransition';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -49,11 +37,9 @@ const ImageLibraryDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
       maxWidth="lg"
       fullWidth
       open
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onCloseDialog}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         Afbeeldingen bibliotheek&ensp;

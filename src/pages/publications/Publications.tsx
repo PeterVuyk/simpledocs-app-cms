@@ -114,7 +114,7 @@ const Publications: FC<Props> = ({ title }) => {
         />
       </PageHeading>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="publications table">
+        <Table className={classes.table}>
           <TableHead>
             <TableRow className={classes.head} key="tableRow">
               <TableCell>

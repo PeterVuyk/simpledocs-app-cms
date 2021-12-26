@@ -1,19 +1,9 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import logger from '../../../../helper/logger';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { notify } from '../../../../redux/slice/notificationSlice';
@@ -23,13 +13,7 @@ import HelpAction from '../../helpAction/HelpAction';
 import DiffDialogContent from './DiffDialogContent';
 import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
 import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../../dialog/DialogTransition';
 
 interface Props {
   title: string;
@@ -65,11 +49,9 @@ const ShowDiffDecisionTreeDialog: FC<Props> = ({ title, onClose }) => {
       fullWidth
       maxWidth="lg"
       open
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onClose}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         Bekijk de wijzigingen&ensp;

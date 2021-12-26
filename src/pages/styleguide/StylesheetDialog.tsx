@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useCallback,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,9 +6,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
@@ -29,7 +19,7 @@ import stylesheetHelper from '../../helper/stylesheetHelper';
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+import DialogTransition from '../../components/dialog/DialogTransition';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -52,13 +42,6 @@ const useStyles = makeStyles(() => ({
     height: 700,
   },
 }));
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 interface Props {
   openStylesheetDialog: Artifact;
@@ -119,11 +102,9 @@ const StylesheetDialog: FC<Props> = ({
       fullWidth
       maxWidth="lg"
       open={cssInput !== null}
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={oncloseDialog}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         <div className={classes.relativeContainer}>

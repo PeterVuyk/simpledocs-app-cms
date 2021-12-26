@@ -82,7 +82,7 @@ const DiffDialogContent: FC<Props> = ({
     >
       <Grid container item sm={12} style={{ marginBottom: 18 }}>
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
+          <Table className={classes.table}>
             <TableHead>
               <TableRow className={classes.head}>
                 <TableCell>

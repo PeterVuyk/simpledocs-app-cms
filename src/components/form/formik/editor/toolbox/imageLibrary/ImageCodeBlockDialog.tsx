@@ -1,17 +1,9 @@
-import React, { FC, forwardRef, ReactElement, Ref } from 'react';
-import { Dialog, DialogTitle, Slide } from '@material-ui/core';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
+import React, { FC } from 'react';
+import { Dialog, DialogTitle } from '@material-ui/core';
 import ImageCodeBlockView from '../uploadImage/ImageCodeBlockView/ImageCodeBlockView';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import { ContentType } from '../../../../../../model/artifacts/Artifact';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../../../../dialog/DialogTransition';
 
 interface Props {
   contentType: ContentType;
@@ -30,11 +22,9 @@ const ImageCodeBlockDialog: FC<Props> = ({
     <Dialog
       fullWidth
       open
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onCloseDialog}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         Afbeelding gebruiken

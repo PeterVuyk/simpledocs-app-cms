@@ -56,7 +56,7 @@ const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
 
   return (
     <div className={classes.root}>
-      <List component="nav" aria-label="categories">
+      <List component="nav">
         {categories.map((category) => (
           <ListItem
             key={category.toString()}

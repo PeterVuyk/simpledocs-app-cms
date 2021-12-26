@@ -43,12 +43,11 @@ const ContentPageDiffModeToggle: FC<Props> = ({
         value={diffModeToggle}
         exclusive
         onChange={handleToggle}
-        aria-label="text alignment"
       >
-        <ToggleButton value="text" aria-label="left aligned">
+        <ToggleButton value="text">
           <TextFieldsIcon />
         </ToggleButton>
-        <ToggleButton value="source" aria-label="right aligned">
+        <ToggleButton value="source">
           <CodeIcon />
         </ToggleButton>
       </ToggleButtonGroup>

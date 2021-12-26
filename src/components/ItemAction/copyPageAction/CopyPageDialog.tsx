@@ -1,15 +1,5 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useRef, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
-import Slide from '@material-ui/core/Slide';
 import { Form, Formik, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
@@ -29,13 +19,7 @@ import bookRepository from '../../../firebase/database/bookRepository';
 import { notify } from '../../../redux/slice/notificationSlice';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../dialog/DialogTransition';
 
 interface Props {
   bookType: string;
@@ -137,11 +121,9 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   return (
     <Dialog
       open
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onClose}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">Pagina kopiëren</DialogTitle>
       <Formik

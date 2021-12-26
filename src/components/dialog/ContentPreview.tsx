@@ -1,8 +1,5 @@
-import React, { FC, forwardRef, ReactElement, Ref } from 'react';
+import React, { FC } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import ReactMarkdown from 'react-markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -10,13 +7,7 @@ import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/artifacts/Artifact';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from './DialogTransition';
 
 const useStyles = makeStyles(() => ({
   previewContainer: {
@@ -44,11 +35,9 @@ const ContentPreview: FC<Props> = ({
   return (
     <Dialog
       open={showContentPreview !== null}
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onCloseContentPreview}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       {contentType === CONTENT_TYPE_MARKDOWN && (
         <div className={classes.previewContainer}>

@@ -1,20 +1,10 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { Tooltip } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -24,13 +14,7 @@ import HelpAction from '../../ItemAction/helpAction/HelpAction';
 import CopyToClipboardAction from '../../CopyToClipboardAction';
 import FileDropzoneArea from '../../form/FileDropzoneArea';
 import AlertBox from '../../AlertBox';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../dialog/DialogTransition';
 
 interface Props {
   openBase64TransformerDialog: boolean;
@@ -67,11 +51,9 @@ const Base64TransformerDialog: FC<Props> = ({
   return (
     <Dialog
       open={openBase64TransformerDialog !== null}
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={onClose}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         Transformeer SVG &gt; &lt; base64&ensp;

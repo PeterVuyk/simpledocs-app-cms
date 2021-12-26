@@ -34,7 +34,7 @@ const CalculationList: FC<Props> = ({ calculationInfos }) => {
   return (
     <div className={classes.container}>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table}>
           <TableHead>
             <TableRow className={classes.head}>
               <TableCell>

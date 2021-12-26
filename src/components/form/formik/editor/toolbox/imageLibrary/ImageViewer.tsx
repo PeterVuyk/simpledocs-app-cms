@@ -91,7 +91,6 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
                 title={item.filename}
                 actionIcon={
                   <IconButton
-                    aria-label={`info about ${item.filename}`}
                     className={classes.icon}
                     onClick={(e) => {
                       e.stopPropagation();

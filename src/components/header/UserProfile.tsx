@@ -42,13 +42,7 @@ const UserProfile: FC = () => {
     <>
       {currentUser !== null && (
         <div>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleProfileMenu}
-            color="inherit"
-          >
+          <IconButton onClick={handleProfileMenu} color="inherit">
             <Typography variant="body2" className={classes.headerItem}>
               {currentUser?.email}&nbsp;
             </Typography>

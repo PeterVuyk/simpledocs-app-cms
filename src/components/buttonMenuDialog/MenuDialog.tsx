@@ -1,22 +1,12 @@
-import React, { FC, forwardRef, ReactElement, Ref, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import { MenuListDialog } from './model/MenuListDialog';
 import AlertBox from '../AlertBox';
-
-const Transition = forwardRef(function Transition(
-  // eslint-disable-next-line react/require-default-props
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../dialog/DialogTransition';
 
 interface Props {
   dialog: string;
@@ -41,12 +31,10 @@ const MenuDialog: FC<Props> = ({ dialog, onClose, menuListDialog }) => {
   return (
     <Dialog
       open={dialog !== null}
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       maxWidth="lg"
       onClose={onClose}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
         {menuListDialog.dialogTitle}

@@ -52,7 +52,6 @@ function Header(props: HeaderProps) {
               <Grid item>
                 <IconButton
                   color="inherit"
-                  aria-label="open drawer"
                   onClick={onDrawerToggle}
                   className={classes.menuButton}
                 >

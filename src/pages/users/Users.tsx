@@ -91,7 +91,7 @@ const Users: FC<Props> = ({ title }) => {
         </>
       </PageHeading>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table}>
           <TableHead>
             <TableRow className={classes.head}>
               <TableCell>

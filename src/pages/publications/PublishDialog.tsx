@@ -1,20 +1,10 @@
-import React, {
-  FC,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useCallback,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// eslint-disable-next-line import/no-unresolved
-import { TransitionProps } from '@material-ui/core/transitions';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
@@ -26,13 +16,7 @@ import {
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogTransition from '../../components/dialog/DialogTransition';
 
 interface Props {
   onTranslation: (aggregate: string) => string;
@@ -113,11 +97,9 @@ const PublishDialog: FC<Props> = ({
   return (
     <Dialog
       open={openDialog !== null}
-      TransitionComponent={Transition}
+      TransitionComponent={DialogTransition}
       keepMounted
       onClose={handleClose}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
       <DialogContent>
