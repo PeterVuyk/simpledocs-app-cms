@@ -9,25 +9,48 @@ const useStyles = makeStyles(() => ({
 
 function useDiff() {
   const classes = useStyles();
+  const removedColor = '#ff0000';
+  const addedColor = 'green';
 
-  const mapDiff = useCallback((changes: Change[]) => {
-    return changes.map((part, index) => {
-      // eslint-disable-next-line no-nested-ternary
-      const color = part.added ? 'green' : part.removed ? '#ff0000' : '#404854';
-      return (
-        <span key={index.toString()} style={{ color }} color={color}>
-          {part.value.includes('\n')
-            ? part.value.split('\n').map((value, splitIndex) => (
-                <Fragment key={splitIndex.toString()}>
-                  {splitIndex !== 0 ? <br /> : ''}
-                  {value}
-                </Fragment>
-              ))
-            : part.value}
-        </span>
-      );
-    });
-  }, []);
+  const getAddedSpan = useCallback(
+    (text: string | number | undefined) => {
+      return <span style={{ color: addedColor }}>{text ?? ''}</span>;
+    },
+    [addedColor]
+  );
+
+  const getRemovedSpan = useCallback(
+    (text: string | number | undefined) => {
+      return <span style={{ color: removedColor }}>{text ?? ''}</span>;
+    },
+    [removedColor]
+  );
+
+  const mapDiff = useCallback(
+    (changes: Change[]) => {
+      return changes.map((part, index) => {
+        // eslint-disable-next-line no-nested-ternary
+        const color = part.added
+          ? addedColor
+          : part.removed
+          ? removedColor
+          : '#404854';
+        return (
+          <span key={index.toString()} style={{ color }} color={color}>
+            {part.value.includes('\n')
+              ? part.value.split('\n').map((value, splitIndex) => (
+                  <Fragment key={splitIndex.toString()}>
+                    {splitIndex !== 0 ? <br /> : ''}
+                    {value}
+                  </Fragment>
+                ))
+              : part.value}
+          </span>
+        );
+      });
+    },
+    [addedColor, removedColor]
+  );
 
   const getPropertiesDiff = useCallback(
     (title: string, elements: JSX.Element[]) => {
@@ -43,7 +66,12 @@ function useDiff() {
     [classes.inlineBlock]
   );
 
-  return { mapDiff, getPropertiesDiff };
+  return {
+    mapDiff,
+    getPropertiesDiff,
+    getAddedSpan,
+    getRemovedSpan,
+  };
 }
 
 export default useDiff;

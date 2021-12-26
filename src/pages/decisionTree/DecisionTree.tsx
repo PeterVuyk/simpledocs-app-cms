@@ -17,6 +17,7 @@ import useStatusToggle from '../../components/hooks/useStatusToggle';
 import { ADD_DECISION_TREE } from '../../navigation/UrlSlugs';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_DECISION_TREE } from '../../model/DocumentationType';
+import DiffDecisionTreeAction from '../../components/ItemAction/diffAction/diffDecisionTreeAction/DiffDecisionTreeAction';
 
 const useStyles = makeStyles({
   button: {
@@ -78,6 +79,9 @@ const DecisionTree: FC<Props> = ({ title }) => {
         )}
         {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
           <>
+            {editStatus === EDIT_STATUS_DRAFT && (
+              <DiffDecisionTreeAction decisionTreeSteps={decisionTreeSteps} />
+            )}
             <RemoveDecisionTreeMenuButton
               editStatus={editStatus}
               decisionTreeSteps={decisionTreeSteps}
