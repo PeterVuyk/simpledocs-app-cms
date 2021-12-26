@@ -84,7 +84,7 @@ const RemoveVersionButton: FC<Props> = ({ versions, onReloadPublications }) => {
   const menuListDialog = (): MenuListDialog => {
     return {
       dialogTitle: 'Boek verwijderen',
-      closeButtonText: 'Annuleren',
+      closeButtonText: 'Terug',
       submitButtonText: 'Verwijderen',
       onSubmit,
       dialogContent,

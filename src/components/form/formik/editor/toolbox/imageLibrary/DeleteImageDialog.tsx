@@ -86,7 +86,7 @@ const DeleteImageDialog: FC<Props> = ({
           variant="contained"
           disabled={isRemoving}
         >
-          Annuleren
+          Terug
         </Button>
         <Button
           onClick={handleDelete}

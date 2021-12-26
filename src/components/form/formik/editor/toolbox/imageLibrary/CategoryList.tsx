@@ -12,8 +12,11 @@ import { useAppDispatch } from '../../../../../../redux/hooks';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
+      overflow: 'auto',
       width: '100%',
       maxWidth: 360,
+      height: 600,
       backgroundColor: theme.palette.background.paper,
     },
   })

@@ -3,7 +3,7 @@
 
 Kies een bestaande categorie of voeg een nieuwe categorie toe en upload het bestand. Vervolgens wordt er een snippet weergegeven die je kan kopiëren en plakken in de pagina waar je deze wilt gebruiken. 
 
-### afbeelding bibliotheek
+### afbeeldingen bibliotheek
 
 De geüploade afbeeldingen worden per categorie in de afbeeldingen bibliotheek weergegeven. Klik op de afbeelding die je wilt gebruiken, kopieer de snippet en plak deze waar je het wilt gebruiken.
 

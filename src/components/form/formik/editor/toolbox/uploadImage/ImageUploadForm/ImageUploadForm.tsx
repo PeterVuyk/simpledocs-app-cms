@@ -50,7 +50,7 @@ const ImageUploadForm: FC<Props> = ({
           variant="contained"
           disabled={isSubmitting}
         >
-          Annuleren
+          Terug
         </Button>
         <SubmitButton
           showInBottomBar={false}

@@ -117,7 +117,7 @@ const UpdatePasswordDialog: FC<Props> = ({ oncloseDialog }) => {
                 variant="contained"
                 disabled={isSubmitting}
               >
-                Annuleren
+                Terug
               </Button>
               <SubmitButton
                 showInBottomBar={false}

@@ -84,7 +84,7 @@ const CreateVersionButton: FC<Props> = ({ versions, onReloadPublications }) => {
   const menuListDialog = (): MenuListDialog => {
     return {
       dialogTitle: 'Nieuwe versie toevoegen',
-      closeButtonText: 'Annuleren',
+      closeButtonText: 'Terug',
       submitButtonText: 'Toevoegen',
       onSubmit,
       dialogContent,

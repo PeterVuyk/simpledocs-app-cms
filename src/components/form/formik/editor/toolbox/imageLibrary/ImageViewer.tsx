@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 5,
       backgroundColor: '#616161',
       width: 1000,
-      height: 450,
+      height: 600,
     },
     icon: {
       color: 'rgba(255, 255, 255, 0.54)',

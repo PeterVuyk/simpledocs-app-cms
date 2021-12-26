@@ -169,7 +169,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary" variant="contained">
-          Annuleren
+          Terug
         </Button>
         <Button
           onClick={handleSubmit}

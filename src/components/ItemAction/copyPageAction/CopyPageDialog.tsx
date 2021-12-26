@@ -184,7 +184,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={onClose} color="primary" variant="contained">
-                Annuleren
+                Terug
               </Button>
               <Button
                 disabled={isSubmitting || !dirty}
