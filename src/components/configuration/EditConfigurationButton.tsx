@@ -7,10 +7,10 @@ import { CmsConfigurations } from '../../model/configurations/CmsConfigurations'
 
 interface Props {
   configurations: AppConfigurations | CmsConfigurations;
-  onSubmit: (val: string) => void;
+  onSubmit: (val: string) => Promise<void>;
 }
 
-const RemoveConfigurationButton: FC<Props> = ({ configurations, onSubmit }) => {
+const EditConfigurationButton: FC<Props> = ({ configurations, onSubmit }) => {
   const [openSubmitConfirmationDialog, setOpenSubmitConfirmationDialog] =
     useState<boolean>(false);
 
@@ -30,11 +30,11 @@ const RemoveConfigurationButton: FC<Props> = ({ configurations, onSubmit }) => {
           dialogText="Weet je zeker dat je de aangebrachte wijzigingen als concept wilt opslaan?"
           openDialog={openSubmitConfirmationDialog}
           setOpenDialog={setOpenSubmitConfirmationDialog}
-          onSubmit={() => new Promise(() => onSubmit(''))}
+          onSubmit={onSubmit}
         />
       )}
     </>
   );
 };
 
-export default RemoveConfigurationButton;
+export default EditConfigurationButton;

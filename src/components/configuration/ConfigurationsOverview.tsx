@@ -117,13 +117,13 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (val: string) => {
+  const onSubmit = async (val: string) => {
     const errorMessage = validateConfiguration();
     setError(errorMessage);
     if (errorMessage) {
       return;
     }
-    configurationRepository
+    await configurationRepository
       .updateConfigurations(configurationType, configurations!)
       .then(() => {
         setHasDraft(true);
@@ -189,12 +189,10 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
             <Base64TransformerButton />
           )}
           {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
-            <>
-              <DiffConfigurationAction configurationType={configurationType} />
-              <RemoveConfigurationButton
-                configurationType={configurationType}
-              />
-            </>
+            <DiffConfigurationAction configurationType={configurationType} />
+          )}
+          {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
+            <RemoveConfigurationButton configurationType={configurationType} />
           )}
           {showEditButton() && (
             <EditConfigurationButton

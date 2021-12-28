@@ -156,7 +156,7 @@ const DiffDialogContent: FC<Props> = ({
                   <TableCell>{getAddedSpan(row.parentId)}</TableCell>
                   <TableCell>{getAddedSpan(row.lineLabel)}</TableCell>
                   <TableCell>
-                    {row.contentId !== undefined && getAddedSpan(row.lineLabel)}
+                    {row.contentId !== null && getAddedSpan('Met toelichting')}
                   </TableCell>
                 </TableRow>
               ))}
