@@ -10,7 +10,7 @@ const dateString = (date: Date) => {
   const dd = (date.getDate() + 100).toString().slice(-2);
   const mm = (date.getMonth() + 101).toString().slice(-2);
   const yyyy = date.getFullYear().toString();
-  return `${mm}-${dd}-${yyyy}`;
+  return `${dd}-${mm}-${yyyy}`;
 };
 
 const dateTimeHelper = {

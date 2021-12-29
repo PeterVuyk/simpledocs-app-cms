@@ -16,6 +16,10 @@ Go to the functions directory, then make sure you copy the secrets to a json fil
 
 Then set the environment variable `REACT_APP_USE_LOCAL_FUNCTIONS` to `true` in `.env.development`.
 
+Set the project that you want to use:
+
+    firebase use development | academie-voor-ambulancezorg
+
 Then start the emulator:
 
     firebase emulators:start --only functions -P development

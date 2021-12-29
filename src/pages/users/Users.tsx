@@ -97,9 +97,6 @@ const Users: FC<Props> = ({ title }) => {
               <TableCell>
                 <strong>Laatste keer ingelogd</strong>
               </TableCell>
-              <TableCell>
-                <strong>Actief</strong>
-              </TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -115,7 +112,6 @@ const Users: FC<Props> = ({ title }) => {
                         )
                       : 'Nog niet eerder ingelogd'}
                   </TableCell>
-                  <TableCell>{user.disabled ? 'Inactief' : 'Actief'}</TableCell>
                   <TableCell>
                     {user.userId !== currentUser?.uid && (
                       <DeleteUser userInfo={user} onSubmit={loadUsers} />
