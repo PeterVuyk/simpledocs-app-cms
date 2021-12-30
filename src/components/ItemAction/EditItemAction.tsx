@@ -1,20 +1,20 @@
 import React, { FC } from 'react';
 import { EditTwoTone } from '@material-ui/icons';
 import { Tooltip } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
   urlSlug: string;
 }
 
 const EditItemAction: FC<Props> = ({ urlSlug }) => {
-  const history = useHistory();
+  const { navigate } = useNavigate();
 
   return (
     <Tooltip title="Wijzigen">
       <EditTwoTone
         style={{ cursor: 'pointer' }}
-        onClick={() => history.push(urlSlug)}
+        onClick={(e) => navigate(e, urlSlug)}
       />
     </Tooltip>
   );

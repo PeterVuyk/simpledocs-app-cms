@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
@@ -22,6 +21,7 @@ import { CALCULATIONS_PAGE } from '../../navigation/UrlSlugs';
 import CreateUserFormDialog from './CreateUserFormDialog';
 import DeleteUser from './DeleteUser';
 import { useAuth } from '../../authentication/AuthProvider';
+import useNavigate from '../../navigation/useNavigate';
 
 const useStyles = makeStyles({
   table: {
@@ -42,7 +42,7 @@ const Users: FC<Props> = ({ title }) => {
     useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const history = useHistory();
+  const { history } = useNavigate();
   const { currentUser } = useAuth();
 
   const loadUsers = useCallback(() => {

@@ -7,7 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { DialogContent } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { PageInfo } from '../../../model/Page';
 import TextField from '../../form/formik/TextField';
@@ -20,6 +19,7 @@ import { notify } from '../../../redux/slice/notificationSlice';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
 import DialogTransition from '../../dialog/DialogTransition';
+import useNavigate from '../../../navigation/useNavigate';
 
 interface Props {
   bookType: string;
@@ -31,7 +31,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const { configuration, getSlugFromBookType } = useCmsConfiguration();
-  const history = useHistory();
+  const { history } = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleSubmitForm = (values: FormikValues) => {

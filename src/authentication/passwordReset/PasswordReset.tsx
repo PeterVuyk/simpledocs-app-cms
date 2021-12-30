@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -7,10 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from '@material-ui/core';
 import { useAuth } from '../AuthProvider';
 import { HOME_PAGE, LOGIN_PAGE } from '../../navigation/UrlSlugs';
-import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import Copyright from '../../components/Copyright';
 import PasswordResetForm from './PasswordResetForm';
 import PasswordResetSuccess from './PasswordResetSuccess';
+import useNavigate from '../../navigation/useNavigate';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,10 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 const PasswordReset: FC = () => {
   const [resetSuccessful, setResetSuccessful] = useState<boolean>(false);
-  const history = useHistory();
+  const { history } = useNavigate();
   const classes = useStyles();
   const { currentUser } = useAuth();
-  const { configuration } = useCmsConfiguration();
 
   useEffect(() => {
     if (currentUser !== null) {

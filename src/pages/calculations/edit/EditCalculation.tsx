@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { Form, Formik, FormikValues } from 'formik';
 import Grid from '@material-ui/core/Grid';
@@ -28,6 +27,7 @@ import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../../helper/markdownHelper';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
+import useNavigate from '../../../navigation/useNavigate';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -47,7 +47,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
   );
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const history = useHistory();
+  const { history, navigateBack } = useNavigate();
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const { setEditStatus } = useStatusToggle();
@@ -135,7 +135,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.goBack()}
+          onClick={(e) => navigateBack(e, CALCULATIONS_PAGE)}
         >
           Terug
         </Button>

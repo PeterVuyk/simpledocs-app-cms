@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
@@ -9,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from '@material-ui/core';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE, PASSWORD_RESET_PAGE } from '../navigation/UrlSlugs';
-import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import AlertBox from '../components/AlertBox';
 import Copyright from '../components/Copyright';
+import useNavigate from '../navigation/useNavigate';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,10 +37,9 @@ const Login: FC = () => {
   const { login } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const { history } = useNavigate();
   const classes = useStyles();
   const { currentUser } = useAuth();
-  const { configuration } = useCmsConfiguration();
 
   useEffect(() => {
     if (currentUser !== null) {

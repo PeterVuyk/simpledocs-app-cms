@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { FormikValues } from 'formik';
 import PageHeading from '../../layout/PageHeading';
@@ -23,6 +22,7 @@ import useHtmlModifier from '../hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
+import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
   artifactId?: string;
@@ -35,7 +35,7 @@ const ArtifactEditor: FC<Props> = ({ artifactType, artifactId }) => {
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
     artifact?.contentType
   );
-  const history = useHistory();
+  const { history, navigateBack } = useNavigate();
   const { modifyHtmlForStorage } = useHtmlModifier();
   const dispatch = useAppDispatch();
 
@@ -58,6 +58,11 @@ const ArtifactEditor: FC<Props> = ({ artifactType, artifactId }) => {
 
   const addOrEditText = isNewFile ? 'toegevoegd' : 'gewijzigd';
 
+  const getPreviousPath =
+    artifactType === ARTIFACT_TYPE_DECISION_TREE
+      ? DECISION_TREE_PAGE
+      : HTML_LAYOUT_PAGE;
+
   const handleSubmit = async (values: FormikValues): Promise<void> => {
     await artifactsRepository
       .updateArtifact({
@@ -70,13 +75,7 @@ const ArtifactEditor: FC<Props> = ({ artifactType, artifactId }) => {
             ? modifyHtmlForStorage(values.htmlContent)
             : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
       })
-      .then(() =>
-        history.push(
-          artifactType === ARTIFACT_TYPE_DECISION_TREE
-            ? DECISION_TREE_PAGE
-            : HTML_LAYOUT_PAGE
-        )
-      )
+      .then(() => history.push(getPreviousPath))
       .then(() =>
         dispatch(
           notify({
@@ -111,7 +110,7 @@ const ArtifactEditor: FC<Props> = ({ artifactType, artifactId }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.goBack()}
+          onClick={(e) => navigateBack(e, getPreviousPath)}
         >
           Terug
         </Button>

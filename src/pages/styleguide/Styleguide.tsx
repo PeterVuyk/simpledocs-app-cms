@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
 import CodeIcon from '@material-ui/icons/Code';
 import StyleIcon from '@material-ui/icons/Style';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
@@ -21,6 +20,7 @@ import {
 } from '../../model/artifacts/ArtifactType';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
+import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
   title: string;
@@ -32,7 +32,7 @@ const Styleguide: FC<Props> = ({ title }) => {
     useState<Artifact | null>(null);
   const dispatch = useAppDispatch();
 
-  const history = useHistory();
+  const { history, navigate } = useNavigate();
 
   const loadArtifacts = () => {
     artifactsRepository
@@ -71,7 +71,7 @@ const Styleguide: FC<Props> = ({ title }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(ADD_TEMPLATE)}
+            onClick={(e) => navigate(e, ADD_TEMPLATE)}
           >
             <StyleIcon />
             &nbsp;Template uploaden
@@ -79,7 +79,7 @@ const Styleguide: FC<Props> = ({ title }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(ADD_SNIPPETS)}
+            onClick={(e) => navigate(e, ADD_SNIPPETS)}
           >
             <LoyaltyIcon />
             &nbsp;Snippet uploaden

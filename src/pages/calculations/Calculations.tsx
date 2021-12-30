@@ -1,7 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import { ButtonGroup } from '@material-ui/core';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationList from './CalculationList';
@@ -19,12 +17,7 @@ import RemoveCalculationsButton from './remove/RemoveCalculationsButton';
 import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
-
-const useStyles = makeStyles({
-  paper: {
-    padding: '6px 16px',
-  },
-});
+import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
   title: string;
@@ -33,8 +26,7 @@ interface Props {
 const Calculations: FC<Props> = ({ title }) => {
   const [calculations, setCalculations] = useState<CalculationInfo[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const classes = useStyles();
-  const history = useHistory();
+  const { history, navigate } = useNavigate();
   const { editStatus, setEditStatus } = useStatusToggle();
   const dispatch = useAppDispatch();
 
@@ -98,14 +90,14 @@ const Calculations: FC<Props> = ({ title }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(EDIT_CALCULATIONS_STOPPING_DISTANCE)}
+            onClick={(e) => navigate(e, EDIT_CALCULATIONS_STOPPING_DISTANCE)}
           >
             Stopafstand updaten
           </Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(EDIT_CALCULATIONS_OVERTAKING_DISTANCE)}
+            onClick={(e) => navigate(e, EDIT_CALCULATIONS_OVERTAKING_DISTANCE)}
           >
             Inhaalafstand updaten
           </Button>

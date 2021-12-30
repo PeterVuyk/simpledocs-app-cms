@@ -12,10 +12,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { useHistory } from 'react-router-dom';
 import { Icon } from '@material-ui/core';
 import { MenuItem } from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
+import useNavigate from './useNavigate';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,7 +73,7 @@ export interface Props
 
 const NavigationDrawer: FC<Props> = (props: Props) => {
   const { classes, currentPage, ...other } = props;
-  const history = useHistory();
+  const { navigate } = useNavigate();
   const { configuration } = useCmsConfiguration();
 
   const getCategoryItem = (title: string, children: ReactNode) => {
@@ -101,13 +101,14 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
         <ListItem
           key={menuItem.title}
           button
-          onClick={() => {
-            if (title === 'Boeken') {
-              history.push(`/books/${menuItem.urlSlug}`);
-            } else {
-              history.push(`/${menuItem.urlSlug}`);
-            }
-          }}
+          onClick={(e) =>
+            navigate(
+              e,
+              title === 'Boeken'
+                ? `/books/${menuItem.urlSlug}`
+                : `/${menuItem.urlSlug}`
+            )
+          }
           className={clsx(
             classes.item,
             currentPage === menuItem.urlSlug && classes.itemActiveItem

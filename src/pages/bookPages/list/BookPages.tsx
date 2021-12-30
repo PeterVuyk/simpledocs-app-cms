@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
 import { ButtonGroup } from '@material-ui/core';
 import bookRepository from '../../../firebase/database/bookRepository';
 import PageHeading from '../../../layout/PageHeading';
@@ -13,6 +12,7 @@ import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import UpdateStylesheet from '../stylesheet/UpdateStylesheetButton';
+import useNavigate from '../../../navigation/useNavigate';
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ interface Props {
 const BookPages: FC<Props> = ({ title, bookType }) => {
   const [pages, setPages] = useState<PageInfo[] | null>(null);
   const { editStatus, setEditStatus } = useStatusToggle();
-  const history = useHistory();
+  const { navigate } = useNavigate();
   const { getSlugFromBookType } = useCmsConfiguration();
 
   const loadPages = useCallback(() => {
@@ -36,12 +36,8 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
     loadPages();
   }, [bookType, editStatus, loadPages]);
 
-  const getAddPagePath = () => {
-    return {
-      pathname: `/books/${getSlugFromBookType(bookType)}/add`,
-      bookType,
-    };
-  };
+  const getAddPagePath = (): string =>
+    `/books/${getSlugFromBookType(bookType)}/add`;
 
   const handleStylesheetUpdate = () => {
     loadPages();
@@ -71,7 +67,7 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(getAddPagePath())}
+            onClick={(e) => navigate(e, getAddPagePath())}
           >
             Pagina toevoegen
           </Button>

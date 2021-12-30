@@ -1,7 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
 import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
@@ -19,6 +17,7 @@ import { ADD_DECISION_TREE } from '../../navigation/UrlSlugs';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_DECISION_TREE } from '../../model/DocumentationType';
 import DiffDecisionTreeAction from '../../components/ItemAction/diffAction/diffDecisionTreeAction/DiffDecisionTreeAction';
+import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
   title: string;
@@ -29,7 +28,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
     DecisionTreeStep[] | null
   >(null);
   const { editStatus, setEditStatus } = useStatusToggle();
-  const history = useHistory();
+  const { history, navigate } = useNavigate();
 
   const handleLoadDecisionTree = (): void => {
     decisionTreeRepository
@@ -92,7 +91,9 @@ const DecisionTree: FC<Props> = ({ title }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push(ADD_DECISION_TREE)}
+            onClick={(e) => {
+              navigate(e, ADD_DECISION_TREE);
+            }}
           >
             Toelichting bestand uploaden
           </Button>

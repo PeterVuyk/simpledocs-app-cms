@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Button from '@material-ui/core/Button';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FormikValues } from 'formik';
 import bookRepository from '../../firebase/database/bookRepository';
 import PageHeading from '../../layout/PageHeading';
@@ -14,9 +14,11 @@ import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
+import useNavigate from '../../navigation/useNavigate';
 
 const CreatePage: FC = () => {
-  const history = useHistory();
+  const { history } = useNavigate();
+  const { navigateBack } = useNavigate();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
   const { modifyHtmlForStorage } = useHtmlModifier();
   const { getBookTypeFromUrlSlug } = useCmsConfiguration();
@@ -74,7 +76,7 @@ const CreatePage: FC = () => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => history.goBack()}
+          onClick={(e) => navigateBack(e, `/books/${aggregatePath}`)}
         >
           Terug
         </Button>

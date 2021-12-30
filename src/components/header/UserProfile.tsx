@@ -5,10 +5,10 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../authentication/AuthProvider';
 import { LOGIN_PAGE, USERS_PAGE } from '../../navigation/UrlSlugs';
 import UpdatePasswordDialog from '../../authentication/UpdatePasswordDialog';
+import useNavigate from '../../navigation/useNavigate';
 
 const useStyles = makeStyles(() => ({
   headerItem: {
@@ -23,7 +23,7 @@ const UserProfile: FC = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { currentUser, logout } = useAuth();
   const open = Boolean(anchorEl);
-  const history = useHistory();
+  const { history, navigate } = useNavigate();
 
   const handleProfileMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -63,7 +63,7 @@ const UserProfile: FC = () => {
             open={open}
             onClose={handleCloseProfile}
           >
-            <MenuItem onClick={() => history.push(USERS_PAGE)}>
+            <MenuItem onClick={(e) => navigate(e, USERS_PAGE)}>
               Gebruikers
             </MenuItem>
             <MenuItem onClick={() => setShowUpdatePasswordDialog(true)}>
