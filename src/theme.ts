@@ -3,8 +3,8 @@ import { createTheme } from '@material-ui/core/styles';
 const cmsTheme = createTheme({
   palette: {
     primary: {
-      light: '#0091ea',
-      main: '#154594',
+      light: '#5E8AC7',
+      main: '#175BA0',
       dark: '#052b69',
     },
     secondary: {

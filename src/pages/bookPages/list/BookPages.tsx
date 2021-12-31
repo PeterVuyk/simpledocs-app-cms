@@ -52,17 +52,17 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
             setEditStatus={setEditStatus}
           />
           {pages && pages.length !== 0 && (
-            <>
-              <UpdateStylesheet
-                onStylesheetUpdate={handleStylesheetUpdate}
-                bookType={bookType}
-              />
-              <DownloadBookPagesMenuButton
-                pages={pages}
-                bookType={bookType}
-                editStatus={editStatus}
-              />
-            </>
+            <UpdateStylesheet
+              onStylesheetUpdate={handleStylesheetUpdate}
+              bookType={bookType}
+            />
+          )}
+          {pages && pages.length !== 0 && (
+            <DownloadBookPagesMenuButton
+              pages={pages}
+              bookType={bookType}
+              editStatus={editStatus}
+            />
           )}
           <Button
             variant="contained"

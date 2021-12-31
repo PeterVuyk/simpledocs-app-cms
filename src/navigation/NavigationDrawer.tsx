@@ -37,7 +37,7 @@ const styles = (theme: Theme) =>
     },
     itemCategory: {
       backgroundColor: '#232f3e',
-      boxShadow: '0 -1px 0 #154594 inset',
+      boxShadow: '0 -1px 0 #175BA0 inset',
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
     },
@@ -46,7 +46,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.common.white,
     },
     itemActiveItem: {
-      color: '#0091ea',
+      color: '#5E8AC7',
     },
     itemPrimary: {
       fontWeight: 'bold',

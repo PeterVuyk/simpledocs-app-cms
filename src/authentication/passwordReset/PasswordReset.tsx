@@ -42,7 +42,7 @@ const PasswordReset: FC = () => {
         <div className={classes.logoContainer}>
           <img
             style={{ maxWidth: '700px' }}
-            src="/simpledocs-logo.png"
+            src="/simpledocs-logo.svg"
             alt="SimpleDocs"
           />
         </div>
