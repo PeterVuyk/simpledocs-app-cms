@@ -15,6 +15,8 @@ import CopyToClipboardAction from '../../CopyToClipboardAction';
 import FileDropzoneArea from '../../form/FileDropzoneArea';
 import AlertBox from '../../AlertBox';
 import DialogTransition from '../../dialog/DialogTransition';
+import getExtensionByMimeType from '../../../helper/file/getExtensionByMimeType';
+import getMimeTypeFromBlob from '../../../helper/file/getMimeTypeFromBlob';
 
 interface Props {
   openBase64TransformerDialog: boolean;
@@ -34,13 +36,14 @@ const Base64TransformerDialog: FC<Props> = ({
   };
 
   const handleDownloadFileFromBase64 = () => {
-    if (!base64Input.split('data:image/svg+xml;base64,')[1]) {
+    const extension = getExtensionByMimeType(getMimeTypeFromBlob(base64Input));
+    if (!extension) {
       setError(
         'Het opgegeven base64 is onjuist, de data moet beginnen met data:image/svg+xml;base64,'
       );
       return;
     }
-    FileSaver.saveAs(base64Input, 'icon.svg');
+    FileSaver.saveAs(base64Input, `file.${extension}`);
     setError('');
   };
 
@@ -100,8 +103,13 @@ const Base64TransformerDialog: FC<Props> = ({
           }}
         />
         <FileDropzoneArea
-          allowedMimeTypes={['image/svg+xml']}
-          allowedExtension="svg"
+          allowedMimeTypes={[
+            'image/svg+xml',
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+          ]}
+          allowedExtension="svg of jpg"
           onUpdateFile={setSVGUploadRef}
         />
       </DialogContent>
