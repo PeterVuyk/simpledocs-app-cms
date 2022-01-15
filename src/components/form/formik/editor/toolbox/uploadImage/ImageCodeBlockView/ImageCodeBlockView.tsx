@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button,
   DialogActions,
   DialogContent,
   DialogContentText,
+  TextField,
 } from '@material-ui/core';
 import Highlight from 'react-highlight';
 import {
@@ -12,8 +13,6 @@ import {
 } from '../../../../../../../model/artifacts/Artifact';
 import utilHelper from '../../../../../../../helper/utilHelper';
 import { ImageInfo } from '../../../../../../../model/imageLibrary/ImageInfo';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pretty = require('pretty');
 
 interface Props {
   contentType: ContentType;
@@ -26,30 +25,46 @@ const ImageCodeBlockView: FC<Props> = ({
   contentType,
   imageInfo,
 }) => {
-  const getImageAlt = () => {
-    return imageInfo.filename
-      .replace('-', ' ')
-      .replace('_', ' ')
+  const [altText, setAltText] = useState<string>(
+    imageInfo.filename
+      .replaceAll('-', ' ')
+      .replaceAll('_', ' ')
       .split('.')
       .slice(0, -1)
-      .join('.');
+      .join('.')
+  );
+
+  const handleAltTextChange = (text: string) => {
+    setAltText(text.replaceAll('"', ' '));
   };
 
   const getImageHtmlCode = () => {
     if (contentType === CONTENT_TYPE_MARKDOWN) {
-      return pretty(`![${getImageAlt()}](${imageInfo.downloadUrl})`);
+      return `![${altText}](${imageInfo.downloadUrl})`;
     }
-    return pretty(
-      `<img src="${imageInfo.downloadUrl}" alt="${getImageAlt()}">`
-    );
+    return `<img src="${imageInfo.downloadUrl}" alt="${altText}">`;
   };
 
   return (
     <>
       <DialogContent>
         <DialogContentText style={{ whiteSpace: 'pre-line' }} id="description">
-          Gebruik deze snippet om naar de afbeelding te refereren.
+          Gebruik deze snippet om naar de afbeelding te refereren. Geef indien
+          gewenst een alternatieve tekst op als het laden van de afbeelding
+          mislukt is, gebruik hiervoor geen speciale karakters of tekens.
         </DialogContentText>
+        <br />
+        <TextField
+          fullWidth
+          variant="outlined"
+          onChange={(event) => handleAltTextChange(event.target.value)}
+          required
+          value={altText}
+          id="altText"
+          label="Alternatieve tekst"
+          name="altText"
+          autoFocus
+        />
         <Highlight className="markdown">{getImageHtmlCode()}</Highlight>
       </DialogContent>
       <DialogActions>

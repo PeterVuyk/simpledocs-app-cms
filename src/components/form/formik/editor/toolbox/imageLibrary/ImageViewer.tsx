@@ -77,7 +77,9 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
 
   return (
     <div className={classes.root}>
-      {imagesInfo !== null && imagesInfo.length === 0 && <LoadingSpinner />}
+      {imagesInfo !== null && imagesInfo.length === 0 && (
+        <LoadingSpinner color="secondary" />
+      )}
       <ImageList cols={3} rowHeight={180} className={classes.imageList}>
         {imagesInfo !== null &&
           imagesInfo.map((item) => (

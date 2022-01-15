@@ -15,15 +15,16 @@ const useStyles = makeStyles({
 
 interface Props {
   showInBlock?: boolean;
+  color?: 'primary' | 'secondary';
 }
 
-const LoadingSpinner: FC<Props> = ({ showInBlock }) => {
+const LoadingSpinner: FC<Props> = ({ showInBlock, color }) => {
   const classes = useStyles();
   return (
     <div style={showInBlock ? { height: 500 } : {}}>
       <div className={classes.relativeContainer}>
         <div className={classes.center}>
-          <CircularProgress />
+          <CircularProgress color={color ?? 'primary'} />
         </div>
       </div>
     </div>
