@@ -27,6 +27,7 @@ export interface BookInfo {
   chapterDivisionsInIntermediateList: string[];
   subTitle?: string;
   iconFile?: string;
+  imageFile?: string;
 }
 
 export interface DecisionsTab {

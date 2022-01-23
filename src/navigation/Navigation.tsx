@@ -22,6 +22,7 @@ import CmsConfigurations from '../pages/cmsConfigurations/CmsConfigurations';
 import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
 import BookPages from '../pages/bookPages/list/BookPages';
 import Users from '../pages/users/Users';
+import BookManagementPage from '../pages/bookManagement/BookManagementPage';
 
 const drawerWidth = 240;
 
@@ -89,6 +90,12 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         return (
           <DecisionTree
             title={configuration.menu.menuItems.decisionTree.title}
+          />
+        );
+      case configuration.menu.menuItems.bookManagement.urlSlug:
+        return (
+          <BookManagementPage
+            title={configuration.menu.menuItems.bookManagement.title}
           />
         );
       case configuration.menu.menuItems.appConfigurations.urlSlug:

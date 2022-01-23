@@ -14,7 +14,7 @@ import EditItemAction from '../../../components/ItemAction/EditItemAction';
 import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
 import CopyPageAction from '../../../components/ItemAction/copyPageAction/CopyPageAction';
-import ChapterDivisions from '../../../model/ChapterDivisions';
+import ChapterDivisions from '../../../model/books/ChapterDivisions';
 import DiffPageAction from '../../../components/ItemAction/diffAction/diffPageAction/DiffPageAction';
 
 const useStyles = makeStyles({

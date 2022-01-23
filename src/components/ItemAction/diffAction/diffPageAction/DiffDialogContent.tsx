@@ -6,7 +6,7 @@ import 'diff2html/bundles/css/diff2html.min.css';
 import useDiff from '../../../hooks/useDiff';
 import DiffContentPage from '../diff/DiffContentPage';
 import { Page } from '../../../../model/Page';
-import ChapterDivisions from '../../../../model/ChapterDivisions';
+import ChapterDivisions from '../../../../model/books/ChapterDivisions';
 
 const useStyles = makeStyles((theme) => ({
   container: {

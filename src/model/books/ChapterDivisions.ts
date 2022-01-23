@@ -1,3 +1,10 @@
+export type ChapterDivision =
+  | 'chapter'
+  | 'section'
+  | 'subsection'
+  | 'subHead'
+  | 'subSubSection';
+
 const ChapterDivisions = {
   chapter: 'Hoofdstuk',
   section: 'Paragraaf',
