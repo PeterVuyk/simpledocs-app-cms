@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import { BookSetting } from '../../model/books/BookSetting';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
+import BookManagementListItemActions from './BookManagementListItemActions';
 
 interface Props {
   bookSetting: BookSetting;
@@ -45,7 +46,9 @@ const BookSettingsListItem: FC<Props> = ({ bookSetting }) => {
           alt={bookSetting.title}
         />
       </TableCell>
-      <TableCell />
+      <TableCell>
+        <BookManagementListItemActions bookSetting={bookSetting} />
+      </TableCell>
     </>
   );
 };

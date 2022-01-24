@@ -9,7 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PageHeading from '../../layout/PageHeading';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
 import { BookSetting } from '../../model/books/BookSetting';
 import BookSettingsListItem from './BookSettingsListItem';
