@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { BookSetting } from '../../model/books/BookSetting';
 import EditItemAction from '../../components/ItemAction/EditItemAction';
-import EditBookSettingsDialog from './edit/EditBookSettingsDialog';
+import EditBookSettingsDialog from './EditBookSettingsDialog';
 
 interface Props {
   bookSetting: BookSetting;

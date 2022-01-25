@@ -7,12 +7,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
 import { BookSetting } from '../../model/books/BookSetting';
 import BookSettingsListItem from './BookSettingsListItem';
 import { BookInfo } from '../../model/configurations/AppConfigurations';
+import BookManagementHeadingButtonGroup from './BookManagementHeadingButtonGroup';
 
 const useStyles = makeStyles({
   table: {
@@ -67,7 +69,9 @@ const BookManagementPage: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title} />
+      <PageHeading title={title}>
+        <BookManagementHeadingButtonGroup />
+      </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>

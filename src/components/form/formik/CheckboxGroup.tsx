@@ -22,7 +22,7 @@ const CheckboxGroup: FC<Props> = ({ name, label, items }) => {
       {Object.keys(items).map((key) => (
         <FormControlLabel
           control={<Checkbox />}
-          label={key}
+          label={items[key]}
           checked={formikProps.values[name].includes(key)}
           id={name}
           name={name}
@@ -32,10 +32,10 @@ const CheckboxGroup: FC<Props> = ({ name, label, items }) => {
             if (formikProps.values[name].includes(key)) {
               // @ts-ignore
               updatedItems = updatedItems.filter((value) => value !== key);
+              formikProps.setFieldValue(name, updatedItems);
             } else {
-              updatedItems.push(key);
+              formikProps.setFieldValue(name, [...updatedItems, key]);
             }
-            formikProps.setFieldValue(name, updatedItems);
           }}
         />
       ))}

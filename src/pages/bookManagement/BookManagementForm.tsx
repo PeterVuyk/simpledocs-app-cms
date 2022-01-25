@@ -8,20 +8,16 @@ import { Dialog, FormLabel } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
-import SubmitButton from '../../../components/form/formik/SubmitButton';
-import TextField from '../../../components/form/formik/TextField';
-import { notify } from '../../../redux/slice/notificationSlice';
-import logger from '../../../helper/logger';
-import { useAppDispatch } from '../../../redux/hooks';
-import AlertBox from '../../../components/AlertBox';
-import updateUser from '../../../firebase/functions/updateUser';
-import validateYupPassword from '../../../components/form/formik/validators/validateYupPassword';
-import DialogTransition from '../../../components/dialog/DialogTransition';
-import { BookSetting } from '../../../model/books/BookSetting';
-import Select from '../../../components/form/formik/Select';
-import ChapterDivisions from '../../../model/books/ChapterDivisions';
-import CheckboxGroup from '../../../components/form/formik/CheckboxGroup';
-import FileDropzoneArea from '../../../components/form/formik/FileDropzoneArea';
+import SubmitButton from '../../components/form/formik/SubmitButton';
+import TextField from '../../components/form/formik/TextField';
+import AlertBox from '../../components/AlertBox';
+import validateYupPassword from '../../components/form/formik/validators/validateYupPassword';
+import DialogTransition from '../../components/dialog/DialogTransition';
+import { BookSetting } from '../../model/books/BookSetting';
+import Select from '../../components/form/formik/Select';
+import ChapterDivisions from '../../model/books/ChapterDivisions';
+import CheckboxGroup from '../../components/form/formik/CheckboxGroup';
+import FileDropzoneArea from '../../components/form/formik/FileDropzoneArea';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -30,49 +26,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  bookSetting: BookSetting;
+  onSubmit: (values: FormikValues) => Promise<void>;
+  bookSetting?: BookSetting;
   oncloseDialog: () => void;
 }
 
-const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
+const BookManagementForm: FC<Props> = ({
+  oncloseDialog,
+  bookSetting,
+  onSubmit,
+}) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const dispatch = useAppDispatch();
   const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
-    updateUser(values.password)
-      .then(() =>
-        dispatch(
-          notify({
-            notificationType: 'success',
-            notificationOpen: true,
-            notificationMessage: 'De boekgegevens zijn gewijzigd.',
-          })
-        )
-      )
-      .then(oncloseDialog)
-      .catch((error) => {
-        logger.errorWithReason(
-          'Failed updating the bookSettings in EditBookSettingsDialog.handleSubmitForm',
-          error
-        );
-        dispatch(
-          notify({
-            notificationType: 'error',
-            notificationOpen: true,
-            notificationMessage: `Het wijzigen van de boekgegevens is mislukt.`,
-          })
-        );
-      });
+    return onSubmit(values);
   };
 
   const initialFormState = () => {
-    return bookSetting;
+    if (bookSetting) {
+      return bookSetting;
+    }
+    return {
+      title: '',
+      subTitle: '',
+      chapterDivisionsInList: ['chapter', 'section', 'subSection'],
+      chapterDivisionsInIntermediateList: ['subSubSection', 'subHead'],
+      imageFile: null,
+      tab: 'firstBookTab',
+      index: null,
+      isDraft: true,
+    };
   };
 
   const formValidation = Yup.object().shape({
-    password: validateYupPassword(),
+    title: Yup.string().required('Titel is een verplicht veld.'),
+    subTitle: Yup.string().required('Subtitel is een verplicht veld.'),
+    imageFile: Yup.mixed().required(
+      'Het uploaden van een afbeelding is verplicht.'
+    ),
+    index: Yup.number()
+      .integer()
+      .positive()
+      .required('index is een verplicht veld.'),
   });
 
   return (
@@ -154,12 +151,12 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
               />
               <CheckboxGroup
                 name="chapterDivisionsInList"
-                label="Hoofdstukindelingen tonen op primaire pagina"
+                label="Hoofdstukindelingen tonen op de primaire pagina"
                 items={ChapterDivisions}
               />
               <CheckboxGroup
                 name="chapterDivisionsInIntermediateList"
-                label="Hoofdstukindelingen tonen op secundaire pagina"
+                label="Hoofdstukindelingen tonen op de secundaire pagina"
                 items={ChapterDivisions}
               />
               <FormLabel
@@ -205,4 +202,4 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
   );
 };
 
-export default EditBookSettingsDialog;
+export default BookManagementForm;

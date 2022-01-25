@@ -1,7 +1,7 @@
 export type ChapterDivision =
   | 'chapter'
   | 'section'
-  | 'subsection'
+  | 'subSection'
   | 'subHead'
   | 'subSubSection';
 
