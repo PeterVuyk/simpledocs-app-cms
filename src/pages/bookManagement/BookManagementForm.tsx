@@ -55,8 +55,9 @@ const BookManagementForm: FC<Props> = ({
       chapterDivisionsInIntermediateList: ['subSubSection', 'subHead'],
       imageFile: null,
       tab: 'firstBookTab',
-      index: null,
+      index: undefined,
       isDraft: true,
+      bookType: Date.now(),
     };
   };
 
@@ -144,6 +145,7 @@ const BookManagementForm: FC<Props> = ({
                 name="isDraft"
                 label="Concept / Gepubliceerd"
                 showError={showError}
+                disabled={bookSetting === undefined}
                 options={{
                   false: `Gepubliceerd`,
                   true: `Concept`,

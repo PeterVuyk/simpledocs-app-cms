@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,7 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
@@ -35,22 +34,25 @@ const BookManagementPage: FC<Props> = ({ title }) => {
   // const cmsConfigurations = useCmsConfiguration().configuration;
   const appConfigurations = useAppConfiguration().configuration;
 
-  const mapBookInfoToBookSettings = (
-    bookInfo: BookInfo,
-    tab: 'firstBookTab' | 'secondBookTab'
-  ) => {
-    return {
-      title: bookInfo.title,
-      subTitle: bookInfo.subTitle,
-      tab,
-      index: bookInfo.index,
-      chapterDivisionsInIntermediateList:
-        bookInfo.chapterDivisionsInIntermediateList,
-      imageFile: bookInfo.imageFile,
-      isDraft: false,
-      chapterDivisionsInList: bookInfo.chapterDivisionsInList,
-    } as BookSetting;
-  };
+  const mapBookInfoToBookSettings = useCallback(
+    (bookInfo: BookInfo, tab: 'firstBookTab' | 'secondBookTab') => {
+      return {
+        title: bookInfo.title,
+        subTitle: bookInfo.subTitle,
+        tab,
+        index: bookInfo.index,
+        chapterDivisionsInIntermediateList:
+          bookInfo.chapterDivisionsInIntermediateList,
+        imageFile: bookInfo.imageFile,
+        isDraft: !Object.keys(appConfigurations.versioning).includes(
+          bookInfo.bookType
+        ),
+        chapterDivisionsInList: bookInfo.chapterDivisionsInList,
+        bookType: bookInfo.bookType,
+      } as BookSetting;
+    },
+    [appConfigurations.versioning]
+  );
 
   useEffect(() => {
     const firstBookTab = appConfigurations.firstBookTab.bookTypes.map(
@@ -63,6 +65,7 @@ const BookManagementPage: FC<Props> = ({ title }) => {
   }, [
     appConfigurations.firstBookTab.bookTypes,
     appConfigurations.secondBookTab.bookTypes,
+    mapBookInfoToBookSettings,
   ]);
 
   const classes = useStyles();

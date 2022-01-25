@@ -3,8 +3,11 @@ import { FormikValues } from 'formik';
 import { notify } from '../../redux/slice/notificationSlice';
 import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
-import updateUser from '../../firebase/functions/updateUser';
 import BookManagementForm from './BookManagementForm';
+import useAppConfiguration from '../../configuration/useAppConfiguration';
+import clone from '../../helper/object/clone';
+import configurationRepository from '../../firebase/database/configurationRepository';
+import omit from '../../helper/object/omit';
 
 interface Props {
   oncloseDialog: () => void;
@@ -12,35 +15,40 @@ interface Props {
 
 const AddBookSettingsDialog: FC<Props> = ({ oncloseDialog }) => {
   const dispatch = useAppDispatch();
+  const { configuration } = useAppConfiguration();
 
   const handleSubmit = (values: FormikValues) => {
-    console.log('add', values);
-    return Promise.resolve();
-
-    // return updateUser(values.password)
-    //   .then(() =>
-    //     dispatch(
-    //       notify({
-    //         notificationType: 'success',
-    //         notificationOpen: true,
-    //         notificationMessage: 'De boekgegevens zijn toegevoegd.',
-    //       })
-    //     )
-    //   )
-    //   .then(oncloseDialog)
-    //   .catch((error) => {
-    //     logger.errorWithReason(
-    //       'Failed adding the bookSettings in AddBookSettingsDialog.handleSubmitForm',
-    //       error
-    //     );
-    //     dispatch(
-    //       notify({
-    //         notificationType: 'error',
-    //         notificationOpen: true,
-    //         notificationMessage: `Het toevoegen van de boekgegevens is mislukt.`,
-    //       })
-    //     );
-    //   });
+    const updatedConfiguration = clone(configuration);
+    updatedConfiguration[values.tab].bookTypes = [
+      // @ts-ignore
+      ...configuration[values.tab].bookTypes,
+      omit(values, ['tab', 'isDraft']),
+    ];
+    return configurationRepository
+      .updateAppConfiguration(updatedConfiguration)
+      .then(() =>
+        dispatch(
+          notify({
+            notificationType: 'success',
+            notificationOpen: true,
+            notificationMessage: 'De boekgegevens zijn toegevoegd.',
+          })
+        )
+      )
+      .then(oncloseDialog)
+      .catch((error) => {
+        logger.errorWithReason(
+          'Failed adding the bookSettings in AddBookSettingsDialog.handleSubmitForm',
+          error
+        );
+        dispatch(
+          notify({
+            notificationType: 'error',
+            notificationOpen: true,
+            notificationMessage: `Het toevoegen van de boekgegevens is mislukt.`,
+          })
+        );
+      });
   };
 
   return (

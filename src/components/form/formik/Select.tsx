@@ -6,6 +6,7 @@ interface Props {
   name: string;
   showError: boolean;
   options: any;
+  disabled?: boolean;
   [x: string]: any;
 }
 
@@ -13,6 +14,7 @@ const SelectWrapper: FC<Props> = ({
   name,
   showError,
   options,
+  disabled,
   ...otherProps
 }) => {
   const { setFieldValue } = useFormikContext();
@@ -40,7 +42,7 @@ const SelectWrapper: FC<Props> = ({
   }
 
   return (
-    <TextField {...configSelect} disabled={!hasOptions()}>
+    <TextField {...configSelect} disabled={disabled || !hasOptions()}>
       {hasOptions() &&
         Object.keys(options).map((item, pos) => {
           return (

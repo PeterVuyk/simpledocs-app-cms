@@ -81,6 +81,15 @@ async function updateConfigurations(
   });
 }
 
+async function updateAppConfiguration(
+  configurations: AppConfigurations | CmsConfigurations
+): Promise<void> {
+  return database
+    .collection(CONFIGURATION_COLLECTION)
+    .doc(APP_CONFIGURATIONS)
+    .set(configurations);
+}
+
 async function removeConfigurationDraft(
   configurationType: ConfigurationType
 ): Promise<void> {
@@ -95,6 +104,7 @@ const configurationRepository = {
   getConfigurations,
   getAllConfigurations,
   removeConfigurationDraft,
+  updateAppConfiguration,
 };
 
 export default configurationRepository;
