@@ -11,7 +11,6 @@ import omit from '../../helper/object/omit';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 import clone from '../../helper/object/clone';
 import configurationRepository from '../../firebase/database/configurationRepository';
-import { APP_CONFIGURATIONS } from '../../model/configurations/ConfigurationType';
 
 interface Props {
   bookSetting: BookSetting;

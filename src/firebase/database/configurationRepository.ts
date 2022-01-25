@@ -82,7 +82,7 @@ async function updateConfigurations(
 }
 
 async function updateAppConfiguration(
-  configurations: AppConfigurations | CmsConfigurations
+  configurations: AppConfigurations
 ): Promise<void> {
   return database
     .collection(CONFIGURATION_COLLECTION)

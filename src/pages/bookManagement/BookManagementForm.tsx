@@ -57,7 +57,7 @@ const BookManagementForm: FC<Props> = ({
       tab: 'firstBookTab',
       index: undefined,
       isDraft: true,
-      bookType: Date.now(),
+      bookType: `b${Date.now()}`,
     };
   };
 

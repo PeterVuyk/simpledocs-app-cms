@@ -3,12 +3,17 @@ import TableCell from '@material-ui/core/TableCell';
 import { BookSetting } from '../../model/books/BookSetting';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
 import BookManagementListItemActions from './BookManagementListItemActions';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 
 interface Props {
   bookSetting: BookSetting;
+  appConfigurations: AppConfigurations;
 }
 
-const BookSettingsListItem: FC<Props> = ({ bookSetting }) => {
+const BookSettingsListItem: FC<Props> = ({
+  bookSetting,
+  appConfigurations,
+}) => {
   const primaryPageText = () => {
     return `Primaire pagina: ${bookSetting.chapterDivisionsInList
       // @ts-ignore
@@ -46,8 +51,11 @@ const BookSettingsListItem: FC<Props> = ({ bookSetting }) => {
           alt={bookSetting.title}
         />
       </TableCell>
-      <TableCell>
-        <BookManagementListItemActions bookSetting={bookSetting} />
+      <TableCell style={{ whiteSpace: 'nowrap' }}>
+        <BookManagementListItemActions
+          bookSetting={bookSetting}
+          appConfigurations={appConfigurations}
+        />
       </TableCell>
     </>
   );

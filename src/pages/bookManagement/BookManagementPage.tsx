@@ -94,7 +94,10 @@ const BookManagementPage: FC<Props> = ({ title }) => {
               .sort((a, b) => a.tab.localeCompare(b.tab))
               .map((row) => (
                 <TableRow key={row.title.toString()}>
-                  <BookSettingsListItem bookSetting={row} />
+                  <BookSettingsListItem
+                    bookSetting={row}
+                    appConfigurations={appConfigurations}
+                  />
                 </TableRow>
               ))}
           </TableBody>
