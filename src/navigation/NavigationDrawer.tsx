@@ -16,6 +16,7 @@ import { Icon } from '@material-ui/core';
 import { MenuItem } from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import useNavigate from './useNavigate';
+import useAppConfiguration from '../configuration/useAppConfiguration';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -74,6 +75,7 @@ export interface Props
 const NavigationDrawer: FC<Props> = (props: Props) => {
   const { classes, currentPage, ...other } = props;
   const { navigate } = useNavigate();
+  const { getSortedBooks, getTabByBookType } = useAppConfiguration();
   const { configuration } = useCmsConfiguration();
 
   const getCategoryItem = (title: string, children: ReactNode) => {
@@ -139,10 +141,20 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
           CMS APP
         </ListItem>
         {getCategoryItem(
-          configuration.books.title,
+          'Boeken',
           getListItem(
-            configuration.books.title,
-            Object.values(configuration.books.bookItems)
+            'Boeken',
+            Object.values(
+              getSortedBooks().map((value, index) => ({
+                title: value.title,
+                navigationIndex: index,
+                urlSlug: value.bookType,
+                icon:
+                  getTabByBookType(value.bookType) === 'firstBookTab'
+                    ? 'looks_one_icon'
+                    : 'looks_two_icon',
+              }))
+            )
           )
         )}
         {getCategoryItem(

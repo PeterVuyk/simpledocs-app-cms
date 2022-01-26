@@ -53,6 +53,7 @@ const Publications: FC<Props> = ({ title }) => {
 
   const getSortedBooks = useCallback(
     (appConfigurations: AppConfigurations): Versioning[] => {
+      // TODO: Can this function be replaced by custom hook function 'getSortedBooks()'?
       const bookTypes = [
         ...appConfigurations.firstBookTab.bookTypes
           .sort((a, b) => a.index - b.index)

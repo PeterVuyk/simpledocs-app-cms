@@ -12,7 +12,6 @@ import { PageInfo } from '../../../model/Page';
 import TextField from '../../form/formik/TextField';
 import validatePageIndex from '../../form/formik/validators/validatePageIndex';
 import validateBookChapter from '../../form/formik/validators/validateBookChapter';
-import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import Select from '../../form/formik/Select';
 import bookRepository from '../../../firebase/database/bookRepository';
 import { notify } from '../../../redux/slice/notificationSlice';
@@ -20,6 +19,7 @@ import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
 import DialogTransition from '../../dialog/DialogTransition';
 import useNavigate from '../../../navigation/useNavigate';
+import useAppConfiguration from '../../../configuration/useAppConfiguration';
 
 interface Props {
   bookType: string;
@@ -30,7 +30,7 @@ interface Props {
 const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const { configuration, getSlugFromBookType } = useCmsConfiguration();
+  const { getSortedBooks } = useAppConfiguration();
   const { history } = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -48,9 +48,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
         iconFile: page.iconFile,
         isDraft: true,
       })
-      .then(() =>
-        history.push(`/books/${getSlugFromBookType(values.bookType)}`)
-      )
+      .then(() => history.push(`/books/${values.bookType}`))
       .then(() =>
         dispatch(
           notify({
@@ -91,27 +89,17 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
       .required('Het opgeven van een boek is verplicht.')
       .test(
         'bookType',
-        'Het opgegeven type boek is niet bekend in het cms configuratie',
+        'Het opgegeven boek is onbekend',
         async (givenBookType) =>
           givenBookType !== undefined &&
-          Object.keys(configuration.books.bookItems).includes(givenBookType)
+          getSortedBooks().find((value) => value.bookType === givenBookType) !==
+            undefined
       ),
   });
 
   const getBookOptions = () => {
-    const bookTypes = Object.keys(configuration.books.bookItems);
-    return bookTypes
-      .sort(
-        (a, b) =>
-          configuration.books.bookItems[a].navigationIndex -
-          configuration.books.bookItems[b].navigationIndex
-      )
-      .map((value) => {
-        return {
-          bookType: value,
-          title: configuration.books.bookItems[value].title,
-        };
-      })
+    return getSortedBooks()
+      .map((value) => ({ bookType: value.bookType, title: value.title }))
       .reduce(
         (obj, item) => Object.assign(obj, { [item.bookType]: item.title }),
         {}

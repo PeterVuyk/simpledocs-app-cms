@@ -17,21 +17,23 @@ import EditPage from '../pages/bookPages/EditPage';
 import StyleEditor from '../pages/styleguide/StyleEditor';
 import DecisionTreeArtifactEditor from '../pages/decisionTree/artifacts/DecisionTreeArtifactEditor';
 import NotFound from '../pages/NotFound';
-import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../model/Aggregate';
 import PasswordReset from '../authentication/passwordReset/PasswordReset';
+import useAppConfiguration from '../configuration/useAppConfiguration';
+import useCmsConfiguration from '../configuration/useCmsConfiguration';
 
 const AppRouter: FC = () => {
-  const { configuration } = useCmsConfiguration();
+  const cmsConfigurations = useCmsConfiguration().configuration;
+  const { configuration } = useAppConfiguration();
 
   const getDefaultRedirectUrl = () => {
-    const { urlSlug } = Object.entries(configuration.books.bookItems).sort(
-      (a, b) => a[1].navigationIndex - b[1].navigationIndex
-    )[0][1];
-    return `/books/${urlSlug}`;
+    const { bookType } = configuration.firstBookTab.bookTypes.sort(
+      (a, b) => a.index - b.index
+    )[0];
+    return `/books/${bookType}`;
   };
 
   return (
@@ -52,7 +54,7 @@ const AppRouter: FC = () => {
             path="/:page?"
             Component={(props: any) => <Navigation {...props} />}
           />
-          {Object.keys(configuration.menu.menuItems).includes(
+          {Object.keys(cmsConfigurations.menu.menuItems).includes(
             AGGREGATE_CALCULATIONS
           ) && (
             <Route path="/calculations">
@@ -85,7 +87,7 @@ const AppRouter: FC = () => {
             path="/styleguide/:artifactType/:artifactId"
             Component={StyleEditor}
           />
-          {Object.keys(configuration.menu.menuItems).includes(
+          {Object.keys(cmsConfigurations.menu.menuItems).includes(
             AGGREGATE_DECISION_TREE
           ) && (
             <Route path="/artifacts">

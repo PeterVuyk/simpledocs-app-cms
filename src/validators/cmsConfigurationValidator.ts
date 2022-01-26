@@ -1,47 +1,3 @@
-import { getNonBookAggregates } from '../model/Aggregate';
-
-const validateBooks = (cmsConfiguration: any, errorMessages: string[]) => {
-  if (!('books' in cmsConfiguration)) {
-    errorMessages.push(`- 'books' ontbreekt.`);
-    return errorMessages;
-  }
-  if (!('title' in cmsConfiguration.books)) {
-    errorMessages.push(`- 'books.title' ontbreekt.`);
-  }
-  if (
-    !('bookItems' in cmsConfiguration.books) ||
-    cmsConfiguration.books.bookItems.length === 0
-  ) {
-    errorMessages.push(`- 'books.bookItems' ontbreekt of is leeg.`);
-    return errorMessages;
-  }
-  for (const bookType of Object.keys(cmsConfiguration.books.bookItems)) {
-    const bookInfo = cmsConfiguration.books.bookItems[bookType];
-    if (getNonBookAggregates().includes(bookType)) {
-      errorMessages.push(
-        `- Één van de toegevoegde boeken '${bookType}' gebruikt voor 'bookType' een gereserveerde benaming (lijst van gereserveerde benamingen: ${getNonBookAggregates().join(
-          ', '
-        )}).`
-      );
-    }
-    if (!('title' in bookInfo)) {
-      errorMessages.push(`- 'books.bookItems.${bookType}.title' ontbreekt.`);
-    }
-    if (!('navigationIndex' in bookInfo)) {
-      errorMessages.push(
-        `- 'books.bookItems.${bookType}.navigationIndex' ontbreekt.`
-      );
-    }
-    if (!('urlSlug' in bookInfo)) {
-      errorMessages.push(`- 'books.bookItems.${bookType}.urlSlug' ontbreekt.`);
-    }
-    if (!('icon' in bookInfo)) {
-      errorMessages.push(`- 'books.bookItems.${bookType}.icon' ontbreekt.`);
-    }
-  }
-  return errorMessages;
-};
-
 const validateMenu = (cmsConfiguration: any, errorMessages: string[]) => {
   if (!('menu' in cmsConfiguration)) {
     errorMessages.push(`- 'menu' ontbreekt.`);
@@ -88,7 +44,6 @@ const validate = (cmsConfiguration: any) => {
     return 'De aangepaste configuratie is leeg. Geef een correcte configuratie op.';
   }
   let errorMessages: string[] = [];
-  errorMessages = validateBooks(cmsConfiguration, errorMessages);
   errorMessages = validateMenu(cmsConfiguration, errorMessages);
 
   return errorMessages.length === 0

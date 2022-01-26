@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import BookPageListItem from './BookPageListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { PageInfo } from '../../../model/Page';
-import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import { DOCUMENTATION_ID_LINK_BOOK_PAGE } from '../../../model/DocumentationType';
 import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
 
@@ -37,7 +36,6 @@ const BookPagesList: FC<Props> = ({
   bookType,
 }) => {
   const classes = useStyles();
-  const { getSlugFromBookType } = useCmsConfiguration();
 
   return (
     <TableContainer component={Paper}>
@@ -82,7 +80,7 @@ const BookPagesList: FC<Props> = ({
                 key={row.id}
               >
                 <BookPageListItem
-                  bookTypeSlug={getSlugFromBookType(bookType)}
+                  bookTypeSlug={bookType}
                   editStatus={editStatus}
                   page={row}
                   onLoadPages={onLoadPages}

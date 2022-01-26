@@ -14,7 +14,6 @@ import NotFound from '../NotFound';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
-import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { notify } from '../../redux/slice/notificationSlice';
 import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
 import useNavigate from '../../navigation/useNavigate';
@@ -24,14 +23,13 @@ const EditPage: FC = () => {
   const { history, navigateBack } = useNavigate();
   const { bookPageId, aggregatePath } =
     useParams<{ bookPageId: string; aggregatePath: string }>();
-  const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     bookRepository
-      .getPageById(getBookTypeFromUrlSlug(aggregatePath), bookPageId)
+      .getPageById(aggregatePath, bookPageId)
       .then((result) => setPage(result));
-  }, [aggregatePath, bookPageId, getBookTypeFromUrlSlug]);
+  }, [aggregatePath, bookPageId]);
 
   const handleSubmit = async (
     values: FormikValues,
@@ -44,7 +42,7 @@ const EditPage: FC = () => {
           )
         : markdownHelper.modifyMarkdownForStorage(values.markdownContent);
     await bookRepository
-      .updatePage(getBookTypeFromUrlSlug(aggregatePath), page?.chapter ?? '', {
+      .updatePage(aggregatePath, page?.chapter ?? '', {
         id: `${page?.id?.replaceAll('-draft', '')}-draft`,
         pageIndex: values.pageIndex,
         chapter: values.chapter,
@@ -103,7 +101,7 @@ const EditPage: FC = () => {
         <BookPageForm
           page={page}
           onSubmit={handleSubmit}
-          bookType={getBookTypeFromUrlSlug(aggregatePath)}
+          bookType={aggregatePath}
         />
       )}
     </Navigation>

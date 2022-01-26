@@ -44,7 +44,7 @@ async function updateVersion(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
-  if (configuration.versioning[versioning.aggregate].isBookType) {
+  if (configuration.versioning[versioning.aggregate]?.isBookType) {
     await publishBookPagesRepository.publish(versioning, newVersion);
     return;
   }

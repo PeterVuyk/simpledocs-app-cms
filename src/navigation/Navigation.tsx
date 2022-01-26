@@ -23,6 +23,7 @@ import { AGGREGATE_CALCULATIONS } from '../model/Aggregate';
 import BookPages from '../pages/bookPages/list/BookPages';
 import Users from '../pages/users/Users';
 import BookManagementPage from '../pages/bookManagement/BookManagementPage';
+import useAppConfiguration from '../configuration/useAppConfiguration';
 
 const drawerWidth = 240;
 
@@ -47,8 +48,8 @@ interface Props extends WithStyles<typeof styles> {
 const Navigation: FC<Props> = ({ classes, children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const match = useRouteMatch<{ page: string }>();
-  const { configuration, slugExist, getBookTypeFromUrlSlug } =
-    useCmsConfiguration();
+  const { configuration, slugExist } = useCmsConfiguration();
+  const { getBookInfo } = useAppConfiguration();
 
   const { params } = match;
   const { page } = params;
@@ -57,17 +58,13 @@ const Navigation: FC<Props> = ({ classes, children }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  const pageExist = () =>
+    getBookInfo(page) !== undefined || slugExist(page) || children;
+
   const getPage = () => {
-    const bookPage = Object.values(configuration.books.bookItems).find(
-      (item) => item.urlSlug === page
-    );
-    if (bookPage) {
-      return (
-        <BookPages
-          title={bookPage.title}
-          bookType={getBookTypeFromUrlSlug(page)}
-        />
-      );
+    const bookInfo = getBookInfo(page);
+    if (bookInfo) {
+      return <BookPages title={bookInfo.title} bookType={page} />;
     }
 
     if (
@@ -122,7 +119,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
     }
   };
 
-  if (!slugExist(page) && !children) {
+  if (!pageExist()) {
     return <NotFound />;
   }
 

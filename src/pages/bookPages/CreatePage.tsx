@@ -10,7 +10,6 @@ import BookPageForm from './BookPageForm';
 import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
-import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
@@ -21,7 +20,6 @@ const CreatePage: FC = () => {
   const { navigateBack } = useNavigate();
   const { aggregatePath } = useParams<{ aggregatePath: string }>();
   const { modifyHtmlForStorage } = useHtmlModifier();
-  const { getBookTypeFromUrlSlug } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (
@@ -33,7 +31,7 @@ const CreatePage: FC = () => {
         ? modifyHtmlForStorage(values.htmlContent)
         : markdownHelper.modifyMarkdownForStorage(values.markdownContent);
     bookRepository
-      .createPage(getBookTypeFromUrlSlug(aggregatePath), {
+      .createPage(aggregatePath, {
         pageIndex: values.pageIndex,
         chapter: values.chapter,
         chapterDivision: values.chapterDivision,
@@ -81,10 +79,7 @@ const CreatePage: FC = () => {
           Terug
         </Button>
       </PageHeading>
-      <BookPageForm
-        onSubmit={handleSubmit}
-        bookType={getBookTypeFromUrlSlug(aggregatePath)}
-      />
+      <BookPageForm onSubmit={handleSubmit} bookType={aggregatePath} />
     </Navigation>
   );
 };

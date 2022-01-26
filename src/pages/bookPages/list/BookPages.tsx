@@ -10,7 +10,6 @@ import { PageInfo } from '../../../model/Page';
 import DownloadBookPagesMenuButton from '../download/DownloadBookPagesMenuButton';
 import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import useCmsConfiguration from '../../../configuration/useCmsConfiguration';
 import UpdateStylesheet from '../stylesheet/UpdateStylesheetButton';
 import useNavigate from '../../../navigation/useNavigate';
 
@@ -23,7 +22,6 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
   const [pages, setPages] = useState<PageInfo[] | null>(null);
   const { editStatus, setEditStatus } = useStatusToggle();
   const { navigate } = useNavigate();
-  const { getSlugFromBookType } = useCmsConfiguration();
 
   const loadPages = useCallback(() => {
     setPages(null);
@@ -36,8 +34,7 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
     loadPages();
   }, [bookType, editStatus, loadPages]);
 
-  const getAddPagePath = (): string =>
-    `/books/${getSlugFromBookType(bookType)}/add`;
+  const getAddPagePath = (): string => `/books/${bookType}/add`;
 
   const handleStylesheetUpdate = () => {
     loadPages();

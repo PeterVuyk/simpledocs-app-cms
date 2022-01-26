@@ -10,10 +10,10 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import AlertBox from '../../../../../AlertBox';
 import SubmitButton from '../../../SubmitButton';
 import Select from '../../../Select';
-import useCmsConfiguration from '../../../../../../configuration/useCmsConfiguration';
 import bookRepository from '../../../../../../firebase/database/bookRepository';
 import TextField from '../../../TextField';
 import { Page } from '../../../../../../model/Page';
+import useAppConfiguration from '../../../../../../configuration/useAppConfiguration';
 
 const useStyles = makeStyles((theme: Theme) => ({
   textFieldStyle: {
@@ -36,31 +36,23 @@ const SelectLinkPageForm: FC<Props> = ({
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const [pages, setPages] = useState<Page[]>([]);
-  const { configuration } = useCmsConfiguration();
+  const { getSortedBooks } = useAppConfiguration();
   const [bookTypeField] = useField('bookType');
   const [bookPageIdField] = useField('bookPageId');
   const [linkTextField] = useField('linkText');
   const classes = useStyles();
 
   const getBookOptions = useCallback(() => {
-    const bookTypes = Object.keys(configuration.books.bookItems);
-    return bookTypes
-      .sort(
-        (a, b) =>
-          configuration.books.bookItems[a].navigationIndex -
-          configuration.books.bookItems[b].navigationIndex
-      )
-      .map((value) => {
-        return {
-          bookType: value,
-          title: configuration.books.bookItems[value].title,
-        };
-      })
+    return getSortedBooks()
+      .map((value) => ({
+        bookType: value.bookType,
+        title: value.title,
+      }))
       .reduce(
         (obj, item) => Object.assign(obj, { [item.bookType]: item.title }),
         {}
       );
-  }, [configuration.books.bookItems]);
+  }, [getSortedBooks]);
 
   const getPageOptions = () => {
     return pages

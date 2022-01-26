@@ -1,6 +1,7 @@
 import { database } from '../../firebaseConnection';
 import { Versioning, Versions } from '../../../model/Versioning';
 import {
+  APP_CONFIGURATIONS,
   ConfigurationType,
   getDraftFromConfigurationType,
 } from '../../../model/configurations/ConfigurationType';
@@ -46,8 +47,10 @@ async function publish(
   const configVersioning = config.versioning as Versions;
 
   // 4: Add bookTypes to firstBookTab and secondBookTab
-  draftConfig!.firstBookTab.bookTypes = config.firstBookTab.bookTypes;
-  draftConfig!.secondBookTab.bookTypes = config.secondBookTab.bookTypes;
+  if (configurationType === APP_CONFIGURATIONS) {
+    draftConfig!.firstBookTab.bookTypes = config.firstBookTab.bookTypes;
+    draftConfig!.secondBookTab.bookTypes = config.secondBookTab.bookTypes;
+  }
 
   // 5: overwrite published met draft
   const publishedConfigurationRef = database

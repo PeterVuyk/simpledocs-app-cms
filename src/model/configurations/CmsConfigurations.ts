@@ -7,17 +7,8 @@ export interface MenuItem {
   icon: string;
 }
 
-interface BookItems {
-  [key: string]: MenuItem;
-}
-
 interface MenuItems {
   [key: string]: MenuItem;
-}
-
-interface BookConfig {
-  title: string;
-  bookItems: BookItems;
 }
 
 export interface MenuConfig {
@@ -26,7 +17,6 @@ export interface MenuConfig {
 }
 
 export interface CmsConfigurations {
-  books: BookConfig;
   menu: MenuConfig;
   versioning: Versions;
 }

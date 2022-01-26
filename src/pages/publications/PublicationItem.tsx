@@ -29,7 +29,7 @@ const PublicationItem: FC<Props> = ({
       ? getBookTitleByAggregate(dialogVersion.aggregate)
       : getMenuItemTitleByAggregate(dialogVersion.aggregate);
 
-    return `${title.charAt(0).toUpperCase() + title.slice(1)} publiceren`;
+    return title.charAt(0).toUpperCase() + title.slice(1);
   };
 
   return (
@@ -54,7 +54,7 @@ const PublicationItem: FC<Props> = ({
           openPublishDialog.aggregate === currentVersion.aggregate && (
             <PublishDialog
               onTranslation={getMenuItemTitleByAggregate}
-              dialogTitle={getDialogTitle(openPublishDialog)}
+              dialogTitle={`${getDialogTitle(openPublishDialog)} publiceren`}
               dialogText={`Huidige versie: ${openPublishDialog.version}, nieuwe versie: `}
               openDialog={openPublishDialog}
               setOpenDialog={setOpenPublishDialog}
