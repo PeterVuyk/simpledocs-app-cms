@@ -31,7 +31,6 @@ interface Props {
 const BookManagementPage: FC<Props> = ({ title }) => {
   const [bookSettings, setBookSettings] = useState<BookSetting[]>([]);
 
-  // const cmsConfigurations = useCmsConfiguration().configuration;
   const appConfigurations = useAppConfiguration().configuration;
 
   const mapBookInfoToBookSettings = useCallback(
@@ -44,9 +43,7 @@ const BookManagementPage: FC<Props> = ({ title }) => {
         chapterDivisionsInIntermediateList:
           bookInfo.chapterDivisionsInIntermediateList,
         imageFile: bookInfo.imageFile,
-        isDraft: !Object.keys(appConfigurations.versioning).includes(
-          bookInfo.bookType
-        ),
+        isDraft: appConfigurations.versioning[bookInfo.bookType].isDraft,
         chapterDivisionsInList: bookInfo.chapterDivisionsInList,
         bookType: bookInfo.bookType,
       } as BookSetting;

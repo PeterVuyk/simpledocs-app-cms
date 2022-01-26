@@ -37,6 +37,8 @@ import appConfigurationValidator from '../../validators/appConfigurationValidato
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DiffConfigurationAction from '../ItemAction/diffAction/diffConfigurationAction/DiffConfigurationAction';
+import omit from '../../helper/object/omit';
+import clone from '../../helper/object/clone';
 
 const useStyles = makeStyles({
   paper: {
@@ -89,8 +91,13 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
       .getConfigurations(getConfigurationTypeStatus())
       .then((value) => {
         if (value !== undefined) {
-          const appConfigurations = value as any;
-          delete appConfigurations.versioning;
+          let config = clone(value);
+          config = omit(config, ['versioning']);
+          if (configurationType === APP_CONFIGURATIONS) {
+            config.firstBookTab = omit(config.firstBookTab, ['bookTypes']);
+            config.secondBookTab = omit(config.secondBookTab, ['bookTypes']);
+          }
+          return config;
         }
         return value;
       })

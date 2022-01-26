@@ -4,6 +4,7 @@ import {
   ConfigurationType,
   getDraftFromConfigurationType,
 } from '../../../model/configurations/ConfigurationType';
+import clone from '../../../helper/object/clone';
 
 const getConfigurationSnapshot = async (
   configurationType: ConfigurationType
@@ -36,18 +37,24 @@ async function publish(
     return batch.commit();
   }
   // 3: remove draft
-  const draftConfig = await draftConfigurationRef.get();
+  const draftConfig = await draftConfigurationRef
+    .get()
+    .then((value) => value.data());
   batch.delete(draftConfigurationRef);
 
-  const config = configurationSnapshot.data() as any;
+  const config = clone(configurationSnapshot.data());
   const configVersioning = config.versioning as Versions;
 
-  // 4: overwrite published met draft
+  // 4: Add bookTypes to firstBookTab and secondBookTab
+  draftConfig!.firstBookTab.bookTypes = config.firstBookTab.bookTypes;
+  draftConfig!.secondBookTab.bookTypes = config.secondBookTab.bookTypes;
+
+  // 5: overwrite published met draft
   const publishedConfigurationRef = database
     .collection('configurations')
     .doc(configurationType);
   batch.set(publishedConfigurationRef, {
-    ...draftConfig.data(),
+    ...draftConfig,
     versioning: configVersioning,
   });
   batch.update(configurationSnapshot.ref, {

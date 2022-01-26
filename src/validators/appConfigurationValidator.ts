@@ -1,5 +1,3 @@
-import { getNonBookAggregates } from '../model/Aggregate';
-
 const validateBottomTab = (
   config: any,
   tabName: string,
@@ -55,75 +53,6 @@ const validateDecisionTab = (
   }
   if (!('title' in appConfiguration.decisionsTab.bottomTab)) {
     result.push(`- 'decisionsTab.bottomTab.title' ontbreekt.`);
-  }
-  return result;
-};
-
-const validateBookTypeTab = (
-  tabName: string,
-  appConfiguration: any,
-  errorMessages: string[]
-) => {
-  const result = validateBottomTab(appConfiguration, tabName, errorMessages);
-  if (
-    !('bookTypes' in appConfiguration[tabName]) ||
-    appConfiguration[tabName].bookTypes.length === 0
-  ) {
-    result.push(`- '${tabName}.bookTypes' ontbreekt of is leeg.`);
-    return result;
-  }
-
-  // Validate bookTypes:
-  for (const bookInfo of appConfiguration[tabName].bookTypes) {
-    if (!('bookType' in bookInfo)) {
-      result.push(
-        `- 'bookType' in 1 van de bookTypes in '${tabName}.bookTypes' ontbreekt.`
-      );
-      return result;
-    }
-    if (getNonBookAggregates().includes(bookInfo.bookType)) {
-      result.push(
-        `- Één van de toegevoegde boeken '${
-          bookInfo.bookType
-        }' gebruikt voor 'bookType' een gereserveerde benaming (lijst van gereserveerde benamingen: ${getNonBookAggregates().join(
-          ', '
-        )}).`
-      );
-    }
-    if (!('index' in bookInfo)) {
-      result.push(
-        `- 'index' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
-      );
-    }
-    if (!('title' in bookInfo)) {
-      result.push(
-        `- 'title' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
-      );
-    }
-    if (!('subTitle' in bookInfo)) {
-      result.push(
-        `- 'subTitle' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
-      );
-    }
-    if (!('chapterDivisionsInIntermediateList' in bookInfo)) {
-      result.push(
-        `- 'chapterDivisionsInIntermediateList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
-      );
-    }
-    if (!('chapterDivisionsInList' in bookInfo)) {
-      result.push(
-        `- 'chapterDivisionsInList' for bookType ${bookInfo.bookType} in '${tabName}.bookTypes' ontbreekt.`
-      );
-    }
-  }
-  // If a tab contains more then one bookType, then the the title and subTitle is required for the overview page.
-  if (appConfiguration[tabName].bookTypes.length > 1) {
-    if (!('subTitle' in appConfiguration[tabName])) {
-      result.push(`- '${tabName}.subTitle' ontbreekt.`);
-    }
-    if (!('subTitle' in appConfiguration[tabName])) {
-      result.push(`- '${tabName}.title' ontbreekt.`);
-    }
   }
   return result;
 };
@@ -186,16 +115,16 @@ const validate = (appConfiguration: any) => {
     errorMessages = validateDecisionTab(appConfiguration, errorMessages);
   }
   if ('firstBookTab' in appConfiguration) {
-    errorMessages = validateBookTypeTab(
-      'firstBookTab',
+    errorMessages = validateBottomTab(
       appConfiguration,
+      'firstBookTab',
       errorMessages
     );
   }
   if ('secondBookTab' in appConfiguration) {
-    errorMessages = validateBookTypeTab(
-      'secondBookTab',
+    errorMessages = validateBottomTab(
       appConfiguration,
+      'secondBookTab',
       errorMessages
     );
   }

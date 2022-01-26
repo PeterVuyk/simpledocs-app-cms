@@ -8,6 +8,7 @@ import useAppConfiguration from '../../configuration/useAppConfiguration';
 import clone from '../../helper/object/clone';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import omit from '../../helper/object/omit';
+import publicationHelper from '../../helper/publicationHelper';
 
 interface Props {
   oncloseDialog: () => void;
@@ -24,6 +25,12 @@ const AddBookSettingsDialog: FC<Props> = ({ oncloseDialog }) => {
       ...configuration[values.tab].bookTypes,
       omit(values, ['tab', 'isDraft']),
     ];
+    updatedConfiguration.versioning[values.bookType] = {
+      isDraft: true,
+      isBookType: true,
+      version: publicationHelper.getNewVersion(),
+    };
+
     return configurationRepository
       .updateAppConfiguration(updatedConfiguration)
       .then(() =>

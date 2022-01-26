@@ -5,6 +5,7 @@ export interface Versioning {
 }
 
 export interface VersionInfo {
+  isDraft?: boolean;
   isBookType: boolean;
   version: string;
 }
