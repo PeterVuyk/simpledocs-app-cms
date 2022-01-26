@@ -11,11 +11,11 @@ import {
   APP_CONFIGURATIONS,
   CMS_CONFIGURATIONS,
 } from '../../model/configurations/ConfigurationType';
-import { CmsConfigurations } from '../../model/configurations/CmsConfigurations';
 import publishBookPagesRepository from './publication/publishBookPagesRepository';
 import publishDecisionTreeRepository from './publication/publishDecisionTreeRepository';
 import publishConfigurationsRepository from './publication/publishConfigurationsRepository';
 import publishCalculationsRepository from './publication/publishCalculationsRepository';
+import { AppConfigurations } from '../../model/configurations/AppConfigurations';
 
 async function addVersion(versioning: Versioning): Promise<void> {
   await database
@@ -40,13 +40,11 @@ async function removeVersion(versioning: Versioning): Promise<void> {
 }
 
 async function updateVersion(
-  configuration: CmsConfigurations,
+  configuration: AppConfigurations,
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
-  if (
-    Object.keys(configuration.books.bookItems).includes(versioning.aggregate)
-  ) {
+  if (configuration.versioning[versioning.aggregate].isBookType) {
     await publishBookPagesRepository.publish(versioning, newVersion);
     return;
   }

@@ -2,6 +2,7 @@ export interface Versioning {
   aggregate: string;
   version: string;
   isBookType?: boolean;
+  isDraft?: boolean;
 }
 
 export interface VersionInfo {

@@ -126,6 +126,11 @@ const theme = {
         height: 32,
       },
     },
+    MuiChip: {
+      root: {
+        marginLeft: 5,
+      },
+    },
   },
 };
 

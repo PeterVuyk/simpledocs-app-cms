@@ -7,15 +7,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import PublicationItem from './PublicationItem';
 import { Versioning } from '../../model/Versioning';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_PUBLICATIONS } from '../../model/DocumentationType';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
-import RemoveVersionButton from './RemoveVersionButton';
-import CreateVersionButton from './CreateVersionButton';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import { AGGREGATE_APP_CONFIGURATIONS } from '../../model/Aggregate';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
@@ -35,22 +32,13 @@ interface Props {
 
 const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[] | null>(null);
-  const { configuration, isBookType, isMenuItem } = useCmsConfiguration();
+  const { configuration, isMenuItem } = useCmsConfiguration();
 
   const classes = useStyles();
 
   const sortVersionOnIndex = useCallback(
     (versioning: Versioning[]): Versioning[] => {
-      const books = versioning
-        .filter((value) => value.isBookType)
-        .filter((value) => isBookType(value.aggregate))
-        .sort((a, b) => {
-          return (
-            configuration.books.bookItems[a.aggregate].navigationIndex -
-            configuration.books.bookItems[b.aggregate].navigationIndex
-          );
-        });
-      const menuItems = versioning
+      return versioning
         .filter((value) => !value.isBookType)
         .filter((value) => isMenuItem(value.aggregate))
         .sort((a, b) => {
@@ -59,28 +47,47 @@ const Publications: FC<Props> = ({ title }) => {
             configuration.menu.menuItems[b.aggregate].navigationIndex
           );
         });
-
-      return [...books, ...menuItems];
     },
-    [
-      configuration.books.bookItems,
-      configuration.menu.menuItems,
-      isBookType,
-      isMenuItem,
-    ]
+    [configuration.menu.menuItems, isMenuItem]
+  );
+
+  const getSortedBooks = useCallback(
+    (appConfigurations: AppConfigurations): Versioning[] => {
+      const bookTypes = [
+        ...appConfigurations.firstBookTab.bookTypes
+          .sort((a, b) => a.index - b.index)
+          .map((value) => value.bookType),
+        ...appConfigurations.secondBookTab.bookTypes
+          .sort((a, b) => a.index - b.index)
+          .map((value) => value.bookType),
+      ];
+      return bookTypes.map((value) => {
+        return {
+          ...appConfigurations.versioning[value],
+          aggregate: value,
+        } as Versioning;
+      });
+    },
+    []
   );
 
   const handleReloadPublications = useCallback(async (): Promise<void> => {
-    const versioning = await configurationRepository
+    const appConfigurations = await configurationRepository
       .getConfigurations(AGGREGATE_APP_CONFIGURATIONS)
-      .then((value) => value as AppConfigurations)
-      .then((value) => value.versioning);
+      .then((value) => value as AppConfigurations);
     const result = [];
-    for (const [aggregate, versionInfo] of Object.entries(versioning)) {
+
+    for (const [aggregate, versionInfo] of Object.entries(
+      appConfigurations.versioning
+    )) {
+      if (versionInfo.isBookType) {
+        continue;
+      }
       result.push({
         aggregate,
         isBookType: versionInfo.isBookType,
         version: versionInfo.version,
+        isDraft: versionInfo.isDraft ?? false,
       });
     }
     for (const [aggregate, versionInfo] of Object.entries(
@@ -90,10 +97,14 @@ const Publications: FC<Props> = ({ title }) => {
         aggregate,
         isBookType: false,
         version: versionInfo.version,
+        isDraft: false,
       });
     }
-    setVersions(sortVersionOnIndex(result));
-  }, [configuration, sortVersionOnIndex]);
+    setVersions([
+      ...getSortedBooks(appConfigurations),
+      ...sortVersionOnIndex(result),
+    ]);
+  }, [configuration.versioning, getSortedBooks, sortVersionOnIndex]);
 
   useEffect(() => {
     handleReloadPublications();
@@ -101,18 +112,7 @@ const Publications: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title} help={DOCUMENTATION_PUBLICATIONS}>
-        <ButtonGroup>
-          <RemoveVersionButton
-            onReloadPublications={handleReloadPublications}
-            versions={versions ?? []}
-          />
-          <CreateVersionButton
-            onReloadPublications={handleReloadPublications}
-            versions={versions ?? []}
-          />
-        </ButtonGroup>
-      </PageHeading>
+      <PageHeading title={title} help={DOCUMENTATION_PUBLICATIONS} />
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>

@@ -87,9 +87,6 @@ const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
 };
 
 const validateConfig = (appConfiguration: any, errorMessages: string[]) => {
-  if (!('defaultSearchChip' in appConfiguration)) {
-    errorMessages.push(`- 'defaultSearchChip' ontbreekt.`);
-  }
   if (!('defaultInitialTab' in appConfiguration)) {
     errorMessages.push(`- 'defaultInitialTab' ontbreekt.`);
   }

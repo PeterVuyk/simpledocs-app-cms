@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
 import { Versioning } from '../../model/Versioning';
-import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import {
   AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CMS_CONFIGURATIONS,
@@ -17,6 +16,7 @@ import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DialogTransition from '../../components/dialog/DialogTransition';
+import useAppConfiguration from '../../configuration/useAppConfiguration';
 
 interface Props {
   onTranslation: (aggregate: string) => string;
@@ -37,7 +37,7 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { configuration } = useCmsConfiguration();
+  const { configuration } = useAppConfiguration();
   const dispatch = useAppDispatch();
 
   const handleClose = () => {

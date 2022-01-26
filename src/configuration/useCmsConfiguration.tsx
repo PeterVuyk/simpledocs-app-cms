@@ -15,17 +15,14 @@ function useCmsConfiguration() {
     [configuration.books.bookItems]
   );
 
-  const getTitleByAggregate = useCallback(
+  const getMenuItemTitleByAggregate = useCallback(
     (aggregate: string) => {
-      if (Object.keys(configuration.books.bookItems).includes(aggregate)) {
-        return configuration.books.bookItems[aggregate].title;
-      }
       if (Object.keys(configuration.menu.menuItems).includes(aggregate)) {
         return configuration.menu.menuItems[aggregate].title;
       }
       return '';
     },
-    [configuration.books.bookItems, configuration.menu.menuItems]
+    [configuration.menu.menuItems]
   );
 
   const getSlugFromBookType = useCallback(
@@ -71,7 +68,7 @@ function useCmsConfiguration() {
   return {
     configuration,
     getSlugFromBookType,
-    getTitleByAggregate,
+    getMenuItemTitleByAggregate,
     getBookTypeFromUrlSlug,
     isBookType,
     isMenuItem,
