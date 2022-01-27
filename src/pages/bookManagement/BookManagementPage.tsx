@@ -14,6 +14,7 @@ import { BookSetting } from '../../model/books/BookSetting';
 import BookSettingsListItem from './BookSettingsListItem';
 import { BookInfo } from '../../model/configurations/AppConfigurations';
 import BookManagementHeadingButtonGroup from './BookManagementHeadingButtonGroup';
+import { DOCUMENTATION_BOOK_MANAGEMENT } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   table: {
@@ -69,7 +70,7 @@ const BookManagementPage: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title}>
+      <PageHeading title={title} help={DOCUMENTATION_BOOK_MANAGEMENT}>
         <BookManagementHeadingButtonGroup />
       </PageHeading>
       <TableContainer component={Paper}>

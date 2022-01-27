@@ -88,7 +88,9 @@ const BookManagementForm: FC<Props> = ({
           onClose={() => !isSubmitting && oncloseDialog()}
         >
           <DialogTitle id="alert-dialog-slide-title">
-            Boekgegevens wijzigen
+            {`Boekgegevens ${
+              bookSetting === undefined ? 'toevoegen' : 'wijzigen'
+            }`}
           </DialogTitle>
           <Form>
             <DialogContent>
@@ -122,7 +124,9 @@ const BookManagementForm: FC<Props> = ({
                 label="Subtitel"
                 name="subTitle"
               />
+              {/* TODO: type="number" ook op andere indexes toepassen */}
               <TextField
+                type="number"
                 className={classes.textFieldStyle}
                 showError={showError}
                 required
@@ -194,7 +198,7 @@ const BookManagementForm: FC<Props> = ({
                 color="secondary"
                 variant="contained"
               >
-                Wijzigen
+                {bookSetting === undefined ? 'Toevoegen' : 'Wijzigen'}
               </SubmitButton>
             </DialogActions>
           </Form>

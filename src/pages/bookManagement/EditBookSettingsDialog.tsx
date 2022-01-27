@@ -27,7 +27,7 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
     );
     updatedConfiguration[values.tab].bookTypes = [
       ...filteredBookTypes,
-      omit(values, ['tab']),
+      omit(values, ['tab', 'isDraft']),
     ];
     updatedConfiguration.versioning[values.bookType].isDraft =
       values.isDraft === 'true';

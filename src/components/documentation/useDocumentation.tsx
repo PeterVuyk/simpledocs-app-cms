@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import defaultTemplate from './docs/default-template.md';
 import appConfigurations from './docs/app-configurations.md';
+import bookManagement from './docs/book-management.md';
 import imageLibrary from './docs/image-library.md';
 import cmsConfigurations from './docs/cms-configurations.md';
 import contentTypes from './docs/content-types.md';
@@ -20,6 +21,7 @@ import {
   DOCUMENTATION_ID_LINK_BOOK_PAGE,
   DOCUMENTATION_IMAGE_LIBRARY,
   DOCUMENTATION_PUBLICATIONS,
+  DOCUMENTATION_BOOK_MANAGEMENT,
   DOCUMENTATION_STYLEGUIDE,
   DOCUMENTATION_TRANSFORM_BASE64,
   DocumentationType,
@@ -33,6 +35,10 @@ function useDocumentation(documentationType: DocumentationType) {
   const getMarkdownFile = useCallback(() => {
     // eslint-disable-next-line default-case
     switch (documentationType) {
+      case DOCUMENTATION_BOOK_MANAGEMENT:
+        setTooltip('Info boeken beheer');
+        setTitle('Info boeken beheer');
+        return bookManagement;
       case DOCUMENTATION_DIFF_CHANGES:
         setTooltip('Info bekijk de wijzigingen');
         setTitle('Info bekijk de wijzigingen');
