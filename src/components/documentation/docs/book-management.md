@@ -10,6 +10,9 @@ In dit overzicht kan je de boeken beheren, zo kan je de volgende wijzigingen toe
 Houd rekening met het volgende:
 
 - Publiceer eerst de pagina's van het boek voordat je het boek zelf publiceert. 
-- Gedane wijzigingen worden gelijk toegepast (gepubliceerd).
+- Gedane wijzigingen op deze pagina worden gelijk toegepast (gepubliceerd).
 - Elke keer dat de gebruiker de app opstart worden de hier opgegeven configuraties naar de app gestuurd,
-zorg er hierom voor dat de afbeeldingen een minimale grote hebben (100x100 pixels) om zo de opstarttijd van de app te minimaliseren.
+zorg er hierom voor dat de afbeeldingen een minimale grote hebben
+(100x100 pixels) om zo de opstarttijd van de app te minimaliseren.
+Daarnaast adviseren we om het verder te optimaliseren door beeldcompressie,
+bijvoorbeeld via '[imageoptim](https://imageoptim.com/api)'.

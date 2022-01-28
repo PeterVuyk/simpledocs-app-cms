@@ -37,6 +37,7 @@ const BookManagementListItemActions: FC<Props> = ({
 
     return configurationRepository
       .updateAppConfiguration(updatedConfiguration)
+      .then(() => window.location.reload())
       .then(() => {
         dispatch(
           notify({

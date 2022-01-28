@@ -34,6 +34,7 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
 
     return configurationRepository
       .updateAppConfiguration(updatedConfiguration)
+      .then(() => window.location.reload())
       .then(() =>
         dispatch(
           notify({

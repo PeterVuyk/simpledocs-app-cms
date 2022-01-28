@@ -11,13 +11,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import TextField from '../../components/form/formik/TextField';
 import AlertBox from '../../components/AlertBox';
-import validateYupPassword from '../../components/form/formik/validators/validateYupPassword';
 import DialogTransition from '../../components/dialog/DialogTransition';
 import { BookSetting } from '../../model/books/BookSetting';
 import Select from '../../components/form/formik/Select';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
 import CheckboxGroup from '../../components/form/formik/CheckboxGroup';
 import FileDropzoneArea from '../../components/form/formik/FileDropzoneArea';
+import randomIdGenerator from '../../helper/text/randomIdGenerator';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -57,7 +57,7 @@ const BookManagementForm: FC<Props> = ({
       tab: 'firstBookTab',
       index: undefined,
       isDraft: true,
-      bookType: `b${Date.now()}`,
+      bookType: randomIdGenerator('book-'),
     };
   };
 
