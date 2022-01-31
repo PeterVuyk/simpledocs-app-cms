@@ -47,8 +47,8 @@ const BookSettingsListItem: FC<Props> = ({
         <img
           src={bookSetting.imageFile}
           width={100}
-          height={100}
           alt={bookSetting.title}
+          style={{ maxHeight: 100 }}
         />
       </TableCell>
       <TableCell style={{ whiteSpace: 'nowrap' }}>
