@@ -5,9 +5,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { MenuItem, TextField } from '@material-ui/core';
 import logger from '../../helper/logger';
 import publishRepository from '../../firebase/database/publishRepository';
-import { Versioning } from '../../model/Versioning';
+import {
+  UPDATE_ON_STARTUP,
+  UPDATE_ON_STARTUP_READY,
+  UpdateMoment,
+  Versioning,
+} from '../../model/Versioning';
 import {
   AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CMS_CONFIGURATIONS,
@@ -37,6 +43,8 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [updateMoment, setUpdateMoment] =
+    useState<UpdateMoment>(UPDATE_ON_STARTUP);
   const { configuration } = useAppConfiguration();
   const dispatch = useAppDispatch();
 
@@ -59,11 +67,22 @@ const PublishDialog: FC<Props> = ({
     }.${releaseVersion}`;
   }, [openDialog, setOpenDialog]);
 
+  const getVersioning = () => {
+    if (
+      [AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_APP_CONFIGURATIONS].includes(
+        openDialog?.aggregate ?? ''
+      )
+    ) {
+      return openDialog;
+    }
+    return { ...openDialog, updateMoment } as Versioning;
+  };
+
   const handleSubmit = () => {
     setLoading(true);
     publishRepository
       // @ts-ignore
-      .updateVersion(configuration, openDialog, getNextVersion())
+      .updateVersion(configuration, getVersioning(), getNextVersion())
       .then(() => {
         onSubmit(openDialog?.aggregate ?? '');
         setLoading(false);
@@ -111,6 +130,27 @@ const PublishDialog: FC<Props> = ({
           Weet je zeker dat je deze versie wilt updaten?
           <br />
           {dialogText} {getNextVersion()}.
+          <br />
+          <br />
+          <TextField
+            fullWidth
+            variant="outlined"
+            select
+            value={updateMoment}
+            onChange={(event) =>
+              setUpdateMoment(event.target.value as UpdateMoment)
+            }
+          >
+            <MenuItem key={UPDATE_ON_STARTUP} value={UPDATE_ON_STARTUP}>
+              Tijdens het opstarten
+            </MenuItem>
+            <MenuItem
+              key={UPDATE_ON_STARTUP_READY}
+              value={UPDATE_ON_STARTUP_READY}
+            >
+              Na het opstarten
+            </MenuItem>
+          </TextField>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

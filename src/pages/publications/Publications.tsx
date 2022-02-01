@@ -89,6 +89,7 @@ const Publications: FC<Props> = ({ title }) => {
         isBookType: versionInfo.isBookType,
         version: versionInfo.version,
         isDraft: versionInfo.isDraft ?? false,
+        updateMoment: versionInfo.updateMoment,
       });
     }
     for (const [aggregate, versionInfo] of Object.entries(
@@ -99,6 +100,7 @@ const Publications: FC<Props> = ({ title }) => {
         isBookType: false,
         version: versionInfo.version,
         isDraft: false,
+        updateMoment: versionInfo.updateMoment,
       });
     }
     setVersions([
@@ -118,12 +120,9 @@ const Publications: FC<Props> = ({ title }) => {
         <Table className={classes.table}>
           <TableHead>
             <TableRow className={classes.head} key="tableRow">
-              <TableCell>
-                <strong>Onderdeel</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Huidige versie</strong>
-              </TableCell>
+              <TableCell>Onderdeel</TableCell>
+              <TableCell>Update moment</TableCell>
+              <TableCell>Huidige versie</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>

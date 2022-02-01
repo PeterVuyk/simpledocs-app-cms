@@ -4,7 +4,7 @@ import { useField, useFormikContext } from 'formik';
 
 interface Props {
   name: string;
-  showError: boolean;
+  showError?: boolean;
   options: any;
   disabled?: boolean;
   [x: string]: any;

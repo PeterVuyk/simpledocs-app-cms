@@ -5,7 +5,7 @@ import { Tooltip } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import EditIcon from '@material-ui/icons/Edit';
 import PublishDialog from './PublishDialog';
-import { Versioning } from '../../model/Versioning';
+import { UPDATE_ON_STARTUP, Versioning } from '../../model/Versioning';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
 
@@ -32,6 +32,15 @@ const PublicationItem: FC<Props> = ({
     return title.charAt(0).toUpperCase() + title.slice(1);
   };
 
+  const getUpdateMomentText = () => {
+    if (!currentVersion.updateMoment) {
+      return undefined;
+    }
+    return currentVersion.updateMoment === UPDATE_ON_STARTUP
+      ? 'Voor het opstarten'
+      : 'Na het opstarten';
+  };
+
   return (
     <>
       <TableCell>
@@ -41,6 +50,7 @@ const PublicationItem: FC<Props> = ({
           <Chip label="Concept" variant="outlined" avatar={<EditIcon />} />
         )}
       </TableCell>
+      <TableCell>{getUpdateMomentText()}</TableCell>
       <TableCell>{currentVersion.version}</TableCell>
       <TableCell align="right">
         <Tooltip title="Publiceren">
