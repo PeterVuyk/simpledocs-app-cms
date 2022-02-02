@@ -17,7 +17,7 @@ import Select from '../../components/form/formik/Select';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
 import CheckboxGroup from '../../components/form/formik/CheckboxGroup';
 import FileDropzoneArea from '../../components/form/formik/FileDropzoneArea';
-import randomIdGenerator from '../../helper/text/randomIdGenerator';
+import alphaNumericIdGenerator from '../../helper/text/alphaNumericIdGenerator';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -57,7 +57,7 @@ const BookManagementForm: FC<Props> = ({
       tab: 'firstBookTab',
       index: undefined,
       isDraft: true,
-      bookType: randomIdGenerator('book-'),
+      bookType: alphaNumericIdGenerator('book-'),
     };
   };
 

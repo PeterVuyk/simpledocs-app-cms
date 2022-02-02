@@ -43,8 +43,9 @@ const PublishDialog: FC<Props> = ({
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [updateMoment, setUpdateMoment] =
-    useState<UpdateMoment>(UPDATE_ON_STARTUP);
+  const [updateMoment, setUpdateMoment] = useState<UpdateMoment>(
+    openDialog?.updateMoment ?? UPDATE_ON_STARTUP_READY
+  );
   const { configuration } = useAppConfiguration();
   const dispatch = useAppDispatch();
 
@@ -67,15 +68,24 @@ const PublishDialog: FC<Props> = ({
     }.${releaseVersion}`;
   }, [openDialog, setOpenDialog]);
 
+  const showUpdateMomentSelect = () =>
+    !openDialog?.isDraft &&
+    ![AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_CMS_CONFIGURATIONS].includes(
+      openDialog?.aggregate ?? ''
+    );
+
   const getVersioning = () => {
     if (
-      [AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_APP_CONFIGURATIONS].includes(
+      [AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_CMS_CONFIGURATIONS].includes(
         openDialog?.aggregate ?? ''
       )
     ) {
       return openDialog;
     }
-    return { ...openDialog, updateMoment } as Versioning;
+    return {
+      ...openDialog,
+      updateMoment: openDialog?.isDraft ? UPDATE_ON_STARTUP : updateMoment,
+    } as Versioning;
   };
 
   const handleSubmit = () => {
@@ -130,9 +140,13 @@ const PublishDialog: FC<Props> = ({
           Weet je zeker dat je deze versie wilt updaten?
           <br />
           {dialogText} {getNextVersion()}.
-          <br />
-          <br />
+          {openDialog?.isDraft &&
+            "\n\nHet boek is nog in concept. De gepubliceerde pagina's worden in de app weergegeven zodra het boek gepubliceerd is. Dit kan via boeken beheer."}
+        </DialogContentText>
+        {showUpdateMomentSelect() && (
           <TextField
+            margin="normal"
+            label="Update moment"
             fullWidth
             variant="outlined"
             select
@@ -142,7 +156,7 @@ const PublishDialog: FC<Props> = ({
             }
           >
             <MenuItem key={UPDATE_ON_STARTUP} value={UPDATE_ON_STARTUP}>
-              Tijdens het opstarten
+              Voor het opstarten
             </MenuItem>
             <MenuItem
               key={UPDATE_ON_STARTUP_READY}
@@ -151,7 +165,7 @@ const PublishDialog: FC<Props> = ({
               Na het opstarten
             </MenuItem>
           </TextField>
-        </DialogContentText>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary" variant="contained">

@@ -9,8 +9,9 @@ versie naar de andere is gewijzigd hierom is de versie als volgt opgebouwd:
 2. de maand
 3. En de uitgebrachte versie van de maand
 
-Bij elke publicatie kan je aangeven wat het moment van update van het onderdeel moet zijn,
-wil je het updaten voor of na het opstarten van de app. Let er hierbij op:
+Bij elk onderdeel kan je aangeven wat het moment moet zijn om de wijzigingen toe te passen, voor of na het opstarten van de app. Paar aandachtspunten:
 
 - Bij het eerste gebruik van de app worden ongeacht de keuze alle onderdelen bij het opstarten ingeladen.
-- Update voor het opstarten zal leiden tot een langere opstarttijd van de app.
+- Een boek dat voor het eerst wordt ingeladen bij de gebruiker wordt altijd bij het opstarten ingeladen.
+- Update voor het opstarten leidt tot een langere opstarttijd van de app.
+- Afhankelijk van de snelheid van de gebruiker kan de update na het opstarten kan leiden tot een aantal seconden weergave van de vorige versie.

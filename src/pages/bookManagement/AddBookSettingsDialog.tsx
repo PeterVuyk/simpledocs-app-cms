@@ -9,6 +9,7 @@ import clone from '../../helper/object/clone';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import omit from '../../helper/object/omit';
 import publicationHelper from '../../helper/publicationHelper';
+import { UPDATE_ON_STARTUP } from '../../model/Versioning';
 
 interface Props {
   oncloseDialog: () => void;
@@ -28,6 +29,7 @@ const AddBookSettingsDialog: FC<Props> = ({ oncloseDialog }) => {
     updatedConfiguration.versioning[values.bookType] = {
       isDraft: true,
       isBookType: true,
+      updateMoment: UPDATE_ON_STARTUP,
       version: publicationHelper.getNewVersion(),
     };
 

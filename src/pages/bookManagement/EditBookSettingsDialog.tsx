@@ -9,6 +9,7 @@ import useAppConfiguration from '../../configuration/useAppConfiguration';
 import omit from '../../helper/object/omit';
 import clone from '../../helper/object/clone';
 import configurationRepository from '../../firebase/database/configurationRepository';
+import { UPDATE_ON_STARTUP } from '../../model/Versioning';
 
 interface Props {
   bookSetting: BookSetting;
@@ -31,6 +32,8 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
     ];
     updatedConfiguration.versioning[values.bookType].isDraft =
       values.isDraft === 'true';
+    updatedConfiguration.versioning[values.bookType].updateMoment =
+      UPDATE_ON_STARTUP;
 
     return configurationRepository
       .updateAppConfiguration(updatedConfiguration)

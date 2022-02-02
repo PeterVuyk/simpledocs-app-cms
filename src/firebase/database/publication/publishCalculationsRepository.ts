@@ -15,6 +15,8 @@ const updateVersion = async (
     .get();
   batch.update(snapshot.ref, {
     [`versioning.${versioning.aggregate}.version`]: newVersion,
+    [`versioning.${versioning.aggregate}.updateMoment`]:
+      versioning.updateMoment,
   });
 };
 
