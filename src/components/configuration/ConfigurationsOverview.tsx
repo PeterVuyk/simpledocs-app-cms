@@ -17,7 +17,6 @@ import {
 import RemoveConfigurationButton from './RemoveConfigurationButton';
 import EditConfigurationButton from './EditConfigurationButton';
 import logger from '../../helper/logger';
-import Base64TransformerButton from './base64/Base64TransformerButton';
 import useStatusToggle from '../hooks/useStatusToggle';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
@@ -192,9 +191,6 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
             editStatus={editStatus}
             setEditStatus={toggleEditStatus}
           />
-          {configurationType === APP_CONFIGURATIONS && (
-            <Base64TransformerButton />
-          )}
           {editStatus === EDIT_STATUS_DRAFT && initialConfigurations && (
             <DiffConfigurationAction configurationType={configurationType} />
           )}

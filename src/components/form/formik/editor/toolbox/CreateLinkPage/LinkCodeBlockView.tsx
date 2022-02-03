@@ -52,16 +52,18 @@ const LinkCodeBlockView: FC<Props> = ({
         <Button onClick={onCloseDialog} color="primary" variant="contained">
           Sluiten
         </Button>
-        <Button
-          onClick={() => {
-            utilHelper.copyText(getImageHtmlCode());
-            onCloseDialog();
-          }}
-          color="secondary"
-          variant="contained"
-        >
-          Kopiëren en sluiten
-        </Button>
+        {utilHelper.isCopyByBrowserSupported() && (
+          <Button
+            onClick={() => {
+              utilHelper.copyText(getImageHtmlCode());
+              onCloseDialog();
+            }}
+            color="secondary"
+            variant="contained"
+          >
+            Kopiëren en sluiten
+          </Button>
+        )}
       </DialogActions>
     </>
   );

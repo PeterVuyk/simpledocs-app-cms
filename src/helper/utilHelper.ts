@@ -8,9 +8,12 @@ const copyText = (text: string): void => {
   el.select();
   el.focus();
   document.execCommand('copy');
-  document.body.removeChild(el);
 };
 
-const utilHelper = { copyText };
+const isCopyByBrowserSupported = (): boolean => {
+  return navigator.userAgent.indexOf('Firefox') !== 64;
+};
+
+const utilHelper = { copyText, isCopyByBrowserSupported };
 
 export default utilHelper;

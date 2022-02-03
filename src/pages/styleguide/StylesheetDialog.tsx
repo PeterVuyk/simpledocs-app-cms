@@ -9,7 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
-import CopyToClipboardAction from '../../components/CopyToClipboardAction';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import { Artifact, CONTENT_TYPE_CSS } from '../../model/artifacts/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
@@ -22,24 +21,9 @@ import { notify } from '../../redux/slice/notificationSlice';
 import DialogTransition from '../../components/dialog/DialogTransition';
 
 const useStyles = makeStyles(() => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: 700,
-    width: 375,
-  },
   highLightContainer: {
     width: '100%',
     marginBottom: -10,
-  },
-  relativeContainer: {
-    position: 'relative',
-  },
-  iframe: {
-    border: 'none',
-    width: 375,
-    height: 700,
   },
 }));
 
@@ -107,9 +91,6 @@ const StylesheetDialog: FC<Props> = ({
       onClose={oncloseDialog}
     >
       <DialogTitle id="alert-dialog-slide-title">
-        <div className={classes.relativeContainer}>
-          <CopyToClipboardAction textToCopy={cssInput!} />
-        </div>
         {openStylesheetDialog.title}
       </DialogTitle>
       <DialogContent>
@@ -124,7 +105,7 @@ const StylesheetDialog: FC<Props> = ({
               >
                 CSS:
               </DialogContentText>
-              <div className="highLightContainer">
+              <div className={classes.highLightContainer}>
                 {cssInput && <Highlight className="css">{cssInput}</Highlight>}
               </div>
             </Grid>
