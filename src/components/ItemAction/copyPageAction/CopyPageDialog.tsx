@@ -152,6 +152,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
+                      type="number"
                       showError={showError}
                       required
                       id="pageIndex"

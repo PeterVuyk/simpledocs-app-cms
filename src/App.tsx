@@ -5,13 +5,16 @@ import theme from './theme';
 import AppRouter from './navigation/AppRouter';
 import ConfigurationProvider from './configuration/ConfigurationProvider';
 import { store } from './redux/store';
+import CookieUserConsent from './components/CookieUserConsent';
 
 const App: FC = () => {
   return (
     <ConfigurationProvider>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <AppRouter />
+          <CookieUserConsent>
+            <AppRouter />
+          </CookieUserConsent>
         </Provider>
       </ThemeProvider>
     </ConfigurationProvider>

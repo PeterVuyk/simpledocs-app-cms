@@ -124,7 +124,6 @@ const BookManagementForm: FC<Props> = ({
                 label="Subtitel"
                 name="subTitle"
               />
-              {/* TODO: type="number" ook op andere indexes toepassen */}
               <TextField
                 type="number"
                 className={classes.textFieldStyle}

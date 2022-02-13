@@ -9,4 +9,4 @@ Het volgende kan in grote lijnen gewijzigd worden:
 
 Met deze flexibiliteit is het beheer van de app versimpelt omdat gebruikers geen app updates nodig hebben.
 
-Let op: Verkeerd aangebrachte wijzigingen kunnen grote gevolgen hebben in het functioneren van de app, bij twijfel adviseren we je de aanpassingen te doen en de beheerder te vragen om te kijken of de wijzigingen goed doorgevoerd zijn.
+Let op: Verkeerd aangebrachte wijzigingen kunnen grote gevolgen hebben in het functioneren van de app, bij twijfel adviseren we je de aanpassingen op te slaan als concept, en de beheerder te vragen om te kijken of deze juist is waarna je het kan publiceren.
