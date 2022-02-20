@@ -1,1 +1,7 @@
-export type NotificationStatusType = 'new' | 'failure' | 'pending' | 'success' | 'unknown';
+export type NotificationStatusType =
+    'new' |
+    'failure' |
+    'pending' |
+    'success' |
+    'unknownFromSend' |
+    'unknownFromStatus';

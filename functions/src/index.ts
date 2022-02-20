@@ -5,7 +5,7 @@ import {updateUser} from './functions/updateUser';
 import {deleteImageCategory} from './functions/deleteImageCategory';
 import {getTextFromHtml} from './functions/getTextFromHtml';
 import {sendNotification} from './functions/sendNotification';
-import {getNotificationStatusInformation} from './functions/getNotificationStatusInformation';
+import {getNotificationStatusInformationCron} from './functions/getNotificationStatusInformationCron';
 
 exports.cms = {
   listAllUsers,
@@ -15,5 +15,5 @@ exports.cms = {
   deleteImageCategory,
   getTextFromHtml,
   sendNotification,
-  getNotificationStatusInformation,
+  getNotificationStatusInformationCron,
 };

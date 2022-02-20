@@ -15,21 +15,30 @@ import * as functions from 'firebase-functions';
  *
  * TODO: does new registered devices get a new unique expo token? In that case we also need to update the token.
  */
-const handleDeviceNotRegisteredErrors = async (ticketsInfo: TicketInfo[]): Promise<TicketInfo[]> => {
+const disableAppNotificationForUser = async (userUid: string): Promise<void> => {
+  await admin.auth().getUser(userUid).then(async (userRecord) =>
+    admin
+        .auth()
+        .setCustomUserClaims(userUid, {
+          ...userRecord.customClaims,
+          appNotificationsDisabled: true,
+        })
+        .catch((reason) =>
+          functions.logger.error('Tried to update customerClaims for inactive user but failed', reason))
+  );
+};
+
+const fromTicketsInfo = async (ticketsInfo: TicketInfo[]): Promise<TicketInfo[]> => {
   for (const value1 of ticketsInfo.filter((value) => value.ticket.status === 'error')
       .filter((value) => (value.ticket as ExpoPushErrorTicket)?.details?.error === 'DeviceNotRegistered')) {
-    await admin.auth().getUser(value1.message.userUid).then(async (userRecord) =>
-      admin
-          .auth()
-          .setCustomUserClaims(value1.message.userUid, {
-            ...userRecord.customClaims,
-            appNotificationsDisabled: true,
-          })
-          .catch((reason) =>
-            functions.logger.error('Tried to update customerClaims for inactive user but failed', reason))
-    );
+    await disableAppNotificationForUser(value1.message.userUid);
   }
   return ticketsInfo.filter((value) => value.ticket.status === 'ok');
+};
+
+const handleDeviceNotRegisteredErrors = {
+  fromTicketsInfo,
+  disableAppNotificationForUser,
 };
 
 export default handleDeviceNotRegisteredErrors;

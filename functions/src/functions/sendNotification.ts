@@ -50,12 +50,12 @@ const handleSendNotifications = async (id: string) => {
     // eslint-disable-next-line max-len
     functions.logger.error(`The number of messages ${messages.length} and tickets ${tickets.length} are not the same, for this reason could not validate if messages where send successful.`);
     await notificationsRepository
-        .saveNotificationWithStatusDatabase('unknown', id, messages.length - tickets.length, tickets.length);
+        .saveNotificationWithStatusDatabase('unknownFromSend', id, messages.length - tickets.length, tickets.length);
     return;
   }
 
   let ticketsInfo = mergePushedTicketsWithTokenInfo(tickets, messages);
-  ticketsInfo = await handleDeviceNotRegisteredErrors(ticketsInfo);
+  ticketsInfo = await handleDeviceNotRegisteredErrors.fromTicketsInfo(ticketsInfo);
 
   const totalFailed = messages.length - ticketsInfo.length;
   const totalSend = messages.length;
