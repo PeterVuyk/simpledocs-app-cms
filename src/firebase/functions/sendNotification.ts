@@ -10,6 +10,7 @@ async function sendNotification(
       notificationContent,
     })
     .then((value) => value.data as ApiResponse);
+  // TODO: error handling is not correct here and probably other function calls. If above throws an exception it's not catched.
   if (!response.success) {
     throw new Error(
       `Send notification failed, message server: ${response.message}`

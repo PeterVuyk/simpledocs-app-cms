@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,8 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ButtonGroup } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
 import {
   DOCUMENTATION_NOTIFICATIONS,
@@ -23,6 +21,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import NotificationsListItem from './NotificationsListItem';
 import HelpAction from '../../components/ItemAction/helpAction/HelpAction';
+import NotificationsButtonGroup from './NotificationsButtonGroup';
 
 const useStyles = makeStyles({
   table: {
@@ -44,8 +43,9 @@ const Notifications: FC<Props> = ({ title }) => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
-  useEffect(() => {
-    notificationRepository
+  const handleReload = useCallback(async () => {
+    setNotificationsInfo(null);
+    return notificationRepository
       .getPendingTickets()
       .then(setNotificationsInfo)
       .catch((reason) => {
@@ -57,24 +57,20 @@ const Notifications: FC<Props> = ({ title }) => {
           notify({
             notificationType: 'error',
             notificationOpen: true,
-            notificationMessage: `Het ophalen van de notificaties is mislukt, ververs de pagina of probeer het later nog eens.`,
+            notificationMessage: `Het ophalen van de notificaties is mislukt, ververs de pagina of probeer het later opnieuw.`,
           })
         );
       });
   }, [dispatch]);
 
+  useEffect(() => {
+    handleReload();
+  }, [dispatch, handleReload]);
+
   return (
     <>
       <PageHeading title={title} help={DOCUMENTATION_NOTIFICATIONS}>
-        <ButtonGroup>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(e) => console.log('add', e)}
-          >
-            Verstuur notificatie
-          </Button>
-        </ButtonGroup>
+        <NotificationsButtonGroup onReload={handleReload} />
       </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>

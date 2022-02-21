@@ -19,7 +19,7 @@ const dateTimeString = (date: Date) => {
   const yyyy = date.getFullYear().toString();
   const HH = date.getHours().toString();
   const mm = date.getMinutes().toString();
-  return `${HH}:${mm} - ${dd}-${MM}-${yyyy}`;
+  return `${dd}-${MM}-${yyyy} - ${HH}:${mm} uur`;
 };
 
 const dateTimeHelper = {

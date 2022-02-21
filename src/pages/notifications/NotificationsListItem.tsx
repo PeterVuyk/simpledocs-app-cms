@@ -67,12 +67,25 @@ const NotificationsListItem: FC<Props> = ({ notificationsInfo }) => {
     );
   };
 
+  const getNotificationMessage = (notificationInfo: NotificationInfo) => {
+    if (!notificationInfo.message) {
+      return <span>-</span>;
+    }
+    return (
+      <span>
+        <span>Titel: {notificationInfo.message.title ?? '-'}</span>
+        <br />
+        <span>Bericht: {notificationInfo.message.body ?? '-'}</span>
+      </span>
+    );
+  };
+
   return (
     <>
       <TableCell>
         {dateTimeHelper.dateTimeString(notificationsInfo.creationDate)}
       </TableCell>
-      <TableCell>two</TableCell>
+      <TableCell>{getNotificationMessage(notificationsInfo)}</TableCell>
       <TableCell>{getDeliveryInfo(notificationsInfo)}</TableCell>
       <TableCell>{getTextFromStatus(notificationsInfo.status)}</TableCell>
     </>
