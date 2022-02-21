@@ -19,7 +19,6 @@ const saveNotificationWithStatusDatabase = (
   const ticket = {
     status: status,
     creationDate: new Date(),
-    notificationDate: null,
     totalFailed,
     totalSend,
     message: null,
@@ -53,7 +52,7 @@ const getPendingTickets = async (): Promise<DatabaseTicketInfo[]> => {
   });
 };
 
-const notificationsRepository = {
+const notificationRepository = {
   createDatabaseId,
   saveNotificationWithStatusDatabase,
   saveTicketsToDatabase,
@@ -61,4 +60,4 @@ const notificationsRepository = {
   getPendingTickets,
 };
 
-export default notificationsRepository;
+export default notificationRepository;

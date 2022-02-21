@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import {Expo, ExpoPushSuccessTicket} from 'expo-server-sdk';
-import notificationsRepository from '../notifications/notificationsRepository';
+import notificationRepository from '../notifications/notificationRepository';
 import {DatabaseTicketInfo} from '../notifications/model/DatabaseTicketInfo';
 import handleDeviceNotRegisteredErrors from '../notifications/handleDeviceNotRegisteredErrors';
 import omit from '../util/omit';
@@ -28,7 +28,7 @@ export const getNotificationStatusInformationCron = functions
       // notifications to devices that have blocked notifications or have uninstalled
       // your app. Expo does not control this policy and sends back the feedback from
       // Apple and Google so you can handle it appropriately.
-      const databaseTicketsInfo = await notificationsRepository.getPendingTickets();
+      const databaseTicketsInfo = await notificationRepository.getPendingTickets();
       if (databaseTicketsInfo.length === 0) {
         functions.logger.info('No new pending notification tickets found to be processed.');
         return;
@@ -101,7 +101,7 @@ const handleNotificationStatusInformation = async (databaseTicketInfo: DatabaseT
     databaseTicketInfo.ticketsInfo = [];
     databaseTicketInfo.status = finalStatus;
     const id = databaseTicketInfo!.id!;
-    notificationsRepository
+    notificationRepository
         .saveNotification(id, omit(databaseTicketInfo, ['id']) as DatabaseTicketInfo)
         .then(() => functions.logger.info('notifications updated successfully'))
         .catch((reason) => functions.logger.error(`Tried to update notification with id ${id} but failed`, reason));

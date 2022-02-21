@@ -7,6 +7,9 @@ import cmsConfigurations from './docs/cms-configurations.md';
 import contentTypes from './docs/content-types.md';
 import decisionTree from './docs/decision-tree.md';
 import publications from './docs/publications.md';
+import notificationsDelivery from './docs/notificationsDelivery.md';
+import notificationsStatus from './docs/notificationsStatus.md';
+import notifications from './docs/notifications.md';
 import styleguide from './docs/styleguide.md';
 import diffChanges from './docs/diff-changes.md';
 import transformBase64 from './docs/transform-base64.md';
@@ -25,6 +28,9 @@ import {
   DOCUMENTATION_STYLEGUIDE,
   DOCUMENTATION_TRANSFORM_BASE64,
   DocumentationType,
+  DOCUMENTATION_NOTIFICATIONS,
+  DOCUMENTATION_NOTIFICATIONS_STATUS,
+  DOCUMENTATION_NOTIFICATIONS_DELIVERY,
 } from '../../model/DocumentationType';
 
 function useDocumentation(documentationType: DocumentationType) {
@@ -75,6 +81,18 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Info publicatie');
         setTitle('Info publicatie');
         return publications;
+      case DOCUMENTATION_NOTIFICATIONS:
+        setTooltip('Info notificaties');
+        setTitle('Info notificaties');
+        return notifications;
+      case DOCUMENTATION_NOTIFICATIONS_STATUS:
+        setTooltip('Info status');
+        setTitle('Info status');
+        return notificationsStatus;
+      case DOCUMENTATION_NOTIFICATIONS_DELIVERY:
+        setTooltip('Info afleveringen');
+        setTitle('Info afleveringen');
+        return notificationsDelivery;
       case DOCUMENTATION_STYLEGUIDE:
         setTooltip('Info gebruik CSS Stylesheet');
         setTitle('Info gebruik CSS Stylesheet');

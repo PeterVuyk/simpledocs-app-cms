@@ -24,6 +24,7 @@ import BookPages from '../pages/bookPages/list/BookPages';
 import Users from '../pages/users/Users';
 import BookManagementPage from '../pages/bookManagement/BookManagementPage';
 import useAppConfiguration from '../configuration/useAppConfiguration';
+import Notifications from '../pages/notifications/Notifications';
 
 const drawerWidth = 240;
 
@@ -105,6 +106,12 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         return (
           <CmsConfigurations
             title={configuration.menu.menuItems.cmsConfigurations.title}
+          />
+        );
+      case configuration.menu.menuItems.notifications.urlSlug:
+        return (
+          <Notifications
+            title={configuration.menu.menuItems.notifications.title}
           />
         );
       case configuration.menu.menuItems.publications.urlSlug:

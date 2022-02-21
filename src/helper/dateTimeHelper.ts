@@ -8,14 +8,24 @@ const convertTimezone = (date: Date) => {
 
 const dateString = (date: Date) => {
   const dd = (date.getDate() + 100).toString().slice(-2);
-  const mm = (date.getMonth() + 101).toString().slice(-2);
+  const MM = (date.getMonth() + 101).toString().slice(-2);
   const yyyy = date.getFullYear().toString();
-  return `${dd}-${mm}-${yyyy}`;
+  return `${dd}-${MM}-${yyyy}`;
+};
+
+const dateTimeString = (date: Date) => {
+  const dd = (date.getDate() + 100).toString().slice(-2);
+  const MM = (date.getMonth() + 101).toString().slice(-2);
+  const yyyy = date.getFullYear().toString();
+  const HH = date.getHours().toString();
+  const mm = date.getMinutes().toString();
+  return `${HH}:${mm} - ${dd}-${MM}-${yyyy}`;
 };
 
 const dateTimeHelper = {
   convertTimezone,
   dateString,
+  dateTimeString,
 };
 
 export default dateTimeHelper;

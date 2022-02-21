@@ -6,7 +6,6 @@ export interface DatabaseTicketInfo {
     id?: string;
     status: NotificationStatusType;
     creationDate: Date;
-    notificationDate: null | Date;
     totalFailed: null | number;
     totalSend: null | number;
     message: ExpoPushMessage | null;

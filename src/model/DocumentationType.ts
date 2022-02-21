@@ -4,6 +4,9 @@ export const DOCUMENTATION_CONTENT_TYPES = 'contentTypes';
 export const DOCUMENTATION_DECISION_TREE = 'decisionTree';
 export const DOCUMENTATION_DEFAULT_TEMPLATE = 'defaultTemplate';
 export const DOCUMENTATION_PUBLICATIONS = 'publications';
+export const DOCUMENTATION_NOTIFICATIONS = 'notifications';
+export const DOCUMENTATION_NOTIFICATIONS_STATUS = 'notificationsStatus';
+export const DOCUMENTATION_NOTIFICATIONS_DELIVERY = 'notificationsDelivery';
 export const DOCUMENTATION_STYLEGUIDE = 'styleguide';
 export const DOCUMENTATION_BOOK_MANAGEMENT = 'bookManagement';
 export const DOCUMENTATION_TRANSFORM_BASE64 = 'transformBase64';
@@ -23,4 +26,7 @@ export type DocumentationType =
   | 'idLinkBookPage'
   | 'imageLibrary'
   | 'diffChanges'
-  | 'styleguide';
+  | 'styleguide'
+  | 'notifications'
+  | 'notificationsStatus'
+  | 'notificationsDelivery';
