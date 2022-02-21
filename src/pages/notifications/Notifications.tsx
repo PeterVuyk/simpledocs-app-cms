@@ -7,9 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { ButtonGroup } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PageHeading from '../../layout/PageHeading';
 import {
-  DOCUMENTATION_DEFAULT_TEMPLATE,
   DOCUMENTATION_NOTIFICATIONS,
   DOCUMENTATION_NOTIFICATIONS_DELIVERY,
   DOCUMENTATION_NOTIFICATIONS_STATUS,
@@ -64,7 +65,17 @@ const Notifications: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title} help={DOCUMENTATION_NOTIFICATIONS} />
+      <PageHeading title={title} help={DOCUMENTATION_NOTIFICATIONS}>
+        <ButtonGroup>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => console.log('add', e)}
+          >
+            Verstuur notificatie
+          </Button>
+        </ButtonGroup>
+      </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>

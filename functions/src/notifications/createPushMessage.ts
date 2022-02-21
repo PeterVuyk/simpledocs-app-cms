@@ -3,13 +3,15 @@
  */
 import {ExpoTokenInfo} from './model/ExpoTokenInfo';
 import {MessageInfo} from './model/MessageInfo';
+import {NotificationContent} from './model/NotificationContent';
 
-const createPushMessage = (expoTokensInfo: ExpoTokenInfo[]): MessageInfo[] => {
+const createPushMessage = (expoTokensInfo: ExpoTokenInfo[], notificationBody: NotificationContent): MessageInfo[] => {
   return expoTokensInfo.map((info) => ({userUid: info.userUid, message: {
     to: info.expoPushToken,
     sound: 'default',
-    body: 'This is a test notification',
-    data: {withSome: 'data'},
+    title: notificationBody.title,
+    body: notificationBody.body,
+    data: {withSome: 'data'}, // max 4KiB!
   }}));
 };
 

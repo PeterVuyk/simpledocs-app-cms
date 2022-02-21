@@ -1,9 +1,14 @@
 import { functions } from '../firebaseConnection';
 import { ApiResponse } from '../../model/ApiResponse';
+import { NotificationContent } from '../../model/Notification/NotificationContent';
 
-async function sendNotification(): Promise<void> {
+async function sendNotification(
+  notificationContent: NotificationContent
+): Promise<void> {
   const response = await functions
-    .httpsCallable('cms-sendNotification')({ foo: 'bar' })
+    .httpsCallable('cms-sendNotification')({
+      notificationContent,
+    })
     .then((value) => value.data as ApiResponse);
   if (!response.success) {
     throw new Error(

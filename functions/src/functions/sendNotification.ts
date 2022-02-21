@@ -7,6 +7,7 @@ import createPushMessage from '../notifications/createPushMessage';
 import handleDeviceNotRegisteredErrors from '../notifications/handleDeviceNotRegisteredErrors';
 import pushNotifications from '../notifications/pushNotifications';
 import getExpoPushTokensInfo from '../notifications/getExpoPushTokensInfo';
+import {NotificationContent} from '../notifications/model/NotificationContent';
 
 /*
  * Documentation: https://www.npmjs.com/package/expo-server-sdk
@@ -15,6 +16,10 @@ export const sendNotification = functions
     .runWith({minInstances: 0})
     .region(functions.config().api.firebase_region)
     .https.onCall(async (data, context) => {
+      if (data.notificationContent?.body === undefined) {
+        return {success: false, message: 'body is missing from message', result: null};
+      }
+
       const id = notificationRepository.createDatabaseId();
       try {
         await notificationRepository.saveNotificationWithStatusDatabase('new', id, null, null);
@@ -25,12 +30,12 @@ export const sendNotification = functions
 
       // We don't want to wait for the handle send notification because it can take quit some time to finish.
       // Instead we return immediately so that the process will run in the background.
-      handleSendNotifications(id);
+      handleSendNotifications(id, data.notificationContent as NotificationContent);
       return {success: true, message: null, result: null};
     });
 
 
-const handleSendNotifications = async (id: string) => {
+const handleSendNotifications = async (id: string, notificationContent: NotificationContent) => {
   let expoTokensInfo;
   try {
     expoTokensInfo = await getExpoPushTokensInfo(undefined, []);
@@ -41,7 +46,7 @@ const handleSendNotifications = async (id: string) => {
     return;
   }
 
-  const messages = createPushMessage(expoTokensInfo);
+  const messages = createPushMessage(expoTokensInfo, notificationContent);
   const tickets = await pushNotifications(messages);
 
   // It is possible that not all messages are sent. In that case we don't know which message was successful or not.
