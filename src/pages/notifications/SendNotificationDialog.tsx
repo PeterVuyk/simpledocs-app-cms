@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
+import RestoreIcon from '@material-ui/icons/Restore';
+
 import DialogTransition from '../../components/dialog/DialogTransition';
 import { NotificationContent } from '../../model/Notification/NotificationContent';
 import TextField from '../../components/form/formik/TextField';
@@ -19,6 +21,8 @@ import AlertBox from '../../components/AlertBox';
 import logger from '../../helper/logger';
 import { notify } from '../../redux/slice/notificationSlice';
 import { useAppDispatch } from '../../redux/hooks';
+import SelectLinkBookPage from '../../components/form/formik/SelectLinkBookPage';
+import omit from '../../helper/object/omit';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -40,7 +44,7 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
   const classes = useStyles();
 
   /**
-   * Maximum message size is 4096 bytes, larger messages are rejected by the expo server
+   * Maximum message size check, too large messages will be rejected by the expo server (data field is maximum 4096 bytes)
    */
   const maxSizeSucceeded = (values: NotificationContent): boolean => {
     return new Blob([JSON.stringify(values)]).size > 3500;
@@ -53,6 +57,15 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
         'Kort de notificatie in. Het totale bericht is groter dan toegestaan.'
       );
       formikHelpers.setSubmitting(false);
+    }
+    const notificationContent = omit(values, [
+      'bookType',
+      'bookPageId',
+    ]) as NotificationContent;
+    if (values.bookType !== '' && values.bookPageId !== '') {
+      notificationContent.data = {
+        navigate: { aggregate: 'bookType', id: values.bookPageId },
+      };
     }
     sendNotification(values as NotificationContent)
       .then(onCloseDialog)
@@ -77,6 +90,8 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
     return {
       title: '',
       body: '',
+      bookType: '',
+      bookPageId: '',
     };
   };
 
@@ -127,6 +142,7 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
               name="title"
             />
             <TextField
+              className={classes.textFieldStyle}
               showError={showError}
               multiline
               minRows={3}
@@ -136,6 +152,11 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
               label="Bericht"
               name="body"
             />
+            <DialogContentText id="description">
+              Maak hieronder de keuze naar welke pagina je de gebruiker wilt
+              navigeren bij het aanklikken van de notificatie (optioneel).
+            </DialogContentText>
+            <SelectLinkBookPage formik={formikRef} showError={showError} />
           </DialogContent>
           <DialogActions>
             <Button

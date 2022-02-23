@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { TextField, MenuItem, OutlinedTextFieldProps } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 
@@ -8,6 +8,7 @@ interface Props {
   options: any;
   disabled?: boolean;
   [x: string]: any;
+  required?: boolean;
 }
 
 const SelectWrapper: FC<Props> = ({
@@ -15,6 +16,7 @@ const SelectWrapper: FC<Props> = ({
   showError,
   options,
   disabled,
+  required,
   ...otherProps
 }) => {
   const { setFieldValue } = useFormikContext();
@@ -24,6 +26,12 @@ const SelectWrapper: FC<Props> = ({
     const { value } = evt.target;
     setFieldValue(name, value);
   };
+
+  useEffect(() => {
+    if (!required) {
+      setFieldValue(name, 'placeholder');
+    }
+  }, [name, required, setFieldValue]);
 
   const hasOptions = () => Object.keys(options).length !== 0;
 
@@ -41,14 +49,18 @@ const SelectWrapper: FC<Props> = ({
     configSelect.helperText = meta.error;
   }
 
+  const getOptions = useCallback(() => {
+    return required ? options : { placeholder: 'Geen keuze', ...options };
+  }, [options, required]);
+
   return (
     <TextField {...configSelect} disabled={disabled || !hasOptions()}>
       {hasOptions() &&
-        Object.keys(options).map((item, pos) => {
+        Object.keys(getOptions()).map((item, pos) => {
           return (
             // eslint-disable-next-line react/no-array-index-key
             <MenuItem key={pos} value={item}>
-              {options[item]}
+              {getOptions()[item]}
             </MenuItem>
           );
         })}

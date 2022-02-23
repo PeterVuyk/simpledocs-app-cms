@@ -1,12 +1,21 @@
 import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
-import { Formik, FormikValues } from 'formik';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Form, Formik, FormikValues } from 'formik';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
 import { ContentType } from '../../../../../../model/artifacts/Artifact';
-import SelectLinkPageForm from './SelectLinkPageForm';
+import SelectLinkBookPage from '../../../SelectLinkBookPage';
 import LinkCodeBlockView from './LinkCodeBlockView';
 import { LinkInfo } from '../../../../../../model/LinkInfo';
 import DialogTransition from '../../../../../dialog/DialogTransition';
+import AlertBox from '../../../../../AlertBox';
+import SubmitButton from '../../../SubmitButton';
 
 interface Props {
   contentType: ContentType;
@@ -16,6 +25,7 @@ interface Props {
 const CreateLinkPageDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
   const [submitted, setSubmitted] = useState<LinkInfo | null>(null);
   const formikRef = useRef<any>();
+  const [showError, setShowError] = useState<boolean>(false);
 
   const handleSubmitForm = (values: FormikValues) => {
     setSubmitted(values as LinkInfo);
@@ -61,12 +71,44 @@ const CreateLinkPageDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
             Link naar pagina maken
           </DialogTitle>
           {!submitted && (
-            <SelectLinkPageForm
-              formik={formikRef}
-              onCloseDialog={onCloseDialog}
-              dirty={dirty}
-              isSubmitting={isSubmitting}
-            />
+            <Form>
+              <DialogContent>
+                <DialogContentText
+                  style={{ whiteSpace: 'pre-line' }}
+                  id="description"
+                >
+                  Kies het boek en bijbehorende hoofdstuk en klik op link maken.
+                </DialogContentText>
+                {isSubmitting && (
+                  <AlertBox severity="info" message="Een moment geduld..." />
+                )}
+                <SelectLinkBookPage
+                  required
+                  formik={formikRef}
+                  showError={showError}
+                  showAltTextField
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={onCloseDialog}
+                  color="primary"
+                  variant="contained"
+                  disabled={isSubmitting}
+                >
+                  Terug
+                </Button>
+                <SubmitButton
+                  showInBottomBar={false}
+                  setShowError={setShowError}
+                  disabled={isSubmitting || !dirty}
+                  color="secondary"
+                  variant="contained"
+                >
+                  Link maken
+                </SubmitButton>
+              </DialogActions>
+            </Form>
           )}
           {submitted && (
             <LinkCodeBlockView
