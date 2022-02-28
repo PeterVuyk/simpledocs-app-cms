@@ -3,6 +3,7 @@ import {NotificationStatusType} from './model/NotificationStatusType';
 import {DatabaseTicketInfo} from './model/DatabaseTicketInfo';
 import omit from '../util/omit';
 import {TicketInfo} from './model/TicketInfo';
+import replaceUndefinedWithNull from '../../../src/helper/object/replaceUndefinedWithNull';
 
 const createDatabaseId = (): string => db.collection('notifications').doc().id;
 
@@ -27,14 +28,18 @@ const saveNotificationWithStatusDatabase = (
   return db.collection('notifications').doc(id).set(ticket);
 };
 
-const saveTicketsToDatabase = (id: string, ticketsInfo: TicketInfo[], totalSend: number, totalFailed: number) => {
+// in the future we should consider saving it differently? We expect that there is always at least 1 ticket receiver.
+const saveTicketsToDatabase = async (id: string, ticketsInfo: TicketInfo[], totalSend: number, totalFailed: number) => {
+  // We need to replace 'undefined' with null. Otherwise Firebase will thrown an exception.
+  const tickets = replaceUndefinedWithNull(ticketsInfo) as TicketInfo[];
+
   const ticket = {
     status: 'pending',
     creationDate: new Date(),
     totalFailed,
     totalSend,
-    message: omit(ticketsInfo[0].message.message, ['to']),
-    ticketsInfo,
+    message: omit(tickets[0].message.message, ['to']),
+    ticketsInfo: tickets,
   } as DatabaseTicketInfo;
   return db.collection('notifications').doc(id).set(ticket);
 };

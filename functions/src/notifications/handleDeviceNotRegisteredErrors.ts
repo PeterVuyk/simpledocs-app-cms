@@ -29,11 +29,28 @@ const disableAppNotificationForUser = async (userUid: string): Promise<void> => 
 };
 
 const fromTicketsInfo = async (ticketsInfo: TicketInfo[]): Promise<TicketInfo[]> => {
-  for (const value1 of ticketsInfo.filter((value) => value.ticket.status === 'error')
-      .filter((value) => (value.ticket as ExpoPushErrorTicket)?.details?.error === 'DeviceNotRegistered')) {
-    await disableAppNotificationForUser(value1.message.userUid);
+  const successfulTickets = [];
+  const failedTickets = [];
+  for (const ticketInfo of ticketsInfo) {
+    if (ticketInfo.ticket.status === 'ok') {
+      successfulTickets.push(ticketInfo);
+      continue;
+    }
+    if (ticketInfo.ticket.details?.error === 'DeviceNotRegistered') {
+      await disableAppNotificationForUser(ticketInfo.message.userUid);
+    }
+    failedTickets.push(ticketInfo);
   }
-  return ticketsInfo.filter((value) => value.ticket.status === 'ok');
+
+  const reasons = failedTickets.map((value) => {
+    const info = value.ticket as ExpoPushErrorTicket;
+    return `[message: ${info.message}, details: ${JSON.stringify(info.details)}]`;
+  });
+
+  functions.logger
+      .info(`${failedTickets.length} notifications failed to send with the following reasons: ${reasons.join(',')}`);
+
+  return successfulTickets;
 };
 
 const handleDeviceNotRegisteredErrors = {
