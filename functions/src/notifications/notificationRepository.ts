@@ -3,7 +3,7 @@ import {NotificationStatusType} from './model/NotificationStatusType';
 import {DatabaseTicketInfo} from './model/DatabaseTicketInfo';
 import omit from '../util/omit';
 import {TicketInfo} from './model/TicketInfo';
-import replaceUndefinedWithNull from '../../../src/helper/object/replaceUndefinedWithNull';
+import replaceUndefinedWithNull from '../util/replaceUndefinedWithNull';
 
 const createDatabaseId = (): string => db.collection('notifications').doc().id;
 

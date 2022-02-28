@@ -67,7 +67,7 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
         navigate: { aggregate: 'bookType', id: values.bookPageId },
       };
     }
-    sendNotification(values as NotificationContent)
+    sendNotification(notificationContent)
       .then(onCloseDialog)
       .then(onReload)
       .catch((reason) => {
@@ -123,11 +123,19 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
               style={{ whiteSpace: 'pre-line' }}
               id="description"
             >
-              Verstuur een notificatie naar de gebruikers. In de app geven we
-              aan dat We ons best doen om alleen meldingen te sturen waarvan we
-              denken dat de gebruiker deze wilt lezen. Krijgt hij onnodige of te
-              vaak notificaties dan kan hij de voorkeuren aanpassen om de
-              notificaties uit te zetten.
+              Controleer{' '}
+              <a
+                target="_blank"
+                href="https://status.expo.dev/#"
+                rel="noreferrer"
+              >
+                de status
+              </a>{' '}
+              van de server voor het versturen van notificaties naar gebruikers.
+              In de app geven we aan dat We ons best doen om alleen meldingen te
+              sturen waarvan we denken dat de gebruiker deze wilt lezen. Krijgt
+              hij onnodige of te vaak notificaties dan kan hij de voorkeuren
+              aanpassen om de notificaties uit te zetten.
             </DialogContentText>
             {isSubmitting && (
               <AlertBox severity="info" message="Een moment geduld..." />
@@ -155,6 +163,12 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
             <DialogContentText id="description">
               Maak hieronder de keuze naar welke pagina je de gebruiker wilt
               navigeren bij het aanklikken van de notificatie (optioneel).
+              <br />
+              <br />
+              Let op! We adviseren alleen een link naar een pagina op te geven
+              waarbij het update moment van het boek voor het opstarten gebeurd.
+              Gebruikers die de app namelijk niet vaak gebruiken hebben mogelijk
+              de pagina nog niet op hun telefoon staan.
             </DialogContentText>
             <SelectLinkBookPage formik={formikRef} showError={showError} />
           </DialogContent>

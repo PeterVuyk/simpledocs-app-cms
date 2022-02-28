@@ -91,7 +91,6 @@ const SelectLinkBookPage: FC<Props> = ({
         label="Boek"
         showError={showError}
         options={getBookOptions()}
-        autoFocus
       />
       <Select
         required

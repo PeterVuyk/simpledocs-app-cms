@@ -18,7 +18,8 @@ const dateTimeString = (date: Date) => {
   const MM = (date.getMonth() + 101).toString().slice(-2);
   const yyyy = date.getFullYear().toString();
   const HH = date.getHours().toString();
-  const mm = date.getMinutes().toString();
+  let mm = date.getMinutes().toString();
+  mm = mm.length === 1 ? `0${mm}` : mm;
   return `${dd}-${MM}-${yyyy} - ${HH}:${mm} uur`;
 };
 
