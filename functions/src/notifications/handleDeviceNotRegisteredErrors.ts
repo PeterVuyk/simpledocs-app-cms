@@ -47,9 +47,10 @@ const fromTicketsInfo = async (ticketsInfo: TicketInfo[]): Promise<TicketInfo[]>
     return `[message: ${info.message}, details: ${JSON.stringify(info.details)}]`;
   });
 
-  functions.logger
-      .info(`${failedTickets.length} notifications failed to send with the following reasons: ${reasons.join(',')}`);
-
+  if (failedTickets.length !== 0) {
+    functions.logger
+        .info(`${failedTickets.length} notifications failed to send with the following reasons: ${reasons.join(',')}`);
+  }
   return successfulTickets;
 };
 

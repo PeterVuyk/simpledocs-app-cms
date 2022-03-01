@@ -1,5 +1,5 @@
 const replaceUndefinedWithNull = (val: any) => {
-  const updatedResult = JSON.stringify(val, function (key, value) {
+  const updatedResult = JSON.stringify(val, (key, value) => {
     return value === '' ? undefined : value;
   });
   return JSON.parse(updatedResult);
