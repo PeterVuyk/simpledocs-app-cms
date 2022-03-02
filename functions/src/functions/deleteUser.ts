@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import {admin} from '../firebase';
+import deleteUserByUid from '../user/deleteUserByUid';
 
 export const deleteUser = functions
     .region(functions.config().api.firebase_region)
@@ -9,9 +9,7 @@ export const deleteUser = functions
       if (context.auth?.token.email === undefined) {
         return {success: false, message: 'unauthorized to call this function', result: null};
       }
-      return admin
-          .auth()
-          .deleteUser(data.userId)
+      return deleteUserByUid(data.userId)
           .then(() => {
             return {success: true, message: null, result: null};
           })

@@ -1,6 +1,7 @@
 import {ExpoTokenInfo} from './model/ExpoTokenInfo';
 import validatePushTokens from './validatePushTokens';
 import {admin} from '../firebase';
+import removeAccountsFromDuplicateTokens from './removeAccountsFromDuplicateTokens';
 
 /*
  * We loop through all the users and get the expoPushNotifications.
@@ -28,7 +29,7 @@ const getExpoPushTokensInfo = (nextPageToken: string | undefined, list: ExpoToke
         if (listUsersResult.pageToken) {
           await getExpoPushTokensInfo(listUsersResult.pageToken, list);
         }
-        return validatePushTokens(list);
+        return removeAccountsFromDuplicateTokens(validatePushTokens(list));
       });
 };
 

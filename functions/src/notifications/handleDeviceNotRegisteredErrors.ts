@@ -12,8 +12,6 @@ import * as functions from 'firebase-functions';
  *
  * As an alternative we add a property to customClaims called 'appNotificationsDisabled' with the value 'true'.
  * If the user startup the app again, we will remove this property so he can receive notifications again.
- *
- * TODO: does new registered devices get a new unique expo token? In that case we also need to update the token.
  */
 const disableAppNotificationForUser = async (userUid: string): Promise<void> => {
   await admin.auth().getUser(userUid).then(async (userRecord) =>
