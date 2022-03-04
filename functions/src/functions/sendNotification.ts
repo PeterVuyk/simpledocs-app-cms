@@ -38,7 +38,7 @@ export const sendNotification = functions
 const handleSendNotifications = async (id: string, notificationContent: NotificationContent) => {
   let expoTokensInfo;
   try {
-    expoTokensInfo = await getExpoPushTokensInfo(undefined, []);
+    expoTokensInfo = await getExpoPushTokensInfo();
   } catch (reason) {
     functions.logger
         .error('Failed retrieving expoPushTokens from user accounts, skipped sending notifications', reason);
