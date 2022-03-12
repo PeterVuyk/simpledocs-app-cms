@@ -4,16 +4,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
 import RemoveConfirmationDialog from '../../../../components/dialog/RemoveConfirmationDialog';
 import logger from '../../../../helper/logger';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { notify } from '../../../../redux/slice/notificationSlice';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   editStatus: EditStatus;
   removeMenuElement: null | HTMLElement;
   setRemoveMenuElement: (anchorEL: null | HTMLElement) => void;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
   onSubmitAction: () => void;
 }
 
@@ -21,7 +21,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   editStatus,
   removeMenuElement,
   setRemoveMenuElement,
-  decisionTreeSteps,
+  decisionTrees,
   onSubmitAction,
 }) => {
   const handleClose = () => {
@@ -75,7 +75,7 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   const getTitles = (): string[] => {
     return [
       ...new Set(
-        decisionTreeSteps
+        decisionTrees
           .filter((step) => step.isDraft === (EDIT_STATUS_DRAFT === editStatus))
           .map((step) => step.title)
       ),

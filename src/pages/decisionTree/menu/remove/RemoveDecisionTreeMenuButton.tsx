@@ -2,20 +2,20 @@ import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { Tooltip } from '@material-ui/core';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   editStatus: EditStatus;
   onSubmitAction: () => void;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
 }
 
 const RemoveDecisionTreeMenuButton: FC<Props> = ({
   editStatus,
   onSubmitAction,
-  decisionTreeSteps,
+  decisionTrees,
 }) => {
   const [deleteMenuElement, setDeleteMenuElement] =
     useState<null | HTMLElement>(null);
@@ -35,7 +35,7 @@ const RemoveDecisionTreeMenuButton: FC<Props> = ({
         editStatus={editStatus}
         removeMenuElement={deleteMenuElement}
         setRemoveMenuElement={setDeleteMenuElement}
-        decisionTreeSteps={decisionTreeSteps}
+        decisionTrees={decisionTrees}
         onSubmitAction={onSubmitAction}
       />
     </>

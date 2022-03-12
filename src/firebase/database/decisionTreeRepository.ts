@@ -1,51 +1,42 @@
 import { database } from '../firebaseConnection';
 import { AGGREGATE_DECISION_TREE } from '../../model/Aggregate';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import {
   EDIT_STATUS_DRAFT,
   EDIT_STATUS_PUBLISHED,
   EditStatus,
 } from '../../model/EditStatus';
+import { DecisionTree } from '../../model/DecisionTree/DecisionTree';
 
-async function getDecisionTreeSteps(
-  draftPage: boolean
-): Promise<DecisionTreeStep[]> {
+async function getDecisionTree(draftPage: boolean): Promise<DecisionTree[]> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
     .orderBy('title', 'desc')
-    .orderBy('id', 'asc')
     .get();
   const steps = querySnapshot.docs.map((doc) => {
-    return doc.data() as DecisionTreeStep;
+    return doc.data() as DecisionTree;
   });
   if (draftPage) {
-    return steps.filter((step) => step.isDraft || step.markedForDeletion);
+    return steps.filter((tree) => tree.isDraft || tree.markedForDeletion);
   }
   return steps.filter((step) => !step.isDraft);
 }
 
-async function updateDecisionTreeSteps(
-  decisionTreeSteps: DecisionTreeStep[]
-): Promise<void> {
+async function updateDecisionTree(decisionTree: DecisionTree): Promise<void> {
   const querySnapshot = await database
     .collection(AGGREGATE_DECISION_TREE)
-    .where('title', '==', decisionTreeSteps[0].title)
+    .where('title', '==', decisionTree.title)
     .get();
 
   const batch = database.batch();
   querySnapshot.forEach((documentSnapshot) => {
-    const step = documentSnapshot.data() as DecisionTreeStep;
-    if (step.isDraft) {
+    const existingDecisionTree = documentSnapshot.data() as DecisionTree;
+    if (existingDecisionTree.isDraft) {
       batch.delete(documentSnapshot.ref);
     } else {
       batch.update(documentSnapshot.ref, { markedForDeletion: true });
     }
   });
-
-  decisionTreeSteps.forEach((decisionTreeStep) =>
-    database.collection(AGGREGATE_DECISION_TREE).add(decisionTreeStep)
-  );
-
+  await database.collection(AGGREGATE_DECISION_TREE).add(decisionTree);
   return batch.commit();
 }
 
@@ -60,11 +51,11 @@ async function deleteByTitle(
 
   const batch = database.batch();
   querySnapshot.forEach((documentSnapshot) => {
-    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
-    if (editStatus === EDIT_STATUS_DRAFT && decisionTreeStep.isDraft) {
+    const decisionTree = documentSnapshot.data() as DecisionTree;
+    if (editStatus === EDIT_STATUS_DRAFT && decisionTree.isDraft) {
       batch.delete(documentSnapshot.ref);
     }
-    if (editStatus === EDIT_STATUS_PUBLISHED && !decisionTreeStep.isDraft) {
+    if (editStatus === EDIT_STATUS_PUBLISHED && !decisionTree.isDraft) {
       batch.update(documentSnapshot.ref, { markedForDeletion: true });
     }
   });
@@ -79,8 +70,8 @@ async function removeMarkForDeletion(title: string): Promise<void> {
 
   const batch = database.batch();
   querySnapshot.forEach((documentSnapshot) => {
-    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
-    if (decisionTreeStep.isDraft) {
+    const decisionTree = documentSnapshot.data() as DecisionTree;
+    if (decisionTree.isDraft) {
       batch.delete(documentSnapshot.ref);
     } else {
       batch.update(documentSnapshot.ref, { markedForDeletion: false });
@@ -90,8 +81,8 @@ async function removeMarkForDeletion(title: string): Promise<void> {
 }
 
 const decisionTreeRepository = {
-  updateDecisionTreeSteps,
-  getDecisionTreeSteps,
+  updateDecisionTree,
+  getDecisionTree,
   deleteByTitle,
   removeMarkForDeletion,
 };

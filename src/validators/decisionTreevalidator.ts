@@ -1,4 +1,5 @@
-import { DecisionTreeStep } from '../model/DecisionTreeStep';
+import { DecisionTree } from '../model/DecisionTree/DecisionTree';
+import { DecisionTreeStep } from '../model/DecisionTree/DecisionTreeStep';
 
 const validateRootQuestion = (
   rootQuestion: DecisionTreeStep,
@@ -108,16 +109,19 @@ const createValidationErrorMessage = (errorMessages: string[]): string => {
   )}`;
 };
 
-const validate = (steps: DecisionTreeStep[]): string => {
-  const rootQuestion = steps[0];
-  if (steps.length < 3 || !rootQuestion) {
+const validate = (decisionTree: DecisionTree): string => {
+  const rootQuestion = decisionTree.steps[0];
+  if (decisionTree.steps.length < 3 || !rootQuestion) {
     return 'Het ontvangen csv bestand is leeg en dient tenminste 1 vraag en 2 antwoorden te hebben (ja en nee).';
   }
   let errorMessages: string[] = [];
   errorMessages = validateRootQuestion(rootQuestion, errorMessages);
-  errorMessages = ValidateNodes(steps, errorMessages);
-  errorMessages = ValidateLeafNodes(steps, errorMessages);
-  errorMessages = validateOnlyLastLeafHasContentId(steps, errorMessages);
+  errorMessages = ValidateNodes(decisionTree.steps, errorMessages);
+  errorMessages = ValidateLeafNodes(decisionTree.steps, errorMessages);
+  errorMessages = validateOnlyLastLeafHasContentId(
+    decisionTree.steps,
+    errorMessages
+  );
 
   return errorMessages.length === 0
     ? ''

@@ -2,20 +2,20 @@ import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_DECISION_TREE } from '../../../../model/artifacts/ArtifactType';
 import { getExtensionFromContentType } from '../../../../model/artifacts/Artifact';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   editStatus: EditStatus;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
 }
 
 const DownloadDecisionTreeFiles: FC<Props> = ({
   editStatus,
-  decisionTreeSteps,
+  decisionTrees,
 }) => {
   const handleExportFiles = (): void => {
     const zip = new JSZip();
@@ -37,7 +37,8 @@ const DownloadDecisionTreeFiles: FC<Props> = ({
         });
       return;
     }
-    decisionTreeSteps
+    decisionTrees
+      .flatMap((value) => value.steps)
       .filter((step) => step.content !== undefined)
       .filter((step) => step.contentType !== undefined)
       .forEach((step) => {

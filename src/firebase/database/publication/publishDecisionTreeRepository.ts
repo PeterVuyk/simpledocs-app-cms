@@ -2,8 +2,9 @@ import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { AGGREGATE_DECISION_TREE } from '../../../model/Aggregate';
 import { Versioning } from '../../../model/Versioning';
-import { DecisionTreeStep } from '../../../model/DecisionTreeStep';
 import artifactsRepository from '../artifactsRepository';
+import { DecisionTree } from '../../../model/DecisionTree/DecisionTree';
+import replaceUndefinedWithNull from '../../../helper/object/replaceUndefinedWithNull';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,
@@ -36,45 +37,42 @@ const removePublishedSteps = async (
   });
 };
 
-const updateDraftTrueToFalse = async (
-  batch: firebase.firestore.WriteBatch,
-  versioning: Versioning
-) => {
-  // 5: Update draft true to false
-  const querySnapshotToBePublished = await database
-    .collection(versioning.aggregate)
-    .where('isDraft', '==', true)
-    .get();
-
-  querySnapshotToBePublished.forEach((documentSnapshot) => {
-    batch.update(documentSnapshot.ref, { isDraft: false });
-  });
-};
-
 const updateContentIdWithContentFromArtifacts = async (
   batch: firebase.firestore.WriteBatch,
   versioning: Versioning
 ) => {
+  // Step 1: We get all the draft trees
   const querySnapshotWithContentIdReference = await database
     .collection(versioning.aggregate)
     .where('isDraft', '==', true)
     .get();
-
-  querySnapshotWithContentIdReference.forEach((documentSnapshot) => {
-    const decisionTreeStep = documentSnapshot.data() as DecisionTreeStep;
-    if (!decisionTreeStep.contentId) {
-      return;
-    }
-    batch.update(documentSnapshot.ref, { contentId: null });
-    artifactsRepository
-      .getArtifactById(decisionTreeStep.contentId)
-      .then((value) => {
-        batch.update(documentSnapshot.ref, {
-          content: value.content,
-          contentType: value.contentType,
-        });
-      });
+  const decisionTrees = querySnapshotWithContentIdReference.docs.map((doc) => {
+    return doc.data() as DecisionTree;
   });
+  // Step 2: We update the trees with the content info
+  for (const tree of decisionTrees) {
+    for (const step of tree.steps) {
+      if (step.contentId) {
+        // eslint-disable-next-line no-await-in-loop
+        await artifactsRepository
+          .getArtifactById(step.contentId)
+          .then((artifact) => {
+            step.contentId = undefined;
+            step.content = artifact.content;
+            step.contentType = artifact.contentType;
+          });
+      }
+    }
+  }
+  // Step 3: We update the decision trees in firestore
+  decisionTrees.forEach((tree) => {
+    const ref = database.collection('decisionTree').doc();
+    batch.set(ref, { ...replaceUndefinedWithNull(tree), isDraft: false });
+  });
+  // Step 4: Then we remove the trees
+  querySnapshotWithContentIdReference.docs.forEach((value) =>
+    batch.delete(value.ref)
+  );
 };
 
 async function publish(
@@ -85,24 +83,24 @@ async function publish(
 
   await updateVersion(batch, versioning, newVersion);
 
-  // 2: Remove markedForDeletion steps
+  // 2: Remove markedForDeletion decision trees
   const querySnapshot = await database.collection(versioning.aggregate).get();
   querySnapshot.forEach((documentSnapshot) => {
-    if ((documentSnapshot.data() as DecisionTreeStep).markedForDeletion)
+    if ((documentSnapshot.data() as DecisionTree).markedForDeletion)
       batch.delete(documentSnapshot.ref);
   });
 
   // 3: Remove published decision tree with updated decision tree
-  // A: Get all decisionTreeSteps:
-  const decisionTreeSteps = querySnapshot.docs.map(
-    (queryDocumentSnapshot) => queryDocumentSnapshot.data() as DecisionTreeStep
+  // A: Get all decisionTrees:
+  const decisionTrees = querySnapshot.docs.map(
+    (queryDocumentSnapshot) => queryDocumentSnapshot.data() as DecisionTree
   );
   // B: Get all unique titles (draft en published)
   const draftTitles = new Set(
-    decisionTreeSteps.filter((step) => step.isDraft).map((step) => step.title)
+    decisionTrees.filter((step) => step.isDraft).map((step) => step.title)
   );
   const publishedTitles = new Set(
-    decisionTreeSteps.filter((step) => !step.isDraft).map((step) => step.title)
+    decisionTrees.filter((step) => !step.isDraft).map((step) => step.title)
   );
 
   const updatedTitles: string[] = [];
@@ -116,9 +114,7 @@ async function publish(
   if (updatedTitles.length !== 0) {
     await removePublishedSteps(batch, updatedTitles);
   }
-
   await updateContentIdWithContentFromArtifacts(batch, versioning);
-  await updateDraftTrueToFalse(batch, versioning);
 
   return batch.commit();
 }

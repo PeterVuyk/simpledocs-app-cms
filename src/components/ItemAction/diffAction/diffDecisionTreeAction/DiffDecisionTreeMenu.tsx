@@ -1,29 +1,27 @@
 import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import ShowDiffDecisionTreeDialog from './ShowDiffDecisionTreeDialog';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   decisionTreeDiffMenu: null | HTMLElement;
   setDecisionTreeDiffMenu: (anchorEL: null | HTMLElement) => void;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
+  titles: string[];
 }
 
 const DiffDecisionTreeMenu: FC<Props> = ({
-  decisionTreeSteps,
+  decisionTrees,
   setDecisionTreeDiffMenu,
   decisionTreeDiffMenu,
+  titles,
 }) => {
   const [showDiffDialog, setShowDiffDialog] = useState<string>('');
 
   const handleClose = () => {
     setShowDiffDialog('');
     setDecisionTreeDiffMenu(null);
-  };
-
-  const getTitles = () => {
-    return [...new Set(decisionTreeSteps.map((step) => step.title))];
   };
 
   const handleTitleDiff = (title: string) => {
@@ -39,7 +37,7 @@ const DiffDecisionTreeMenu: FC<Props> = ({
         open={Boolean(decisionTreeDiffMenu)}
         onClose={handleClose}
       >
-        {getTitles().map((title) => (
+        {titles.map((title) => (
           <MenuItem key="title" onClick={() => handleTitleDiff(title)}>
             {title}
           </MenuItem>

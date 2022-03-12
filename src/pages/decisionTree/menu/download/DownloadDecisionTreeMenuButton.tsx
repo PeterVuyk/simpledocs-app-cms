@@ -2,17 +2,17 @@ import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Tooltip } from '@material-ui/core';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   editStatus: EditStatus;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
 }
 
 const DownloadDecisionTreeMenuButton: FC<Props> = ({
-  decisionTreeSteps,
+  decisionTrees,
   editStatus,
 }) => {
   const [downloadMenuElement, setDownloadMenuElement] =
@@ -31,7 +31,7 @@ const DownloadDecisionTreeMenuButton: FC<Props> = ({
       </Tooltip>
       <DownloadDecisionTreeMenu
         editStatus={editStatus}
-        decisionTreeSteps={decisionTreeSteps}
+        decisionTrees={decisionTrees}
         downloadMenuElement={downloadMenuElement}
         setDownloadMenuElement={setDownloadMenuElement}
       />

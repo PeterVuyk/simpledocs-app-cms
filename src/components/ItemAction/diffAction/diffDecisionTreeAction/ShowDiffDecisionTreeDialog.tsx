@@ -12,8 +12,8 @@ import { DOCUMENTATION_DIFF_CHANGES } from '../../../../model/DocumentationType'
 import HelpAction from '../../helpAction/HelpAction';
 import DiffDialogContent from './DiffDialogContent';
 import decisionTreeRepository from '../../../../firebase/database/decisionTreeRepository';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import DialogTransition from '../../../dialog/DialogTransition';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   title: string;
@@ -21,27 +21,44 @@ interface Props {
 }
 
 const ShowDiffDecisionTreeDialog: FC<Props> = ({ title, onClose }) => {
-  const [decisionTree, setDecisionTree] = useState<DecisionTreeStep[]>([]);
+  const [decisionTree, setDecisionTree] = useState<DecisionTree[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    decisionTreeRepository
-      .getDecisionTreeSteps(true)
-      .then(setDecisionTree)
-      .catch((reason) => {
-        logger.errorWithReason(
-          `Failed to get decisionTreeSteps info in ShowDiffDialog`,
-          reason
-        );
-        dispatch(
-          notify({
-            notificationType: 'error',
-            notificationOpen: true,
-            notificationMessage: `Het tonen van het verschil van de beslisboom is mislukt.`,
-          })
+    const getDecisionTree = async () => {
+      const trees = await decisionTreeRepository
+        .getDecisionTree(true)
+        .then((value) => value.filter((tree) => tree.title === title))
+        .catch((reason) => {
+          logger.errorWithReason(
+            `Failed to get decisionTreeSteps info in ShowDiffDialog`,
+            reason
+          );
+          dispatch(
+            notify({
+              notificationType: 'error',
+              notificationOpen: true,
+              notificationMessage: `Het tonen van het verschil van de beslisboom is mislukt.`,
+            })
+          );
+          onClose();
+        });
+      if (!trees || trees.length !== 2) {
+        logger.error(
+          `Incorrect number of decision trees found, trees found: ${
+            trees
+              ? `total: ${trees.length}, titles: ${trees.map(
+                  (value) => value.title
+                )}`
+              : 'no tree found'
+          }.`
         );
         onClose();
-      });
+        return;
+      }
+      setDecisionTree(trees);
+    };
+    getDecisionTree();
   }, [dispatch, onClose, title]);
 
   return (
@@ -59,8 +76,8 @@ const ShowDiffDecisionTreeDialog: FC<Props> = ({ title, onClose }) => {
       </DialogTitle>
       {decisionTree.length !== 0 ? (
         <DiffDialogContent
-          conceptDecisionTree={decisionTree.filter((value) => value.isDraft)}
-          publishedDecisionTree={decisionTree.filter((value) => !value.isDraft)}
+          conceptDecisionTree={decisionTree.find((value) => value.isDraft)!}
+          publishedDecisionTree={decisionTree.find((value) => !value.isDraft)!}
         />
       ) : (
         <DialogContent style={{ minHeight: 600 }}>

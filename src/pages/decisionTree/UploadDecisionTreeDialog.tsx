@@ -12,11 +12,12 @@ import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import logger from '../../helper/logger';
 import decisionTreeValidator from '../../validators/decisionTreevalidator';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
+import { DecisionTreeCsvRow } from '../../model/DecisionTree/DecisionTreeCsvRow';
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DialogTransition from '../../components/dialog/DialogTransition';
+import { DecisionTree } from '../../model/DecisionTree/DecisionTree';
 
 interface Props {
   dialogText: string;
@@ -33,47 +34,40 @@ const UploadDecisionTreeDialog: FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const titleRef = useRef<TextFieldProps>();
   const csvUploadRef = useRef<string>('');
-  const iconUploadRef = useRef<string>('');
   const dispatch = useAppDispatch();
 
   const setCSVUploadRef = (file: string) => {
     csvUploadRef.current = file;
   };
 
-  const setIconUploadRef = (file: string) => {
-    iconUploadRef.current = file;
-  };
-
   const readDecisionTreeCSVFile = (
     csvFile: string,
     title: string
-  ): DecisionTreeStep[] => {
+  ): DecisionTree => {
     const base64String = csvFile.split('data:text/csv;base64,')[1];
     const csv = Papa.parse(decodeURIComponent(escape(atob(base64String))), {
       header: true,
       dynamicTyping: true,
     });
-    return (
-      csv.data
-        // @ts-ignore
-        .filter((step) => step.id !== null)
-        .map((step) => {
-          const result = step as DecisionTreeStep;
-          result.title = title;
-          result.isDraft = true;
-          return result;
-        })
-    );
+    const steps = csv.data
+      // @ts-ignore
+      .filter((row) => row.id !== null)
+      .map((row) => {
+        const result = row as DecisionTreeCsvRow;
+        result.title = title;
+        result.isDraft = true;
+        return result;
+      })
+      .sort((a, b) => a.id - b.id);
+    return {
+      title: steps[0]?.title ?? '',
+      isDraft: true,
+      steps,
+    } as DecisionTree;
   };
 
   const handleClose = () => {
     setOpenUploadDialog(false);
-  };
-
-  const addIconToFirstStep = (steps: DecisionTreeStep[]) => {
-    const updatedSteps: DecisionTreeStep[] = steps;
-    updatedSteps[0].iconFile = iconUploadRef.current;
-    return updatedSteps;
   };
 
   const handleSubmit = () => {
@@ -91,11 +85,6 @@ const UploadDecisionTreeDialog: FC<Props> = ({
       setLoading(false);
       return;
     }
-    if (iconUploadRef.current === undefined || iconUploadRef.current === '') {
-      setError('Opslaan is mislukt, upload een correct svg bestand.');
-      setLoading(false);
-      return;
-    }
     const steps = readDecisionTreeCSVFile(
       csvUploadRef.current,
       titleRef.current?.value as string
@@ -108,7 +97,7 @@ const UploadDecisionTreeDialog: FC<Props> = ({
       return;
     }
     decisionTreeRepository
-      .updateDecisionTreeSteps(addIconToFirstStep(steps))
+      .updateDecisionTree(steps)
       .then(() => {
         dispatch(
           notify({
@@ -160,11 +149,6 @@ const UploadDecisionTreeDialog: FC<Props> = ({
           onUpdateFile={setCSVUploadRef}
           allowedMimeTypes={['text/csv']}
           allowedExtension="csv"
-        />
-        <FileDropzoneArea
-          onUpdateFile={setIconUploadRef}
-          allowedMimeTypes={['image/svg+xml']}
-          allowedExtension="svg"
         />
       </DialogContent>
       <DialogActions>

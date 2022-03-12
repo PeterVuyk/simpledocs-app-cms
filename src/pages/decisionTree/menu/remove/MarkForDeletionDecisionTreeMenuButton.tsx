@@ -3,16 +3,16 @@ import Button from '@material-ui/core/Button';
 import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
 import { Tooltip } from '@material-ui/core';
 import UndoMarkForDeletionDecisionTreeMenu from './UndoMarkForDeletionDecisionTreeMenu';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   onSubmitAction: () => void;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
 }
 
 const MarkForDeletionDecisionTreeMenuButton: FC<Props> = ({
   onSubmitAction,
-  decisionTreeSteps,
+  decisionTrees,
 }) => {
   const [removeMarkForDeleteMenuElement, setRemoveMarkForDeleteMenuElement] =
     useState<null | HTMLElement>(null);
@@ -39,7 +39,7 @@ const MarkForDeletionDecisionTreeMenuButton: FC<Props> = ({
       <UndoMarkForDeletionDecisionTreeMenu
         removeMarkForDeleteMenuElement={removeMarkForDeleteMenuElement}
         setRemoveMarkForDeleteMenuElement={setRemoveMarkForDeleteMenuElement}
-        decisionTreeSteps={decisionTreeSteps}
+        decisionTrees={decisionTrees}
         onSubmitAction={onSubmitAction}
       />
     </>

@@ -3,55 +3,34 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import DownloadDecisionTreeFiles from './DownloadDecisionTreeFiles';
 import { EditStatus } from '../../../../model/EditStatus';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   editStatus: EditStatus;
   downloadMenuElement: null | HTMLElement;
   setDownloadMenuElement: (anchorEL: null | HTMLElement) => void;
-  decisionTreeSteps: DecisionTreeStep[];
+  decisionTrees: DecisionTree[];
 }
 
 const DownloadDecisionTreeMenu: FC<Props> = ({
   editStatus,
   downloadMenuElement,
   setDownloadMenuElement,
-  decisionTreeSteps,
+  decisionTrees,
 }) => {
   const handleClose = () => {
     setDownloadMenuElement(null);
   };
 
-  const exportDecisionTreeCSVFile = (steps: DecisionTreeStep[]): void => {
+  const handleExportCSVFile = (decisionTree: DecisionTree): void => {
     const csvString = Papa.unparse({
-      fields: [
-        'id',
-        'label',
-        'parentId',
-        'lineLabel',
-        'contentId',
-        'internalNote',
-      ],
-      data: steps,
+      fields: ['id', 'label', 'parentId', 'lineLabel', 'contentId'],
+      data: decisionTree.steps,
     });
     const csvFile = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    FileSaver.saveAs(csvFile, `beslisboom-${steps[0].title}.csv`);
-  };
-
-  const handleExportSVGFile = (step: DecisionTreeStep): void => {
-    FileSaver.saveAs(step.iconFile as string, `beslisboom-${step.title}.svg`);
-  };
-
-  const handleExportCSVFile = (title: string): void => {
-    exportDecisionTreeCSVFile(
-      decisionTreeSteps.filter((step) => step.title === title)
-    );
-  };
-
-  const getTitleWithIcons = (): DecisionTreeStep[] => {
-    return decisionTreeSteps.filter((step) => step.iconFile !== undefined);
+    FileSaver.saveAs(csvFile, `beslisboom-${decisionTree.title}.csv`);
   };
 
   return (
@@ -62,25 +41,17 @@ const DownloadDecisionTreeMenu: FC<Props> = ({
       open={Boolean(downloadMenuElement)}
       onClose={handleClose}
     >
-      {getTitleWithIcons().map((step) => (
+      {decisionTrees.map((decisionTree) => (
         <MenuItem
-          key={`${step.title + step.isDraft}csv`}
-          onClick={() => handleExportCSVFile(step.title)}
+          key={`${decisionTree.title + decisionTree.isDraft}csv`}
+          onClick={() => handleExportCSVFile(decisionTree)}
         >
-          {step.title}.csv
-        </MenuItem>
-      ))}
-      {getTitleWithIcons().map((step) => (
-        <MenuItem
-          key={`${step.title + step.isDraft}svg`}
-          onClick={() => handleExportSVGFile(step)}
-        >
-          {step.title}.svg
+          {decisionTree.title}.csv
         </MenuItem>
       ))}
       <DownloadDecisionTreeFiles
         editStatus={editStatus}
-        decisionTreeSteps={decisionTreeSteps}
+        decisionTrees={decisionTrees}
       />
     </Menu>
   );

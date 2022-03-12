@@ -15,4 +15,3 @@ De volgende validaties worden uitgevoerd op het csv-bestand:
 - parentId (met uitzondering van de eerste vraag een verplicht veld, verwijst naar het id van de bovenliggende vraagstelling)
 - lineLabel (met uitzondering van de eerste vraag een verplicht veld, 'Ja' of 'Nee')
 - contentId (deze is alleen verplicht voor het laatste antwoord, verwijzing naar het 'ID bestand' die je wilt weergeven)
-- internalNote (optioneel, vrij veld voor interne notities).

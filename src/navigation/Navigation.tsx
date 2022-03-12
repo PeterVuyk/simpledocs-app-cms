@@ -11,7 +11,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Header from '../components/header/Header';
 import NavigationDrawer from './NavigationDrawer';
-import DecisionTree from '../pages/decisionTree/DecisionTree';
 import Calculations from '../pages/calculations/Calculations';
 import Publications from '../pages/publications/Publications';
 import NotFound from '../pages/NotFound';
@@ -25,6 +24,7 @@ import Users from '../pages/users/Users';
 import BookManagementPage from '../pages/bookManagement/BookManagementPage';
 import useAppConfiguration from '../configuration/useAppConfiguration';
 import Notifications from '../pages/notifications/Notifications';
+import DecisionTreePage from '../pages/decisionTree/DecisionTreePage';
 
 const drawerWidth = 240;
 
@@ -86,7 +86,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         );
       case configuration.menu.menuItems.decisionTree.urlSlug:
         return (
-          <DecisionTree
+          <DecisionTreePage
             title={configuration.menu.menuItems.decisionTree.title}
           />
         );

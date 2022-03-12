@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
-import { DecisionTreeStep } from '../../model/DecisionTreeStep';
 import ArtifactsList from './artifacts/ArtifactsList';
 import DecisionTreeStepsList from './DecisionTreeStepsList';
 import { EDIT_STATUS_DRAFT } from '../../model/EditStatus';
@@ -18,34 +17,35 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { DOCUMENTATION_DECISION_TREE } from '../../model/DocumentationType';
 import DiffDecisionTreeAction from '../../components/ItemAction/diffAction/diffDecisionTreeAction/DiffDecisionTreeAction';
 import useNavigate from '../../navigation/useNavigate';
+import { DecisionTree } from '../../model/DecisionTree/DecisionTree';
 
 interface Props {
   title: string;
 }
 
-const DecisionTree: FC<Props> = ({ title }) => {
-  const [decisionTreeSteps, setDecisionTreeSteps] = useState<
-    DecisionTreeStep[] | null
-  >(null);
+const DecisionTreePage: FC<Props> = ({ title }) => {
+  const [decisionTrees, setDecisionTrees] = useState<DecisionTree[] | null>(
+    null
+  );
   const { editStatus, setEditStatus } = useStatusToggle();
-  const { history, navigate } = useNavigate();
+  const { navigate } = useNavigate();
 
   const handleLoadDecisionTree = (): void => {
     decisionTreeRepository
-      .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
-      .then((steps) => setDecisionTreeSteps(steps));
+      .getDecisionTree(editStatus === EDIT_STATUS_DRAFT)
+      .then((steps) => setDecisionTrees(steps));
   };
 
   useEffect(() => {
-    setDecisionTreeSteps(null);
+    setDecisionTrees(null);
     decisionTreeRepository
-      .getDecisionTreeSteps(editStatus === EDIT_STATUS_DRAFT)
+      .getDecisionTree(editStatus === EDIT_STATUS_DRAFT)
       .then((steps) => {
-        setDecisionTreeSteps(steps);
+        setDecisionTrees(steps);
       });
   }, [editStatus]);
 
-  const hasDecisionTreeSteps = (steps: DecisionTreeStep[]): boolean => {
+  const hasDecisionTreeSteps = (steps: DecisionTree[]): boolean => {
     return (
       steps.filter(
         (step) => step.isDraft === (editStatus === EDIT_STATUS_DRAFT)
@@ -53,7 +53,7 @@ const DecisionTree: FC<Props> = ({ title }) => {
     );
   };
 
-  const hasMarkedForDeletionTitles = (steps: DecisionTreeStep[]): boolean => {
+  const hasMarkedForDeletionTitles = (steps: DecisionTree[]): boolean => {
     return steps.filter((step) => step.markedForDeletion).length > 0;
   };
 
@@ -65,26 +65,25 @@ const DecisionTree: FC<Props> = ({ title }) => {
             editStatus={editStatus}
             setEditStatus={setEditStatus}
           />
-          {decisionTreeSteps &&
-            hasMarkedForDeletionTitles(decisionTreeSteps) && (
-              <MarkForDeletionDecisionTreeMenuButton
-                decisionTreeSteps={decisionTreeSteps}
-                onSubmitAction={handleLoadDecisionTree}
-              />
-            )}
-          {decisionTreeSteps && hasDecisionTreeSteps(decisionTreeSteps) && (
+          {decisionTrees && hasMarkedForDeletionTitles(decisionTrees) && (
+            <MarkForDeletionDecisionTreeMenuButton
+              decisionTrees={decisionTrees}
+              onSubmitAction={handleLoadDecisionTree}
+            />
+          )}
+          {decisionTrees && hasDecisionTreeSteps(decisionTrees) && (
             <>
               {editStatus === EDIT_STATUS_DRAFT && (
-                <DiffDecisionTreeAction decisionTreeSteps={decisionTreeSteps} />
+                <DiffDecisionTreeAction decisionTrees={decisionTrees} />
               )}
               <RemoveDecisionTreeMenuButton
                 editStatus={editStatus}
-                decisionTreeSteps={decisionTreeSteps}
+                decisionTrees={decisionTrees}
                 onSubmitAction={handleLoadDecisionTree}
               />
               <DownloadDecisionTreeMenuButton
                 editStatus={editStatus}
-                decisionTreeSteps={decisionTreeSteps}
+                decisionTrees={decisionTrees}
               />
             </>
           )}
@@ -104,12 +103,12 @@ const DecisionTree: FC<Props> = ({ title }) => {
       </PageHeading>
       <DecisionTreeStepsList
         editStatus={editStatus}
-        decisionTreeSteps={decisionTreeSteps}
+        decisionTrees={decisionTrees}
       />
       {editStatus === EDIT_STATUS_DRAFT && <ArtifactsList />}
-      {decisionTreeSteps === null && <LoadingSpinner />}
+      {decisionTrees === null && <LoadingSpinner />}
     </>
   );
 };
 
-export default DecisionTree;
+export default DecisionTreePage;

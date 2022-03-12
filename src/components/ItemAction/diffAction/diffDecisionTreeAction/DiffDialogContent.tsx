@@ -11,9 +11,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import { diffWords } from 'diff';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import { DecisionTreeStep } from '../../../../model/DecisionTreeStep';
 import useDiff from '../../../hooks/useDiff';
 import DiffDecisionTreeContent from './DiffDecisionTreeContent';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
+import { DecisionTreeStep } from '../../../../model/DecisionTree/DecisionTreeStep';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  conceptDecisionTree: DecisionTreeStep[];
-  publishedDecisionTree: DecisionTreeStep[];
+  conceptDecisionTree: DecisionTree;
+  publishedDecisionTree: DecisionTree;
 }
 
 const DiffDialogContent: FC<Props> = ({
@@ -48,23 +49,23 @@ const DiffDialogContent: FC<Props> = ({
   const classes = useStyles();
 
   const getRemovedSteps = () => {
-    const conceptIds = conceptDecisionTree.map((value) => value.id);
-    return publishedDecisionTree.filter(
+    const conceptIds = conceptDecisionTree.steps.map((value) => value.id);
+    return publishedDecisionTree.steps.filter(
       (value) => !conceptIds.includes(value.id)
     );
   };
 
   const getAddedSteps = () => {
-    const publishedIds = publishedDecisionTree.map((value) => value.id);
-    return conceptDecisionTree.filter(
+    const publishedIds = publishedDecisionTree.steps.map((value) => value.id);
+    return conceptDecisionTree.steps.filter(
       (value) => !publishedIds.includes(value.id)
     );
   };
 
   const getSteps = () => {
-    return conceptDecisionTree
+    return conceptDecisionTree.steps
       .filter((conceptStep) =>
-        publishedDecisionTree.find(
+        publishedDecisionTree.steps.find(
           (publishedStep) => publishedStep.id === conceptStep.id
         )
       )
@@ -102,7 +103,7 @@ const DiffDialogContent: FC<Props> = ({
             </TableHead>
             <TableBody>
               {getSteps().map((row) => {
-                const publishedStep = publishedDecisionTree.find(
+                const publishedStep = publishedDecisionTree.steps.find(
                   (value) => value.id === row.id
                 )!;
                 return (
@@ -181,7 +182,7 @@ const DiffDialogContent: FC<Props> = ({
       {showDecisionTreeContent && (
         <DiffDecisionTreeContent
           conceptDecisionTreeArtifactId={showDecisionTreeContent.contentId!}
-          publishedDecisionTreeStep={publishedDecisionTree.find(
+          publishedDecisionTreeStep={publishedDecisionTree.steps.find(
             (value) => value.id === showDecisionTreeContent.id
           )}
         />
