@@ -20,7 +20,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import ContentTypeToggle from '../../../components/content/ContentTypeToggle';
 import ContentEditor from '../../../components/content/ContentEditor';
 import useContentTypeToggle from '../../../components/content/useContentTypeToggle';
-import { CONTENT_TYPE_HTML } from '../../../model/artifacts/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../model/ContentType';
 import validateYupMarkdownContent from '../../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../../components/form/formik/validators/validateYupHtmlContent';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';

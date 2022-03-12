@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormikContext } from 'formik';
-import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/artifacts/Artifact';
 import base64Helper from '../../../../../helper/base64Helper';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
 import FileDropzoneArea from '../../../FileDropzoneArea';
@@ -10,6 +9,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import BottomToolbox from '../toolbox/BottomToolbox';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
+import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/ContentType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Dialog, DialogTitle } from '@material-ui/core';
 import ImageCodeBlockView from '../uploadImage/ImageCodeBlockView/ImageCodeBlockView';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
-import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../../model/ContentType';
 import DialogTransition from '../../../../../dialog/DialogTransition';
 
 interface Props {

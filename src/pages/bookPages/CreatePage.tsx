@@ -7,7 +7,7 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
 import BookPageForm from './BookPageForm';
-import { CONTENT_TYPE_HTML, ContentType } from '../../model/artifacts/Artifact';
+import { CONTENT_TYPE_HTML, ContentType } from '../../model/ContentType';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
 import { useAppDispatch } from '../../redux/hooks';

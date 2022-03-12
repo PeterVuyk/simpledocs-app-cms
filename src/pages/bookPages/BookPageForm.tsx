@@ -10,7 +10,7 @@ import { Page } from '../../model/Page';
 import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
-import { ContentType } from '../../model/artifacts/Artifact';
+import { ContentType } from '../../model/ContentType';
 import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 import useAppConfiguration from '../../configuration/useAppConfiguration';

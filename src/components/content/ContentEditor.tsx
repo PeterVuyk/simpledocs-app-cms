@@ -4,13 +4,13 @@ import { FastField } from 'formik';
 import { FastFieldProps } from 'formik/dist/FastField';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
+import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/artifacts/Artifact';
-import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
-import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
+} from '../../model/ContentType';
 
 const useStyles = makeStyles({
   hiddenContainer: {

@@ -1,4 +1,4 @@
-import { ContentType } from '../artifacts/Artifact';
+import { ContentType } from '../ContentType';
 
 export interface DecisionTreeCsvRow {
   title: string;

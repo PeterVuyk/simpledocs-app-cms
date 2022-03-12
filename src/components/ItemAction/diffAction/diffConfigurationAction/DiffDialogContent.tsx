@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import 'diff2html/bundles/css/diff2html.min.css';
 import stringify from 'json-stable-stringify';
 import DiffContentPage from '../diff/DiffContentPage';
-import { CONTENT_TYPE_JSON } from '../../../../model/artifacts/Artifact';
 import { AppConfigurations } from '../../../../model/configurations/AppConfigurations';
 import { CmsConfigurations } from '../../../../model/configurations/CmsConfigurations';
 import omit from '../../../../helper/object/omit';
+import { CONTENT_TYPE_JSON } from '../../../../model/ContentType';
 
 const useStyles = makeStyles((theme) => ({
   container: {

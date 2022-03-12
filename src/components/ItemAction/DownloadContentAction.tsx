@@ -8,8 +8,8 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-  getExtensionFromContentType,
-} from '../../model/artifacts/Artifact';
+} from '../../model/ContentType';
+import { getExtensionFromContentType } from '../../model/artifacts/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

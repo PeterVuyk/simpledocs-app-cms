@@ -16,13 +16,14 @@ import {
   ArtifactType,
   isArtifactType,
 } from '../../model/artifacts/ArtifactType';
-import { Artifact, CONTENT_TYPE_HTML } from '../../model/artifacts/Artifact';
+import { Artifact } from '../../model/artifacts/Artifact';
 import useContentTypeToggle from '../content/useContentTypeToggle';
 import useHtmlModifier from '../hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import useNavigate from '../../navigation/useNavigate';
+import { CONTENT_TYPE_HTML } from '../../model/ContentType';
 
 interface Props {
   artifactId?: string;

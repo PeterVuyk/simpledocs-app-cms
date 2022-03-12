@@ -3,10 +3,8 @@ import FileSaver, { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { Page } from '../../../model/Page';
-import {
-  CONTENT_TYPE_HTML,
-  getExtensionFromContentType,
-} from '../../../model/artifacts/Artifact';
+import { getExtensionFromContentType } from '../../../model/artifacts/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../model/ContentType';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

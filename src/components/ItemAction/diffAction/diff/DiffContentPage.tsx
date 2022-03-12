@@ -11,12 +11,12 @@ import LoadingSpinner from '../../../LoadingSpinner';
 import logger from '../../../../helper/logger';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { notify } from '../../../../redux/slice/notificationSlice';
+import useDiff from '../../../hooks/useDiff';
 import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-  getExtensionFromContentType,
-} from '../../../../model/artifacts/Artifact';
-import useDiff from '../../../hooks/useDiff';
+} from '../../../../model/ContentType';
+import { getExtensionFromContentType } from '../../../../model/artifacts/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

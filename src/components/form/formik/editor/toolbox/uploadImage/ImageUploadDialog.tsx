@@ -7,7 +7,7 @@ import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
 import ImageUploadForm from './ImageUploadForm/ImageUploadForm';
 import ImageCodeBlockView from './ImageCodeBlockView/ImageCodeBlockView';
-import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../../model/ContentType';
 import validateYupFilename from '../../../validators/validateYupFilename';
 import validateYupFilesCategory from '../../../validators/validateYupFilesCategory';
 import uploadFileToImageLibrary from '../../../../../../firebase/storage/uploadFileToImageLibrary';

@@ -10,7 +10,6 @@ import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
-import { Artifact, CONTENT_TYPE_CSS } from '../../model/artifacts/Artifact';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import logger from '../../helper/logger';
 import base64Helper from '../../helper/base64Helper';
@@ -19,6 +18,8 @@ import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DialogTransition from '../../components/dialog/DialogTransition';
+import { CONTENT_TYPE_CSS } from '../../model/ContentType';
+import { Artifact } from '../../model/artifacts/Artifact';
 
 const useStyles = makeStyles(() => ({
   highLightContainer: {

@@ -9,7 +9,7 @@ import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getAllImagesFromCategory from '../../../../../../firebase/storage/getAllImagesFromCategory';
 import LoadingSpinner from '../../../../../LoadingSpinner';
 import ImageCodeBlockDialog from './ImageCodeBlockDialog';
-import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../../model/ContentType';
 import DeleteImageDialog from './DeleteImageDialog';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';

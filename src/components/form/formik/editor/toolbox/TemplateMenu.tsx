@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu } from '@material-ui/core';
-import { Artifact, ContentType } from '../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../model/ContentType';
+import { Artifact } from '../../../../../model/artifacts/Artifact';
 
 interface Props {
   contentType: ContentType;

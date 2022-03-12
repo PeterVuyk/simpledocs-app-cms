@@ -9,7 +9,7 @@ import artifactsRepository from '../../../../../firebase/database/artifactsRepos
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
 import base64Helper from '../../../../../helper/base64Helper';
 import useStylesheet from '../../../../hooks/useStylesheet';
-import { CONTENT_TYPE_HTML } from '../../../../../model/artifacts/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../../../model/ContentType';
 import useHtmlModifier from '../../../../hooks/useHtmlModifier';
 import JoditEditorWrapper from './JoditEditorWrapper';
 

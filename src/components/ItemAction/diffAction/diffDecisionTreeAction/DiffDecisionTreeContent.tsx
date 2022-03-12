@@ -1,15 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import 'diff2html/bundles/css/diff2html.min.css';
 import artifactsRepository from '../../../../firebase/database/artifactsRepository';
-import {
-  Artifact,
-  CONTENT_TYPE_HTML,
-} from '../../../../model/artifacts/Artifact';
+import { Artifact } from '../../../../model/artifacts/Artifact';
 import logger from '../../../../helper/logger';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { notify } from '../../../../redux/slice/notificationSlice';
 import DiffContentPage from '../diff/DiffContentPage';
 import { DecisionTreeStep } from '../../../../model/DecisionTree/DecisionTreeStep';
+import { CONTENT_TYPE_HTML } from '../../../../model/ContentType';
 
 interface Props {
   conceptDecisionTreeArtifactId: string;

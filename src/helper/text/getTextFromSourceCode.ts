@@ -1,9 +1,6 @@
 import showdown from 'showdown';
-import {
-  CONTENT_TYPE_MARKDOWN,
-  ContentType,
-} from '../../model/artifacts/Artifact';
 import getTextFromHtml from '../../firebase/functions/getTextFromHtml';
+import { CONTENT_TYPE_MARKDOWN, ContentType } from '../../model/ContentType';
 
 const getTextFromSourceCode = (
   content: string,

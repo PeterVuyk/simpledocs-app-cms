@@ -8,12 +8,12 @@ import ReactMarkdown from 'react-markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import { MenuListDialog } from '../../../../buttonMenuDialog/model/MenuListDialog';
 import { MenuListItem } from '../../../../buttonMenuDialog/model/MenuListItem';
+import MenuDialogButton from '../../../../buttonMenuDialog/MenuDialogButton';
+import { Artifact } from '../../../../../model/artifacts/Artifact';
 import {
-  Artifact,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
-} from '../../../../../model/artifacts/Artifact';
-import MenuDialogButton from '../../../../buttonMenuDialog/MenuDialogButton';
+} from '../../../../../model/ContentType';
 
 interface Props {
   artifacts: Artifact[];

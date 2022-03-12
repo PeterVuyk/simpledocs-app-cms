@@ -1,11 +1,11 @@
+import {
+  CONTENT_TYPE_CSS,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_JSON,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../ContentType';
 import { ArtifactType } from './ArtifactType';
-
-export const CONTENT_TYPE_HTML = 'html';
-export const CONTENT_TYPE_CSS = 'css';
-export const CONTENT_TYPE_MARKDOWN = 'markdown';
-export const CONTENT_TYPE_JSON = 'json';
-
-export type ContentType = 'html' | 'css' | 'json' | 'markdown';
 
 export const getExtensionFromContentType = (
   contentType: ContentType

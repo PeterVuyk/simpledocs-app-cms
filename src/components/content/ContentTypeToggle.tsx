@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import { Button } from '@material-ui/core';
 // eslint-disable-next-line import/no-unresolved
 import { makeStyles } from '@material-ui/core/styles';
+import HelpAction from '../ItemAction/helpAction/HelpAction';
+import { DOCUMENTATION_CONTENT_TYPES } from '../../model/DocumentationType';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/artifacts/Artifact';
-import HelpAction from '../ItemAction/helpAction/HelpAction';
-import { DOCUMENTATION_CONTENT_TYPES } from '../../model/DocumentationType';
+} from '../../model/ContentType';
 
 const useStyles = makeStyles((theme) => ({
   buttonContainer: {

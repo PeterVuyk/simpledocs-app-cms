@@ -11,12 +11,13 @@ import {
   ARTIFACT_TYPE_SNIPPET,
   ARTIFACT_TYPE_TEMPLATE,
 } from '../../../../../model/artifacts/ArtifactType';
-import { Artifact, ContentType } from '../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../model/ContentType';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import SnippetsDialogButton from './SnippetsDialogButton';
 import ImageUploadDialog from './uploadImage/ImageUploadDialog';
 import ImageLibraryDialog from './imageLibrary/ImageLibraryDialog';
 import CreateLinkPageDialog from './CreateLinkPage/CreateLinkPageDialog';
+import { Artifact } from '../../../../../model/artifacts/Artifact';
 
 interface Props {
   onUpdateFile: (file: any) => void;

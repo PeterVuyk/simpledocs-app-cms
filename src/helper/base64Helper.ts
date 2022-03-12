@@ -3,7 +3,7 @@ import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../model/artifacts/Artifact';
+} from '../model/ContentType';
 
 const b64EncodeUnicode = (str: string) => {
   return btoa(

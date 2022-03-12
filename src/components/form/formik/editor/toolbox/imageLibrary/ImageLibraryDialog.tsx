@@ -9,7 +9,7 @@ import {
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CategoryList from './CategoryList';
 import ImageViewer from './ImageViewer';
-import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../../model/ContentType';
 import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
 import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
 import DialogTransition from '../../../../../dialog/DialogTransition';

@@ -9,7 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
-import { ContentType } from '../../../../../../model/artifacts/Artifact';
+import { ContentType } from '../../../../../../model/ContentType';
 import SelectLinkBookPage from '../../../SelectLinkBookPage';
 import LinkCodeBlockView from './LinkCodeBlockView';
 import { LinkInfo } from '../../../../../../model/LinkInfo';

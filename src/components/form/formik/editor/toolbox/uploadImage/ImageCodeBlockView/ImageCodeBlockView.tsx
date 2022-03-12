@@ -7,12 +7,12 @@ import {
   TextField,
 } from '@material-ui/core';
 import Highlight from 'react-highlight';
+import utilHelper from '../../../../../../../helper/utilHelper';
+import { ImageInfo } from '../../../../../../../model/imageLibrary/ImageInfo';
 import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../../../../../../model/artifacts/Artifact';
-import utilHelper from '../../../../../../../helper/utilHelper';
-import { ImageInfo } from '../../../../../../../model/imageLibrary/ImageInfo';
+} from '../../../../../../../model/ContentType';
 
 interface Props {
   contentType: ContentType;

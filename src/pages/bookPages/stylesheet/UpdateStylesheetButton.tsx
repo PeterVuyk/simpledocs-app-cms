@@ -4,7 +4,7 @@ import { Tooltip } from '@material-ui/core';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
-import { CONTENT_TYPE_HTML } from '../../../model/artifacts/Artifact';
+import { CONTENT_TYPE_HTML } from '../../../model/ContentType';
 import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';

@@ -6,13 +6,13 @@ import {
   DialogContentText,
 } from '@material-ui/core';
 import Highlight from 'react-highlight';
+import utilHelper from '../../../../../../helper/utilHelper';
+import { LinkInfo } from '../../../../../../model/LinkInfo';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../../../../../model/artifacts/Artifact';
-import utilHelper from '../../../../../../helper/utilHelper';
-import { LinkInfo } from '../../../../../../model/LinkInfo';
+} from '../../../../../../model/ContentType';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
 

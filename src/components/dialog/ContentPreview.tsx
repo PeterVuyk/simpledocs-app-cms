@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import ReactMarkdown from 'react-markdown';
 import { makeStyles } from '@material-ui/core/styles';
+import DialogTransition from './DialogTransition';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
-} from '../../model/artifacts/Artifact';
-import DialogTransition from './DialogTransition';
+} from '../../model/ContentType';
 
 const useStyles = makeStyles(() => ({
   previewContainer: {
