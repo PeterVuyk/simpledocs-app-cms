@@ -7,7 +7,12 @@ import PageHeading from '../../layout/PageHeading';
 import Navigation from '../../navigation/Navigation';
 import logger from '../../helper/logger';
 import BookPageForm from './BookPageForm';
-import { CONTENT_TYPE_HTML, ContentType } from '../../model/ContentType';
+import {
+  CONTENT_TYPE_DECISION_TREE,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/ContentType';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import markdownHelper from '../../helper/markdownHelper';
 import { useAppDispatch } from '../../redux/hooks';
@@ -22,14 +27,28 @@ const CreatePage: FC = () => {
   const { modifyHtmlForStorage } = useHtmlModifier();
   const dispatch = useAppDispatch();
 
+  const getSubmittedContent = (
+    values: FormikValues,
+    contentType: ContentType
+  ) => {
+    switch (contentType) {
+      case CONTENT_TYPE_MARKDOWN:
+        return markdownHelper.modifyMarkdownForStorage(values.markdownContent);
+      case CONTENT_TYPE_DECISION_TREE:
+        // We don't add here the decision tree itself yet because it is still draft. When the user
+        // 'publishes' the book then we replace the decisionTree title with the real decision tree.
+        return values.decisionTreeContent;
+      case CONTENT_TYPE_HTML:
+      default:
+        return modifyHtmlForStorage(values.htmlContent);
+    }
+  };
+
   const handleSubmit = async (
     values: FormikValues,
     contentType: ContentType
   ): Promise<void> => {
-    const content =
-      contentType === CONTENT_TYPE_HTML
-        ? modifyHtmlForStorage(values.htmlContent)
-        : markdownHelper.modifyMarkdownForStorage(values.markdownContent);
+    const content = getSubmittedContent(values, contentType);
     bookRepository
       .createPage(aggregatePath, {
         pageIndex: values.pageIndex,

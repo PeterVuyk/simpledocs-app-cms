@@ -28,10 +28,10 @@ const SelectWrapper: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (!required) {
+    if (!field.value && !required) {
       setFieldValue(name, 'placeholder');
     }
-  }, [name, required, setFieldValue]);
+  }, [field.value, name, required, setFieldValue]);
 
   const hasOptions = () => Object.keys(options).length !== 0;
 

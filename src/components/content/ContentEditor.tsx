@@ -7,10 +7,12 @@ import clsx from 'clsx';
 import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
 import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 import {
+  CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/ContentType';
+import DecisionTreeSelector from './DecisionTreeSelector';
 
 const useStyles = makeStyles({
   hiddenContainer: {
@@ -29,63 +31,91 @@ interface Props {
   contentTypeToggle: ContentType | undefined;
   showError: boolean;
   formik: React.MutableRefObject<any>;
-  initialFile: string | null;
-  initialFileType: ContentType | undefined;
+  initialContent: string | null;
+  initialContentType: ContentType | undefined;
+  allowedContentTypes: ContentType[];
 }
 
 const ContentEditor: FC<Props> = ({
   showError,
   formik,
-  initialFile,
-  initialFileType,
+  initialContent,
+  initialContentType,
   contentTypeToggle,
+  allowedContentTypes,
 }) => {
   const classes = useStyles();
 
   return (
     <>
-      <div
-        className={clsx(
-          contentTypeToggle === CONTENT_TYPE_MARKDOWN
-            ? classes.hiddenContainer
-            : {}
-        )}
-      >
-        <FastField name="htmlContent">
-          {(props: FastFieldProps) => (
-            <HtmlEditor
-              meta={props.meta}
-              showError={showError}
-              formik={formik}
-              initialFile={
-                initialFileType === CONTENT_TYPE_HTML && initialFile
-                  ? initialFile
-                  : null
-              }
-            />
+      {allowedContentTypes.includes(CONTENT_TYPE_HTML) && (
+        <div
+          className={clsx(
+            contentTypeToggle === CONTENT_TYPE_HTML
+              ? {}
+              : classes.hiddenContainer
           )}
-        </FastField>
-      </div>
-      <div
-        className={clsx(
-          contentTypeToggle === CONTENT_TYPE_HTML ? classes.hiddenContainer : {}
-        )}
-      >
-        <FastField name="markdownContent">
-          {(props: FastFieldProps) => (
-            <MarkdownEditor
-              meta={props.meta}
-              showError={showError}
-              formik={formik}
-              initialFile={
-                initialFileType === CONTENT_TYPE_MARKDOWN && initialFile
-                  ? initialFile
-                  : null
-              }
-            />
+        >
+          <FastField name="htmlContent">
+            {(props: FastFieldProps) => (
+              <HtmlEditor
+                meta={props.meta}
+                showError={showError}
+                formik={formik}
+                initialFile={
+                  initialContentType === CONTENT_TYPE_HTML && initialContent
+                    ? initialContent
+                    : null
+                }
+              />
+            )}
+          </FastField>
+        </div>
+      )}
+      {allowedContentTypes.includes(CONTENT_TYPE_MARKDOWN) && (
+        <div
+          className={clsx(
+            contentTypeToggle === CONTENT_TYPE_MARKDOWN
+              ? {}
+              : classes.hiddenContainer
           )}
-        </FastField>
-      </div>
+        >
+          <FastField name="markdownContent">
+            {(props: FastFieldProps) => (
+              <MarkdownEditor
+                meta={props.meta}
+                showError={showError}
+                formik={formik}
+                initialFile={
+                  initialContentType === CONTENT_TYPE_MARKDOWN && initialContent
+                    ? initialContent
+                    : null
+                }
+              />
+            )}
+          </FastField>
+        </div>
+      )}
+      {allowedContentTypes.includes(CONTENT_TYPE_DECISION_TREE) && (
+        <div
+          className={clsx(
+            contentTypeToggle === CONTENT_TYPE_DECISION_TREE
+              ? {}
+              : classes.hiddenContainer
+          )}
+        >
+          <DecisionTreeSelector
+            formik={formik}
+            showError={showError}
+            initialValue={
+              initialContentType === CONTENT_TYPE_DECISION_TREE &&
+              initialContent
+                ? initialContent
+                : null
+            }
+          />
+        </div>
+      )}
     </>
   );
 };

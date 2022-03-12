@@ -14,3 +14,6 @@ De volgende Markdown functionaliteiten werken niet in de app:
 - HTML-tags (Gebruik de markdown variant hiervoor in de plaats)
 - Footnote
 - Definition Lists
+
+#### Beslisboom
+Bij het toevoegen van een boeken pagina heb je ook de mogelijkheid om te kiezen voor een beslisboom. 

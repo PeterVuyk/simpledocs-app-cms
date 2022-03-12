@@ -20,7 +20,10 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import ContentTypeToggle from '../../../components/content/ContentTypeToggle';
 import ContentEditor from '../../../components/content/ContentEditor';
 import useContentTypeToggle from '../../../components/content/useContentTypeToggle';
-import { CONTENT_TYPE_HTML } from '../../../model/ContentType';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+} from '../../../model/ContentType';
 import validateYupMarkdownContent from '../../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../../components/form/formik/validators/validateYupHtmlContent';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
@@ -208,13 +211,21 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                     <ContentTypeToggle
                       contentType={contentTypeToggle}
                       setContentTypeToggle={setContentTypeToggle}
+                      allowedContentTypes={[
+                        CONTENT_TYPE_HTML,
+                        CONTENT_TYPE_MARKDOWN,
+                      ]}
                     />
                     <ContentEditor
                       contentTypeToggle={contentTypeToggle}
                       showError={showError}
                       formik={formikRef}
-                      initialFileType={calculationInfo?.contentType}
-                      initialFile={calculationInfo?.content ?? null}
+                      initialContentType={calculationInfo?.contentType}
+                      initialContent={calculationInfo?.content ?? null}
+                      allowedContentTypes={[
+                        CONTENT_TYPE_HTML,
+                        CONTENT_TYPE_MARKDOWN,
+                      ]}
                     />
                   </Grid>
                 </Grid>

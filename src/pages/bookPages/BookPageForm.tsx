@@ -10,12 +10,18 @@ import { Page } from '../../model/Page';
 import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
-import { ContentType } from '../../model/ContentType';
+import {
+  CONTENT_TYPE_DECISION_TREE,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/ContentType';
 import validateYupMarkdownContent from '../../components/form/formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
 import validateBookChapter from '../../components/form/formik/validators/validateBookChapter';
 import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
+import validateYupDecisionTreeContent from '../../components/form/formik/validators/validateYupDecisionTreeContent';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
@@ -47,6 +53,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
       chapterDivision: '',
       markdownContent: '',
       htmlContent: '',
+      decisionTreeContent: '',
       iconFile: '',
       searchText: '',
     };
@@ -60,9 +67,9 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),
-    // searchText: Yup.string().required('Zoektekst is een verplicht veld'),
     markdownContent: validateYupMarkdownContent(contentTypeToggle),
     htmlContent: validateYupHtmlContent(contentTypeToggle),
+    decisionTreeContent: validateYupDecisionTreeContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
@@ -155,12 +162,6 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={12}> */}
-              {/*  <SearchTextField */}
-              {/*    showError={showError} */}
-              {/*    contentTypeToggle={contentTypeToggle} */}
-              {/*  /> */}
-              {/* </Grid> */}
               <Grid item xs={12}>
                 <FileDropZoneArea
                   name="iconFile"
@@ -177,13 +178,23 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                 <ContentTypeToggle
                   contentType={contentTypeToggle}
                   setContentTypeToggle={setContentTypeToggle}
+                  allowedContentTypes={[
+                    CONTENT_TYPE_HTML,
+                    CONTENT_TYPE_MARKDOWN,
+                    CONTENT_TYPE_DECISION_TREE,
+                  ]}
                 />
                 <ContentEditor
                   contentTypeToggle={contentTypeToggle}
                   showError={showError}
                   formik={formikRef}
-                  initialFileType={page?.contentType}
-                  initialFile={page?.content ?? null}
+                  initialContentType={page?.contentType}
+                  initialContent={page?.content ?? null}
+                  allowedContentTypes={[
+                    CONTENT_TYPE_HTML,
+                    CONTENT_TYPE_MARKDOWN,
+                    CONTENT_TYPE_DECISION_TREE,
+                  ]}
                 />
               </Grid>
             </Grid>

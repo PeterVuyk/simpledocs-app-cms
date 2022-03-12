@@ -16,6 +16,12 @@ import { notify } from '../../../redux/slice/notificationSlice';
 import CopyPageAction from '../../../components/ItemAction/copyPageAction/CopyPageAction';
 import ChapterDivisions from '../../../model/books/ChapterDivisions';
 import DiffPageAction from '../../../components/ItemAction/diffAction/diffPageAction/DiffPageAction';
+import {
+  CONTENT_TYPE_DECISION_TREE,
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../../model/ContentType';
 
 const useStyles = makeStyles({
   icon: {
@@ -135,6 +141,19 @@ const BookPageListItem: FC<Props> = ({
       : 'Weet je zeker dat je dit artikel wilt markeren voor verwijdering?';
   };
 
+  const getContentTypeText = (contentType: ContentType) => {
+    switch (contentType) {
+      case CONTENT_TYPE_DECISION_TREE:
+        return 'beslisboom';
+      case CONTENT_TYPE_HTML:
+        return 'html';
+      case CONTENT_TYPE_MARKDOWN:
+        return 'markdown';
+      default:
+        return 'onbekend';
+    }
+  };
+
   return (
     <>
       <TableCell component="th" scope="row">
@@ -155,7 +174,7 @@ const BookPageListItem: FC<Props> = ({
           alt={page.chapter}
         />
       </TableCell>
-      <TableCell>{page.contentType}</TableCell>
+      <TableCell>{getContentTypeText(page.contentType)}</TableCell>
       <TableCell>{page.id?.replaceAll('-draft', '') ?? ''}</TableCell>
       <TableCell align="right" className={classes.toolBox}>
         {!page.isNewCreatedPage && page.isDraft && (
@@ -163,15 +182,19 @@ const BookPageListItem: FC<Props> = ({
         )}
         {!page.markedForDeletion && <EditItemAction urlSlug={getEditUrl()} />}
         <CopyPageAction bookType={bookType} page={page} />
-        <DownloadContentAction
-          content={page.content}
-          contentType={page.contentType}
-          fileName={page.chapter}
-        />
-        <ViewContentAction
-          content={page.content}
-          contentType={page.contentType}
-        />
+        {page.contentType !== CONTENT_TYPE_DECISION_TREE && (
+          <>
+            <DownloadContentAction
+              content={page.content}
+              contentType={page.contentType}
+              fileName={page.chapter}
+            />
+            <ViewContentAction
+              content={page.content}
+              contentType={page.contentType}
+            />
+          </>
+        )}
         {showMarkForDeletion && (
           <Tooltip title="Markering voor verwijdering opheffen">
             <RestoreFromTrashTwoToneIcon

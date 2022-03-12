@@ -66,8 +66,8 @@ function useDocumentation(documentationType: DocumentationType) {
         setTitle('Info configuratie cms');
         return cmsConfigurations;
       case DOCUMENTATION_CONTENT_TYPES:
-        setTooltip('Info HTML en Markdown');
-        setTitle('HTML en Markdown');
+        setTooltip('Info pagina inhoud');
+        setTitle('Pagina inhoud');
         return contentTypes;
       case DOCUMENTATION_DECISION_TREE:
         setTooltip('Info beslisboom');

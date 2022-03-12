@@ -6,7 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
 import { Artifact } from '../../model/artifacts/Artifact';
-import { ContentType } from '../../model/ContentType';
+import {
+  CONTENT_TYPE_HTML,
+  CONTENT_TYPE_MARKDOWN,
+  ContentType,
+} from '../../model/ContentType';
 import ContentEditor from '../content/ContentEditor';
 import ContentTypeToggle from '../content/ContentTypeToggle';
 import validateYupMarkdownContent from './formik/validators/validateYupMarkdownContent';
@@ -91,6 +95,7 @@ const ContentPageForm: FC<Props> = ({
               <ContentTypeToggle
                 contentType={contentTypeToggle}
                 setContentTypeToggle={setContentTypeToggle}
+                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
               />
             </Grid>
             <Grid item xs={12}>
@@ -98,8 +103,9 @@ const ContentPageForm: FC<Props> = ({
                 contentTypeToggle={contentTypeToggle}
                 showError={showError}
                 formik={formikRef}
-                initialFileType={artifact?.contentType}
-                initialFile={artifact?.content ?? null}
+                initialContentType={artifact?.contentType}
+                initialContent={artifact?.content ?? null}
+                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
               />
             </Grid>
           </Grid>
