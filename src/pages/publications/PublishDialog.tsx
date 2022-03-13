@@ -17,6 +17,7 @@ import {
 import {
   AGGREGATE_APP_CONFIGURATIONS,
   AGGREGATE_CMS_CONFIGURATIONS,
+  AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
 import AlertBox from '../../components/AlertBox';
 import { useAppDispatch } from '../../redux/hooks';
@@ -70,15 +71,19 @@ const PublishDialog: FC<Props> = ({
 
   const showUpdateMomentSelect = () =>
     !openDialog?.isDraft &&
-    ![AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_CMS_CONFIGURATIONS].includes(
-      openDialog?.aggregate ?? ''
-    );
+    ![
+      AGGREGATE_APP_CONFIGURATIONS,
+      AGGREGATE_CMS_CONFIGURATIONS,
+      AGGREGATE_DECISION_TREE,
+    ].includes(openDialog?.aggregate ?? '');
 
   const getVersioning = () => {
     if (
-      [AGGREGATE_APP_CONFIGURATIONS, AGGREGATE_CMS_CONFIGURATIONS].includes(
-        openDialog?.aggregate ?? ''
-      )
+      [
+        AGGREGATE_APP_CONFIGURATIONS,
+        AGGREGATE_CMS_CONFIGURATIONS,
+        AGGREGATE_DECISION_TREE,
+      ].includes(openDialog?.aggregate ?? '')
     ) {
       return openDialog;
     }
@@ -109,15 +114,20 @@ const PublishDialog: FC<Props> = ({
       })
       .then(() => {
         // If the cms configuration is updated, then we need to reload the page so the updated configuration can be reloaded.
+        // Maybe later find a way to find a alternative.
         if (
           openDialog?.aggregate === AGGREGATE_CMS_CONFIGURATIONS ||
+          openDialog?.aggregate === AGGREGATE_DECISION_TREE ||
           openDialog?.aggregate === AGGREGATE_APP_CONFIGURATIONS
         ) {
           window.location.reload();
         }
       })
-      .catch(() => {
-        logger.error('Update version in PublishDialog.handleSubmit failed');
+      .catch((reason) => {
+        logger.errorWithReason(
+          'Update version in PublishDialog.handleSubmit failed',
+          reason
+        );
         setError('Het updaten van de versie is mislukt');
         setLoading(false);
       });
@@ -142,6 +152,8 @@ const PublishDialog: FC<Props> = ({
           {dialogText} {getNextVersion()}.
           {openDialog?.isDraft &&
             "\n\nHet boek is nog in concept. De gepubliceerde pagina's worden in de app weergegeven zodra het boek gepubliceerd is. Dit kan via boeken beheer."}
+          {openDialog?.aggregate === AGGREGATE_DECISION_TREE &&
+            '\n\nLet op: Na het publiceren van de beslisboom dien je ook de eventuele boeken te publiceren waarvan je de beslisboom hebt aangepast.'}
         </DialogContentText>
         {showUpdateMomentSelect() && (
           <TextField

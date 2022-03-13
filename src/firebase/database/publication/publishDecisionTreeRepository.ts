@@ -14,12 +14,10 @@ const updateVersion = async (
   // 1: Update version
   const snapshot = await database
     .collection('configurations')
-    .doc('appConfigurations')
+    .doc('cmsConfigurations')
     .get();
   batch.update(snapshot.ref, {
     [`versioning.${versioning.aggregate}.version`]: newVersion,
-    [`versioning.${versioning.aggregate}.updateMoment`]:
-      versioning.updateMoment,
   });
 };
 
