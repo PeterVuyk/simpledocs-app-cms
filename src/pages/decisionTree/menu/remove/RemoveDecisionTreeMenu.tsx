@@ -8,6 +8,9 @@ import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { notify } from '../../../../redux/slice/notificationSlice';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
+import useAppConfiguration from '../../../../configuration/useAppConfiguration';
+import bookRepository from '../../../../firebase/database/bookRepository';
+import { CONTENT_TYPE_DECISION_TREE } from '../../../../model/ContentType';
 
 interface Props {
   editStatus: EditStatus;
@@ -24,6 +27,8 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
   decisionTrees,
   onSubmitAction,
 }) => {
+  const { getSortedBooks } = useAppConfiguration();
+
   const handleClose = () => {
     setRemoveMenuElement(null);
   };
@@ -45,8 +50,41 @@ const RemoveDecisionTreeMenu: FC<Props> = ({
       ? `Het verwijderen van de beslisboom is gelukt`
       : `Het markeren voor verwijdering is gelukt`;
 
-  const handleDeleteDecisionTree = (title: string): void => {
-    decisionTreeRepository
+  const isDecisionTreeUsed = async (title: string): Promise<boolean> => {
+    // 1: get from the configurations the active books (because we don't want to check if a decision tree is linked on a page from a removed book)
+    const bookTypes = getSortedBooks().map((value) => value.bookType);
+    // 2: query from all the active books the pages and check if the title is included
+    for (const bookType of bookTypes) {
+      // eslint-disable-next-line no-await-in-loop
+      const titleIncluded = await bookRepository
+        .getAllPages(bookType)
+        .then((pages) =>
+          pages
+            .filter((page) => page.contentType === CONTENT_TYPE_DECISION_TREE)
+            .map((page) => JSON.parse(page.content) as DecisionTree)
+            .map((decisionTree) => decisionTree.title)
+        )
+        .then((titles) => titles.includes(title));
+      if (titleIncluded) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleDeleteDecisionTree = async (title: string): Promise<void> => {
+    if (await isDecisionTreeUsed(title)) {
+      dispatch(
+        notify({
+          notificationOpen: true,
+          notificationType: 'warning',
+          notificationMessage:
+            "Actie mislukt, deze beslisboom is nog gekoppeld bij 1 of meerdere pagina's, verwijder deze eerst en probeer het daarna opnieuw.",
+        })
+      );
+      return;
+    }
+    await decisionTreeRepository
       .deleteByTitle(title, editStatus)
       .then(() =>
         dispatch(

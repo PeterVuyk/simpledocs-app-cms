@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,13 +24,16 @@ const RemoveConfirmationDialog: FC<Props> = ({
   onSubmit,
   onClose,
 }) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const handleClose = () => {
     onClose();
     setOpenDialog('');
   };
 
-  const handleSubmit = () => {
-    onSubmit(openDialog);
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    await onSubmit(openDialog);
+    setSubmitting(false);
     setOpenDialog('');
   };
 
@@ -39,7 +42,7 @@ const RemoveConfirmationDialog: FC<Props> = ({
       open={openDialog !== null}
       TransitionComponent={DialogTransition}
       keepMounted
-      onClose={handleClose}
+      onClose={() => !submitting && handleClose()}
     >
       <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
       <DialogContent>
@@ -51,10 +54,20 @@ const RemoveConfirmationDialog: FC<Props> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button
+          disabled={submitting}
+          onClick={handleClose}
+          color="primary"
+          variant="contained"
+        >
           Nee
         </Button>
-        <Button onClick={handleSubmit} color="secondary" variant="contained">
+        <Button
+          disabled={submitting}
+          onClick={handleSubmit}
+          color="secondary"
+          variant="contained"
+        >
           Ja
         </Button>
       </DialogActions>
