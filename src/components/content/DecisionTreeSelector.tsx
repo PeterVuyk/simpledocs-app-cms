@@ -35,7 +35,10 @@ const DecisionTreeSelector: FC<Props> = ({
   }, [formik, initialValue]);
 
   useEffect(() => {
-    decisionTreeRepository.getDecisionTree(false).then(setDecisionTrees);
+    decisionTreeRepository
+      .getDecisionTree(false)
+      .then((trees) => trees.filter((tree) => !tree.markedForDeletion))
+      .then(setDecisionTrees);
   }, []);
 
   const getDecisionTreeOptions = () => {

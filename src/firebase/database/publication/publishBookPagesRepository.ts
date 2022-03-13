@@ -2,6 +2,10 @@ import firebase from 'firebase/compat/app';
 import { database } from '../../firebaseConnection';
 import { Versioning } from '../../../model/Versioning';
 import { Page } from '../../../model/Page';
+import decisionTreeRepository from '../decisionTreeRepository';
+import { CONTENT_TYPE_DECISION_TREE } from '../../../model/ContentType';
+import { DecisionTree } from '../../../model/DecisionTree/DecisionTree';
+import logger from '../../../helper/logger';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,
@@ -58,10 +62,49 @@ const publishDraftPages = async (
   });
 };
 
+const validateAndUpdateDecisionTree = async (
+  aggregate: string
+): Promise<void> => {
+  // 1: get all pages
+  const querySnapshot = await database
+    .collection('books')
+    .doc(aggregate)
+    .collection(aggregate)
+    .get();
+
+  // 2: Get all decision trees
+  const batch = database.batch();
+  const decisionTrees = await decisionTreeRepository.getDecisionTree(false);
+
+  // 3: loop through the pages and update the content if decision tree.
+  querySnapshot.forEach((documentSnapshot) => {
+    const page = documentSnapshot.data() as Page;
+    if (page.contentType === CONTENT_TYPE_DECISION_TREE) {
+      const decisionTreeTitle = (JSON.parse(page.content) as DecisionTree)
+        .title;
+      const decisionTree = decisionTrees.find(
+        (tree) =>
+          tree.title === (JSON.parse(page.content) as DecisionTree).title
+      );
+      if (decisionTree) {
+        batch.update(documentSnapshot.ref, {
+          content: JSON.stringify(decisionTree),
+        });
+      } else {
+        logger.error(
+          `Tried to update decisionTree from pageId ${page.id} by publishing book pages but the desired decision tree with title ${decisionTreeTitle} doesn't exist, please check it and update the page manually`
+        );
+      }
+    }
+  });
+  return batch.commit();
+};
+
 async function publish(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
+  await validateAndUpdateDecisionTree(versioning.aggregate);
   const batch = database.batch();
 
   await updateVersion(batch, versioning, newVersion);

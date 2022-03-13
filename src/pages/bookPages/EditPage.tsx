@@ -48,7 +48,9 @@ const EditPage: FC = () => {
         return decisionTreeRepository
           .getDecisionTree(false)
           .then((trees) =>
-            trees.find((tree) => tree.title === values.decisionTreeContent)
+            trees
+              .filter((tree) => !tree.markedForDeletion)
+              .find((tree) => tree.title === values.decisionTreeContent)
           )
           .then((value) => JSON.stringify(value));
       case CONTENT_TYPE_HTML:
