@@ -7,6 +7,8 @@ import useDiff from '../../../hooks/useDiff';
 import DiffContentPage from '../diff/DiffContentPage';
 import { Page } from '../../../../model/Page';
 import ChapterDivisions from '../../../../model/books/ChapterDivisions';
+import { CONTENT_TYPE_DECISION_TREE } from '../../../../model/ContentType';
+import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -91,13 +93,30 @@ const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
               />
             </p>
           </Grid>
+          {publishedPage.contentType === CONTENT_TYPE_DECISION_TREE && (
+            <Grid item xs={12}>
+              <h3>Beslisboom:</h3>
+              <p>
+                Gepubliceerd:
+                <strong>{` ${
+                  (JSON.parse(publishedPage.content) as DecisionTree).title
+                } `}</strong>
+                Concept:{' '}
+                <strong>{`${
+                  (JSON.parse(conceptPage.content) as DecisionTree).title
+                } `}</strong>
+              </p>
+            </Grid>
+          )}
         </Grid>
-        <DiffContentPage
-          publishedPageContent={publishedPage.content}
-          conceptPageContent={conceptPage.content}
-          conceptContentType={conceptPage.contentType}
-          publishedContentType={publishedPage.contentType}
-        />
+        {publishedPage.contentType !== CONTENT_TYPE_DECISION_TREE && (
+          <DiffContentPage
+            publishedPageContent={publishedPage.content}
+            conceptPageContent={conceptPage.content}
+            conceptContentType={conceptPage.contentType}
+            publishedContentType={publishedPage.contentType}
+          />
+        )}
       </Grid>
     </>
   );

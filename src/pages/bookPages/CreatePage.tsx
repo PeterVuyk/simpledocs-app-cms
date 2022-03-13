@@ -19,6 +19,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
 import useNavigate from '../../navigation/useNavigate';
+import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 
 const CreatePage: FC = () => {
   const { history } = useNavigate();
@@ -35,9 +36,12 @@ const CreatePage: FC = () => {
       case CONTENT_TYPE_MARKDOWN:
         return markdownHelper.modifyMarkdownForStorage(values.markdownContent);
       case CONTENT_TYPE_DECISION_TREE:
-        // We don't add here the decision tree itself yet because it is still draft. When the user
-        // 'publishes' the book then we replace the decisionTree title with the real decision tree.
-        return values.decisionTreeContent;
+        return decisionTreeRepository
+          .getDecisionTree(false)
+          .then((trees) =>
+            trees.find((tree) => tree.title === values.decisionTreeContent)
+          )
+          .then((value) => JSON.stringify(value));
       case CONTENT_TYPE_HTML:
       default:
         return modifyHtmlForStorage(values.htmlContent);
@@ -48,7 +52,7 @@ const CreatePage: FC = () => {
     values: FormikValues,
     contentType: ContentType
   ): Promise<void> => {
-    const content = getSubmittedContent(values, contentType);
+    const content = await getSubmittedContent(values, contentType);
     bookRepository
       .createPage(aggregatePath, {
         pageIndex: values.pageIndex,

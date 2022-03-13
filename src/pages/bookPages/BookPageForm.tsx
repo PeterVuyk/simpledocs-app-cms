@@ -43,7 +43,10 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
 
   const initialFormState = () => {
     if (page !== undefined) {
-      return page;
+      // To avoid the warning that the input value for decisionTreeContent
+      // is uncontrolled we have to set 'decisionTreeContent' to an empty string.
+      // This because we always save the content and 'decisionTreeContent' is missing from the 'page'.
+      return { decisionTreeContent: '', ...page };
     }
     return {
       chapter: '',
@@ -52,8 +55,8 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
       pageIndex: '',
       chapterDivision: '',
       markdownContent: '',
-      htmlContent: '',
       decisionTreeContent: '',
+      htmlContent: '',
       iconFile: '',
       searchText: '',
     };
@@ -135,6 +138,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <Select
+                  required
                   name="chapterDivision"
                   label="Hoofdstukindeling"
                   showError={showError}

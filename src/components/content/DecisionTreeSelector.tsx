@@ -6,7 +6,7 @@ import decisionTreeRepository from '../../firebase/database/decisionTreeReposito
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -25,12 +25,13 @@ const DecisionTreeSelector: FC<Props> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    async function setInitialValue() {
-      if (initialValue) {
-        formik.current?.setFieldValue('decisionTreeContent', initialValue);
-      }
+    if (!initialValue) {
+      return;
     }
-    setInitialValue();
+    const decisionTree = JSON.parse(initialValue) as DecisionTree;
+    if (decisionTree && decisionTree.title) {
+      formik.current?.setFieldValue('decisionTreeContent', decisionTree.title);
+    }
   }, [formik, initialValue]);
 
   useEffect(() => {
