@@ -62,15 +62,6 @@ const DiffDialogContent: FC<Props> = ({
             )
           )}
         </Grid>
-        <Grid container item sm={6} spacing={2}>
-          <Grid item xs={12}>
-            <DiffIconFile
-              conceptIconFile={conceptCalculationInfo.iconFile}
-              publicationIconFile={publishedCalculationInfo.iconFile}
-              altText={conceptCalculationInfo.title}
-            />
-          </Grid>
-        </Grid>
         <DiffContentPage
           conceptContentType={conceptCalculationInfo.contentType}
           conceptPageContent={conceptCalculationInfo.content}

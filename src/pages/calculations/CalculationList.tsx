@@ -38,13 +38,7 @@ const CalculationList: FC<Props> = ({ calculationInfos }) => {
                 <strong>Soort berekening</strong>
               </TableCell>
               <TableCell>
-                <strong>Lijst index</strong>
-              </TableCell>
-              <TableCell>
                 <strong>Titel</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Illustratie</strong>
               </TableCell>
               <TableCell>
                 <strong>Toelichting</strong>

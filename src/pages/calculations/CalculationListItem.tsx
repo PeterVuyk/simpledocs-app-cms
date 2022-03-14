@@ -20,15 +20,7 @@ const CalculationListItem: FC<Props> = ({ calculationInfo }) => {
   return (
     <>
       <TableCell>{getTranslatedCalculation()}</TableCell>
-      <TableCell>{calculationInfo.listIndex}</TableCell>
       <TableCell>{calculationInfo.title}</TableCell>
-      <TableCell>
-        <img
-          alt="illustratie"
-          style={{ width: 35 }}
-          src={`${calculationInfo.iconFile}`}
-        />
-      </TableCell>
       <TableCell>{calculationInfo.explanation}</TableCell>
       <TableCell>{calculationInfo.contentType}</TableCell>
       <TableCell>

@@ -78,16 +78,9 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
 
   const FORM_VALIDATION = Yup.object().shape({
     title: Yup.string().required('Titel is een verplicht veld.'),
-    listIndex: Yup.number()
-      .integer()
-      .required('Lijst index is een verplicht veld.')
-      .positive(),
     explanation: Yup.string().required('Toelichting is een verplicht veld.'),
     markdownContent: validateYupMarkdownContent(contentTypeToggle),
     htmlContent: validateYupHtmlContent(contentTypeToggle),
-    iconFile: Yup.mixed().required(
-      'Het uploaden van een illustratie is verplicht.'
-    ),
   });
 
   const handleSubmit = (values: FormikValues): void => {
@@ -101,8 +94,6 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
           contentTypeToggle === CONTENT_TYPE_HTML
             ? modifyHtmlForStorage(values.htmlContent)
             : markdownHelper.modifyMarkdownForStorage(values.markdownContent),
-        iconFile: values.iconFile,
-        listIndex: values.listIndex,
         isDraft: true,
       })
       .then(() => setEditStatus(EDIT_STATUS_DRAFT))
@@ -173,15 +164,6 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                   <Grid item xs={12}>
                     <TextField
                       showError={showError}
-                      required
-                      id="listIndex"
-                      label="Lijst index"
-                      name="listIndex"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      showError={showError}
                       multiline
                       minRows={3}
                       maxRows={8}
@@ -189,16 +171,6 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                       id="explanation"
                       label="Toelichting"
                       name="explanation"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FileDropZoneArea
-                      name="iconFile"
-                      formik={formikRef}
-                      showError={showError}
-                      dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                      allowedMimeTypes={['image/svg+xml']}
-                      initialFile={calculationInfo.iconFile}
                     />
                   </Grid>
                 </Grid>
