@@ -33,7 +33,12 @@ const BookSettingsListItem: FC<Props> = ({
       <TableCell>{bookSetting.title}</TableCell>
       <TableCell>{bookSetting.subTitle}</TableCell>
       <TableCell style={{ whiteSpace: 'nowrap' }}>
-        {bookSetting.tab === 'firstBookTab' ? 'Tab 1, ' : 'Tab 2, '}
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {bookSetting.tab === 'firstBookTab'
+          ? 'Tab 1, '
+          : bookSetting.tab === 'secondBookTab'
+          ? 'Tab 2, '
+          : 'Tab 3, '}
         index: {bookSetting.index}
       </TableCell>
       <TableCell>{bookSetting.isDraft ? 'Concept' : 'Gepubliceerd'}</TableCell>

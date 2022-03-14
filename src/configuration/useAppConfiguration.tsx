@@ -9,24 +9,35 @@ function useAppConfiguration() {
       const books = [
         ...configuration.firstBookTab.bookTypes,
         ...configuration.secondBookTab.bookTypes,
+        ...configuration.thirdBookTab.bookTypes,
       ];
       return books.find((value) => value.bookType === aggregate);
     },
     [
       configuration.firstBookTab.bookTypes,
       configuration.secondBookTab.bookTypes,
+      configuration.thirdBookTab.bookTypes,
     ]
   );
 
   const getTabByBookType = useCallback(
     (bookType: string) => {
-      return configuration.firstBookTab.bookTypes.find(
+      const result = configuration.firstBookTab.bookTypes.find(
+        (value) => value.bookType === bookType
+      );
+      if (result) {
+        return 'firstBookTab';
+      }
+      return configuration.secondBookTab.bookTypes.find(
         (value) => value.bookType === bookType
       )
-        ? 'firstBookTab'
-        : 'secondBookTab';
+        ? 'secondBookTab'
+        : 'thirdBookTab';
     },
-    [configuration.firstBookTab.bookTypes]
+    [
+      configuration.firstBookTab.bookTypes,
+      configuration.secondBookTab.bookTypes,
+    ]
   );
 
   const getSortedBooks = useCallback(() => {
@@ -35,10 +46,12 @@ function useAppConfiguration() {
       ...configuration.secondBookTab.bookTypes.sort(
         (a, b) => a.index - b.index
       ),
+      ...configuration.thirdBookTab.bookTypes.sort((a, b) => a.index - b.index),
     ];
   }, [
     configuration.firstBookTab.bookTypes,
     configuration.secondBookTab.bookTypes,
+    configuration.thirdBookTab.bookTypes,
   ]);
 
   const getBookTitleByAggregate = useCallback(
@@ -46,12 +59,14 @@ function useAppConfiguration() {
       const bookType = [
         ...configuration.firstBookTab.bookTypes,
         ...configuration.secondBookTab.bookTypes,
+        ...configuration.thirdBookTab.bookTypes,
       ].find((value) => value.bookType === aggregate);
       return bookType ? bookType.title : '';
     },
     [
       configuration.firstBookTab.bookTypes,
       configuration.secondBookTab.bookTypes,
+      configuration.thirdBookTab.bookTypes,
     ]
   );
 
@@ -60,6 +75,7 @@ function useAppConfiguration() {
       const books = [
         ...configuration.firstBookTab.bookTypes,
         ...configuration.secondBookTab.bookTypes,
+        ...configuration.thirdBookTab.bookTypes,
       ];
       const book = books.find((value) => value.bookType === bookType);
       if (book?.chapterDivisionsInList.includes(chapterDivision)) {

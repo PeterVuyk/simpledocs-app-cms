@@ -95,6 +95,7 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
           if (configurationType === APP_CONFIGURATIONS) {
             config.firstBookTab = omit(config.firstBookTab, ['bookTypes']);
             config.secondBookTab = omit(config.secondBookTab, ['bookTypes']);
+            config.thirdBookTab = omit(config.thirdBookTab, ['bookTypes']);
           }
           return config;
         }

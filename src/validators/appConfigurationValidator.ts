@@ -19,44 +19,6 @@ const validateBottomTab = (
   return errorMessages;
 };
 
-const validateDecisionTab = (
-  appConfiguration: any,
-  errorMessages: string[]
-) => {
-  const result = validateBottomTab(
-    appConfiguration,
-    'decisionsTab',
-    errorMessages
-  );
-
-  if (!('subTitle' in appConfiguration.decisionsTab)) {
-    result.push(`- 'decisionsTab.subTitle' ontbreekt.`);
-  }
-  if (!('title' in appConfiguration.decisionsTab)) {
-    result.push(`- 'decisionsTab.title' ontbreekt.`);
-  }
-  if (
-    !('indexDecisionType' in appConfiguration.decisionsTab) ||
-    appConfiguration.decisionsTab.indexDecisionType.length === 0
-  ) {
-    result.push(`- 'decisionsTab.indexDecisionType' ontbreekt of is leeg.`);
-  }
-  if (!('bottomTab' in appConfiguration.decisionsTab)) {
-    result.push(`- 'decisionsTab.bottomTab' ontbreekt.`);
-    return result;
-  }
-  if (!('familyType' in appConfiguration.decisionsTab.bottomTab)) {
-    result.push(`- 'decisionsTab.bottomTab.familyType' ontbreekt.`);
-  }
-  if (!('icon' in appConfiguration.decisionsTab.bottomTab)) {
-    result.push(`- 'decisionsTab.bottomTab.icon' ontbreekt.`);
-  }
-  if (!('title' in appConfiguration.decisionsTab.bottomTab)) {
-    result.push(`- 'decisionsTab.bottomTab.title' ontbreekt.`);
-  }
-  return result;
-};
-
 const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
   if (!('drawer' in appConfiguration)) {
     errorMessages.push(`- 'drawer' ontbreekt.`);
@@ -86,13 +48,6 @@ const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
   return errorMessages;
 };
 
-const validateConfig = (appConfiguration: any, errorMessages: string[]) => {
-  if (!('defaultInitialTab' in appConfiguration)) {
-    errorMessages.push(`- 'defaultInitialTab' ontbreekt.`);
-  }
-  return errorMessages;
-};
-
 const createValidationErrorMessage = (errorMessages: string[]): string => {
   return `De aangepaste configuratie is gevalideerd, hierbij zijn de volgende fouten gevonden:\n${errorMessages.join(
     '\n'
@@ -105,12 +60,8 @@ const validate = (appConfiguration: any) => {
   }
   let errorMessages: string[] = [];
 
-  errorMessages = validateConfig(appConfiguration, errorMessages);
   errorMessages = validateDrawer(appConfiguration, errorMessages);
 
-  if ('decisionsTab' in appConfiguration) {
-    errorMessages = validateDecisionTab(appConfiguration, errorMessages);
-  }
   if ('firstBookTab' in appConfiguration) {
     errorMessages = validateBottomTab(
       appConfiguration,
@@ -122,6 +73,13 @@ const validate = (appConfiguration: any) => {
     errorMessages = validateBottomTab(
       appConfiguration,
       'secondBookTab',
+      errorMessages
+    );
+  }
+  if ('thirdBookTab' in appConfiguration) {
+    errorMessages = validateBottomTab(
+      appConfiguration,
+      'thirdBookTab',
       errorMessages
     );
   }

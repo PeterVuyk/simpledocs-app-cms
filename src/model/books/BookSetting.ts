@@ -7,7 +7,7 @@ export interface BookSetting {
   chapterDivisionsInList: ChapterDivision[];
   chapterDivisionsInIntermediateList: ChapterDivision[];
   imageFile: string;
-  tab: 'firstBookTab' | 'secondBookTab';
+  tab: 'firstBookTab' | 'secondBookTab' | 'thirdBookTab';
   index: number;
   isDraft: boolean;
 }

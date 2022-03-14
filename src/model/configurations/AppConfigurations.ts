@@ -30,13 +30,6 @@ export interface BookInfo {
   imageFile?: string;
 }
 
-export interface DecisionsTab {
-  bottomTab: BottomTab;
-  title: string;
-  subTitle: string;
-  indexDecisionType: string[];
-}
-
 export interface BookTabInfo {
   bottomTab: BottomTab;
   bookTypes: BookInfo[];
@@ -48,6 +41,6 @@ export interface AppConfigurations {
   drawer: Drawer;
   firstBookTab: BookTabInfo;
   secondBookTab: BookTabInfo;
-  decisionsTab: DecisionsTab;
+  thirdBookTab: BookTabInfo;
   versioning: Versions;
 }

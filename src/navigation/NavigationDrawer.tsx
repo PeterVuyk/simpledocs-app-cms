@@ -130,6 +130,18 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
       ));
   };
 
+  const getBookIcon = (bookType: string) => {
+    switch (getTabByBookType(bookType)) {
+      case 'secondBookTab':
+        return 'looks_two_icon';
+      case 'thirdBookTab':
+        return 'looks_3_icon';
+      case 'firstBookTab':
+      default:
+        return 'looks_one_icon';
+    }
+  };
+
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -149,10 +161,7 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
                 title: value.title,
                 navigationIndex: index,
                 urlSlug: value.bookType,
-                icon:
-                  getTabByBookType(value.bookType) === 'firstBookTab'
-                    ? 'looks_one_icon'
-                    : 'looks_two_icon',
+                icon: getBookIcon(value.bookType),
               }))
             )
           )

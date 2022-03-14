@@ -35,7 +35,10 @@ const BookManagementPage: FC<Props> = ({ title }) => {
   const appConfigurations = useAppConfiguration().configuration;
 
   const mapBookInfoToBookSettings = useCallback(
-    (bookInfo: BookInfo, tab: 'firstBookTab' | 'secondBookTab') => {
+    (
+      bookInfo: BookInfo,
+      tab: 'firstBookTab' | 'secondBookTab' | 'thirdBookTab'
+    ) => {
       return {
         title: bookInfo.title,
         subTitle: bookInfo.subTitle,
@@ -44,7 +47,8 @@ const BookManagementPage: FC<Props> = ({ title }) => {
         chapterDivisionsInIntermediateList:
           bookInfo.chapterDivisionsInIntermediateList,
         imageFile: bookInfo.imageFile,
-        isDraft: appConfigurations.versioning[bookInfo.bookType].isDraft,
+        isDraft:
+          appConfigurations.versioning[bookInfo.bookType]?.isDraft ?? false,
         chapterDivisionsInList: bookInfo.chapterDivisionsInList,
         bookType: bookInfo.bookType,
       } as BookSetting;
@@ -59,10 +63,14 @@ const BookManagementPage: FC<Props> = ({ title }) => {
     const secondBookTab = appConfigurations.secondBookTab.bookTypes.map(
       (bookInfo) => mapBookInfoToBookSettings(bookInfo, 'secondBookTab')
     );
-    setBookSettings([...firstBookTab, ...secondBookTab]);
+    const thirdBookTab = appConfigurations.thirdBookTab.bookTypes.map(
+      (bookInfo) => mapBookInfoToBookSettings(bookInfo, 'thirdBookTab')
+    );
+    setBookSettings([...firstBookTab, ...secondBookTab, ...thirdBookTab]);
   }, [
     appConfigurations.firstBookTab.bookTypes,
     appConfigurations.secondBookTab.bookTypes,
+    appConfigurations.thirdBookTab.bookTypes,
     mapBookInfoToBookSettings,
   ]);
 

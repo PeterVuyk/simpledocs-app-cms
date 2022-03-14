@@ -50,6 +50,7 @@ async function publish(
   if (configurationType === APP_CONFIGURATIONS) {
     draftConfig!.firstBookTab.bookTypes = config.firstBookTab.bookTypes;
     draftConfig!.secondBookTab.bookTypes = config.secondBookTab.bookTypes;
+    draftConfig!.thirdBookTab.bookTypes = config.thirdBookTab.bookTypes;
   }
 
   // 5: overwrite published met draft

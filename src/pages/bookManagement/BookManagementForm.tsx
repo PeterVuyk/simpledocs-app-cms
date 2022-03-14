@@ -134,6 +134,7 @@ const BookManagementForm: FC<Props> = ({
                 name="index"
               />
               <Select
+                required
                 className={classes.textFieldStyle}
                 name="tab"
                 label="Weergave tab"
@@ -141,6 +142,7 @@ const BookManagementForm: FC<Props> = ({
                 options={{
                   firstBookTab: `Eerste tab`,
                   secondBookTab: `Tweede tab`,
+                  thirdBookTab: `Derde tab`,
                 }}
               />
               <Select

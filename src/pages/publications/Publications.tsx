@@ -61,6 +61,9 @@ const Publications: FC<Props> = ({ title }) => {
         ...appConfigurations.secondBookTab.bookTypes
           .sort((a, b) => a.index - b.index)
           .map((value) => value.bookType),
+        ...appConfigurations.thirdBookTab.bookTypes
+          .sort((a, b) => a.index - b.index)
+          .map((value) => value.bookType),
       ];
       return bookTypes.map((value) => {
         return {
