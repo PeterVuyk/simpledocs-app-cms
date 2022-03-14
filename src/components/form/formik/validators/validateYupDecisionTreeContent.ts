@@ -5,7 +5,7 @@ import {
   ContentType,
 } from '../../../../model/ContentType';
 
-const validateYupMarkdownContent = (
+const validateYupDecisionTreeContent = (
   contentType: ContentType
 ): StringSchema<string | null | undefined> => {
   return Yup.string()
@@ -22,4 +22,4 @@ const validateYupMarkdownContent = (
     );
 };
 
-export default validateYupMarkdownContent;
+export default validateYupDecisionTreeContent;

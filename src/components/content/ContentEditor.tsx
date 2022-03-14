@@ -7,12 +7,14 @@ import clsx from 'clsx';
 import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
 import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 import {
+  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/ContentType';
 import DecisionTreeSelector from './DecisionTreeSelector';
+import CalculationsSelector from './CalculationsSelector';
 
 const useStyles = makeStyles({
   hiddenContainer: {
@@ -110,6 +112,25 @@ const ContentEditor: FC<Props> = ({
             initialValue={
               initialContentType === CONTENT_TYPE_DECISION_TREE &&
               initialContent
+                ? initialContent
+                : null
+            }
+          />
+        </div>
+      )}
+      {allowedContentTypes.includes(CONTENT_TYPE_CALCULATIONS) && (
+        <div
+          className={clsx(
+            contentTypeToggle === CONTENT_TYPE_CALCULATIONS
+              ? {}
+              : classes.hiddenContainer
+          )}
+        >
+          <CalculationsSelector
+            formik={formik}
+            showError={showError}
+            initialValue={
+              initialContentType === CONTENT_TYPE_CALCULATIONS && initialContent
                 ? initialContent
                 : null
             }

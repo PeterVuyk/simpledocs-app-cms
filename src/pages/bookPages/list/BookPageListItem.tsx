@@ -17,6 +17,7 @@ import CopyPageAction from '../../../components/ItemAction/copyPageAction/CopyPa
 import ChapterDivisions from '../../../model/books/ChapterDivisions';
 import DiffPageAction from '../../../components/ItemAction/diffAction/diffPageAction/DiffPageAction';
 import {
+  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
@@ -145,6 +146,8 @@ const BookPageListItem: FC<Props> = ({
     switch (contentType) {
       case CONTENT_TYPE_DECISION_TREE:
         return 'beslisboom';
+      case CONTENT_TYPE_CALCULATIONS:
+        return 'Berekening';
       case CONTENT_TYPE_HTML:
         return 'html';
       case CONTENT_TYPE_MARKDOWN:
@@ -153,6 +156,9 @@ const BookPageListItem: FC<Props> = ({
         return 'onbekend';
     }
   };
+
+  const isTextPage = () =>
+    [CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN].includes(page.contentType);
 
   return (
     <>
@@ -182,7 +188,7 @@ const BookPageListItem: FC<Props> = ({
         )}
         {!page.markedForDeletion && <EditItemAction urlSlug={getEditUrl()} />}
         <CopyPageAction bookType={bookType} page={page} />
-        {page.contentType !== CONTENT_TYPE_DECISION_TREE && (
+        {isTextPage() && (
           <>
             <DownloadContentAction
               content={page.content}

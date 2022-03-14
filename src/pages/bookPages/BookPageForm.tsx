@@ -11,6 +11,7 @@ import ContentEditor from '../../components/content/ContentEditor';
 import ContentTypeToggle from '../../components/content/ContentTypeToggle';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
 import {
+  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
@@ -22,6 +23,7 @@ import useAppConfiguration from '../../configuration/useAppConfiguration';
 import validateBookChapter from '../../components/form/formik/validators/validateBookChapter';
 import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
 import validateYupDecisionTreeContent from '../../components/form/formik/validators/validateYupDecisionTreeContent';
+import validateYupCalculationsContent from '../../components/form/formik/validators/validateYupCalculationsContent';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
@@ -43,10 +45,10 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
 
   const initialFormState = () => {
     if (page !== undefined) {
-      // To avoid the warning that the input value for decisionTreeContent
-      // is uncontrolled we have to set 'decisionTreeContent' to an empty string.
+      // To avoid the warning that the input value for decisionTreeContent and
+      // calculationsContent is uncontrolled we have to set it to an empty string.
       // This because we always save the content and 'decisionTreeContent' is missing from the 'page'.
-      return { decisionTreeContent: '', ...page };
+      return { decisionTreeContent: '', calculationsContent: '', ...page };
     }
     return {
       chapter: '',
@@ -56,6 +58,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
       chapterDivision: '',
       markdownContent: '',
       decisionTreeContent: '',
+      calculationsContent: '',
       htmlContent: '',
       iconFile: '',
       searchText: '',
@@ -73,6 +76,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
     markdownContent: validateYupMarkdownContent(contentTypeToggle),
     htmlContent: validateYupHtmlContent(contentTypeToggle),
     decisionTreeContent: validateYupDecisionTreeContent(contentTypeToggle),
+    calculationsContent: validateYupCalculationsContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
       'Het uploaden van een illustratie is verplicht.'
     ),
@@ -186,6 +190,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                     CONTENT_TYPE_HTML,
                     CONTENT_TYPE_MARKDOWN,
                     CONTENT_TYPE_DECISION_TREE,
+                    CONTENT_TYPE_CALCULATIONS,
                   ]}
                 />
                 <ContentEditor
@@ -198,6 +203,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                     CONTENT_TYPE_HTML,
                     CONTENT_TYPE_MARKDOWN,
                     CONTENT_TYPE_DECISION_TREE,
+                    CONTENT_TYPE_CALCULATIONS,
                   ]}
                 />
               </Grid>

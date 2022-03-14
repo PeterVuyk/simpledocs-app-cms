@@ -13,6 +13,7 @@ import htmlContentHelper from '../../helper/htmlContentHelper';
 import NotFound from '../NotFound';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import {
+  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
@@ -23,6 +24,7 @@ import { notify } from '../../redux/slice/notificationSlice';
 import getTextFromSourceCode from '../../helper/text/getTextFromSourceCode';
 import useNavigate from '../../navigation/useNavigate';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
+import calculationsRepository from '../../firebase/database/calculationsRepository';
 
 const EditPage: FC = () => {
   const [page, setPage] = useState<Page | null>();
@@ -51,6 +53,16 @@ const EditPage: FC = () => {
             trees
               .filter((tree) => !tree.markedForDeletion)
               .find((tree) => tree.title === values.decisionTreeContent)
+          )
+          .then((value) => JSON.stringify(value));
+      case CONTENT_TYPE_CALCULATIONS:
+        return calculationsRepository
+          .getCalculationsInfo(false)
+          .then((calculations) =>
+            calculations.find(
+              (calculation) =>
+                calculation.calculationType === values.calculationsContent
+            )
           )
           .then((value) => JSON.stringify(value));
       case CONTENT_TYPE_HTML:

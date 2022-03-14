@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import HelpAction from '../ItemAction/helpAction/HelpAction';
 import { DOCUMENTATION_CONTENT_TYPES } from '../../model/DocumentationType';
 import {
+  CONTENT_TYPE_CALCULATIONS,
   CONTENT_TYPE_DECISION_TREE,
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
@@ -88,6 +89,20 @@ const ContentTypeToggle: FC<Props> = ({
             onClick={() => setContentTypeToggle(CONTENT_TYPE_DECISION_TREE)}
           >
             Beslisboom
+          </Button>
+        )}
+        {allowedContentTypes.includes(CONTENT_TYPE_CALCULATIONS) && (
+          <Button
+            style={{ flex: 1, borderRadius: 0 }}
+            variant={
+              contentType === CONTENT_TYPE_CALCULATIONS
+                ? 'contained'
+                : 'outlined'
+            }
+            color="primary"
+            onClick={() => setContentTypeToggle(CONTENT_TYPE_CALCULATIONS)}
+          >
+            Berekening
           </Button>
         )}
       </div>
