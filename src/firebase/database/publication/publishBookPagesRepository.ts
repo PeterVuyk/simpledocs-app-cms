@@ -3,9 +3,14 @@ import { database } from '../../firebaseConnection';
 import { Versioning } from '../../../model/Versioning';
 import { Page } from '../../../model/Page';
 import decisionTreeRepository from '../decisionTreeRepository';
-import { CONTENT_TYPE_DECISION_TREE } from '../../../model/ContentType';
+import {
+  CONTENT_TYPE_CALCULATIONS,
+  CONTENT_TYPE_DECISION_TREE,
+} from '../../../model/ContentType';
 import { DecisionTree } from '../../../model/DecisionTree/DecisionTree';
 import logger from '../../../helper/logger';
+import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
+import calculationsRepository from '../calculationsRepository';
 
 const updateVersion = async (
   batch: firebase.firestore.WriteBatch,
@@ -62,7 +67,7 @@ const publishDraftPages = async (
   });
 };
 
-const validateAndUpdateDecisionTree = async (
+const validateAndUpdateContentByType = async (
   aggregate: string
 ): Promise<void> => {
   // 1: get all pages
@@ -75,6 +80,9 @@ const validateAndUpdateDecisionTree = async (
   // 2: Get all decision trees
   const batch = database.batch();
   const decisionTrees = await decisionTreeRepository.getDecisionTree(false);
+  const calculationInfos = await calculationsRepository.getCalculationsInfo(
+    false
+  );
 
   // 3: loop through the pages and update the content if decision tree.
   querySnapshot.forEach((documentSnapshot) => {
@@ -96,6 +104,22 @@ const validateAndUpdateDecisionTree = async (
         );
       }
     }
+    if (page.contentType === CONTENT_TYPE_CALCULATIONS) {
+      const content = JSON.parse(page.content) as CalculationInfo;
+      const calculation = calculationInfos.find(
+        (calculationInfo) =>
+          calculationInfo.calculationType === content.calculationType
+      );
+      if (calculation) {
+        batch.update(documentSnapshot.ref, {
+          content: JSON.stringify(calculation),
+        });
+      } else {
+        logger.error(
+          `Tried to update calculationIno from pageId ${page.id} by publishing book pages but the desired calculationType ${content.calculationType} doesn't exist, please check it and update the page manually`
+        );
+      }
+    }
   });
   return batch.commit();
 };
@@ -104,7 +128,7 @@ async function publish(
   versioning: Versioning,
   newVersion: string
 ): Promise<void> {
-  await validateAndUpdateDecisionTree(versioning.aggregate);
+  await validateAndUpdateContentByType(versioning.aggregate);
   const batch = database.batch();
 
   await updateVersion(batch, versioning, newVersion);

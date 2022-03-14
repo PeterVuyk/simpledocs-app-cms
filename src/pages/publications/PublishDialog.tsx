@@ -16,6 +16,7 @@ import {
 } from '../../model/Versioning';
 import {
   AGGREGATE_APP_CONFIGURATIONS,
+  AGGREGATE_CALCULATIONS,
   AGGREGATE_CMS_CONFIGURATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
@@ -74,6 +75,7 @@ const PublishDialog: FC<Props> = ({
     ![
       AGGREGATE_APP_CONFIGURATIONS,
       AGGREGATE_CMS_CONFIGURATIONS,
+      AGGREGATE_CALCULATIONS,
       AGGREGATE_DECISION_TREE,
     ].includes(openDialog?.aggregate ?? '');
 
@@ -82,6 +84,7 @@ const PublishDialog: FC<Props> = ({
       [
         AGGREGATE_APP_CONFIGURATIONS,
         AGGREGATE_CMS_CONFIGURATIONS,
+        AGGREGATE_CALCULATIONS,
         AGGREGATE_DECISION_TREE,
       ].includes(openDialog?.aggregate ?? '')
     ) {
@@ -117,6 +120,7 @@ const PublishDialog: FC<Props> = ({
         // Maybe later find a way to find a alternative.
         if (
           openDialog?.aggregate === AGGREGATE_CMS_CONFIGURATIONS ||
+          openDialog?.aggregate === AGGREGATE_CALCULATIONS ||
           openDialog?.aggregate === AGGREGATE_DECISION_TREE ||
           openDialog?.aggregate === AGGREGATE_APP_CONFIGURATIONS
         ) {
@@ -152,8 +156,10 @@ const PublishDialog: FC<Props> = ({
           {dialogText} {getNextVersion()}.
           {openDialog?.isDraft &&
             "\n\nHet boek is nog in concept. De gepubliceerde pagina's worden in de app weergegeven zodra het boek gepubliceerd is. Dit kan via boeken beheer."}
-          {openDialog?.aggregate === AGGREGATE_DECISION_TREE &&
-            '\n\nLet op: Na het publiceren van de beslisboom dien je ook de eventuele boeken te publiceren waarvan je de beslisboom hebt aangepast.'}
+          {[AGGREGATE_DECISION_TREE, AGGREGATE_CALCULATIONS].includes(
+            openDialog?.aggregate ?? ''
+          ) &&
+            '\n\nLet op: Na het publiceren dien je indien gewenst ook de boeken te publiceren die van dit aangepaste onderdeel gebruik maken.'}
         </DialogContentText>
         {showUpdateMomentSelect() && (
           <TextField
