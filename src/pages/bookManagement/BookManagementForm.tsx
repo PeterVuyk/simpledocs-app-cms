@@ -146,6 +146,7 @@ const BookManagementForm: FC<Props> = ({
                 }}
               />
               <Select
+                required
                 className={classes.textFieldStyle}
                 name="isDraft"
                 label="Concept / Gepubliceerd"

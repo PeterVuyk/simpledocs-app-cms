@@ -22,12 +22,16 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
 
   const handleSubmit = (values: FormikValues) => {
     const updatedConfiguration = clone(configuration);
-    const filteredBookTypes = updatedConfiguration[values.tab].bookTypes.filter(
-      // @ts-ignore
-      (bookTypes) => bookTypes.bookType !== values.bookType
-    );
+    for (const tab of ['firstBookTab', 'secondBookTab', 'thirdBookTab']) {
+      updatedConfiguration[tab].bookTypes = updatedConfiguration[
+        tab
+      ].bookTypes.filter(
+        // @ts-ignore
+        (bookTypes) => bookTypes.bookType !== values.bookType
+      );
+    }
     updatedConfiguration[values.tab].bookTypes = [
-      ...filteredBookTypes,
+      ...updatedConfiguration[values.tab].bookTypes,
       omit(values, ['tab', 'isDraft']),
     ];
     updatedConfiguration.versioning[values.bookType].isDraft =
