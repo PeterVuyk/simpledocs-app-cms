@@ -10,6 +10,11 @@ import omit from '../../helper/object/omit';
 import clone from '../../helper/object/clone';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import { UPDATE_ON_STARTUP } from '../../model/Versioning';
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../../model/configurations/BookTab';
 
 interface Props {
   bookSetting: BookSetting;
@@ -22,7 +27,7 @@ const EditBookSettingsDialog: FC<Props> = ({ oncloseDialog, bookSetting }) => {
 
   const handleSubmit = (values: FormikValues) => {
     const updatedConfiguration = clone(configuration);
-    for (const tab of ['firstBookTab', 'secondBookTab', 'thirdBookTab']) {
+    for (const tab of [FIRST_BOOK_TAB, SECOND_BOOK_TAB, THIRD_BOOK_TAB]) {
       updatedConfiguration[tab].bookTypes = updatedConfiguration[
         tab
       ].bookTypes.filter(

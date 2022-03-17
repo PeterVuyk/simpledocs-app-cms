@@ -17,6 +17,11 @@ import { MenuItem } from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import useNavigate from './useNavigate';
 import useAppConfiguration from '../configuration/useAppConfiguration';
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../model/configurations/BookTab';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -132,11 +137,11 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
 
   const getBookIcon = (bookType: string) => {
     switch (getTabByBookType(bookType)) {
-      case 'secondBookTab':
+      case SECOND_BOOK_TAB:
         return 'looks_two_icon';
-      case 'thirdBookTab':
+      case THIRD_BOOK_TAB:
         return 'looks_3_icon';
-      case 'firstBookTab':
+      case FIRST_BOOK_TAB:
       default:
         return 'looks_one_icon';
     }

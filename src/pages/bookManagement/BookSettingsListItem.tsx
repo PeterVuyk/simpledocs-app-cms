@@ -4,6 +4,10 @@ import { BookSetting } from '../../model/books/BookSetting';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
 import BookManagementListItemActions from './BookManagementListItemActions';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+} from '../../model/configurations/BookTab';
 
 interface Props {
   bookSetting: BookSetting;
@@ -34,9 +38,9 @@ const BookSettingsListItem: FC<Props> = ({
       <TableCell>{bookSetting.subTitle}</TableCell>
       <TableCell style={{ whiteSpace: 'nowrap' }}>
         {/* eslint-disable-next-line no-nested-ternary */}
-        {bookSetting.tab === 'firstBookTab'
+        {bookSetting.tab === FIRST_BOOK_TAB
           ? 'Tab 1, '
-          : bookSetting.tab === 'secondBookTab'
+          : bookSetting.tab === SECOND_BOOK_TAB
           ? 'Tab 2, '
           : 'Tab 3, '}
         index: {bookSetting.index}

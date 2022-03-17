@@ -15,6 +15,12 @@ import BookSettingsListItem from './BookSettingsListItem';
 import { BookInfo } from '../../model/configurations/AppConfigurations';
 import BookManagementHeadingButtonGroup from './BookManagementHeadingButtonGroup';
 import { DOCUMENTATION_BOOK_MANAGEMENT } from '../../model/DocumentationType';
+import {
+  BookTab,
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../../model/configurations/BookTab';
 
 const useStyles = makeStyles({
   table: {
@@ -35,10 +41,7 @@ const BookManagementPage: FC<Props> = ({ title }) => {
   const appConfigurations = useAppConfiguration().configuration;
 
   const mapBookInfoToBookSettings = useCallback(
-    (
-      bookInfo: BookInfo,
-      tab: 'firstBookTab' | 'secondBookTab' | 'thirdBookTab'
-    ) => {
+    (bookInfo: BookInfo, tab: BookTab) => {
       return {
         title: bookInfo.title,
         subTitle: bookInfo.subTitle,
@@ -58,13 +61,13 @@ const BookManagementPage: FC<Props> = ({ title }) => {
 
   useEffect(() => {
     const firstBookTab = appConfigurations.firstBookTab.bookTypes.map(
-      (bookInfo) => mapBookInfoToBookSettings(bookInfo, 'firstBookTab')
+      (bookInfo) => mapBookInfoToBookSettings(bookInfo, FIRST_BOOK_TAB)
     );
     const secondBookTab = appConfigurations.secondBookTab.bookTypes.map(
-      (bookInfo) => mapBookInfoToBookSettings(bookInfo, 'secondBookTab')
+      (bookInfo) => mapBookInfoToBookSettings(bookInfo, SECOND_BOOK_TAB)
     );
     const thirdBookTab = appConfigurations.thirdBookTab.bookTypes.map(
-      (bookInfo) => mapBookInfoToBookSettings(bookInfo, 'thirdBookTab')
+      (bookInfo) => mapBookInfoToBookSettings(bookInfo, THIRD_BOOK_TAB)
     );
     setBookSettings([...firstBookTab, ...secondBookTab, ...thirdBookTab]);
   }, [

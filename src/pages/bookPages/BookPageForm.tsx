@@ -24,6 +24,11 @@ import validateBookChapter from '../../components/form/formik/validators/validat
 import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
 import validateYupDecisionTreeContent from '../../components/form/formik/validators/validateYupDecisionTreeContent';
 import validateYupCalculationsContent from '../../components/form/formik/validators/validateYupCalculationsContent';
+import useCmsConfiguration from '../../configuration/useCmsConfiguration';
+import {
+  AGGREGATE_CALCULATIONS,
+  AGGREGATE_DECISION_TREE,
+} from '../../model/Aggregate';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
@@ -32,6 +37,7 @@ interface Props {
 }
 
 const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
+  const { isMenuItem } = useCmsConfiguration();
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
     page?.contentType
   );
@@ -81,6 +87,20 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
       'Het uploaden van een illustratie is verplicht.'
     ),
   });
+
+  const getAllowedContent = (): ContentType[] => {
+    const contentTypes = [
+      CONTENT_TYPE_HTML,
+      CONTENT_TYPE_MARKDOWN,
+    ] as ContentType[];
+    if (isMenuItem(AGGREGATE_CALCULATIONS)) {
+      contentTypes.push(CONTENT_TYPE_CALCULATIONS);
+    }
+    if (isMenuItem(AGGREGATE_DECISION_TREE)) {
+      contentTypes.push(CONTENT_TYPE_DECISION_TREE);
+    }
+    return contentTypes;
+  };
 
   return (
     <Formik
@@ -186,12 +206,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                 <ContentTypeToggle
                   contentType={contentTypeToggle}
                   setContentTypeToggle={setContentTypeToggle}
-                  allowedContentTypes={[
-                    CONTENT_TYPE_HTML,
-                    CONTENT_TYPE_MARKDOWN,
-                    CONTENT_TYPE_DECISION_TREE,
-                    CONTENT_TYPE_CALCULATIONS,
-                  ]}
+                  allowedContentTypes={getAllowedContent()}
                 />
                 <ContentEditor
                   contentTypeToggle={contentTypeToggle}
@@ -199,12 +214,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                   formik={formikRef}
                   initialContentType={page?.contentType}
                   initialContent={page?.content ?? null}
-                  allowedContentTypes={[
-                    CONTENT_TYPE_HTML,
-                    CONTENT_TYPE_MARKDOWN,
-                    CONTENT_TYPE_DECISION_TREE,
-                    CONTENT_TYPE_CALCULATIONS,
-                  ]}
+                  allowedContentTypes={getAllowedContent()}
                 />
               </Grid>
             </Grid>

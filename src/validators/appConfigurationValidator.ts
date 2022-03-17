@@ -1,3 +1,9 @@
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../model/configurations/BookTab';
+
 const validateBottomTab = (
   config: any,
   tabName: string,
@@ -62,24 +68,24 @@ const validate = (appConfiguration: any) => {
 
   errorMessages = validateDrawer(appConfiguration, errorMessages);
 
-  if ('firstBookTab' in appConfiguration) {
+  if (FIRST_BOOK_TAB in appConfiguration) {
     errorMessages = validateBottomTab(
       appConfiguration,
-      'firstBookTab',
+      FIRST_BOOK_TAB,
       errorMessages
     );
   }
-  if ('secondBookTab' in appConfiguration) {
+  if (SECOND_BOOK_TAB in appConfiguration) {
     errorMessages = validateBottomTab(
       appConfiguration,
-      'secondBookTab',
+      SECOND_BOOK_TAB,
       errorMessages
     );
   }
-  if ('thirdBookTab' in appConfiguration) {
+  if (THIRD_BOOK_TAB in appConfiguration) {
     errorMessages = validateBottomTab(
       appConfiguration,
-      'thirdBookTab',
+      THIRD_BOOK_TAB,
       errorMessages
     );
   }

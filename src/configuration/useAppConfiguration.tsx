@@ -1,5 +1,10 @@
 import { useCallback } from 'react';
 import { getAppConfiguration } from './configuration';
+import {
+  FIRST_BOOK_TAB,
+  SECOND_BOOK_TAB,
+  THIRD_BOOK_TAB,
+} from '../model/configurations/BookTab';
 
 function useAppConfiguration() {
   const configuration = getAppConfiguration();
@@ -26,13 +31,13 @@ function useAppConfiguration() {
         (value) => value.bookType === bookType
       );
       if (result) {
-        return 'firstBookTab';
+        return FIRST_BOOK_TAB;
       }
       return configuration.secondBookTab.bookTypes.find(
         (value) => value.bookType === bookType
       )
-        ? 'secondBookTab'
-        : 'thirdBookTab';
+        ? SECOND_BOOK_TAB
+        : THIRD_BOOK_TAB;
     },
     [
       configuration.firstBookTab.bookTypes,

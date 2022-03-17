@@ -1,4 +1,5 @@
 import { ChapterDivision } from './ChapterDivisions';
+import { BookTab } from '../configurations/BookTab';
 
 export interface BookSetting {
   bookType: string;
@@ -7,7 +8,7 @@ export interface BookSetting {
   chapterDivisionsInList: ChapterDivision[];
   chapterDivisionsInIntermediateList: ChapterDivision[];
   imageFile: string;
-  tab: 'firstBookTab' | 'secondBookTab' | 'thirdBookTab';
+  tab: BookTab;
   index: number;
   isDraft: boolean;
 }

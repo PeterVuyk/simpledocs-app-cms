@@ -18,6 +18,7 @@ import ChapterDivisions from '../../model/books/ChapterDivisions';
 import CheckboxGroup from '../../components/form/formik/CheckboxGroup';
 import FileDropzoneArea from '../../components/form/formik/FileDropzoneArea';
 import alphaNumericIdGenerator from '../../helper/text/alphaNumericIdGenerator';
+import { FIRST_BOOK_TAB } from '../../model/configurations/BookTab';
 
 const useStyles = makeStyles((theme) => ({
   textFieldStyle: {
@@ -54,7 +55,7 @@ const BookManagementForm: FC<Props> = ({
       chapterDivisionsInList: ['chapter', 'section', 'subSection'],
       chapterDivisionsInIntermediateList: ['subSubSection', 'subHead'],
       imageFile: null,
-      tab: 'firstBookTab',
+      tab: FIRST_BOOK_TAB,
       index: undefined,
       isDraft: true,
       bookType: alphaNumericIdGenerator('book-'),
