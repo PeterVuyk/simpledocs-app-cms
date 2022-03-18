@@ -1,6 +1,7 @@
 module.exports = {
     extends: ['airbnb-typescript-prettier'],
     rules: {
+        "jsx-a11y/anchor-is-valid": 0,
         'react/prop-types': 0,
         'react/destructuring-assignment': 0,
         'react/static-property-placement': 0,

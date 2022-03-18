@@ -13,6 +13,7 @@ import notifications from './docs/notifications.md';
 import styleguide from './docs/styleguide.md';
 import diffChanges from './docs/diff-changes.md';
 import transformBase64 from './docs/transform-base64.md';
+import cmsDisclaimer from './docs/cmsDisclaimer.md';
 import idLinkBookPage from './docs/id-link-book-page.md';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
@@ -21,6 +22,7 @@ import {
   DOCUMENTATION_DECISION_TREE,
   DOCUMENTATION_DEFAULT_TEMPLATE,
   DOCUMENTATION_DIFF_CHANGES,
+  DOCUMENTATION_CMS_DISCLAIMER,
   DOCUMENTATION_ID_LINK_BOOK_PAGE,
   DOCUMENTATION_IMAGE_LIBRARY,
   DOCUMENTATION_PUBLICATIONS,
@@ -101,6 +103,10 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Info base64 transformatie');
         setTitle('Info base64 transformatie');
         return transformBase64;
+      case DOCUMENTATION_CMS_DISCLAIMER:
+        setTooltip('Disclaimer');
+        setTitle('Disclaimer');
+        return cmsDisclaimer;
     }
     return null;
   }, [documentationType]);

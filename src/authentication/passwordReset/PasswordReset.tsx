@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from '@material-ui/core';
 import { useAuth } from '../AuthProvider';
 import { HOME_PAGE, LOGIN_PAGE } from '../../navigation/UrlSlugs';
-import Copyright from '../../components/Copyright';
+import Copyright from '../../components/footer/Copyright';
 import PasswordResetForm from './PasswordResetForm';
 import PasswordResetSuccess from './PasswordResetSuccess';
 import useNavigate from '../../navigation/useNavigate';

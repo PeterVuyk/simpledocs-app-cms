@@ -12,7 +12,8 @@ import {
   WithStyles,
 } from '@material-ui/core/styles';
 import UserProfile from './UserProfile';
-import Copyright from '../Copyright';
+import Copyright from '../footer/Copyright';
+import Disclaimer from '../footer/Disclaimer';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,6 +69,7 @@ function Header(props: HeaderProps) {
       </AppBar>
       <main className={classes.main}>{children}</main>
       <footer className={classes.footer}>
+        <Disclaimer />
         <Copyright />
       </footer>
     </div>

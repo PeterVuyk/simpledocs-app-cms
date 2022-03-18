@@ -9,7 +9,7 @@ import { Link } from '@material-ui/core';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE, PASSWORD_RESET_PAGE } from '../navigation/UrlSlugs';
 import AlertBox from '../components/AlertBox';
-import Copyright from '../components/Copyright';
+import Copyright from '../components/footer/Copyright';
 import useNavigate from '../navigation/useNavigate';
 
 const useStyles = makeStyles((theme) => ({
