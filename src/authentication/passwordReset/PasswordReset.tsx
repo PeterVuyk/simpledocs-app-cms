@@ -10,6 +10,7 @@ import Copyright from '../../components/footer/Copyright';
 import PasswordResetForm from './PasswordResetForm';
 import PasswordResetSuccess from './PasswordResetSuccess';
 import useNavigate from '../../navigation/useNavigate';
+import CMSStatement from "../../components/footer/CMSStatement";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,6 +62,7 @@ const PasswordReset: FC = () => {
           </Typography>
         </Container>
       </div>
+      <CMSStatement />
       <Copyright />
     </Container>
   );

@@ -4,7 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from '@material-ui/core';
 import HelpDialog from '../ItemAction/helpAction/HelpDialog';
 import useDocumentation from '../documentation/useDocumentation';
-import { DOCUMENTATION_CMS_DISCLAIMER } from '../../model/DocumentationType';
+import { DOCUMENTATION_CMS_COOKIE_STATEMENT } from '../../model/DocumentationType';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lightColor: {
@@ -15,30 +15,30 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Disclaimer: FC = () => {
-  const [openDisclaimerDialog, setOpenDisclaimerDialog] =
+const CookieStatement: FC = () => {
+  const [openPrivacyStatementDialog, setOpenPrivacyStatementDialog] =
     useState<boolean>(false);
   const { documentation, title } = useDocumentation(
-    DOCUMENTATION_CMS_DISCLAIMER
+    DOCUMENTATION_CMS_COOKIE_STATEMENT
   );
   const classes = useStyles();
 
-  const handleDisclaimerClick = (event: React.SyntheticEvent) => {
+  const handleCookieStatementClick = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    setOpenDisclaimerDialog(true);
+    setOpenPrivacyStatementDialog(true);
   };
 
   return (
     <>
-      <Link href="#" onClick={handleDisclaimerClick} color="inherit">
-        Disclaimer
+      <Link href="#" onClick={handleCookieStatementClick} color="inherit">
+        cookieverklaring
       </Link>
-      {openDisclaimerDialog && (
+      {openPrivacyStatementDialog && (
         <HelpDialog
           dialogCharCount={documentation.length}
-          openDialog={openDisclaimerDialog}
+          openDialog={openPrivacyStatementDialog}
           dialogTitle={title}
-          setOpenDialog={setOpenDisclaimerDialog}
+          setOpenDialog={setOpenPrivacyStatementDialog}
         >
           <ReactMarkdown className={classes.markdown}>
             {documentation}
@@ -49,4 +49,4 @@ const Disclaimer: FC = () => {
   );
 };
 
-export default Disclaimer;
+export default CookieStatement;

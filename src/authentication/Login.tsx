@@ -11,6 +11,7 @@ import { HOME_PAGE, PASSWORD_RESET_PAGE } from '../navigation/UrlSlugs';
 import AlertBox from '../components/AlertBox';
 import Copyright from '../components/footer/Copyright';
 import useNavigate from '../navigation/useNavigate';
+import CMSStatement from "../components/footer/CMSStatement";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -130,6 +131,7 @@ const Login: FC = () => {
           </form>
         </Container>
       </div>
+      <CMSStatement />
       <Copyright />
     </Container>
   );

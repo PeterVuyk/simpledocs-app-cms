@@ -14,6 +14,7 @@ import {
 import UserProfile from './UserProfile';
 import Copyright from '../footer/Copyright';
 import Disclaimer from '../footer/Disclaimer';
+import CMSStatement from '../footer/CMSStatement';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -69,7 +70,7 @@ function Header(props: HeaderProps) {
       </AppBar>
       <main className={classes.main}>{children}</main>
       <footer className={classes.footer}>
-        <Disclaimer />
+        <CMSStatement />
         <Copyright />
       </footer>
     </div>

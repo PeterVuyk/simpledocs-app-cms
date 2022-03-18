@@ -14,6 +14,8 @@ export const DOCUMENTATION_ID_LINK_BOOK_PAGE = 'idLinkBookPage';
 export const DOCUMENTATION_IMAGE_LIBRARY = 'imageLibrary';
 export const DOCUMENTATION_DIFF_CHANGES = 'diffChanges';
 export const DOCUMENTATION_CMS_DISCLAIMER = 'cmsDisclaimer';
+export const DOCUMENTATION_CMS_COOKIE_STATEMENT = 'cmsCookieStatement';
+export const DOCUMENTATION_CMS_PRIVACY_STATEMENT = 'cmsPrivacyStatement';
 
 export type DocumentationType =
   | 'cmsConfigurations'
@@ -31,4 +33,6 @@ export type DocumentationType =
   | 'notifications'
   | 'notificationsStatus'
   | 'notificationsDelivery'
+  | 'cmsPrivacyStatement'
+  | 'cmsCookieStatement'
   | 'cmsDisclaimer';

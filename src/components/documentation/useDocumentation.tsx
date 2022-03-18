@@ -13,7 +13,9 @@ import notifications from './docs/notifications.md';
 import styleguide from './docs/styleguide.md';
 import diffChanges from './docs/diff-changes.md';
 import transformBase64 from './docs/transform-base64.md';
-import cmsDisclaimer from './docs/cmsDisclaimer.md';
+import cmsDisclaimer from './docs/cms-disclaimer.md';
+import cmsPrivacyStatement from './docs/cms-privacy-statement.md';
+import cmsCookieStatement from './docs/cms-cookie-statement.md';
 import idLinkBookPage from './docs/id-link-book-page.md';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
@@ -23,6 +25,7 @@ import {
   DOCUMENTATION_DEFAULT_TEMPLATE,
   DOCUMENTATION_DIFF_CHANGES,
   DOCUMENTATION_CMS_DISCLAIMER,
+  DOCUMENTATION_CMS_PRIVACY_STATEMENT,
   DOCUMENTATION_ID_LINK_BOOK_PAGE,
   DOCUMENTATION_IMAGE_LIBRARY,
   DOCUMENTATION_PUBLICATIONS,
@@ -33,6 +36,7 @@ import {
   DOCUMENTATION_NOTIFICATIONS,
   DOCUMENTATION_NOTIFICATIONS_STATUS,
   DOCUMENTATION_NOTIFICATIONS_DELIVERY,
+  DOCUMENTATION_CMS_COOKIE_STATEMENT,
 } from '../../model/DocumentationType';
 
 function useDocumentation(documentationType: DocumentationType) {
@@ -107,6 +111,14 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Disclaimer');
         setTitle('Disclaimer');
         return cmsDisclaimer;
+      case DOCUMENTATION_CMS_PRIVACY_STATEMENT:
+        setTooltip('Privacyverklaring');
+        setTitle('Privacyverklaring');
+        return cmsPrivacyStatement;
+      case DOCUMENTATION_CMS_COOKIE_STATEMENT:
+        setTooltip('Cookieverklaring');
+        setTitle('Cookieverklaring');
+        return cmsCookieStatement;
     }
     return null;
   }, [documentationType]);
