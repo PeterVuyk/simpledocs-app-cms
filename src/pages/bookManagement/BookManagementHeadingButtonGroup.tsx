@@ -1,19 +1,44 @@
 import React, { FC, useState } from 'react';
 import Button from '@material-ui/core/Button';
+import { ButtonGroup } from '@material-ui/core';
 import AddBookSettingsDialog from './AddBookSettingsDialog';
+import UpdateTabTitlesMenu from './updateTabTitles/UpdateTabTitlesMenu';
 
 const BookManagementHeadingButtonGroup: FC = () => {
   const [showAddBookDialog, setShowAddBookDialog] = useState<boolean>(false);
+  const [updateTabTitleMenu, setUpdateTabTitleMenu] =
+    useState<null | HTMLElement>(null);
+
+  const openUpdateTabTitleMenu = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setUpdateTabTitleMenu(event.currentTarget);
+  };
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setShowAddBookDialog(true)}
-      >
-        Boek toevoegen
-      </Button>
+      <ButtonGroup>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={openUpdateTabTitleMenu}
+        >
+          Tab titels wijzigen
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setShowAddBookDialog(true)}
+        >
+          Boek toevoegen
+        </Button>
+      </ButtonGroup>
+      {updateTabTitleMenu && (
+        <UpdateTabTitlesMenu
+          updateTabTitleMenu={updateTabTitleMenu}
+          setUpdateTabTitleMenu={setUpdateTabTitleMenu}
+        />
+      )}
       {showAddBookDialog && (
         <AddBookSettingsDialog
           oncloseDialog={() => setShowAddBookDialog(false)}

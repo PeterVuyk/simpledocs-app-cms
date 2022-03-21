@@ -16,6 +16,7 @@ export const DOCUMENTATION_DIFF_CHANGES = 'diffChanges';
 export const DOCUMENTATION_CMS_DISCLAIMER = 'cmsDisclaimer';
 export const DOCUMENTATION_CMS_COOKIE_STATEMENT = 'cmsCookieStatement';
 export const DOCUMENTATION_CMS_PRIVACY_STATEMENT = 'cmsPrivacyStatement';
+export const DOCUMENTATION_UPDATE_TAB_TITLES = 'updateTabTitles';
 
 export type DocumentationType =
   | 'cmsConfigurations'
@@ -35,4 +36,5 @@ export type DocumentationType =
   | 'notificationsDelivery'
   | 'cmsPrivacyStatement'
   | 'cmsCookieStatement'
-  | 'cmsDisclaimer';
+  | 'cmsDisclaimer'
+  | 'updateTabTitles';

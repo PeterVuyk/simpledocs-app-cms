@@ -17,6 +17,7 @@ import cmsDisclaimer from './docs/cms-disclaimer.md';
 import cmsPrivacyStatement from './docs/cms-privacy-statement.md';
 import cmsCookieStatement from './docs/cms-cookie-statement.md';
 import idLinkBookPage from './docs/id-link-book-page.md';
+import updateTabTitles from './docs/update-tab-titels.md';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
   DOCUMENTATION_CMS_CONFIGURATIONS,
@@ -37,6 +38,7 @@ import {
   DOCUMENTATION_NOTIFICATIONS_STATUS,
   DOCUMENTATION_NOTIFICATIONS_DELIVERY,
   DOCUMENTATION_CMS_COOKIE_STATEMENT,
+  DOCUMENTATION_UPDATE_TAB_TITLES,
 } from '../../model/DocumentationType';
 
 function useDocumentation(documentationType: DocumentationType) {
@@ -119,6 +121,10 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Cookieverklaring');
         setTitle('Cookieverklaring');
         return cmsCookieStatement;
+      case DOCUMENTATION_UPDATE_TAB_TITLES:
+        setTooltip('Tab titel wijzigen');
+        setTitle('Tab titel wijzigen');
+        return updateTabTitles;
     }
     return null;
   }, [documentationType]);

@@ -93,9 +93,21 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
           let config = clone(value);
           config = omit(config, ['versioning']);
           if (configurationType === APP_CONFIGURATIONS) {
-            config.firstBookTab = omit(config.firstBookTab, ['bookTypes']);
-            config.secondBookTab = omit(config.secondBookTab, ['bookTypes']);
-            config.thirdBookTab = omit(config.thirdBookTab, ['bookTypes']);
+            config.firstBookTab = omit(config.firstBookTab, [
+              'bookTypes',
+              'title',
+              'subTitle',
+            ]);
+            config.secondBookTab = omit(config.secondBookTab, [
+              'bookTypes',
+              'title',
+              'subTitle',
+            ]);
+            config.thirdBookTab = omit(config.thirdBookTab, [
+              'bookTypes',
+              'title',
+              'subTitle',
+            ]);
           }
           return config;
         }

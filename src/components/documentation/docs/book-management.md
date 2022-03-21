@@ -9,6 +9,7 @@ In dit overzicht kan je de boeken beheren, zo kan je de volgende wijzigingen toe
 
 Houd rekening met het volgende:
 
+- Een tab dat geen boeken bevat wordt ook niet getoond in de app.
 - Publiceer eerst de pagina's van het boek voordat je het boek zelf publiceert. 
 - Gedane wijzigingen op deze pagina worden gelijk toegepast (gepubliceerd).
 - Elke keer dat de gebruiker de app opstart worden de hier opgegeven configuraties naar de app gestuurd,

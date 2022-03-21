@@ -46,11 +46,17 @@ async function publish(
   const config = clone(configurationSnapshot.data());
   const configVersioning = config.versioning as Versions;
 
-  // 4: Add bookTypes to firstBookTab and secondBookTab
+  // 4: Add bookTypes, title and subTitle to tabs
   if (configurationType === APP_CONFIGURATIONS) {
     draftConfig!.firstBookTab.bookTypes = config.firstBookTab.bookTypes;
+    draftConfig!.firstBookTab.title = config.firstBookTab.title;
+    draftConfig!.firstBookTab.subTitle = config.firstBookTab.subTitle;
     draftConfig!.secondBookTab.bookTypes = config.secondBookTab.bookTypes;
+    draftConfig!.secondBookTab.title = config.secondBookTab.title;
+    draftConfig!.secondBookTab.subTitle = config.secondBookTab.subTitle;
     draftConfig!.thirdBookTab.bookTypes = config.thirdBookTab.bookTypes;
+    draftConfig!.thirdBookTab.title = config.thirdBookTab.title;
+    draftConfig!.thirdBookTab.subTitle = config.thirdBookTab.subTitle;
   }
 
   // 5: overwrite published met draft
