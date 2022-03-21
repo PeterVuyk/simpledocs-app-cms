@@ -37,7 +37,7 @@ const removeAccountsFromDuplicateTokens = async (tokens: ExpoTokenInfo[]): Promi
   }
 
   functions.logger.info(`In total ${removedUsers.length}
-   accounts found with duplicate expoPushTokens. The old duplicate accounts are successfully removed`);
+   accounts found with duplicate expoPushTokens. if not 0 then the old duplicate accounts are successfully removed`);
 
   // 6: return the tokens with only the unique values.
   return tokens.filter((value) => !removedUsers.includes(value.userUid));

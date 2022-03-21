@@ -48,6 +48,11 @@ const handleSendNotifications = async (id: string, notificationContent: Notifica
 
   const messages = createPushMessage(expoTokensInfo, notificationContent);
   const tickets = await pushNotifications(messages);
+  if (tickets.length === 0) {
+    functions.logger.info(
+        'No subscribers for notifications found, app still in development or just in production. Proces stopped.');
+    return;
+  }
 
   // It is possible that not all messages are sent. In that case we don't know which message was successful or not.
   // For now we skip the validation. Later we have to add missing functionality if needed.
