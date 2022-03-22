@@ -12,6 +12,9 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { StandalonePage } from '../../model/standalonePages/StandalonePage';
 import StandalonePagesRowItem from './StandalonePagesRowItem';
 import standalonePagesRepository from '../../firebase/database/standalonePagesRepository';
+import logger from '../../helper/logger';
+import { notify } from '../../redux/slice/notificationSlice';
+import { useAppDispatch } from '../../redux/hooks';
 
 const useStyles = makeStyles({
   table: {
@@ -29,10 +32,24 @@ interface Props {
 const StandalonePages: FC<Props> = ({ title }) => {
   const [pages, setPages] = useState<StandalonePage[] | null>(null);
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    standalonePagesRepository.getStandalonePages().then(setPages);
-  }, []);
+    standalonePagesRepository
+      .getStandalonePages()
+      .then(setPages)
+      .catch((reason) => {
+        logger.errorWithReason('Failed to get standalonePages in CMS', reason);
+        dispatch(
+          notify({
+            notificationOpen: true,
+            notificationType: 'error',
+            notificationMessage:
+              'Het laden van de pagina is mislukt, refresh de pagina.',
+          })
+        );
+      });
+  }, [dispatch]);
 
   return (
     <>
@@ -42,7 +59,6 @@ const StandalonePages: FC<Props> = ({ title }) => {
           <TableHead>
             <TableRow className={classes.head} key="tableRow">
               <TableCell>Titel</TableCell>
-              <TableCell>Todo</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>

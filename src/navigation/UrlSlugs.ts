@@ -3,6 +3,7 @@ export const USERS_PAGE = '/users';
 export const LOGIN_PAGE = '/login';
 export const PASSWORD_RESET_PAGE = '/password-reset';
 export const HTML_LAYOUT_PAGE = '/styleguide';
+export const STANDALONE_PAGE = '/standalone-pages';
 export const CALCULATIONS_PAGE = '/calculations';
 export const DECISION_TREE_PAGE = '/decision-tree';
 export const ADD_DECISION_TREE = '/artifacts/decision-tree/add';

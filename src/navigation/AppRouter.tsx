@@ -24,6 +24,7 @@ import {
 import PasswordReset from '../authentication/passwordReset/PasswordReset';
 import useAppConfiguration from '../configuration/useAppConfiguration';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
+import UpdateStandalonePageEditor from '../pages/standalonePages/UpdateStandalonePageEditor';
 
 const AppRouter: FC = () => {
   const cmsConfigurations = useCmsConfiguration().configuration;
@@ -76,6 +77,11 @@ const AppRouter: FC = () => {
             exact
             path="/books/:aggregatePath/add"
             Component={CreatePage}
+          />
+          <PrivateRoute
+            exact
+            path="/standalone-pages/:id"
+            Component={UpdateStandalonePageEditor}
           />
           <PrivateRoute
             exact
