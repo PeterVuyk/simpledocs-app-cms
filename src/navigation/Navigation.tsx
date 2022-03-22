@@ -25,6 +25,7 @@ import BookManagementPage from '../pages/bookManagement/BookManagementPage';
 import useAppConfiguration from '../configuration/useAppConfiguration';
 import Notifications from '../pages/notifications/Notifications';
 import DecisionTreePage from '../pages/decisionTree/DecisionTreePage';
+import StandalonePages from '../pages/standalonePages/StandalonePages';
 
 const drawerWidth = 240;
 
@@ -112,6 +113,12 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         return (
           <Notifications
             title={configuration.menu.menuItems.notifications.title}
+          />
+        );
+      case configuration.menu.menuItems.standalonePages.urlSlug:
+        return (
+          <StandalonePages
+            title={configuration.menu.menuItems.standalonePages.title}
           />
         );
       case configuration.menu.menuItems.publications.urlSlug:
