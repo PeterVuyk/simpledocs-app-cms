@@ -85,8 +85,8 @@ async function publish(
   return batch.commit();
 }
 
-const publishRepository = {
+const publishCalculationsRepository = {
   publish,
 };
 
-export default publishRepository;
+export default publishCalculationsRepository;

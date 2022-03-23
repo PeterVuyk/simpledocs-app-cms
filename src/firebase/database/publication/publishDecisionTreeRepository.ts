@@ -117,8 +117,8 @@ async function publish(
   return batch.commit();
 }
 
-const publishRepository = {
+const publishDecisionTreeRepository = {
   publish,
 };
 
-export default publishRepository;
+export default publishDecisionTreeRepository;

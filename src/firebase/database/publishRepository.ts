@@ -5,6 +5,7 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_CMS_CONFIGURATIONS,
   AGGREGATE_DECISION_TREE,
+  AGGREGATE_STANDALONE_PAGES,
 } from '../../model/Aggregate';
 import { Versioning } from '../../model/Versioning';
 import {
@@ -16,6 +17,7 @@ import publishDecisionTreeRepository from './publication/publishDecisionTreeRepo
 import publishConfigurationsRepository from './publication/publishConfigurationsRepository';
 import publishCalculationsRepository from './publication/publishCalculationsRepository';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import publishStandalonePagesRepository from './publication/publishStandalonePagesRepository';
 
 async function addVersion(versioning: Versioning): Promise<void> {
   await database
@@ -65,6 +67,9 @@ async function updateVersion(
         versioning,
         newVersion
       );
+      break;
+    case AGGREGATE_STANDALONE_PAGES:
+      await publishStandalonePagesRepository.publish(versioning, newVersion);
       break;
     case AGGREGATE_CALCULATIONS:
       await publishCalculationsRepository.publish(versioning, newVersion);

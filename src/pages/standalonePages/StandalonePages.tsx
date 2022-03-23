@@ -15,6 +15,9 @@ import standalonePagesRepository from '../../firebase/database/standalonePagesRe
 import logger from '../../helper/logger';
 import { notify } from '../../redux/slice/notificationSlice';
 import { useAppDispatch } from '../../redux/hooks';
+import EditStatusToggle from '../../components/form/EditStatusToggle';
+import useStatusToggle from '../../components/hooks/useStatusToggle';
+import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 
 const useStyles = makeStyles({
   table: {
@@ -31,13 +34,24 @@ interface Props {
 
 const StandalonePages: FC<Props> = ({ title }) => {
   const [pages, setPages] = useState<StandalonePage[] | null>(null);
+  const { editStatus, setEditStatus } = useStatusToggle();
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const handleLoadPages = useCallback((): Promise<void> => {
     return standalonePagesRepository
       .getStandalonePages()
-      .then(setPages)
+      .then((values) =>
+        setPages(
+          values
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .filter((value) =>
+              editStatus === EDIT_STATUS_DRAFT
+                ? value.isDraft || value.markedForDeletion
+                : !value.isDraft
+            )
+        )
+      )
       .catch((reason) => {
         logger.errorWithReason('Failed to get standalonePages in CMS', reason);
         dispatch(
@@ -49,19 +63,25 @@ const StandalonePages: FC<Props> = ({ title }) => {
           })
         );
       });
-  }, [dispatch]);
+  }, [editStatus, dispatch]);
 
   useEffect(() => {
     handleLoadPages();
-  }, [dispatch, handleLoadPages]);
+  }, [dispatch, handleLoadPages, editStatus]);
 
   return (
     <>
-      <PageHeading title={title} />
+      <PageHeading title={title}>
+        <EditStatusToggle
+          editStatus={editStatus}
+          setEditStatus={setEditStatus}
+        />
+      </PageHeading>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow className={classes.head} key="tableRow">
+              <TableCell>Pagina</TableCell>
               <TableCell>Titel</TableCell>
               <TableCell>Inhoudstype</TableCell>
               <TableCell />
@@ -70,13 +90,28 @@ const StandalonePages: FC<Props> = ({ title }) => {
           <TableBody>
             {pages !== null &&
               pages.map((row) => (
-                <TableRow key={row.title.toString()}>
+                <TableRow
+                  key={row.title.toString() + row.markedForDeletion.toString()}
+                  style={{
+                    backgroundColor: row.markedForDeletion
+                      ? '#FCC1C1B5'
+                      : '#fff',
+                  }}
+                >
                   <StandalonePagesRowItem
                     standalonePage={row}
                     onLoadPages={handleLoadPages}
+                    editStatus={editStatus as EditStatus}
                   />
                 </TableRow>
               ))}
+            {pages && pages.length === 0 && (
+              <TableRow key="no-result">
+                <TableCell component="th" scope="row" colSpan={4}>
+                  Geen resultaten.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
