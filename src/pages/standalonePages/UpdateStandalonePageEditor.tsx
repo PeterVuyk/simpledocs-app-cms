@@ -99,6 +99,7 @@ const UpdateStandalonePageEditor: FC = () => {
         </Button>
       </PageHeading>
       {standalonePage && (
+        //  For now we can use the ContentPageForm for artifacts. But if we need to add later more functionality we might create our own form.
         <ContentPageForm
           isNewFile={false}
           onSubmit={handleSubmit}

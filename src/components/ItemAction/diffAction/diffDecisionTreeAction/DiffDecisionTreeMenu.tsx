@@ -2,17 +2,14 @@ import React, { FC, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ShowDiffDecisionTreeDialog from './ShowDiffDecisionTreeDialog';
-import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
 interface Props {
   decisionTreeDiffMenu: null | HTMLElement;
   setDecisionTreeDiffMenu: (anchorEL: null | HTMLElement) => void;
-  decisionTrees: DecisionTree[];
   titles: string[];
 }
 
 const DiffDecisionTreeMenu: FC<Props> = ({
-  decisionTrees,
   setDecisionTreeDiffMenu,
   decisionTreeDiffMenu,
   titles,

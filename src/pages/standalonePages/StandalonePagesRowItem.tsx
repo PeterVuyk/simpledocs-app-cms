@@ -13,6 +13,7 @@ import logger from '../../helper/logger';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DeleteItemAction from '../../components/ItemAction/DeleteItemAction';
+import DiffStandalonePageAction from '../../components/ItemAction/diffAction/diffStandalonePagesAction/DiffStandalonePageAction';
 
 interface Props {
   standalonePage: StandalonePage;
@@ -66,6 +67,7 @@ const StandalonePagesRowItem: FC<Props> = ({
       <TableCell style={getTextStyle}>{standalonePage.title}</TableCell>
       <TableCell style={getTextStyle}>{standalonePage.contentType}</TableCell>
       <TableCell align="right">
+        {standalonePage.isDraft && <DiffStandalonePageAction />}
         {!standalonePage.markedForDeletion && (
           <>
             {!standalonePage.markedForDeletion && !standalonePage.isDraft && (

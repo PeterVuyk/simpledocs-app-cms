@@ -40,7 +40,6 @@ const DiffDecisionTreeAction: FC<Props> = ({ decisionTrees }) => {
         </Button>
       </Tooltip>
       <DiffDecisionTreeMenu
-        decisionTrees={decisionTrees}
         setDecisionTreeDiffMenu={setDecisionTreeDiffMenu}
         decisionTreeDiffMenu={decisionTreeDiffMenu}
         titles={getTitles()}
