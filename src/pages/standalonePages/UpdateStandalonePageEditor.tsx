@@ -7,7 +7,6 @@ import logger from '../../helper/logger';
 import Navigation from '../../navigation/Navigation';
 import { STANDALONE_PAGE } from '../../navigation/UrlSlugs';
 import { ARTIFACT_TYPE_STANDALONE_PAGE } from '../../model/artifacts/ArtifactType';
-import { Artifact } from '../../model/artifacts/Artifact';
 import markdownHelper from '../../helper/markdownHelper';
 import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
@@ -17,11 +16,14 @@ import standalonePagesRepository from '../../firebase/database/standalonePagesRe
 import ContentPageForm from '../../components/form/ContentPageForm';
 import useHtmlModifier from '../../components/hooks/useHtmlModifier';
 import useContentTypeToggle from '../../components/content/useContentTypeToggle';
+import { StandalonePage } from '../../model/standalonePages/StandalonePage';
 
 const UpdateStandalonePageEditor: FC = () => {
-  const [artifact, setArtifact] = useState<Artifact | null>(null);
+  const [standalonePage, setStandalonePage] = useState<StandalonePage | null>(
+    null
+  );
   const [contentTypeToggle, setContentTypeToggle] = useContentTypeToggle(
-    artifact?.contentType
+    standalonePage?.contentType
   );
   const { history, navigateBack } = useNavigate();
   const { modifyHtmlForStorage } = useHtmlModifier();
@@ -31,13 +33,7 @@ const UpdateStandalonePageEditor: FC = () => {
   useEffect(() => {
     standalonePagesRepository.getStandalonePageById(id).then((value) => {
       if (value) {
-        setArtifact({
-          id: value.id,
-          type: ARTIFACT_TYPE_STANDALONE_PAGE,
-          contentType: value.contentType,
-          content: value.content,
-          title: value.title,
-        });
+        setStandalonePage(value);
       } else {
         dispatch(
           notify({
@@ -55,6 +51,7 @@ const UpdateStandalonePageEditor: FC = () => {
     await standalonePagesRepository
       .updateStandalonePage({
         id,
+        isDisabled: standalonePage!.isDisabled,
         contentType: contentTypeToggle,
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
         content:
@@ -98,11 +95,17 @@ const UpdateStandalonePageEditor: FC = () => {
           Terug
         </Button>
       </PageHeading>
-      {artifact && (
+      {standalonePage && (
         <ContentPageForm
           isNewFile={false}
           onSubmit={handleSubmit}
-          artifact={artifact}
+          artifact={{
+            id: standalonePage.id,
+            type: ARTIFACT_TYPE_STANDALONE_PAGE,
+            contentType: standalonePage.contentType,
+            content: standalonePage.content,
+            title: standalonePage.title,
+          }}
           contentTypeToggle={contentTypeToggle}
           setContentTypeToggle={setContentTypeToggle}
         />

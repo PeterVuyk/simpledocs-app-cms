@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -34,8 +34,8 @@ const StandalonePages: FC<Props> = ({ title }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    standalonePagesRepository
+  const handleLoadPages = useCallback((): Promise<void> => {
+    return standalonePagesRepository
       .getStandalonePages()
       .then(setPages)
       .catch((reason) => {
@@ -51,6 +51,10 @@ const StandalonePages: FC<Props> = ({ title }) => {
       });
   }, [dispatch]);
 
+  useEffect(() => {
+    handleLoadPages();
+  }, [dispatch, handleLoadPages]);
+
   return (
     <>
       <PageHeading title={title} />
@@ -59,6 +63,7 @@ const StandalonePages: FC<Props> = ({ title }) => {
           <TableHead>
             <TableRow className={classes.head} key="tableRow">
               <TableCell>Titel</TableCell>
+              <TableCell>Inhoudstype</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -66,7 +71,10 @@ const StandalonePages: FC<Props> = ({ title }) => {
             {pages !== null &&
               pages.map((row) => (
                 <TableRow key={row.title.toString()}>
-                  <StandalonePagesRowItem standalonePage={row} />
+                  <StandalonePagesRowItem
+                    standalonePage={row}
+                    onLoadPages={handleLoadPages}
+                  />
                 </TableRow>
               ))}
           </TableBody>
