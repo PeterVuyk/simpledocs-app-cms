@@ -18,6 +18,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import EditStatusToggle from '../../components/form/EditStatusToggle';
 import useStatusToggle from '../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import { DOCUMENTATION_STANDALONE_PAGES } from '../../model/DocumentationType';
 
 const useStyles = makeStyles({
   table: {
@@ -71,7 +72,7 @@ const StandalonePages: FC<Props> = ({ title }) => {
 
   return (
     <>
-      <PageHeading title={title}>
+      <PageHeading title={title} help={DOCUMENTATION_STANDALONE_PAGES}>
         <EditStatusToggle
           editStatus={editStatus}
           setEditStatus={setEditStatus}

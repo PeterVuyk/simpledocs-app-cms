@@ -19,6 +19,8 @@ const DisablePageToggle: FC<Props> = ({ standalonePage, onLoadPages }) => {
       .updateStandalonePage({
         ...standalonePage,
         isDisabled: !standalonePage.isDisabled,
+        isDraft: true,
+        id: `${standalonePage.id?.replaceAll('-draft', '')}-draft`,
       })
       .then(onLoadPages)
       .catch((reason) => {
@@ -38,7 +40,7 @@ const DisablePageToggle: FC<Props> = ({ standalonePage, onLoadPages }) => {
 
   return (
     <>
-      <Tooltip title="Weergave / verbergen pagina">
+      <Tooltip title="Weergeven / verbergen pagina">
         <Icon
           color="primary"
           style={{ cursor: 'pointer' }}

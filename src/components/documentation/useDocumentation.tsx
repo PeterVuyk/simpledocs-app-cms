@@ -18,6 +18,7 @@ import cmsPrivacyStatement from './docs/cms-privacy-statement.md';
 import cmsCookieStatement from './docs/cms-cookie-statement.md';
 import idLinkBookPage from './docs/id-link-book-page.md';
 import updateTabTitles from './docs/update-tab-titels.md';
+import standalonePages from './docs/standalone-pages.md';
 import {
   DOCUMENTATION_APP_CONFIGURATIONS,
   DOCUMENTATION_CMS_CONFIGURATIONS,
@@ -34,6 +35,7 @@ import {
   DOCUMENTATION_STYLEGUIDE,
   DOCUMENTATION_TRANSFORM_BASE64,
   DocumentationType,
+  DOCUMENTATION_STANDALONE_PAGES,
   DOCUMENTATION_NOTIFICATIONS,
   DOCUMENTATION_NOTIFICATIONS_STATUS,
   DOCUMENTATION_NOTIFICATIONS_DELIVERY,
@@ -125,6 +127,10 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Tab titel wijzigen');
         setTitle('Tab titel wijzigen');
         return updateTabTitles;
+      case DOCUMENTATION_STANDALONE_PAGES:
+        setTooltip("Zelfstaande pagina's");
+        setTitle("Zelfstaande pagina's");
+        return standalonePages;
     }
     return null;
   }, [documentationType]);

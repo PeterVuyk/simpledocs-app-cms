@@ -17,6 +17,7 @@ export const DOCUMENTATION_CMS_DISCLAIMER = 'cmsDisclaimer';
 export const DOCUMENTATION_CMS_COOKIE_STATEMENT = 'cmsCookieStatement';
 export const DOCUMENTATION_CMS_PRIVACY_STATEMENT = 'cmsPrivacyStatement';
 export const DOCUMENTATION_UPDATE_TAB_TITLES = 'updateTabTitles';
+export const DOCUMENTATION_STANDALONE_PAGES = 'standalonePages';
 
 export type DocumentationType =
   | 'cmsConfigurations'
@@ -37,4 +38,5 @@ export type DocumentationType =
   | 'cmsPrivacyStatement'
   | 'cmsCookieStatement'
   | 'cmsDisclaimer'
+  | 'standalonePages'
   | 'updateTabTitles';

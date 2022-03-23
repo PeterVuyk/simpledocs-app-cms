@@ -1,8 +1,5 @@
 import React, { FC } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import { Tooltip } from '@material-ui/core';
-import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import { StandalonePage } from '../../model/standalonePages/StandalonePage';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import EditItemAction from '../../components/ItemAction/EditItemAction';
@@ -31,7 +28,9 @@ const StandalonePagesRowItem: FC<Props> = ({
   const { configuration } = useCmsConfiguration();
   const dispatch = useAppDispatch();
 
-  const getTextColor = standalonePage.isDisabled ? { color: '#ddd' } : {};
+  const getTextStyle = standalonePage.isDisabled
+    ? { textDecoration: 'line-through' }
+    : {};
 
   const getTranslatedPageType = () => {
     switch (standalonePage.standalonePageType) {
@@ -63,16 +62,18 @@ const StandalonePagesRowItem: FC<Props> = ({
 
   return (
     <>
-      <TableCell style={getTextColor}>{getTranslatedPageType()}</TableCell>
-      <TableCell style={getTextColor}>{standalonePage.title}</TableCell>
-      <TableCell style={getTextColor}>{standalonePage.contentType}</TableCell>
+      <TableCell style={getTextStyle}>{getTranslatedPageType()}</TableCell>
+      <TableCell style={getTextStyle}>{standalonePage.title}</TableCell>
+      <TableCell style={getTextStyle}>{standalonePage.contentType}</TableCell>
       <TableCell align="right">
         {!standalonePage.markedForDeletion && (
           <>
-            <DisablePageToggle
-              standalonePage={standalonePage}
-              onLoadPages={onLoadPages}
-            />
+            {!standalonePage.markedForDeletion && !standalonePage.isDraft && (
+              <DisablePageToggle
+                standalonePage={standalonePage}
+                onLoadPages={onLoadPages}
+              />
+            )}
             <EditItemAction
               urlSlug={`/${configuration.menu.menuItems[AGGREGATE_STANDALONE_PAGES].urlSlug}/${standalonePage.id}`}
             />
