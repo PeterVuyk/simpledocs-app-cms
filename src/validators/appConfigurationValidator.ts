@@ -34,6 +34,10 @@ const validateDrawer = (appConfiguration: any, errorMessages: string[]) => {
     errorMessages.push(`- 'drawer.links' ontbreekt.`);
     return errorMessages;
   }
+  if (!('enabledStandalonePagesTypes' in appConfiguration.drawer)) {
+    errorMessages.push(`- 'drawer.enabledStandalonePagesTypes' ontbreekt.`);
+    return errorMessages;
+  }
   for (const link of appConfiguration.drawer.links) {
     if (!('iconName' in link)) {
       errorMessages.push(`- 'drawer.links[].iconName' ontbreekt.`);

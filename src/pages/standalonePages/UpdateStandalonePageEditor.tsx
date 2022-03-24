@@ -54,7 +54,6 @@ const UpdateStandalonePageEditor: FC = () => {
         isDraft: true,
         markedForDeletion: false,
         id: `${id?.replaceAll('-draft', '')}-draft`,
-        isDisabled: standalonePage!.isDisabled,
         contentType: contentTypeToggle,
         title: values.title.charAt(0).toUpperCase() + values.title.slice(1),
         content:

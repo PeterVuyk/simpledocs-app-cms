@@ -52,15 +52,6 @@ const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
               )
             )
           )}
-          {getPropertiesDiff(
-            'Weergeven / verbergen pagina',
-            mapDiff(
-              diffWords(
-                publishedPage.isDisabled ? 'verbergen' : 'weergeven',
-                conceptPage.isDisabled ? 'verbergen' : 'weergeven'
-              )
-            )
-          )}
         </Grid>
         <DiffContentPage
           publishedPageContent={publishedPage.content}

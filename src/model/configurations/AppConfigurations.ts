@@ -15,8 +15,13 @@ export interface LinkItem {
   iconType: string;
 }
 
+export interface EnabledStandalonePagesTypes {
+  [key: string]: boolean;
+}
+
 export interface Drawer {
   links: LinkItem[];
+  enabledStandalonePagesTypes: EnabledStandalonePagesTypes;
 }
 
 export interface BookInfo {

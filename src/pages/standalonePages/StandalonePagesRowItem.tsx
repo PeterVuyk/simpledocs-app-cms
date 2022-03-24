@@ -5,7 +5,6 @@ import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import EditItemAction from '../../components/ItemAction/EditItemAction';
 import { AGGREGATE_STANDALONE_PAGES } from '../../model/Aggregate';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
-import DisablePageToggle from './DisablePageToggle';
 import { STANDALONE_PAGE_TYPE_DISCLAIMER } from '../../model/standalonePages/StandalonePageType';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 import standalonePagesRepository from '../../firebase/database/standalonePagesRepository';
@@ -14,6 +13,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { notify } from '../../redux/slice/notificationSlice';
 import DeleteItemAction from '../../components/ItemAction/DeleteItemAction';
 import DiffStandalonePageAction from '../../components/ItemAction/diffAction/diffStandalonePagesAction/DiffStandalonePageAction';
+import useAppConfiguration from '../../configuration/useAppConfiguration';
 
 interface Props {
   standalonePage: StandalonePage;
@@ -27,11 +27,14 @@ const StandalonePagesRowItem: FC<Props> = ({
   editStatus,
 }) => {
   const { configuration } = useCmsConfiguration();
+  const appConfiguration = useAppConfiguration().configuration;
   const dispatch = useAppDispatch();
 
-  const getTextStyle = standalonePage.isDisabled
-    ? { textDecoration: 'line-through' }
-    : {};
+  const getTextStyle = appConfiguration.drawer.enabledStandalonePagesTypes[
+    standalonePage.standalonePageType
+  ]
+    ? {}
+    : { textDecoration: 'line-through' };
 
   const getTranslatedPageType = () => {
     switch (standalonePage.standalonePageType) {
@@ -69,17 +72,9 @@ const StandalonePagesRowItem: FC<Props> = ({
       <TableCell align="right">
         {standalonePage.isDraft && <DiffStandalonePageAction />}
         {!standalonePage.markedForDeletion && (
-          <>
-            {!standalonePage.markedForDeletion && !standalonePage.isDraft && (
-              <DisablePageToggle
-                standalonePage={standalonePage}
-                onLoadPages={onLoadPages}
-              />
-            )}
-            <EditItemAction
-              urlSlug={`/${configuration.menu.menuItems[AGGREGATE_STANDALONE_PAGES].urlSlug}/${standalonePage.id}`}
-            />
-          </>
+          <EditItemAction
+            urlSlug={`/${configuration.menu.menuItems[AGGREGATE_STANDALONE_PAGES].urlSlug}/${standalonePage.id}`}
+          />
         )}
         <ViewContentAction
           content={standalonePage.content}
