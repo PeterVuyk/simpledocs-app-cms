@@ -29,6 +29,7 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface Props {
   onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
@@ -122,6 +123,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
+                  disabled={isSubmitting}
                   showError={showError}
                   id="chapter"
                   label="Hoofdstuk"
@@ -131,6 +133,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  disabled={isSubmitting}
                   type="number"
                   showError={showError}
                   InputProps={{ inputProps: { min: 0 } }}
@@ -142,6 +145,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  disabled={isSubmitting}
                   showError={showError}
                   required
                   id="title"
@@ -151,6 +155,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  disabled={isSubmitting}
                   id="subTitle"
                   multiline
                   minRows={3}
@@ -162,6 +167,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <Select
+                  disabled={isSubmitting}
                   required
                   name="chapterDivision"
                   label="Hoofdstukindeling"
@@ -192,6 +198,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
               <Grid item xs={12}>
                 <FileDropZoneArea
+                  disabled={isSubmitting}
                   name="iconFile"
                   formik={formikRef}
                   showError={showError}
@@ -203,19 +210,24 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
             </Grid>
             <Grid container item sm={6} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
-                <ContentTypeToggle
-                  contentType={contentTypeToggle}
-                  setContentTypeToggle={setContentTypeToggle}
-                  allowedContentTypes={getAllowedContent()}
-                />
-                <ContentEditor
-                  contentTypeToggle={contentTypeToggle}
-                  showError={showError}
-                  formik={formikRef}
-                  initialContentType={page?.contentType}
-                  initialContent={page?.content ?? null}
-                  allowedContentTypes={getAllowedContent()}
-                />
+                {isSubmitting && <LoadingSpinner showInBlock />}
+                {!isSubmitting && (
+                  <>
+                    <ContentTypeToggle
+                      contentType={contentTypeToggle}
+                      setContentTypeToggle={setContentTypeToggle}
+                      allowedContentTypes={getAllowedContent()}
+                    />
+                    <ContentEditor
+                      contentTypeToggle={contentTypeToggle}
+                      showError={showError}
+                      formik={formikRef}
+                      initialContentType={page?.contentType}
+                      initialContent={page?.content ?? null}
+                      allowedContentTypes={getAllowedContent()}
+                    />
+                  </>
+                )}
               </Grid>
             </Grid>
           </Grid>

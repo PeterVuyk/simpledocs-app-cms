@@ -13,7 +13,6 @@ const getTextFromDecisionTree = (decisionTree: DecisionTree) => {
   const { title } = decisionTree;
   const decisionLabels = decisionTree.steps.map((value) => `${value.label}\n`);
   return `Beslisboom ${title}\n\n${decisionLabels}`;
-  // TODO: Testen.
 };
 
 const getTextFromSourceCode = (

@@ -15,6 +15,7 @@ import ContentEditor from '../content/ContentEditor';
 import ContentTypeToggle from '../content/ContentTypeToggle';
 import validateYupMarkdownContent from './formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from './formik/validators/validateYupHtmlContent';
+import LoadingSpinner from '../LoadingSpinner';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -84,6 +85,7 @@ const ContentPageForm: FC<Props> = ({
           >
             <Grid item xs={6}>
               <TextField
+                disabled={isSubmitting}
                 showError={showError}
                 required
                 id="title"
@@ -91,23 +93,34 @@ const ContentPageForm: FC<Props> = ({
                 name="title"
               />
             </Grid>
-            <Grid item xs={6}>
-              <ContentTypeToggle
-                contentType={contentTypeToggle}
-                setContentTypeToggle={setContentTypeToggle}
-                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ContentEditor
-                contentTypeToggle={contentTypeToggle}
-                showError={showError}
-                formik={formikRef}
-                initialContentType={artifact?.contentType}
-                initialContent={artifact?.content ?? null}
-                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
-              />
-            </Grid>
+            {isSubmitting && <LoadingSpinner showInBlock />}
+            {!isSubmitting && (
+              <>
+                <Grid item xs={6}>
+                  <ContentTypeToggle
+                    contentType={contentTypeToggle}
+                    setContentTypeToggle={setContentTypeToggle}
+                    allowedContentTypes={[
+                      CONTENT_TYPE_HTML,
+                      CONTENT_TYPE_MARKDOWN,
+                    ]}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <ContentEditor
+                    contentTypeToggle={contentTypeToggle}
+                    showError={showError}
+                    formik={formikRef}
+                    initialContentType={artifact?.contentType}
+                    initialContent={artifact?.content ?? null}
+                    allowedContentTypes={[
+                      CONTENT_TYPE_HTML,
+                      CONTENT_TYPE_MARKDOWN,
+                    ]}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
           <div className={classes.submit}>
             <SubmitButton
