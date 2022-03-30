@@ -118,7 +118,7 @@ const EditPage: FC = () => {
       });
   };
 
-  if (page === null) {
+  if (page === null || !bookPageId.includes('-draft')) {
     return <NotFound />;
   }
 
