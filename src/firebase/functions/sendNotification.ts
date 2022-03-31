@@ -5,17 +5,18 @@ import { NotificationContent } from '../../model/Notification/NotificationConten
 async function sendNotification(
   notificationContent: NotificationContent
 ): Promise<void> {
-  const response = await functions
+  return functions
     .httpsCallable('cms-sendNotification')({
       notificationContent,
     })
-    .then((value) => value.data as ApiResponse);
-  // TODO: error handling is not correct here and probably other function calls. If above throws an exception it's not catched.
-  if (!response.success) {
-    throw new Error(
-      `Send notification failed, message server: ${response.message}`
-    );
-  }
+    .then((value) => value.data as ApiResponse)
+    .then((response) => {
+      if (!response.success) {
+        throw new Error(
+          `Send notification failed, message server: ${response.message}`
+        );
+      }
+    });
 }
 
 export default sendNotification;
