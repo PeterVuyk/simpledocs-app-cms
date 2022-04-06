@@ -29,8 +29,10 @@ import calculationsRepository from '../../firebase/database/calculationsReposito
 const EditPage: FC = () => {
   const [page, setPage] = useState<Page | null>();
   const { history, navigateBack } = useNavigate();
-  const { bookPageId, aggregatePath } =
-    useParams<{ bookPageId: string; aggregatePath: string }>();
+  const { bookPageId, aggregatePath } = useParams<{
+    bookPageId: string;
+    aggregatePath: string;
+  }>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -118,7 +120,10 @@ const EditPage: FC = () => {
       });
   };
 
-  if (page === null || !bookPageId.includes('-draft')) {
+  if (
+    page === null ||
+    (page?.markedForDeletion && !bookPageId.includes('-draft'))
+  ) {
     return <NotFound />;
   }
 

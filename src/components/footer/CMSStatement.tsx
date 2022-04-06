@@ -6,16 +6,14 @@ import PrivacyStatement from './PrivacyStatement';
 
 const CMSStatement: FC = () => {
   return (
-    <>
-      <Typography variant="body2" color="textSecondary" align="center">
-        <Disclaimer />
-        {`, `}
-        <CookieStatement />
-        {` en `}
-        <PrivacyStatement />
-        {` gebruik CMS.`}
-      </Typography>
-    </>
+    <Typography variant="body2" color="textSecondary" align="center">
+      <Disclaimer />
+      {`, `}
+      <CookieStatement />
+      {` en `}
+      <PrivacyStatement />
+      {` gebruik CMS.`}
+    </Typography>
   );
 };
 

@@ -4,7 +4,6 @@ import { diffWords } from 'diff';
 import { makeStyles } from '@material-ui/core/styles';
 import 'diff2html/bundles/css/diff2html.min.css';
 import useDiff from '../../../hooks/useDiff';
-import DiffIconFile from '../diff/DiffIconFile';
 import { CalculationInfo } from '../../../../model/calculations/CalculationInfo';
 import DiffContentPage from '../diff/DiffContentPage';
 
@@ -33,43 +32,41 @@ const DiffDialogContent: FC<Props> = ({
   const classes = useStyles();
 
   return (
-    <>
-      <Grid
-        className={classes.container}
-        container
-        spacing={0}
-        alignItems="flex-start"
-        justifyContent="flex-start"
-        direction="row"
-      >
-        <Grid container item sm={6} spacing={2}>
-          {getPropertiesDiff(
-            'Titel',
-            mapDiff(
-              diffWords(
-                publishedCalculationInfo.title,
-                conceptCalculationInfo.title
-              )
+    <Grid
+      className={classes.container}
+      container
+      spacing={0}
+      alignItems="flex-start"
+      justifyContent="flex-start"
+      direction="row"
+    >
+      <Grid container item sm={6} spacing={2}>
+        {getPropertiesDiff(
+          'Titel',
+          mapDiff(
+            diffWords(
+              publishedCalculationInfo.title,
+              conceptCalculationInfo.title
             )
-          )}
-          {getPropertiesDiff(
-            'Toelichting',
-            mapDiff(
-              diffWords(
-                publishedCalculationInfo.explanation,
-                conceptCalculationInfo.explanation
-              )
+          )
+        )}
+        {getPropertiesDiff(
+          'Toelichting',
+          mapDiff(
+            diffWords(
+              publishedCalculationInfo.explanation,
+              conceptCalculationInfo.explanation
             )
-          )}
-        </Grid>
-        <DiffContentPage
-          conceptContentType={conceptCalculationInfo.contentType}
-          conceptPageContent={conceptCalculationInfo.content}
-          publishedContentType={publishedCalculationInfo.contentType}
-          publishedPageContent={publishedCalculationInfo.content}
-        />
+          )
+        )}
       </Grid>
-    </>
+      <DiffContentPage
+        conceptContentType={conceptCalculationInfo.contentType}
+        conceptPageContent={conceptCalculationInfo.content}
+        publishedContentType={publishedCalculationInfo.contentType}
+        publishedPageContent={publishedCalculationInfo.content}
+      />
+    </Grid>
   );
 };
 

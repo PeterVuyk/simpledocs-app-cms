@@ -58,7 +58,6 @@ const SelectWrapper: FC<Props> = ({
       {hasOptions() &&
         Object.keys(getOptions()).map((item, pos) => {
           return (
-            // eslint-disable-next-line react/no-array-index-key
             <MenuItem key={pos} value={item}>
               {getOptions()[item]}
             </MenuItem>

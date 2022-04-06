@@ -41,6 +41,7 @@ const ConfigurationProvider: FC<Props> = ({ children }) => {
     return <LoadingSpinner />;
   }
 
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{children}</>;
 };
 

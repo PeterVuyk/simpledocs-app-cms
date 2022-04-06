@@ -8,7 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Highlight from 'react-highlight';
 import { makeStyles } from '@material-ui/core/styles';
-import '../../../node_modules/highlight.js/styles/a11y-dark.css';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import logger from '../../helper/logger';
@@ -20,6 +19,8 @@ import { notify } from '../../redux/slice/notificationSlice';
 import DialogTransition from '../../components/dialog/DialogTransition';
 import { CONTENT_TYPE_CSS } from '../../model/ContentType';
 import { Artifact } from '../../model/artifacts/Artifact';
+// eslint-disable-next-line import/no-relative-packages
+import '../../../node_modules/highlight.js/styles/a11y-dark.css';
 
 const useStyles = makeStyles(() => ({
   highLightContainer: {

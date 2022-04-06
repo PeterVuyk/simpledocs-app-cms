@@ -26,7 +26,7 @@ interface Props {
 const Calculations: FC<Props> = ({ title }) => {
   const [calculations, setCalculations] = useState<CalculationInfo[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const { history, navigate } = useNavigate();
+  const { navigate } = useNavigate();
   const { editStatus, setEditStatus } = useStatusToggle();
   const dispatch = useAppDispatch();
 

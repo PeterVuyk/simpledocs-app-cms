@@ -21,10 +21,10 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const removeConfigDraft = (val: string) => {
-    configurationRepository
+    return configurationRepository
       .removeConfigurationDraft(configurationType)
       .then(() => window.location.reload())
-      .then(() =>
+      .then(() => {
         dispatch(
           notify({
             notificationType: 'success',
@@ -32,8 +32,8 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
             notificationMessage:
               'Aanpassingen op de configuratie is verwijderd.',
           })
-        )
-      )
+        );
+      })
       .catch((reason) => {
         dispatch(
           notify({
@@ -64,7 +64,7 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
           dialogText="Weet je zeker dat je de aanpassing op de configuratie wilt verwijderen?"
           openDialog={openRemoveConfirmationDialog}
           setOpenDialog={setRemoveSubmitConfirmationDialog}
-          onSubmit={() => new Promise(() => removeConfigDraft(''))}
+          onSubmit={() => removeConfigDraft('')}
         />
       )}
     </>

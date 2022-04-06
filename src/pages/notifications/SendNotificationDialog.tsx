@@ -10,8 +10,6 @@ import {
 } from '@material-ui/core';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
-import RestoreIcon from '@material-ui/icons/Restore';
-
 import DialogTransition from '../../components/dialog/DialogTransition';
 import { NotificationContent } from '../../model/Notification/NotificationContent';
 import TextField from '../../components/form/formik/TextField';

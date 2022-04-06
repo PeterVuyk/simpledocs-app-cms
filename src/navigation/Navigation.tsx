@@ -121,6 +121,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             title={configuration.menu.menuItems.standalonePages.title}
           />
         );
+      case 'users':
+        return <Users title="Gebruikers" />;
       case configuration.menu.menuItems.publications.urlSlug:
       default:
         return (
@@ -128,8 +130,6 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             title={configuration.menu.menuItems.publications.title}
           />
         );
-      case 'users':
-        return <Users title="Gebruikers" />;
     }
   };
 

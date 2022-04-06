@@ -32,7 +32,7 @@ const Styleguide: FC<Props> = ({ title }) => {
     useState<Artifact | null>(null);
   const dispatch = useAppDispatch();
 
-  const { history, navigate } = useNavigate();
+  const { navigate } = useNavigate();
 
   const loadArtifacts = () => {
     artifactsRepository

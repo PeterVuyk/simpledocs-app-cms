@@ -121,7 +121,7 @@ const DiffContentPage: FC<Props> = ({
         )}
         {diffModeToggle === 'text' && sourceDiff.length !== 0 && (
           <Paper className={classes.textAreaPaper} elevation={3}>
-            <>{sourceDiff}</>
+            {sourceDiff}
           </Paper>
         )}
       </Grid>

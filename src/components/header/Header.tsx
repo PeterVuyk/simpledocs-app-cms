@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core/styles';
 import UserProfile from './UserProfile';
 import Copyright from '../footer/Copyright';
-import Disclaimer from '../footer/Disclaimer';
 import CMSStatement from '../footer/CMSStatement';
 
 const styles = (theme: Theme) =>

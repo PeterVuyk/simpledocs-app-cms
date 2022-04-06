@@ -1,4 +1,3 @@
-import firebase from 'firebase/compat';
 import { database } from '../firebaseConnection';
 import { AGGREGATE_STANDALONE_PAGES } from '../../model/Aggregate';
 import { StandalonePage } from '../../model/standalonePages/StandalonePage';

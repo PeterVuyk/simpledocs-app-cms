@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
 import PageHeading from '../../../layout/PageHeading';
 import TextField from '../../../components/form/formik/TextField';
-import FileDropZoneArea from '../../../components/form/formik/FileDropzoneArea';
 import SubmitButton from '../../../components/form/formik/SubmitButton';
 import Navigation from '../../../navigation/Navigation';
 import logger from '../../../helper/logger';

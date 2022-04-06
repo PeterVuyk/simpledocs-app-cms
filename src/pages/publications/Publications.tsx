@@ -16,6 +16,7 @@ import useCmsConfiguration from '../../configuration/useCmsConfiguration';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import { AGGREGATE_APP_CONFIGURATIONS } from '../../model/Aggregate';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
+import useAppConfiguration from '../../configuration/useAppConfiguration';
 
 const useStyles = makeStyles({
   table: {
@@ -32,6 +33,7 @@ interface Props {
 
 const Publications: FC<Props> = ({ title }) => {
   const [versions, setVersions] = useState<Versioning[] | null>(null);
+  const { getSortedBooks } = useAppConfiguration();
   const { configuration, isMenuItem } = useCmsConfiguration();
 
   const classes = useStyles();
@@ -51,20 +53,9 @@ const Publications: FC<Props> = ({ title }) => {
     [configuration.menu.menuItems, isMenuItem]
   );
 
-  const getSortedBooks = useCallback(
+  const getSortedBookVersioning = useCallback(
     (appConfigurations: AppConfigurations): Versioning[] => {
-      // TODO: Can this function be replaced by custom hook function 'getSortedBooks()'?
-      const bookTypes = [
-        ...appConfigurations.firstBookTab.bookTypes
-          .sort((a, b) => a.index - b.index)
-          .map((value) => value.bookType),
-        ...appConfigurations.secondBookTab.bookTypes
-          .sort((a, b) => a.index - b.index)
-          .map((value) => value.bookType),
-        ...appConfigurations.thirdBookTab.bookTypes
-          .sort((a, b) => a.index - b.index)
-          .map((value) => value.bookType),
-      ];
+      const bookTypes = getSortedBooks().map((value) => value.bookType);
       return bookTypes.map((value) => {
         return {
           ...appConfigurations.versioning[value],
@@ -72,7 +63,7 @@ const Publications: FC<Props> = ({ title }) => {
         } as Versioning;
       });
     },
-    []
+    [getSortedBooks]
   );
 
   const handleReloadPublications = useCallback(async (): Promise<void> => {
@@ -107,10 +98,10 @@ const Publications: FC<Props> = ({ title }) => {
       });
     }
     setVersions([
-      ...getSortedBooks(appConfigurations),
+      ...getSortedBookVersioning(appConfigurations),
       ...sortVersionOnIndex(result),
     ]);
-  }, [configuration.versioning, getSortedBooks, sortVersionOnIndex]);
+  }, [configuration.versioning, getSortedBookVersioning, sortVersionOnIndex]);
 
   useEffect(() => {
     handleReloadPublications();
