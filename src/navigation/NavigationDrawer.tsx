@@ -1,18 +1,13 @@
 import React, { FC, ReactNode } from 'react';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import {
-  createStyles,
-  Theme,
-  withStyles,
-  WithStyles,
-} from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Icon } from '@material-ui/core';
+import Divider from '@mui/material/Divider';
+import Drawer, { DrawerProps } from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { Icon } from '@mui/material';
 import { MenuItem } from '../model/configurations/CmsConfigurations';
 import useCmsConfiguration from '../configuration/useCmsConfiguration';
 import useNavigate from './useNavigate';
@@ -23,62 +18,53 @@ import {
   THIRD_BOOK_TAB,
 } from '../model/configurations/BookTab';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    categoryHeader: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-    },
-    categoryHeaderPrimary: {
-      color: theme.palette.common.white,
-    },
-    item: {
-      paddingTop: 1,
-      paddingBottom: 1,
-      fontWeight: 'bold',
-      color: 'rgba(255, 255, 255, 0.7)',
-      '&:hover,&:focus': {
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-      },
-    },
-    itemCategory: {
-      backgroundColor: '#232f3e',
-      boxShadow: '0 -1px 0 #175BA0 inset',
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-    },
-    title: {
-      fontSize: 24,
-      color: theme.palette.common.white,
-    },
-    itemActiveItem: {
-      color: '#5E8AC7',
-    },
-    itemPrimary: {
-      fontWeight: 'bold',
-      fontSize: 'inherit',
-    },
-    itemIcon: {
-      minWidth: 'auto',
-      marginRight: theme.spacing(2),
-      color: 'rgba(255, 255, 255, 0.7)',
-      '&:hover,&:focus': {
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-      },
-    },
-    divider: {
-      marginTop: theme.spacing(2),
-    },
-  });
+const PREFIX = 'NavigationDrawer';
 
-export interface Props
-  extends Omit<DrawerProps, 'classes'>,
-    WithStyles<typeof styles> {
+const classes = {
+  item: `${PREFIX}-item`,
+  itemCategory: `${PREFIX}-itemCategory`,
+  title: `${PREFIX}-title`,
+  itemIcon: `${PREFIX}-itemIcon`,
+};
+
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  [`& .${classes.item}`]: {
+    paddingTop: 1,
+    paddingBottom: 1,
+    color: 'rgba(255, 255, 255, 0.7)',
+    '&:hover,&:focus': {
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    },
+  },
+
+  [`& .${classes.itemCategory}`]: {
+    backgroundColor: '#232f3e',
+    boxShadow: '0 -1px 0 #175BA0 inset',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.title}`]: {
+    fontSize: 24,
+    color: theme.palette.common.white,
+  },
+
+  [`& .${classes.itemIcon}`]: {
+    minWidth: 'auto',
+    marginRight: theme.spacing(2),
+    color: 'rgba(255, 255, 255, 0.7)',
+    '&:hover,&:focus': {
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    },
+  },
+}));
+
+export interface Props extends Omit<DrawerProps, 'classes'> {
   currentPage: string;
 }
 
 const NavigationDrawer: FC<Props> = (props: Props) => {
-  const { classes, currentPage, ...other } = props;
+  const { currentPage, ...other } = props;
   const { navigate } = useNavigate();
   const { getSortedBooks, getTabByBookType } = useAppConfiguration();
   const { configuration } = useCmsConfiguration();
@@ -86,17 +72,18 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
   const getCategoryItem = (title: string, children: ReactNode) => {
     return (
       <React.Fragment key={title}>
-        <ListItem className={classes.categoryHeader}>
-          <ListItemText
-            classes={{
-              primary: classes.categoryHeaderPrimary,
-            }}
-          >
+        <ListItem
+          sx={(theme) => ({
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+          })}
+        >
+          <ListItemText sx={{ color: (theme) => theme.palette.common.white }}>
             {title}
           </ListItemText>
         </ListItem>
         {children}
-        <Divider className={classes.divider} />
+        <Divider sx={{ marginTop: (theme) => theme.spacing(2) }} />
       </React.Fragment>
     );
   };
@@ -116,21 +103,15 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
                 : `/${menuItem.urlSlug}`
             )
           }
-          className={clsx(
-            classes.item,
-            currentPage === menuItem.urlSlug && classes.itemActiveItem
-          )}
+          className={classes.item}
+          style={{
+            color: currentPage === menuItem.urlSlug ? '#5E8AC7' : undefined,
+          }}
         >
           <ListItemIcon className={classes.itemIcon}>
             <Icon>{menuItem.icon}</Icon>
           </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-            }}
-          >
-            {menuItem.title}
-          </ListItemText>
+          <ListItemText>{menuItem.title}</ListItemText>
         </ListItem>
       ));
   };
@@ -148,7 +129,7 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
   };
 
   return (
-    <Drawer variant="permanent" {...other}>
+    <StyledDrawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem
           className={clsx(classes.title, classes.item, classes.itemCategory)}
@@ -179,8 +160,8 @@ const NavigationDrawer: FC<Props> = (props: Props) => {
           )
         )}
       </List>
-    </Drawer>
+    </StyledDrawer>
   );
 };
 
-export default withStyles(styles)(NavigationDrawer);
+export default NavigationDrawer;

@@ -1,14 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import Select from '../form/formik/Select';
 import { DecisionTree } from '../../model/DecisionTree/DecisionTree';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
-
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 interface Props {
   showError: boolean;
@@ -22,7 +16,6 @@ const DecisionTreeSelector: FC<Props> = ({
   formik,
 }) => {
   const [decisionTrees, setDecisionTrees] = useState<DecisionTree[]>([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (!initialValue) {
@@ -54,7 +47,7 @@ const DecisionTreeSelector: FC<Props> = ({
   return (
     <Select
       required
-      className={classes.textFieldStyle}
+      sx={{ marginTop: (theme: Theme) => theme.spacing(2) }}
       name="decisionTreeContent"
       label="Beslisboom"
       showError={showError}

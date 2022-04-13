@@ -1,38 +1,19 @@
 import React, { FC, useState } from 'react';
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
 import 'diff2html/bundles/css/diff2html.min.css';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
 import { diffWords } from 'diff';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import useDiff from '../../../hooks/useDiff';
 import DiffDecisionTreeContent from './DiffDecisionTreeContent';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 import { DecisionTreeStep } from '../../../../model/DecisionTree/DecisionTreeStep';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
-  icon: {
-    width: 45,
-    display: 'inline',
-    verticalAlign: 'middle',
-  },
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-}));
 
 interface Props {
   conceptDecisionTree: DecisionTree;
@@ -46,7 +27,6 @@ const DiffDialogContent: FC<Props> = ({
   const [showDecisionTreeContent, setShowDecisionTreeContent] =
     useState<DecisionTreeStep | null>(null);
   const { mapDiff, getRemovedSpan, getAddedSpan } = useDiff();
-  const classes = useStyles();
 
   const getRemovedSteps = () => {
     const conceptIds = conceptDecisionTree.steps.map((value) => value.id);
@@ -74,7 +54,10 @@ const DiffDialogContent: FC<Props> = ({
 
   return (
     <Grid
-      className={classes.container}
+      sx={(theme) => ({
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+      })}
       container
       spacing={0}
       alignItems="flex-start"
@@ -83,9 +66,9 @@ const DiffDialogContent: FC<Props> = ({
     >
       <Grid container item sm={12} style={{ marginBottom: 18 }}>
         <TableContainer component={Paper}>
-          <Table className={classes.table}>
+          <Table>
             <TableHead>
-              <TableRow className={classes.head}>
+              <TableRow style={{ backgroundColor: '#ddd' }}>
                 <TableCell>
                   <strong>ID</strong>
                 </TableCell>

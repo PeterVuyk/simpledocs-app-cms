@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import Highlight from 'react-highlight';
 import utilHelper from '../../../../../../../helper/utilHelper';
 import { ImageInfo } from '../../../../../../../model/imageLibrary/ImageInfo';

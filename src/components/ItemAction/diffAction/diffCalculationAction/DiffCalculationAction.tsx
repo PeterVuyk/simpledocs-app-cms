@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { Tooltip } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import { Tooltip } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import ShowDiffCalculationDialog from './showDiffCalculationDialog';
 import { CalculationInfo } from '../../../../model/calculations/CalculationInfo';
 
@@ -13,7 +13,7 @@ const DiffCalculationAction: FC<Props> = ({ calculationInfo }) => {
 
   return (
     <>
-      <Tooltip title="Bekijk de wijzigingen">
+      <Tooltip disableInteractive title="Bekijk de wijzigingen">
         <CompareArrowsIcon
           color="primary"
           style={{ cursor: 'pointer' }}

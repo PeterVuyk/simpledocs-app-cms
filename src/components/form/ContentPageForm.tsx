@@ -1,8 +1,8 @@
 import React, { FC, useRef, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
 import TextField from './formik/TextField';
 import SubmitButton from './formik/SubmitButton';
 import { Artifact } from '../../model/artifacts/Artifact';
@@ -16,12 +16,6 @@ import ContentTypeToggle from '../content/ContentTypeToggle';
 import validateYupMarkdownContent from './formik/validators/validateYupMarkdownContent';
 import validateYupHtmlContent from './formik/validators/validateYupHtmlContent';
 import LoadingSpinner from '../LoadingSpinner';
-
-const useStyles = makeStyles((theme) => ({
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
 
 interface Props {
   contentTypeToggle: ContentType;
@@ -40,7 +34,6 @@ const ContentPageForm: FC<Props> = ({
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
     onSubmit(values);
@@ -122,7 +115,7 @@ const ContentPageForm: FC<Props> = ({
               </>
             )}
           </Grid>
-          <div className={classes.submit}>
+          <Box sx={{ margin: (theme) => theme.spacing(3, 0, 2) }}>
             <SubmitButton
               showInBottomBar
               setShowError={setShowError}
@@ -130,7 +123,7 @@ const ContentPageForm: FC<Props> = ({
             >
               {isNewFile ? 'Toevoegen' : 'Wijzigen'}
             </SubmitButton>
-          </div>
+          </Box>
         </Form>
       )}
     </Formik>

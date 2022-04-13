@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import 'diff2html/bundles/css/diff2html.min.css';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import CodeIcon from '@material-ui/icons/Code';
-import { Tooltip } from '@material-ui/core';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
+import CodeIcon from '@mui/icons-material/Code';
+import { Tooltip } from '@mui/material';
 
 interface Props {
   diffModeToggle: string;
@@ -25,7 +25,10 @@ const ContentPageDiffModeToggle: FC<Props> = ({
   };
 
   return (
-    <Tooltip title="Tekstuele wijzigingen / Broncode wijzigingen">
+    <Tooltip
+      disableInteractive
+      title="Tekstuele wijzigingen / Broncode wijzigingen"
+    >
       <ToggleButtonGroup
         style={{ display: 'inline-block' }}
         size="small"

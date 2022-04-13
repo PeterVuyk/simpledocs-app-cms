@@ -1,23 +1,12 @@
 import React, { FC } from 'react';
-import Dialog from '@material-ui/core/Dialog';
+import Dialog from '@mui/material/Dialog';
 import ReactMarkdown from 'react-markdown';
-import { makeStyles } from '@material-ui/core/styles';
 import DialogTransition from './DialogTransition';
 import {
   CONTENT_TYPE_HTML,
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/ContentType';
-
-const useStyles = makeStyles(() => ({
-  previewContainer: {
-    height: 812,
-    width: 375,
-  },
-  markdown: {
-    padding: 10,
-  },
-}));
 
 interface Props {
   contentType: ContentType;
@@ -30,8 +19,6 @@ const ContentPreview: FC<Props> = ({
   showContentPreview,
   onCloseContentPreview,
 }) => {
-  const classes = useStyles();
-
   return (
     <Dialog
       open={showContentPreview !== null}
@@ -40,16 +27,13 @@ const ContentPreview: FC<Props> = ({
       onClose={onCloseContentPreview}
     >
       {contentType === CONTENT_TYPE_MARKDOWN && (
-        <div className={classes.previewContainer}>
-          <ReactMarkdown className={classes.markdown}>
-            {showContentPreview!}
-          </ReactMarkdown>
+        <div style={{ height: 812, width: 375, padding: 10 }}>
+          <ReactMarkdown>{showContentPreview!}</ReactMarkdown>
         </div>
       )}
       {contentType === CONTENT_TYPE_HTML && (
         <iframe
-          className={classes.previewContainer}
-          style={{ border: 'none' }}
+          style={{ border: 'none', height: 812, width: 375 }}
           title="preview.html"
           srcDoc={showContentPreview}
         />

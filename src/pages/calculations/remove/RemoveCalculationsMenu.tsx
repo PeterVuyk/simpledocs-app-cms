@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 
 interface Props {

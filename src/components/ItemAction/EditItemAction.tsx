@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { EditTwoTone } from '@material-ui/icons';
-import { Tooltip } from '@material-ui/core';
+import { EditTwoTone } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 import useNavigate from '../../navigation/useNavigate';
 
 interface Props {
@@ -22,7 +22,7 @@ const EditItemAction: FC<Props> = ({ urlSlug, onClick }) => {
   };
 
   return (
-    <Tooltip title="Wijzigen">
+    <Tooltip disableInteractive title="Wijzigen">
       <EditTwoTone style={{ cursor: 'pointer' }} onClick={handleClick} />
     </Tooltip>
   );

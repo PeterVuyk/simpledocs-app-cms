@@ -1,14 +1,8 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import React, { Fragment, useCallback } from 'react';
 import { Change } from 'diff';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(() => ({
-  inlineBlock: { display: 'inline', marginRight: 10 },
-}));
 
 function useDiff() {
-  const classes = useStyles();
   const removedColor = '#ff0000';
   const addedColor = 'green';
 
@@ -56,14 +50,14 @@ function useDiff() {
     (title: string, elements: JSX.Element[]) => {
       return (
         <Grid item xs={12}>
-          <h3 className={classes.inlineBlock}>{title}:</h3>
-          <div className={classes.inlineBlock}>
+          <h3 style={{ display: 'inline', marginRight: 10 }}>{title}:</h3>
+          <div style={{ display: 'inline', marginRight: 10 }}>
             {elements[0].props.children === '' ? '-' : elements}
           </div>
         </Grid>
       );
     },
-    [classes.inlineBlock]
+    []
   );
 
   return {

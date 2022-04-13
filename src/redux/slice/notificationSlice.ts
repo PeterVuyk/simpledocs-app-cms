@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Color } from '@material-ui/lab';
+import { AlertColor } from '@mui/material/Alert/Alert';
 
 interface NotificationState {
   notificationOpen: boolean;
-  notificationType: Color;
+  notificationType: AlertColor;
   notificationMessage: string;
 }
 

@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikValues } from 'formik';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogTitle } from '@mui/material';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';

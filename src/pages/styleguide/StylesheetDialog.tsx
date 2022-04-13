@@ -1,13 +1,12 @@
 import React, { FC, useCallback, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Highlight from 'react-highlight';
-import { makeStyles } from '@material-ui/core/styles';
 import FileDropzoneArea from '../../components/form/FileDropzoneArea';
 import artifactsRepository from '../../firebase/database/artifactsRepository';
 import logger from '../../helper/logger';
@@ -22,13 +21,6 @@ import { Artifact } from '../../model/artifacts/Artifact';
 // eslint-disable-next-line import/no-relative-packages
 import '../../../node_modules/highlight.js/styles/a11y-dark.css';
 
-const useStyles = makeStyles(() => ({
-  highLightContainer: {
-    width: '100%',
-    marginBottom: -10,
-  },
-}));
-
 interface Props {
   openStylesheetDialog: Artifact;
   oncloseDialog: () => void;
@@ -41,7 +33,6 @@ const StylesheetDialog: FC<Props> = ({
   const [cssInput, setCSSInput] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const handleUpdateFileFromBase64 = useCallback((file: string | null) => {
@@ -107,7 +98,7 @@ const StylesheetDialog: FC<Props> = ({
               >
                 CSS:
               </DialogContentText>
-              <div className={classes.highLightContainer}>
+              <div style={{ width: '100%', marginBottom: -10 }}>
                 {cssInput && <Highlight className="css">{cssInput}</Highlight>}
               </div>
             </Grid>

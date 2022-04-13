@@ -1,14 +1,8 @@
 import React, { FC } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useField } from 'formik';
+import { Theme } from '@mui/material/styles';
 import FileDropZoneArea from '../../../../FileDropzoneArea';
 import TextField from '../../../../TextField';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 interface Props {
   formik: any;
@@ -18,8 +12,6 @@ interface Props {
 
 const ImageWithFilenameField: FC<Props> = ({ formik, showError, disabled }) => {
   const [filenameField] = useField('filename');
-
-  const classes = useStyles();
 
   const setFilenameOnUpload = (file: File) => {
     if (filenameField.value !== '') {
@@ -38,7 +30,7 @@ const ImageWithFilenameField: FC<Props> = ({ formik, showError, disabled }) => {
         name="filename"
         autoFocus
         disabled={disabled}
-        className={classes.textFieldStyle}
+        sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
       />
       <FileDropZoneArea
         name="image"

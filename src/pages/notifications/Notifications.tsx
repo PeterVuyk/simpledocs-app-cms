@@ -1,12 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import PageHeading from '../../layout/PageHeading';
 import {
   DOCUMENTATION_NOTIFICATIONS,
@@ -23,15 +22,6 @@ import NotificationsListItem from './NotificationsListItem';
 import HelpAction from '../../components/ItemAction/helpAction/HelpAction';
 import NotificationsButtonGroup from './NotificationsButtonGroup';
 
-const useStyles = makeStyles({
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-});
-
 interface Props {
   title: string;
 }
@@ -41,7 +31,6 @@ const Notifications: FC<Props> = ({ title }) => {
     NotificationInfo[] | null
   >(null);
   const dispatch = useAppDispatch();
-  const classes = useStyles();
 
   const handleReload = useCallback(async () => {
     setNotificationsInfo(null);
@@ -73,9 +62,9 @@ const Notifications: FC<Props> = ({ title }) => {
         <NotificationsButtonGroup onReload={handleReload} />
       </PageHeading>
       <TableContainer component={Paper}>
-        <Table className={classes.table}>
+        <Table>
           <TableHead>
-            <TableRow className={classes.head} key="tableRow">
+            <TableRow style={{ backgroundColor: '#ddd' }} key="tableRow">
               <TableCell>Verzendtijd</TableCell>
               <TableCell>Notificatie</TableCell>
               <TableCell>

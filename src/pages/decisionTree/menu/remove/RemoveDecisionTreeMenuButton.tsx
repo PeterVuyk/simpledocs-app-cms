@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import { Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { Tooltip } from '@mui/material';
 import RemoveDecisionTreeMenu from './RemoveDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
@@ -26,7 +26,7 @@ const RemoveDecisionTreeMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Verwijder beslisboom">
+      <Tooltip disableInteractive title="Verwijder beslisboom">
         <Button variant="contained" color="secondary" onClick={openDeleteMenu}>
           <DeleteTwoToneIcon />
         </Button>

@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ContentType } from '../../../../../../model/ContentType';
 import SelectLinkBookPage from '../../../SelectLinkBookPage';
 import LinkCodeBlockView from './LinkCodeBlockView';

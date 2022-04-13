@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { BookSetting } from '../../model/books/BookSetting';
 import ChapterDivisions from '../../model/books/ChapterDivisions';
 import BookManagementListItemActions from './BookManagementListItemActions';

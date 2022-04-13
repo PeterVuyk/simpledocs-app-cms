@@ -1,23 +1,10 @@
 import React, { FC } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { diffWords } from 'diff';
-import { makeStyles } from '@material-ui/core/styles';
 import 'diff2html/bundles/css/diff2html.min.css';
 import useDiff from '../../../hooks/useDiff';
 import { CalculationInfo } from '../../../../model/calculations/CalculationInfo';
 import DiffContentPage from '../diff/DiffContentPage';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
-  icon: {
-    width: 45,
-    display: 'inline',
-    verticalAlign: 'middle',
-  },
-}));
 
 interface Props {
   conceptCalculationInfo: CalculationInfo;
@@ -29,11 +16,13 @@ const DiffDialogContent: FC<Props> = ({
   publishedCalculationInfo,
 }) => {
   const { mapDiff, getPropertiesDiff } = useDiff();
-  const classes = useStyles();
 
   return (
     <Grid
-      className={classes.container}
+      sx={(theme) => ({
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+      })}
       container
       spacing={0}
       alignItems="flex-start"

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { ButtonGroup } from '@mui/material';
 import bookRepository from '../../../firebase/database/bookRepository';
 import PageHeading from '../../../layout/PageHeading';
 import EditStatusToggle from '../../../components/form/EditStatusToggle';

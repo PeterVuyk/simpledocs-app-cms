@@ -1,26 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { Box } from '@mui/material';
 import getImageLibraryCategories from '../../../../../../firebase/storage/getImageLibraryCategories';
 import capitalizeFirstLetter from '../../../../../../helper/text/capitalizeFirstLetter';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      position: 'relative',
-      overflow: 'auto',
-      width: '100%',
-      maxWidth: 360,
-      height: 600,
-      backgroundColor: theme.palette.background.paper,
-    },
-  })
-);
 
 interface Props {
   currentCategory: string;
@@ -29,7 +16,6 @@ interface Props {
 
 const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
   const [categories, setCategories] = useState<string[]>([]);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,7 +44,16 @@ const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        position: 'relative',
+        overflow: 'auto',
+        width: '100%',
+        maxWidth: 360,
+        height: 600,
+        backgroundColor: (theme) => theme.palette.background.paper,
+      }}
+    >
       <List component="nav">
         {categories.map((category) => (
           <ListItem
@@ -71,7 +66,7 @@ const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
           </ListItem>
         ))}
       </List>
-    </div>
+    </Box>
   );
 };
 

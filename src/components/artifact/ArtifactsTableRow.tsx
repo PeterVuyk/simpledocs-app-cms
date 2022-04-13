@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TableCell from '@material-ui/core/TableCell';
-import Chip from '@material-ui/core/Chip';
+import TableCell from '@mui/material/TableCell';
+import Chip from '@mui/material/Chip';
 import ViewContentAction from '../ItemAction/ViewContentAction';
 import DeleteItemAction from '../ItemAction/DeleteItemAction';
 import DownloadContentAction from '../ItemAction/DownloadContentAction';
@@ -20,12 +19,6 @@ import {
   DOCUMENTATION_STYLEGUIDE,
 } from '../../model/DocumentationType';
 
-const useStyles = makeStyles({
-  toolBox: {
-    width: 150,
-  },
-});
-
 interface Props {
   artifact: Artifact;
   aggregate: string;
@@ -41,8 +34,6 @@ const ArtifactsTableRow: FC<Props> = ({
   showIdColumn,
   showArtifactType,
 }) => {
-  const classes = useStyles();
-
   const getTranslatedCategory = () => {
     switch (artifact.type) {
       case ARTIFACT_TYPE_DECISION_TREE:
@@ -105,7 +96,7 @@ const ArtifactsTableRow: FC<Props> = ({
       </TableCell>
       <TableCell>{artifact.contentType}</TableCell>
       {showArtifactType && <TableCell>{getTranslatedCategory()}</TableCell>}
-      <TableCell align="right" className={classes.toolBox}>
+      <TableCell align="right" style={{ width: 150 }}>
         {artifact.type === ARTIFACT_TYPE_CSS_STYLESHEET && (
           <HelpAction documentationType={DOCUMENTATION_STYLEGUIDE} />
         )}

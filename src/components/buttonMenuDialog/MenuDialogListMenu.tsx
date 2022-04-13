@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Menu } from '@material-ui/core';
+import MenuItem from '@mui/material/MenuItem';
+import { Menu } from '@mui/material';
 import { MenuListItem } from './model/MenuListItem';
 import { MenuListDialog } from './model/MenuListDialog';
 import MenuDialog from './MenuDialog';

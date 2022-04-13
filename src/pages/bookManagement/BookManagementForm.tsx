@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import { Dialog, FormLabel } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { makeStyles } from '@material-ui/core/styles';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import { Dialog, FormLabel } from '@mui/material';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import { Theme } from '@mui/material/styles';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import TextField from '../../components/form/formik/TextField';
 import AlertBox from '../../components/AlertBox';
@@ -19,12 +19,6 @@ import CheckboxGroup from '../../components/form/formik/CheckboxGroup';
 import FileDropzoneArea from '../../components/form/formik/FileDropzoneArea';
 import alphaNumericIdGenerator from '../../helper/text/alphaNumericIdGenerator';
 import { FIRST_BOOK_TAB } from '../../model/configurations/BookTab';
-
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 interface Props {
   onSubmit: (values: FormikValues) => Promise<void>;
@@ -39,7 +33,6 @@ const BookManagementForm: FC<Props> = ({
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
     return onSubmit(values);
@@ -106,7 +99,10 @@ const BookManagementForm: FC<Props> = ({
                 <AlertBox severity="info" message="Een moment geduld..." />
               )}
               <TextField
-                className={classes.textFieldStyle}
+                sx={(theme: Theme) => ({
+                  marginTop: theme.spacing(2),
+                  marginBottom: theme.spacing(2),
+                })}
                 showError={showError}
                 autoFocus
                 required
@@ -115,7 +111,7 @@ const BookManagementForm: FC<Props> = ({
                 name="title"
               />
               <TextField
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 showError={showError}
                 multiline
                 minRows={3}
@@ -127,7 +123,7 @@ const BookManagementForm: FC<Props> = ({
               />
               <TextField
                 type="number"
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 showError={showError}
                 required
                 id="index"
@@ -136,7 +132,7 @@ const BookManagementForm: FC<Props> = ({
               />
               <Select
                 required
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 name="tab"
                 label="Weergave tab"
                 showError={showError}
@@ -148,7 +144,7 @@ const BookManagementForm: FC<Props> = ({
               />
               <Select
                 required
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 name="isDraft"
                 label="Concept / Gepubliceerd"
                 showError={showError}

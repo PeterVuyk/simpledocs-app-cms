@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogTitle } from '@mui/material';
 import ImageCodeBlockView from '../uploadImage/ImageCodeBlockView/ImageCodeBlockView';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import { ContentType } from '../../../../../../model/ContentType';

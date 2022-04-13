@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import { Tooltip } from '@material-ui/core';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { Tooltip } from '@mui/material';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
 
 interface Props {
@@ -19,7 +19,7 @@ const DeleteItemAction: FC<Props> = ({
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
   return (
     <>
-      <Tooltip title="Verwijderen">
+      <Tooltip disableInteractive title="Verwijderen">
         <DeleteTwoToneIcon
           color="secondary"
           style={{ cursor: 'pointer' }}

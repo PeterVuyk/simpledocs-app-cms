@@ -1,33 +1,27 @@
 import React, { FC, useEffect, useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import { Link } from '@material-ui/core';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import { Box, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useAuth } from '../AuthProvider';
 import { HOME_PAGE, LOGIN_PAGE } from '../../navigation/UrlSlugs';
 import Copyright from '../../components/footer/Copyright';
 import PasswordResetForm from './PasswordResetForm';
 import PasswordResetSuccess from './PasswordResetSuccess';
 import useNavigate from '../../navigation/useNavigate';
-import CMSStatement from "../../components/footer/CMSStatement";
+import CMSStatement from '../../components/footer/CMSStatement';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    marginTop: theme.spacing(16),
-  },
+const DivPaper = styled('div')(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 }));
 
 const PasswordReset: FC = () => {
   const [resetSuccessful, setResetSuccessful] = useState<boolean>(false);
   const { history } = useNavigate();
-  const classes = useStyles();
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -39,14 +33,14 @@ const PasswordReset: FC = () => {
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
-      <div className={classes.paper}>
-        <div className={classes.logoContainer}>
+      <DivPaper>
+        <Box sx={{ marginTop: (theme) => theme.spacing(16) }}>
           <img
             style={{ maxWidth: '700px' }}
             src="/simpledocs-logo.svg"
             alt="SimpleDocs"
           />
-        </div>
+        </Box>
         <Container component="main" maxWidth="xs">
           {resetSuccessful && <PasswordResetSuccess />}
           {!resetSuccessful && (
@@ -61,7 +55,7 @@ const PasswordReset: FC = () => {
             </Link>
           </Typography>
         </Container>
-      </div>
+      </DivPaper>
       <CMSStatement />
       <Copyright />
     </Container>

@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import { Dialog } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { makeStyles } from '@material-ui/core/styles';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import { Dialog } from '@mui/material';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import { Theme } from '@mui/material/styles';
 import SubmitButton from '../components/form/formik/SubmitButton';
 import TextField from '../components/form/formik/TextField';
 import { notify } from '../redux/slice/notificationSlice';
@@ -18,12 +18,6 @@ import updateUser from '../firebase/functions/updateUser';
 import validateYupPassword from '../components/form/formik/validators/validateYupPassword';
 import DialogTransition from '../components/dialog/DialogTransition';
 
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
-
 interface Props {
   oncloseDialog: () => void;
 }
@@ -32,7 +26,6 @@ const UpdatePasswordDialog: FC<Props> = ({ oncloseDialog }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const dispatch = useAppDispatch();
-  const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
     updateUser(values.password)
@@ -102,7 +95,7 @@ const UpdatePasswordDialog: FC<Props> = ({ oncloseDialog }) => {
               )}
               <TextField
                 showError={showError}
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 required
                 id="password"
                 label="Wachtwoord"

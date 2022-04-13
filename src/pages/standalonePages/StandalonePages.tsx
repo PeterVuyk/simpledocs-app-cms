@@ -1,12 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import PageHeading from '../../layout/PageHeading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { StandalonePage } from '../../model/standalonePages/StandalonePage';
@@ -20,15 +19,6 @@ import useStatusToggle from '../../components/hooks/useStatusToggle';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
 import { DOCUMENTATION_STANDALONE_PAGES } from '../../model/DocumentationType';
 
-const useStyles = makeStyles({
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-});
-
 interface Props {
   title: string;
 }
@@ -36,7 +26,6 @@ interface Props {
 const StandalonePages: FC<Props> = ({ title }) => {
   const [pages, setPages] = useState<StandalonePage[] | null>(null);
   const { editStatus, setEditStatus } = useStatusToggle();
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const handleLoadPages = useCallback((): Promise<void> => {
@@ -79,9 +68,9 @@ const StandalonePages: FC<Props> = ({ title }) => {
         />
       </PageHeading>
       <TableContainer component={Paper}>
-        <Table className={classes.table}>
+        <Table>
           <TableHead>
-            <TableRow className={classes.head} key="tableRow">
+            <TableRow style={{ backgroundColor: '#ddd' }} key="tableRow">
               <TableCell>Pagina</TableCell>
               <TableCell>Titel</TableCell>
               <TableCell>Inhoudstype</TableCell>

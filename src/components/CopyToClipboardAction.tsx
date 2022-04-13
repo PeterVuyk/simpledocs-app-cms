@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import Button from '@material-ui/core/Button';
-import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import { Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
+import { Tooltip } from '@mui/material';
 import utilHelper from '../helper/utilHelper';
 
 interface Props {
@@ -11,12 +11,13 @@ interface Props {
 
 const CopyToClipboardAction: FC<Props> = ({ textToCopy, disabled }) => {
   return (
-    <Tooltip title="Kopieer naar klembord">
+    <Tooltip disableInteractive title="Kopieer naar klembord">
       <div>
         <span>
           <Button
             onClick={() => utilHelper.copyText(textToCopy)}
             variant="contained"
+            color="inherit"
             disabled={disabled === undefined ? false : disabled}
           >
             <FilterNoneIcon />

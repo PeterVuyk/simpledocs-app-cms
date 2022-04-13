@@ -4,7 +4,7 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useFormikContext } from 'formik';
 
 interface Props {

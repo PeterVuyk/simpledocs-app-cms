@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import DownloadContentAction from '../../components/ItemAction/DownloadContentAction';

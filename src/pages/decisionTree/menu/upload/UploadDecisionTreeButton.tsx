@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import UploadDecisionTreeDialog from '../../UploadDecisionTreeDialog';
 
 interface Props {

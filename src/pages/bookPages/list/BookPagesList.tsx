@@ -1,26 +1,16 @@
 import React, { FC } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import BookPageListItem from './BookPageListItem';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
 import { PageInfo } from '../../../model/Page';
 import { DOCUMENTATION_ID_LINK_BOOK_PAGE } from '../../../model/DocumentationType';
 import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
-
-const useStyles = makeStyles({
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-});
 
 interface Props {
   pages?: PageInfo[] | null;
@@ -35,13 +25,11 @@ const BookPagesList: FC<Props> = ({
   editStatus,
   bookType,
 }) => {
-  const classes = useStyles();
-
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
-          <TableRow className={classes.head}>
+          <TableRow style={{ backgroundColor: '#ddd' }}>
             <TableCell>
               <strong>Hoofdstuk</strong>
             </TableCell>

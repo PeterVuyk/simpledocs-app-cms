@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import { Tooltip } from '@material-ui/core';
+import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
+import { Tooltip } from '@mui/material';
 import ContentPreview from '../dialog/ContentPreview';
 import { ContentType } from '../../model/ContentType';
 
@@ -14,7 +14,7 @@ const ViewContentAction: FC<Props> = ({ content, contentType }) => {
 
   return (
     <>
-      <Tooltip title="Preview pagina">
+      <Tooltip disableInteractive title="Preview pagina">
         <FindInPageTwoToneIcon
           color="primary"
           style={{ cursor: 'pointer' }}

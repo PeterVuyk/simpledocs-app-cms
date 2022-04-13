@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { ButtonGroup } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { ButtonGroup } from '@mui/material';
+import Button from '@mui/material/Button';
 import SendNotificationDialog from './SendNotificationDialog';
 
 interface Props {

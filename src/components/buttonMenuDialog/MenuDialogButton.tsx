@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { Icon, PropTypes, Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { Icon, PropTypes, Tooltip } from '@mui/material';
 import MenuDialogListMenu from './MenuDialogListMenu';
 import { MenuListItem } from './model/MenuListItem';
 import { MenuListDialog } from './model/MenuListDialog';
@@ -30,11 +30,12 @@ const MenuDialogButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title={toolTip ?? ''}>
+      <Tooltip disableInteractive title={toolTip ?? ''}>
         <span>
           <Button
             variant="contained"
-            color={buttonColor ?? undefined}
+            color={buttonColor ? undefined : 'inherit'}
+            sx={{ color: buttonColor ?? undefined }}
             onClick={openMenu}
             disabled={menuListItems.length === 0}
           >

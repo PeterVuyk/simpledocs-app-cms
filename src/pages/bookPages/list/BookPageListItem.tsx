@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TableCell from '@material-ui/core/TableCell';
-import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import { Tooltip } from '@material-ui/core';
+import TableCell from '@mui/material/TableCell';
+import RestoreFromTrashTwoToneIcon from '@mui/icons-material/RestoreFromTrashTwoTone';
+import { Tooltip } from '@mui/material';
 import bookRepository from '../../../firebase/database/bookRepository';
 import logger from '../../../helper/logger';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../model/EditStatus';
@@ -24,15 +23,6 @@ import {
   ContentType,
 } from '../../../model/ContentType';
 
-const useStyles = makeStyles({
-  icon: {
-    width: 45,
-  },
-  toolBox: {
-    width: 230,
-  },
-});
-
 interface Props {
   page: PageInfo;
   onLoadPages: () => void;
@@ -50,7 +40,6 @@ const BookPageListItem: FC<Props> = ({
 }) => {
   const [showMarkForDeletion, setShowMarkForDeletion] =
     useState<boolean>(false);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const getChapterDivision = (chapterDivision: string): string => {
@@ -175,14 +164,14 @@ const BookPageListItem: FC<Props> = ({
       </TableCell>
       <TableCell>
         <img
-          className={classes.icon}
+          style={{ width: 45 }}
           src={`${page.iconFile}`}
           alt={page.chapter}
         />
       </TableCell>
       <TableCell>{getContentTypeText(page.contentType)}</TableCell>
       <TableCell>{page.id?.replaceAll('-draft', '') ?? ''}</TableCell>
-      <TableCell align="right" className={classes.toolBox}>
+      <TableCell align="right" style={{ width: 230 }}>
         {!page.isNewCreatedPage && page.isDraft && (
           <DiffPageAction bookType={bookType} pageId={page.id!} />
         )}
@@ -202,7 +191,10 @@ const BookPageListItem: FC<Props> = ({
           </>
         )}
         {showMarkForDeletion && (
-          <Tooltip title="Markering voor verwijdering opheffen">
+          <Tooltip
+            disableInteractive
+            title="Markering voor verwijdering opheffen"
+          >
             <RestoreFromTrashTwoToneIcon
               style={{ cursor: 'pointer', color: '#099000FF' }}
               onClick={() => undoMarkDeletion()}

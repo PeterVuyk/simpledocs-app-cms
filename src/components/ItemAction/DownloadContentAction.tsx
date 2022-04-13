@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import FileSaver from 'file-saver';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import base64Helper from '../../helper/base64Helper';
 import htmlContentHelper from '../../helper/htmlContentHelper';
 import {
@@ -43,7 +43,7 @@ const DownloadContentAction: FC<Props> = ({
   };
 
   return (
-    <Tooltip title={`Download ${contentType}`}>
+    <Tooltip disableInteractive title={`Download ${contentType}`}>
       <GetAppIcon
         color="action"
         style={{ cursor: 'pointer' }}

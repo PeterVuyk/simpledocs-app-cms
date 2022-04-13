@@ -1,17 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useField } from 'formik';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import Select from './Select';
 import bookRepository from '../../../firebase/database/bookRepository';
 import TextField from './TextField';
 import { Page } from '../../../model/Page';
 import useAppConfiguration from '../../../configuration/useAppConfiguration';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 interface Props {
   formik: any;
@@ -31,7 +25,6 @@ const SelectLinkBookPage: FC<Props> = ({
   const [bookTypeField] = useField('bookType');
   const [bookPageIdField] = useField('bookPageId');
   const [linkTextField] = useField('linkText');
-  const classes = useStyles();
 
   const getBookOptions = useCallback(() => {
     return getSortedBooks()
@@ -86,7 +79,10 @@ const SelectLinkBookPage: FC<Props> = ({
     <>
       <Select
         required={required}
-        className={classes.textFieldStyle}
+        sx={(theme: Theme) => ({
+          marginTop: theme.spacing(2),
+          marginBottom: theme.spacing(2),
+        })}
         name="bookType"
         label="Boek"
         showError={showError}
@@ -94,7 +90,7 @@ const SelectLinkBookPage: FC<Props> = ({
       />
       <Select
         required
-        className={classes.textFieldStyle}
+        sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
         name="bookPageId"
         label="Pagina"
         showError={showError}

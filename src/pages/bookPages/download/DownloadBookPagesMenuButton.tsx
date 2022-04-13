@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Tooltip } from '@material-ui/core';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { Tooltip } from '@mui/material';
 import { EditStatus } from '../../../model/EditStatus';
 import { PageInfo } from '../../../model/Page';
 import exportBookPages from './exportBookPages';
@@ -42,8 +42,8 @@ const DownloadBookPagesMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Batch download">
-        <Button variant="contained" onClick={openDownloadMenu}>
+      <Tooltip disableInteractive title="Batch download">
+        <Button variant="contained" color="inherit" onClick={openDownloadMenu}>
           <GetAppIcon color="action" />
         </Button>
       </Tooltip>

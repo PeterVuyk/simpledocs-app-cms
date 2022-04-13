@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { FormikValues } from 'formik';
 import bookRepository from '../../firebase/database/bookRepository';
 import PageHeading from '../../layout/PageHeading';

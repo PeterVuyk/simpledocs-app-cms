@@ -1,7 +1,7 @@
 import React, { FC, SyntheticEvent } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { notify } from '../redux/slice/notificationSlice';
 
@@ -9,17 +9,7 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
-
 const SnackbarNotification: FC = () => {
-  const classes = useStyles();
   const dispatch = useAppDispatch();
   const { notificationMessage, notificationType, notificationOpen } =
     useAppSelector((state) => state.notification);
@@ -38,18 +28,29 @@ const SnackbarNotification: FC = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        width: '100%',
+        '& > * + *': {
+          marginTop: (theme) => theme.spacing(2),
+        },
+      }}
+    >
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={notificationOpen}
         autoHideDuration={6000}
-        onClose={handleClose}
+        onClose={() => handleClose()}
       >
-        <Alert onClose={handleClose} color={notificationType}>
-          {notificationMessage}
-        </Alert>
+        {/* For MUI5 it is required to put the alert in a div container to forward the refs.
+        Info: https://mui.com/material-ui/guides/migration-v4/#cannot-read-property-scrolltop-of-null */}
+        <div>
+          <Alert onClose={handleClose} severity={notificationType}>
+            {notificationMessage}
+          </Alert>
+        </div>
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 

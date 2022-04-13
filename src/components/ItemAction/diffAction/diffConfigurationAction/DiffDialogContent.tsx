@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
 import 'diff2html/bundles/css/diff2html.min.css';
 import stringify from 'json-stable-stringify';
 import DiffContentPage from '../diff/DiffContentPage';
@@ -8,18 +7,6 @@ import { AppConfigurations } from '../../../../model/configurations/AppConfigura
 import { CmsConfigurations } from '../../../../model/configurations/CmsConfigurations';
 import omit from '../../../../helper/object/omit';
 import { CONTENT_TYPE_JSON } from '../../../../model/ContentType';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
-  icon: {
-    width: 45,
-    display: 'inline',
-    verticalAlign: 'middle',
-  },
-}));
 
 interface Props {
   conceptConfiguration: AppConfigurations | CmsConfigurations;
@@ -30,10 +17,12 @@ const DiffDialogContent: FC<Props> = ({
   conceptConfiguration,
   publishedConfiguration,
 }) => {
-  const classes = useStyles();
   return (
     <Grid
-      className={classes.container}
+      sx={(theme) => ({
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+      })}
       container
       spacing={0}
       alignItems="flex-start"

@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
-import ImageListItemBar from '@material-ui/core/ImageListItemBar';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from '@mui/material';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getAllImagesFromCategory from '../../../../../../firebase/storage/getAllImagesFromCategory';
 import LoadingSpinner from '../../../../../LoadingSpinner';
@@ -14,28 +14,6 @@ import DeleteImageDialog from './DeleteImageDialog';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      marginTop: 5,
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
-    },
-    imageList: {
-      padding: 5,
-      backgroundColor: '#616161',
-      width: 1000,
-      height: 600,
-    },
-    icon: {
-      color: 'rgba(255, 255, 255, 0.54)',
-    },
-  })
-);
 
 interface Props {
   onCloseDialog: () => void;
@@ -49,7 +27,6 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
     useState<ImageInfo | null>(null);
   const [showDeleteImageDialog, setShowDeleteImageDialog] =
     useState<ImageInfo | null>(null);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const handleLoadImages = useCallback(() => {
@@ -76,11 +53,28 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
   }, [category, handleLoadImages]);
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: (theme) => theme.palette.background.paper,
+      }}
+    >
       {imagesInfo !== null && imagesInfo.length === 0 && (
         <LoadingSpinner color="secondary" />
       )}
-      <ImageList cols={3} rowHeight={180} className={classes.imageList}>
+      <ImageList
+        cols={3}
+        rowHeight={180}
+        style={{
+          padding: 5,
+          backgroundColor: '#616161',
+          width: 1000,
+          height: 600,
+        }}
+      >
         {imagesInfo !== null &&
           imagesInfo.map((item) => (
             <ImageListItem
@@ -93,11 +87,12 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
                 title={item.filename}
                 actionIcon={
                   <IconButton
-                    className={classes.icon}
+                    style={{ color: 'rgba(255, 255, 255, 0.54)' }}
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowDeleteImageDialog(item);
                     }}
+                    size="large"
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -126,7 +121,7 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
           }}
         />
       )}
-    </div>
+    </Box>
   );
 };
 

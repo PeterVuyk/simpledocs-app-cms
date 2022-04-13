@@ -1,14 +1,13 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import Button from '@mui/material/Button';
+import { ButtonGroup } from '@mui/material';
 import PageHeading from '../../layout/PageHeading';
 import { UserInfo } from '../../model/users/UserInfo';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -23,15 +22,6 @@ import DeleteUser from './DeleteUser';
 import { useAuth } from '../../authentication/AuthProvider';
 import useNavigate from '../../navigation/useNavigate';
 
-const useStyles = makeStyles({
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-});
-
 interface Props {
   title: string;
 }
@@ -40,7 +30,6 @@ const Users: FC<Props> = ({ title }) => {
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [showCreateUserDialog, setShowCreateUserDialog] =
     useState<boolean>(false);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
   const { history } = useNavigate();
   const { currentUser } = useAuth();
@@ -88,9 +77,9 @@ const Users: FC<Props> = ({ title }) => {
         </ButtonGroup>
       </PageHeading>
       <TableContainer component={Paper}>
-        <Table className={classes.table}>
+        <Table>
           <TableHead>
-            <TableRow className={classes.head}>
+            <TableRow style={{ backgroundColor: '#ddd' }}>
               <TableCell>
                 <strong>Email</strong>
               </TableCell>

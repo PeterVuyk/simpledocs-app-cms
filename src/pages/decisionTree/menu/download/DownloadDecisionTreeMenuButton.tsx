@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import { Tooltip } from '@mui/material';
 import DownloadDecisionTreeMenu from './DownloadDecisionTreeMenu';
 import { EditStatus } from '../../../../model/EditStatus';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
@@ -24,8 +24,8 @@ const DownloadDecisionTreeMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Download beslisboom">
-        <Button variant="contained" onClick={openDownloadMenu}>
+      <Tooltip disableInteractive title="Download beslisboom">
+        <Button variant="contained" color="inherit" onClick={openDownloadMenu}>
           <GetAppIcon color="action" />
         </Button>
       </Tooltip>

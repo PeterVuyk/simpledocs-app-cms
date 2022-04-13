@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Form, Formik, FormikValues } from 'formik';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
+import { Box } from '@mui/material';
 import PageHeading from '../../../layout/PageHeading';
 import TextField from '../../../components/form/formik/TextField';
 import SubmitButton from '../../../components/form/formik/SubmitButton';
@@ -31,12 +31,6 @@ import { useAppDispatch } from '../../../redux/hooks';
 import { notify } from '../../../redux/slice/notificationSlice';
 import useNavigate from '../../../navigation/useNavigate';
 
-const useStyles = makeStyles((theme) => ({
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 interface Props {
   calculationType: CalculationType;
 }
@@ -51,7 +45,6 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
   const formikRef = useRef<any>();
   const { history, navigateBack } = useNavigate();
   const dispatch = useAppDispatch();
-  const classes = useStyles();
   const { setEditStatus } = useStatusToggle();
   const { modifyHtmlForStorage } = useHtmlModifier();
 
@@ -201,7 +194,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <div className={classes.submit}>
+              <Box sx={{ margin: (theme) => theme.spacing(3, 0, 2) }}>
                 <SubmitButton
                   showInBottomBar
                   setShowError={setShowError}
@@ -209,7 +202,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                 >
                   Wijzigen
                 </SubmitButton>
-              </div>
+              </Box>
             </Form>
           )}
         </Formik>

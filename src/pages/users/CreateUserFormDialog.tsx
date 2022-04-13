@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import { Dialog } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { makeStyles } from '@material-ui/core/styles';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import { Dialog } from '@mui/material';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import { Theme } from '@mui/material/styles';
 import SubmitButton from '../../components/form/formik/SubmitButton';
 import TextField from '../../components/form/formik/TextField';
 import createUser from '../../firebase/functions/createUser';
@@ -18,12 +18,6 @@ import validateYupUserEmail from '../../components/form/formik/validators/valida
 import AlertBox from '../../components/AlertBox';
 import { auth } from '../../firebase/firebaseConnection';
 import DialogTransition from '../../components/dialog/DialogTransition';
-
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 interface Props {
   openCreateUserDialog: boolean;
@@ -39,7 +33,6 @@ const CreateUserFormDialog: FC<Props> = ({
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
   const dispatch = useAppDispatch();
-  const classes = useStyles();
 
   const handleSubmitForm = (values: FormikValues) => {
     createUser(values.email)
@@ -116,8 +109,8 @@ const CreateUserFormDialog: FC<Props> = ({
                 <AlertBox severity="info" message="Een moment geduld..." />
               )}
               <TextField
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 showError={showError}
-                className={classes.textFieldStyle}
                 required
                 id="email"
                 label="Emailadres"

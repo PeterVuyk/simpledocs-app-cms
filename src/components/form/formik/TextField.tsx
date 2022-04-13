@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { OutlinedTextFieldProps, TextField } from '@material-ui/core';
+import { OutlinedTextFieldProps, TextField } from '@mui/material';
 import { useField } from 'formik';
 
 interface Props {

@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import Button from '@mui/material/Button';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import 'jsoneditor-react/es/editor.min.css';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import configurationRepository from '../../firebase/database/configurationRepository';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import logger from '../../helper/logger';
@@ -49,7 +49,7 @@ const RemoveConfigurationButton: FC<Props> = ({ configurationType }) => {
 
   return (
     <>
-      <Tooltip title="Aanpassing verwijderen">
+      <Tooltip disableInteractive title="Aanpassing verwijderen">
         <Button
           variant="contained"
           color="secondary"

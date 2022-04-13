@@ -1,39 +1,26 @@
 import React, { FC } from 'react';
-import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import { makeStyles } from '@material-ui/core/styles';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import { Box } from '@mui/material';
 import { CalculationInfo } from '../../model/calculations/CalculationInfo';
 import CalculationListItem from './CalculationListItem';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    width: '100%',
-  },
-  head: {
-    backgroundColor: '#ddd',
-  },
-}));
 
 interface Props {
   calculationInfos: CalculationInfo[];
 }
 
 const CalculationList: FC<Props> = ({ calculationInfos }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
+    <Box sx={{ marginBottom: (theme) => theme.spacing(2) }}>
       <TableContainer component={Paper}>
-        <Table className={classes.table}>
+        <Table>
           <TableHead>
-            <TableRow className={classes.head}>
+            <TableRow style={{ backgroundColor: '#ddd' }}>
               <TableCell>
                 <strong>Soort berekening</strong>
               </TableCell>
@@ -68,7 +55,7 @@ const CalculationList: FC<Props> = ({ calculationInfos }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 

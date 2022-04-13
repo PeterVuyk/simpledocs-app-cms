@@ -1,27 +1,7 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import { useFormikContext } from 'formik';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'fixed',
-    borderTop: 'solid',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fff',
-    zIndex: theme.zIndex.drawer - 1,
-    borderTopWidth: 1,
-    borderTopColor: '#898989',
-  },
-  submitContainer: {
-    position: 'relative',
-    width: 200,
-    float: 'right',
-    margin: theme.spacing(1, 4, 1, 0),
-  },
-}));
+import { Theme } from '@mui/material/styles';
 
 interface Props {
   children: string;
@@ -38,7 +18,6 @@ const SubmitButton: FC<Props> = ({
   showInBottomBar,
   ...otherProps
 }) => {
-  const classes = useStyles();
   const { submitForm } = useFormikContext();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -61,11 +40,30 @@ const SubmitButton: FC<Props> = ({
 
   return (
     <>
-      <div className={classes.container}>
-        <div className={classes.submitContainer}>
+      <Box
+        sx={{
+          position: 'fixed',
+          borderTop: 'solid',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: '#fff',
+          zIndex: (theme) => theme.zIndex.drawer - 1,
+          borderTopWidth: 1,
+          borderTopColor: '#898989',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: 200,
+            float: 'right',
+            margin: (theme: Theme) => theme.spacing(1, 4, 1, 0),
+          }}
+        >
           <Button {...configButton}>{children}</Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
       <div style={{ height: 100 }} />
     </>
   );

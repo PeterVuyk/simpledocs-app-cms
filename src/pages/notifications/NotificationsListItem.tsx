@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { NotificationInfo } from '../../model/Notification/NotificationInfo';
 import dateTimeHelper from '../../helper/dateTimeHelper';
 import {

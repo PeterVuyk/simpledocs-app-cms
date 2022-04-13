@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import { Form, Formik, FormikValues } from 'formik';
-import { Dialog } from '@material-ui/core';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+import { Dialog } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 import * as Yup from 'yup';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import { notify } from '../../../redux/slice/notificationSlice';
 import logger from '../../../helper/logger';
 import { useAppDispatch } from '../../../redux/hooks';
@@ -22,12 +22,6 @@ import { BookTab } from '../../../model/configurations/BookTab';
 import { DOCUMENTATION_UPDATE_TAB_TITLES } from '../../../model/DocumentationType';
 import HelpAction from '../../../components/ItemAction/helpAction/HelpAction';
 
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
-
 interface Props {
   oncloseDialog: () => void;
   showTabTitleDialog: BookTab;
@@ -41,7 +35,6 @@ const UpdateTabTitleDialog: FC<Props> = ({
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
   const formikRef = useRef<any>();
-  const classes = useStyles();
   const dispatch = useAppDispatch();
   const { configuration } = useAppConfiguration();
 
@@ -121,7 +114,10 @@ const UpdateTabTitleDialog: FC<Props> = ({
                 <AlertBox severity="info" message="Een moment geduld..." />
               )}
               <TextField
-                className={classes.textFieldStyle}
+                sx={(theme: Theme) => ({
+                  marginTop: theme.spacing(2),
+                  marginBottom: theme.spacing(2),
+                })}
                 showError={showError}
                 autoFocus
                 id="title"
@@ -129,7 +125,7 @@ const UpdateTabTitleDialog: FC<Props> = ({
                 name="title"
               />
               <TextField
-                className={classes.textFieldStyle}
+                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
                 showError={showError}
                 multiline
                 minRows={3}

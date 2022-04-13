@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import AlertBox from '../../../../../AlertBox';
 import deleteImageFromCategory from '../../../../../../firebase/storage/deleteImageFromCategory';

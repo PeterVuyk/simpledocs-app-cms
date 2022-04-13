@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { StandalonePage } from '../../model/standalonePages/StandalonePage';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import EditItemAction from '../../components/ItemAction/EditItemAction';

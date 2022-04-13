@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Tooltip } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import Button from '@material-ui/core/Button';
+import { Tooltip } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import Button from '@mui/material/Button';
 import DiffDecisionTreeMenu from './DiffDecisionTreeMenu';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
@@ -34,7 +34,7 @@ const DiffDecisionTreeAction: FC<Props> = ({ decisionTrees }) => {
 
   return (
     <>
-      <Tooltip title="Bekijk de wijzigingen">
+      <Tooltip disableInteractive title="Bekijk de wijzigingen">
         <Button variant="contained" color="primary" onClick={openDownloadMenu}>
           <CompareArrowsIcon />
         </Button>

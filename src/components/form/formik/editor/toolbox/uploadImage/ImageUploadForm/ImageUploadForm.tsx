@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-} from '@material-ui/core';
+} from '@mui/material';
 import AlertBox from '../../../../../../AlertBox';
 import SubmitButton from '../../../../SubmitButton';
 import ImageCategorySelector from './ImageCategorySelector';

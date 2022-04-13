@@ -1,16 +1,6 @@
 import React, { FC } from 'react';
-import { DropzoneArea } from 'material-ui-dropzone';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-
-const ErrorTextTypography = withStyles({
-  root: {
-    color: '#f44336',
-    fontSize: '0.8rem',
-    fontFamily: 'arial',
-    fontWeight: 400,
-  },
-})(Typography);
+import { DropzoneArea } from 'react-mui-dropzone';
+import ErrorTextTypography from '../text/ErrorTextTypography';
 
 interface Props {
   onUpdateFile: (file: any) => void;

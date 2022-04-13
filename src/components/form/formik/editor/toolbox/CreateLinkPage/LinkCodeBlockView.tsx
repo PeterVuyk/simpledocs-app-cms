@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-} from '@material-ui/core';
+} from '@mui/material';
 import Highlight from 'react-highlight';
 import utilHelper from '../../../../../../helper/utilHelper';
 import { LinkInfo } from '../../../../../../model/LinkInfo';

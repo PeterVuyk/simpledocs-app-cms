@@ -1,20 +1,10 @@
 import React, { FC, useState } from 'react';
-import InfoIcon from '@material-ui/icons/Info';
-import { Tooltip } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import InfoIcon from '@mui/icons-material/Info';
+import { Tooltip } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import HelpDialog from './HelpDialog';
 import useDocumentation from '../../documentation/useDocumentation';
 import { DocumentationType } from '../../../model/DocumentationType';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  lightColor: {
-    color: theme.palette.primary.light,
-  },
-  markdown: {
-    fontSize: '1rem',
-  },
-}));
 
 interface Props {
   documentationType: DocumentationType;
@@ -23,13 +13,15 @@ interface Props {
 const HelpAction: FC<Props> = ({ documentationType }) => {
   const [openHelpDialog, setOpenHelpDialog] = useState<boolean>(false);
   const { documentation, title, tooltip } = useDocumentation(documentationType);
-  const classes = useStyles();
 
   return (
     <>
-      <Tooltip title={tooltip}>
+      <Tooltip disableInteractive title={tooltip}>
         <InfoIcon
-          className={classes.lightColor}
+          sx={{
+            color: (theme) => theme.palette.primary.light,
+            cursor: 'pointer',
+          }}
           style={{ cursor: 'pointer' }}
           onClick={() => setOpenHelpDialog(true)}
         />
@@ -41,9 +33,7 @@ const HelpAction: FC<Props> = ({ documentationType }) => {
           dialogTitle={title}
           setOpenDialog={setOpenHelpDialog}
         >
-          <ReactMarkdown className={classes.markdown}>
-            {documentation}
-          </ReactMarkdown>
+          <ReactMarkdown>{documentation}</ReactMarkdown>
         </HelpDialog>
       )}
     </>

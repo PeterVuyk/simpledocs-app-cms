@@ -1,10 +1,9 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 // @ts-ignore
 import { JsonEditor as Editor } from 'jsoneditor-react';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { ButtonGroup } from '@material-ui/core';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { ButtonGroup } from '@mui/material';
 import PageHeading from '../../layout/PageHeading';
 import 'jsoneditor-react/es/editor.min.css';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';
@@ -39,12 +38,6 @@ import DiffConfigurationAction from '../ItemAction/diffAction/diffConfigurationA
 import omit from '../../helper/object/omit';
 import clone from '../../helper/object/clone';
 
-const useStyles = makeStyles({
-  paper: {
-    padding: '6px 16px',
-  },
-});
-
 interface Props {
   title: string;
   configurationType: ConfigurationType;
@@ -61,7 +54,6 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
   const [configurations, setConfigurations] = useState<
     AppConfigurations | CmsConfigurations | null | void
   >(null);
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   const getConfigurationTypeStatus = useCallback(() => {
@@ -223,7 +215,7 @@ const ConfigurationsOverview: FC<Props> = ({ title, configurationType }) => {
         <Editor value={initialConfigurations} onChange={setConfigurations} />
       )}
       {showEditor && !initialConfigurations && (
-        <Paper elevation={2} className={classes.paper}>
+        <Paper elevation={2} style={{ padding: '6px 16px' }}>
           <Typography>Geen resultaten.</Typography>
         </Paper>
       )}

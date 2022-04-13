@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { EDIT_STATUS_DRAFT, EditStatus } from '../../../../model/EditStatus';

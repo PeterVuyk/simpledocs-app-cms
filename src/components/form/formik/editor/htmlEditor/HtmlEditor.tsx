@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, FC } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormikContext } from 'formik';
+import { Theme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 import BottomToolbox from '../toolbox/BottomToolbox';
 import FileDropzoneArea from '../../../FileDropzoneArea';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
@@ -12,21 +13,6 @@ import useStylesheet from '../../../../hooks/useStylesheet';
 import { CONTENT_TYPE_HTML } from '../../../../../model/ContentType';
 import useHtmlModifier from '../../../../hooks/useHtmlModifier';
 import JoditEditorWrapper from './JoditEditorWrapper';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    relativeContainer: {
-      position: 'relative',
-    },
-    formControl: {
-      margin: theme.spacing(1),
-      position: 'absolute',
-      zIndex: 1000,
-      right: 10,
-      bottom: 30,
-    },
-  })
-);
 
 interface Props {
   meta: any;
@@ -40,7 +26,6 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const currentContent = useRef<string>('');
   const stylesheet = useStylesheet();
   const { modifyHtmlAfterUpload } = useHtmlModifier();
-  const classes = useStyles();
   const formikProps = useFormikContext();
 
   const getErrorMessage = (): string => {
@@ -118,17 +103,25 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   }
 
   return (
-    <div className={classes.relativeContainer}>
+    <div style={{ position: 'relative' }}>
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      <div className={classes.relativeContainer}>
-        <div className={classes.formControl}>
+      <div style={{ position: 'relative' }}>
+        <Box
+          sx={{
+            margin: (theme: Theme) => theme.spacing(1),
+            position: 'absolute',
+            zIndex: 1000,
+            right: 10,
+            bottom: 30,
+          }}
+        >
           <BottomToolbox
             contentType={CONTENT_TYPE_HTML}
             onUpdateFile={handleUpdateFromStylesheet}
           />
-        </div>
+        </Box>
         <JoditEditorWrapper
           onChange={handleEditorOnChange}
           content={content ?? ''}

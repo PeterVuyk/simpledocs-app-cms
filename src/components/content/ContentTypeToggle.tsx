@@ -1,7 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Button } from '@material-ui/core';
-// eslint-disable-next-line import/no-unresolved
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Button } from '@mui/material';
 import HelpAction from '../ItemAction/helpAction/HelpAction';
 import { DOCUMENTATION_CONTENT_TYPES } from '../../model/DocumentationType';
 import {
@@ -11,22 +9,6 @@ import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../model/ContentType';
-
-const useStyles = makeStyles((theme) => ({
-  buttonContainer: {
-    marginBottom: theme.spacing(1),
-    display: 'flex',
-  },
-  relativeContainer: {
-    position: 'relative',
-  },
-  infoContainer: {
-    zIndex: 11,
-    position: 'absolute',
-    top: 5,
-    right: 10,
-  },
-}));
 
 interface Props {
   contentType: ContentType | undefined;
@@ -39,8 +21,6 @@ const ContentTypeToggle: FC<Props> = ({
   setContentTypeToggle,
   allowedContentTypes,
 }) => {
-  const classes = useStyles();
-
   useEffect(() => {
     if (
       contentType === undefined ||
@@ -51,8 +31,8 @@ const ContentTypeToggle: FC<Props> = ({
   }, [allowedContentTypes, contentType, setContentTypeToggle]);
 
   return (
-    <div className={classes.relativeContainer}>
-      <div className={classes.buttonContainer}>
+    <div style={{ position: 'relative' }}>
+      <Box sx={{ marginBottom: (theme) => theme.spacing(1), display: 'flex' }}>
         {allowedContentTypes.includes(CONTENT_TYPE_HTML) && (
           <Button
             style={{ flex: 1, borderRadius: 0 }}
@@ -105,8 +85,8 @@ const ContentTypeToggle: FC<Props> = ({
             Berekening
           </Button>
         )}
-      </div>
-      <div className={classes.infoContainer}>
+      </Box>
+      <div style={{ zIndex: 11, position: 'absolute', top: 5, right: 10 }}>
         <HelpAction documentationType={DOCUMENTATION_CONTENT_TYPES} />
       </div>
     </div>

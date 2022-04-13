@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { FormikValues } from 'formik';
 import { useParams } from 'react-router-dom';
 import PageHeading from '../../layout/PageHeading';

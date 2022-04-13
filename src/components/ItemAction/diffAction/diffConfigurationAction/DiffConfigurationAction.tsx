@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Tooltip } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import Button from '@material-ui/core/Button';
+import { Tooltip } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import Button from '@mui/material/Button';
 import ShowDiffConfigurationDialog from './ShowDiffConfigurationDialog';
 import { ConfigurationType } from '../../../../model/configurations/ConfigurationType';
 
@@ -14,7 +14,7 @@ const DiffConfigurationAction: FC<Props> = ({ configurationType }) => {
 
   return (
     <>
-      <Tooltip title="Bekijk de wijzigingen">
+      <Tooltip disableInteractive title="Bekijk de wijzigingen">
         <Button
           variant="contained"
           color="primary"

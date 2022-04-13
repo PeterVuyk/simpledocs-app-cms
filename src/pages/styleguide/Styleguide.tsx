@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import CodeIcon from '@material-ui/icons/Code';
-import StyleIcon from '@material-ui/icons/Style';
-import LoyaltyIcon from '@material-ui/icons/Loyalty';
-import { ButtonGroup } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import CodeIcon from '@mui/icons-material/Code';
+import StyleIcon from '@mui/icons-material/Style';
+import LoyaltyIcon from '@mui/icons-material/Loyalty';
+import { ButtonGroup } from '@mui/material';
 import ArtifactsTable from '../../components/artifact/ArtifactsTable';
 import logger from '../../helper/logger';
 import PageHeading from '../../layout/PageHeading';

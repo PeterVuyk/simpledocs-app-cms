@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import { useFormikContext } from 'formik';
+import { Box } from '@mui/material';
 import base64Helper from '../../../../../helper/base64Helper';
 import ErrorTextTypography from '../../../../text/ErrorTextTypography';
 import FileDropzoneArea from '../../../FileDropzoneArea';
@@ -10,21 +11,6 @@ import BottomToolbox from '../toolbox/BottomToolbox';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
 import { CONTENT_TYPE_MARKDOWN } from '../../../../../model/ContentType';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    relativeContainer: {
-      position: 'relative',
-    },
-    formControl: {
-      margin: theme.spacing(1),
-      position: 'absolute',
-      zIndex: 1000,
-      right: 10,
-      bottom: 30,
-    },
-  })
-);
 
 interface Props {
   meta: any;
@@ -40,7 +26,6 @@ const MarkdownEditor: FC<Props> = ({
   meta,
 }) => {
   const [content, setContent] = useState<string | null>(null);
-  const classes = useStyles();
   const editorRef = useRef<any>();
   const formikProps = useFormikContext();
 
@@ -112,18 +97,26 @@ const MarkdownEditor: FC<Props> = ({
   };
 
   return (
-    <div className={classes.relativeContainer}>
+    <div style={{ position: 'relative' }}>
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
       {content !== null && (
-        <div className={classes.relativeContainer}>
-          <div className={classes.formControl}>
+        <div style={{ position: 'relative' }}>
+          <Box
+            sx={{
+              margin: (theme: Theme) => theme.spacing(1),
+              position: 'absolute',
+              zIndex: 1000,
+              right: 10,
+              bottom: 30,
+            }}
+          >
             <BottomToolbox
               contentType={CONTENT_TYPE_MARKDOWN}
               onUpdateFile={handleUpdateFile}
             />
-          </div>
+          </Box>
           <Editor
             previewHighlight={false}
             ref={editorRef}

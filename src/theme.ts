@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const cmsTheme = createTheme({
   palette: {
@@ -26,11 +26,6 @@ const cmsTheme = createTheme({
   shape: {
     borderRadius: 3,
   },
-  props: {
-    MuiTab: {
-      disableRipple: true,
-    },
-  },
   mixins: {
     toolbar: {
       minHeight: 48,
@@ -38,97 +33,123 @@ const cmsTheme = createTheme({
   },
 });
 
-// @ts-ignore
 const theme = {
   ...cmsTheme,
-  overrides: {
+  components: {
     MuiDrawer: {
-      paper: {
-        backgroundColor: '#18202c',
-      },
-    },
-    MuiButton: {
-      label: {
-        textTransform: 'none',
-      },
-      contained: {
-        boxShadow: 'none',
-        '&:active': {
-          boxShadow: 'none',
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#18202c',
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+        contained: {
+          boxShadow: 'none',
+          '&:active': {
+            boxShadow: 'none',
+          },
+        },
+      },
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
     MuiButtonGroup: {
-      root: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        '& > *:not(:last-child)': {
-          marginRight: cmsTheme.spacing(1),
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          '& > *:not(:last-child)': {
+            marginRight: cmsTheme.spacing(1),
+          },
         },
       },
     },
     MuiTabs: {
-      root: {
-        marginLeft: cmsTheme.spacing(1),
+      styleOverrides: {
+        root: {
+          marginLeft: cmsTheme.spacing(1),
+        },
+        indicator: {
+          height: 3,
+          borderTopLeftRadius: 3,
+          borderTopRightRadius: 3,
+          backgroundColor: cmsTheme.palette.common.white,
+        },
       },
-      indicator: {
-        height: 3,
-        borderTopLeftRadius: 3,
-        borderTopRightRadius: 3,
-        backgroundColor: cmsTheme.palette.common.white,
+      defaultProps: {
+        disableRipple: true,
       },
     },
     MuiTab: {
-      root: {
-        textTransform: 'none',
-        margin: '0 16px',
-        minWidth: 0,
-        padding: 0,
-        [cmsTheme.breakpoints.up('md')]: {
-          padding: 0,
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          margin: '0 16px',
           minWidth: 0,
+          padding: 0,
+          [cmsTheme.breakpoints.up('md')]: {
+            padding: 0,
+            minWidth: 0,
+          },
         },
+      },
+    },
+    MuiTable: {
+      styleOverrides: {
+        width: '100%',
       },
     },
     MuiIconButton: {
-      root: {
-        padding: cmsTheme.spacing(1),
-      },
-    },
-    MuiTooltip: {
-      tooltip: {
-        borderRadius: 4,
-      },
-    },
-    MuiDivider: {
-      root: {
-        backgroundColor: '#404854',
-      },
-    },
-    MuiListItemText: {
-      primary: {
-        fontWeight: cmsTheme.typography.fontWeightMedium,
-      },
-    },
-    MuiListItemIcon: {
-      root: {
-        color: 'inherit',
-        marginRight: 0,
-        '& svg': {
-          fontSize: 20,
+      styleOverrides: {
+        root: {
+          padding: cmsTheme.spacing(1),
         },
       },
     },
-    MuiAvatar: {
-      root: {
-        width: 32,
-        height: 32,
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#404854',
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          fontWeight: 500,
+          fontSize: '0.86rem',
+          lineHeight: 1.5,
+          letterSpacing: 0.009,
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        paddingTop: 1,
+        paddingBottom: 1,
+        color: 'rgba(255, 255, 255, 0.7)',
+        '&:hover,&:focus': {
+          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        },
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        underline: 'hover',
       },
     },
     MuiChip: {
-      root: {
-        marginLeft: 5,
+      styleOverrides: {
+        root: {
+          marginLeft: 5,
+        },
       },
     },
   },

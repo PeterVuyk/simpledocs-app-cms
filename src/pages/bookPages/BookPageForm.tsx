@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
 import { Formik, Form, FormikValues } from 'formik';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
@@ -209,7 +209,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
               </Grid>
             </Grid>
             <Grid container item sm={6} spacing={0}>
-              <Grid item xs={12} style={{ marginLeft: 18, marginRight: -18 }}>
+              <Grid item xs={12} style={{ marginLeft: 18 }}>
                 {isSubmitting && <LoadingSpinner showInBlock />}
                 {!isSubmitting && (
                   <>

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { Tooltip } from '@material-ui/core';
-import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
+import Button from '@mui/material/Button';
+import { Tooltip } from '@mui/material';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import ConfirmationDialog from '../../../components/dialog/ConfirmationDialog';
 import useHtmlModifier from '../../../components/hooks/useHtmlModifier';
 import { CONTENT_TYPE_HTML } from '../../../model/ContentType';
@@ -88,8 +88,12 @@ const UpdateStylesheetButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Batch stylesheet updaten">
-        <Button variant="contained" onClick={() => setOpenDialog(true)}>
+      <Tooltip disableInteractive title="Batch stylesheet updaten">
+        <Button
+          variant="contained"
+          color="inherit"
+          onClick={() => setOpenDialog(true)}
+        >
           <SystemUpdateAltIcon color="action" />
         </Button>
       </Tooltip>

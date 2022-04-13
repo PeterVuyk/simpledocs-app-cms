@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import CookieStatement from './footer/CookieStatement';
 
 interface Props {

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { Tooltip } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import PublicIcon from '@material-ui/icons/Public';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Tooltip } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import PublicIcon from '@mui/icons-material/Public';
 import {
   EDIT_STATUS_DRAFT,
   EDIT_STATUS_PUBLISHED,
@@ -26,7 +26,7 @@ const EditStatusToggle: FC<Props> = ({ editStatus, setEditStatus }) => {
   };
 
   return (
-    <Tooltip title="concepten / gepubliceerd">
+    <Tooltip disableInteractive title="concepten / gepubliceerd">
       <ToggleButtonGroup
         style={{ display: 'inline-block' }}
         size="small"

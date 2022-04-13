@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import PublishIcon from '@material-ui/icons/Publish';
-import { Tooltip } from '@material-ui/core';
-import Chip from '@material-ui/core/Chip';
-import EditIcon from '@material-ui/icons/Edit';
+import TableCell from '@mui/material/TableCell';
+import PublishIcon from '@mui/icons-material/Publish';
+import { Tooltip } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import EditIcon from '@mui/icons-material/Edit';
 import PublishDialog from './PublishDialog';
 import { UPDATE_ON_STARTUP, Versioning } from '../../model/Versioning';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
@@ -53,7 +53,7 @@ const PublicationItem: FC<Props> = ({
       <TableCell>{getUpdateMomentText()}</TableCell>
       <TableCell>{currentVersion.version}</TableCell>
       <TableCell align="right">
-        <Tooltip title="Publiceren">
+        <Tooltip disableInteractive title="Publiceren">
           <PublishIcon
             color="primary"
             style={{ cursor: 'pointer' }}

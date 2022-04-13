@@ -70,3 +70,7 @@ Then run the following command:
 
     gcloud config set project <project-id> # make sure the cli is configured to the right project
     gcloud firestore import gs://ambulancezorg_app_firebase_backup/<backup folder> --async
+
+## TODO's:
+
+- Uninstall @mui/styles when version for 'react-mui-dropzone' is updated: `npm uninstall @mui/styles` (it has a dependency on it right now).

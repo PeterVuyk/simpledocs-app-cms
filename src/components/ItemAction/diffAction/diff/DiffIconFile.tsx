@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  icon: {
-    width: 45,
-    display: 'inline',
-    verticalAlign: 'middle',
-  },
+const ImgIcon = styled('img')(() => ({
+  width: 45,
+  display: 'inline',
+  verticalAlign: 'middle',
 }));
 
 interface Props {
@@ -20,24 +18,14 @@ const DiffIconFile: FC<Props> = ({
   publicationIconFile,
   altText,
 }) => {
-  const classes = useStyles();
-
   return (
     <>
       <h3>Illustratie:</h3>
       <p>
         Gepubliceerd:&nbsp;
-        <img
-          className={classes.icon}
-          src={`${publicationIconFile}`}
-          alt={altText}
-        />
+        <ImgIcon src={`${publicationIconFile}`} alt={altText} />
         &nbsp;&nbsp;Concept:&nbsp;
-        <img
-          className={classes.icon}
-          src={`${conceptIconFile}`}
-          alt={altText}
-        />
+        <ImgIcon src={`${conceptIconFile}`} alt={altText} />
       </p>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import { Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { Tooltip } from '@mui/material';
 import RemoveCalculationsMenu from './RemoveCalculationsMenu';
 import { CalculationInfo } from '../../../model/calculations/CalculationInfo';
 
@@ -23,7 +23,7 @@ const RemoveCalculationsButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Aanpassing verwijderen">
+      <Tooltip disableInteractive title="Aanpassing verwijderen">
         <Button variant="contained" color="secondary" onClick={openDeleteMenu}>
           <DeleteTwoToneIcon />
         </Button>

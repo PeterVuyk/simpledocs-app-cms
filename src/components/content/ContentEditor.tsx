@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { FastField } from 'formik';
 // eslint-disable-next-line import/no-unresolved
 import { FastFieldProps } from 'formik/dist/FastField';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import HtmlEditor from '../form/formik/editor/htmlEditor/HtmlEditor';
 import MarkdownEditor from '../form/formik/editor/markdownEditor/MarkdownEditor';
 import {
@@ -15,19 +13,7 @@ import {
 } from '../../model/ContentType';
 import DecisionTreeSelector from './DecisionTreeSelector';
 import CalculationsSelector from './CalculationsSelector';
-
-const useStyles = makeStyles({
-  hiddenContainer: {
-    opacity: 0,
-    position: 'absolute',
-    zIndex: 12,
-    top: 0,
-    left: -1000000,
-  },
-  relativeContainer: {
-    position: 'relative',
-  },
-});
+import VisibleHiddenToggleContainer from '../VisibleHiddenToggleContainer';
 
 interface Props {
   contentTypeToggle: ContentType | undefined;
@@ -46,17 +32,11 @@ const ContentEditor: FC<Props> = ({
   contentTypeToggle,
   allowedContentTypes,
 }) => {
-  const classes = useStyles();
-
   return (
     <>
       {allowedContentTypes.includes(CONTENT_TYPE_HTML) && (
-        <div
-          className={clsx(
-            contentTypeToggle === CONTENT_TYPE_HTML
-              ? {}
-              : classes.hiddenContainer
-          )}
+        <VisibleHiddenToggleContainer
+          visible={contentTypeToggle === CONTENT_TYPE_HTML}
         >
           <FastField name="htmlContent">
             {(props: FastFieldProps) => (
@@ -72,15 +52,11 @@ const ContentEditor: FC<Props> = ({
               />
             )}
           </FastField>
-        </div>
+        </VisibleHiddenToggleContainer>
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_MARKDOWN) && (
-        <div
-          className={clsx(
-            contentTypeToggle === CONTENT_TYPE_MARKDOWN
-              ? {}
-              : classes.hiddenContainer
-          )}
+        <VisibleHiddenToggleContainer
+          visible={contentTypeToggle === CONTENT_TYPE_MARKDOWN}
         >
           <FastField name="markdownContent">
             {(props: FastFieldProps) => (
@@ -96,15 +72,11 @@ const ContentEditor: FC<Props> = ({
               />
             )}
           </FastField>
-        </div>
+        </VisibleHiddenToggleContainer>
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_DECISION_TREE) && (
-        <div
-          className={clsx(
-            contentTypeToggle === CONTENT_TYPE_DECISION_TREE
-              ? {}
-              : classes.hiddenContainer
-          )}
+        <VisibleHiddenToggleContainer
+          visible={contentTypeToggle === CONTENT_TYPE_DECISION_TREE}
         >
           <DecisionTreeSelector
             formik={formik}
@@ -116,15 +88,11 @@ const ContentEditor: FC<Props> = ({
                 : null
             }
           />
-        </div>
+        </VisibleHiddenToggleContainer>
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_CALCULATIONS) && (
-        <div
-          className={clsx(
-            contentTypeToggle === CONTENT_TYPE_CALCULATIONS
-              ? {}
-              : classes.hiddenContainer
-          )}
+        <VisibleHiddenToggleContainer
+          visible={contentTypeToggle === CONTENT_TYPE_CALCULATIONS}
         >
           <CalculationsSelector
             formik={formik}
@@ -135,7 +103,7 @@ const ContentEditor: FC<Props> = ({
                 : null
             }
           />
-        </div>
+        </VisibleHiddenToggleContainer>
       )}
     </>
   );

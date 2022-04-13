@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import RestoreFromTrashTwoToneIcon from '@material-ui/icons/RestoreFromTrashTwoTone';
-import { Tooltip } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import RestoreFromTrashTwoToneIcon from '@mui/icons-material/RestoreFromTrashTwoTone';
+import { Tooltip } from '@mui/material';
 import UndoMarkForDeletionDecisionTreeMenu from './UndoMarkForDeletionDecisionTreeMenu';
 import { DecisionTree } from '../../../../model/DecisionTree/DecisionTree';
 
@@ -25,7 +25,7 @@ const MarkForDeletionDecisionTreeMenuButton: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Verwijder markering voor verwijdering">
+      <Tooltip disableInteractive title="Verwijder markering voor verwijdering">
         <Button
           variant="contained"
           style={{ backgroundColor: '#099000FF' }}

@@ -1,14 +1,9 @@
 import React, { FC, ReactNode } from 'react';
+import { styled } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useRouteMatch } from 'react-router';
-import {
-  createStyles,
-  withStyles,
-  WithStyles,
-  Theme,
-} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Hidden from '@material-ui/core/Hidden';
+import CssBaseline from '@mui/material/CssBaseline';
+import Hidden from '@mui/material/Hidden';
 import Header from '../components/header/Header';
 import NavigationDrawer from './NavigationDrawer';
 import Calculations from '../pages/calculations/Calculations';
@@ -27,27 +22,27 @@ import Notifications from '../pages/notifications/Notifications';
 import DecisionTreePage from '../pages/decisionTree/DecisionTreePage';
 import StandalonePages from '../pages/standalonePages/StandalonePages';
 
+const PREFIX = 'Navigation';
 const drawerWidth = 240;
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      minHeight: '100vh',
-    },
-    drawer: {
-      [theme.breakpoints.up('sm')]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
-  });
+const classes = {
+  drawer: `${PREFIX}-drawer`,
+};
 
-interface Props extends WithStyles<typeof styles> {
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.drawer}`]: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+}));
+
+interface Props {
   children: ReactNode;
 }
 
-const Navigation: FC<Props> = ({ classes, children }) => {
+const Navigation: FC<Props> = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const match = useRouteMatch<{ page: string }>();
   const { configuration, slugExist } = useCmsConfiguration();
@@ -138,7 +133,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <Root style={{ display: 'flex', minHeight: '100vh' }}>
       <CssBaseline />
       <nav className={classes.drawer}>
         <Hidden smUp implementation="js">
@@ -150,7 +145,7 @@ const Navigation: FC<Props> = ({ classes, children }) => {
             currentPage={page}
           />
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <NavigationDrawer
             currentPage={page}
             PaperProps={{ style: { width: drawerWidth } }}
@@ -161,8 +156,8 @@ const Navigation: FC<Props> = ({ classes, children }) => {
         {page && getPage()}
         {!page && children && children}
       </Header>
-    </div>
+    </Root>
   );
 };
 
-export default withStyles(styles)(Navigation);
+export default Navigation;

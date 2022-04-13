@@ -7,9 +7,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@material-ui/core';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import DialogContentText from '@mui/material/DialogContentText';
+import { Theme } from '@mui/material/styles';
 import DialogTransition from '../../components/dialog/DialogTransition';
 import { NotificationContent } from '../../model/Notification/NotificationContent';
 import TextField from '../../components/form/formik/TextField';
@@ -22,12 +22,6 @@ import { useAppDispatch } from '../../redux/hooks';
 import SelectLinkBookPage from '../../components/form/formik/SelectLinkBookPage';
 import omit from '../../helper/object/omit';
 
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginBottom: theme.spacing(2),
-  },
-}));
-
 interface Props {
   onReload: () => Promise<void>;
   onCloseDialog: () => void;
@@ -38,8 +32,6 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
   const [customError, setCustomError] = useState<string>('');
   const formikRef = useRef<any>();
   const dispatch = useAppDispatch();
-
-  const classes = useStyles();
 
   /**
    * Maximum message size check, too large messages will be rejected by the expo server (data field is maximum 4096 bytes)
@@ -140,7 +132,10 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
             )}
             {customError && <AlertBox severity="error" message={customError} />}
             <TextField
-              className={classes.textFieldStyle}
+              sx={(theme: Theme) => ({
+                marginTop: theme.spacing(2),
+                marginBottom: theme.spacing(2),
+              })}
               autoFocus
               showError={showError}
               id="title"
@@ -148,7 +143,7 @@ const SendNotificationDialog: FC<Props> = ({ onReload, onCloseDialog }) => {
               name="title"
             />
             <TextField
-              className={classes.textFieldStyle}
+              sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
               showError={showError}
               multiline
               minRows={3}

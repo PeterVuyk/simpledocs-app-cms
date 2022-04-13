@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import 'jsoneditor-react/es/editor.min.css';
 import ConfirmationDialog from '../dialog/ConfirmationDialog';
 import { AppConfigurations } from '../../model/configurations/AppConfigurations';

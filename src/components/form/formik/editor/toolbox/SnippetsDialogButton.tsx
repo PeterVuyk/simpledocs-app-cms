@@ -1,11 +1,11 @@
 import React, { FC, ReactNode } from 'react';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogContent from '@material-ui/core/DialogContent';
-import Grid from '@material-ui/core/Grid';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogContent from '@mui/material/DialogContent';
+import Grid from '@mui/material/Grid';
 import Highlight from 'react-highlight';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import ReactMarkdown from 'react-markdown';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import { MenuListDialog } from '../../../../buttonMenuDialog/model/MenuListDialog';
 import { MenuListItem } from '../../../../buttonMenuDialog/model/MenuListItem';
 import MenuDialogButton from '../../../../buttonMenuDialog/MenuDialogButton';
@@ -19,35 +19,31 @@ interface Props {
   artifacts: Artifact[];
 }
 
-const useStyles = makeStyles(() => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: 375,
-  },
-  highLightContainer: {
-    width: '100%',
-    marginBottom: -10,
-  },
-  relativeContainer: {
-    position: 'relative',
-  },
-  iframe: {
-    border: 'none',
-    width: 375,
-    height: 700,
-  },
-  markdown: {
-    width: 375,
-    minHeight: 700,
-    padding: 10,
-  },
+const DivPaper = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: 375,
+}));
+
+const DivHighLightContainer = styled('div')(() => ({
+  width: '100%',
+  marginBottom: -10,
+}));
+
+const DivIframe = styled('div')(() => ({
+  border: 'none',
+  width: 375,
+  height: 700,
+}));
+
+const DivMarkdown = styled('div')(() => ({
+  width: 375,
+  minHeight: 700,
+  padding: 10,
 }));
 
 const SnippetsDialogButton: FC<Props> = ({ artifacts }) => {
-  const classes = useStyles();
-
   const menuListItems = (): MenuListItem[] => {
     return artifacts.map((artifact) => {
       return { key: artifact.id, value: artifact.title } as MenuListItem;
@@ -68,7 +64,7 @@ const SnippetsDialogButton: FC<Props> = ({ artifacts }) => {
               >
                 {snippet!.contentType}:
               </DialogContentText>
-              <div className="highLightContainer">
+              <DivHighLightContainer>
                 <Highlight
                   className={
                     snippet!.contentType === CONTENT_TYPE_HTML
@@ -78,7 +74,7 @@ const SnippetsDialogButton: FC<Props> = ({ artifacts }) => {
                 >
                   {snippet!.content}
                 </Highlight>
-              </div>
+              </DivHighLightContainer>
             </Grid>
             <Grid item sm={4}>
               <DialogContentText
@@ -88,20 +84,20 @@ const SnippetsDialogButton: FC<Props> = ({ artifacts }) => {
               >
                 Voorbeeld:
               </DialogContentText>
-              <Paper elevation={2} className={classes.paper}>
-                {snippet!.contentType === CONTENT_TYPE_HTML && (
-                  <iframe
-                    className={classes.iframe}
-                    title="snippet.html"
-                    srcDoc={snippet!.content}
-                  />
-                )}
-                {snippet!.contentType === CONTENT_TYPE_MARKDOWN && (
-                  <ReactMarkdown className={classes.markdown}>
-                    {snippet!.content}
-                  </ReactMarkdown>
-                )}
-              </Paper>
+              <DivPaper>
+                <Paper elevation={2}>
+                  {snippet!.contentType === CONTENT_TYPE_HTML && (
+                    <DivIframe>
+                      <iframe title="snippet.html" srcDoc={snippet!.content} />
+                    </DivIframe>
+                  )}
+                  {snippet!.contentType === CONTENT_TYPE_MARKDOWN && (
+                    <DivMarkdown>
+                      <ReactMarkdown>{snippet!.content}</ReactMarkdown>
+                    </DivMarkdown>
+                  )}
+                </Paper>
+              </DivPaper>
             </Grid>
           </Grid>
         </div>

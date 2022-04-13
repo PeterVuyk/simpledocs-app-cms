@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import ShowDiffDecisionTreeDialog from './ShowDiffDecisionTreeDialog';
 
 interface Props {

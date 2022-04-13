@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { createTwoFilesPatch, diffWords } from 'diff';
 import * as Diff2Html from 'diff2html';
 import showdown from 'showdown';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@mui/material';
 import 'diff2html/bundles/css/diff2html.min.css';
 import getTextFromHtml from '../../../../firebase/functions/getTextFromHtml';
 import ContentPageDiffModeToggle from './ContentPageDiffModeToggle';
@@ -19,12 +18,6 @@ import {
 import { getExtensionFromContentType } from '../../../../model/artifacts/Artifact';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pretty = require('pretty');
-
-const useStyles = makeStyles((theme) => ({
-  textAreaPaper: {
-    padding: theme.spacing(2),
-  },
-}));
 
 interface Props {
   disableTextView?: boolean;
@@ -47,7 +40,6 @@ const DiffContentPage: FC<Props> = ({
   );
   const [sourceDiff, setSourceDiff] = useState<JSX.Element[]>([]);
   const dispatch = useAppDispatch();
-  const classes = useStyles();
 
   const getContentSourceDiff = () => {
     const diff = createTwoFilesPatch(
@@ -120,7 +112,7 @@ const DiffContentPage: FC<Props> = ({
           <LoadingSpinner showInBlock />
         )}
         {diffModeToggle === 'text' && sourceDiff.length !== 0 && (
-          <Paper className={classes.textAreaPaper} elevation={3}>
+          <Paper sx={{ padding: (theme) => theme.spacing(2) }} elevation={3}>
             {sourceDiff}
           </Paper>
         )}

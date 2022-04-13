@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { DropzoneArea } from 'material-ui-dropzone';
 import { useField } from 'formik';
+import { DropzoneArea } from 'react-mui-dropzone';
 import ErrorTextTypography from '../../text/ErrorTextTypography';
 
 interface Props {

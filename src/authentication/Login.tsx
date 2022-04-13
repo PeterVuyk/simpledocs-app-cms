@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import { Link } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import { Box, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useAuth } from './AuthProvider';
 import { HOME_PAGE, PASSWORD_RESET_PAGE } from '../navigation/UrlSlugs';
 import AlertBox from '../components/AlertBox';
@@ -13,23 +13,11 @@ import Copyright from '../components/footer/Copyright';
 import useNavigate from '../navigation/useNavigate';
 import CMSStatement from '../components/footer/CMSStatement';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    marginTop: theme.spacing(16),
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+const DivPaper = styled('div')(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 }));
 
 const Login: FC = () => {
@@ -39,7 +27,6 @@ const Login: FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { history } = useNavigate();
-  const classes = useStyles();
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -70,17 +57,17 @@ const Login: FC = () => {
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
-      <div className={classes.paper}>
-        <div className={classes.logoContainer}>
+      <DivPaper>
+        <Box sx={{ marginTop: (theme) => theme.spacing(16) }}>
           <img
             style={{ maxWidth: '700px' }}
             src="/simpledocs-logo.svg"
             alt="SimpleDocs"
           />
-        </div>
+        </Box>
         <Container component="main" maxWidth="xs">
           {error && <AlertBox severity="error" message={error} />}
-          <form className={classes.form} noValidate>
+          <form noValidate>
             <TextField
               inputRef={emailRef}
               variant="outlined"
@@ -106,11 +93,11 @@ const Login: FC = () => {
               autoComplete="current-password"
             />
             <Button
+              sx={{ margin: (theme) => theme.spacing(3, 0, 2) }}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
               onClick={onSubmit}
               disabled={loading}
             >
@@ -130,7 +117,7 @@ const Login: FC = () => {
             </Typography>
           </form>
         </Container>
-      </div>
+      </DivPaper>
       <CMSStatement />
       <Copyright />
     </Container>

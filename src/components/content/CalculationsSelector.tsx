@@ -1,14 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import Select from '../form/formik/Select';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import { CalculationInfo } from '../../model/calculations/CalculationInfo';
-
-const useStyles = makeStyles((theme) => ({
-  textFieldStyle: {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 interface Props {
   showError: boolean;
@@ -24,7 +18,6 @@ const CalculationsSelector: FC<Props> = ({
   const [calculationInfos, setCalculationInfos] = useState<CalculationInfo[]>(
     []
   );
-  const classes = useStyles();
 
   useEffect(() => {
     if (!initialValue) {
@@ -56,7 +49,7 @@ const CalculationsSelector: FC<Props> = ({
   return (
     <Select
       required
-      className={classes.textFieldStyle}
+      sx={{ marginTop: (theme: Theme) => theme.spacing(2) }}
       name="calculationsContent"
       label="Berekening"
       showError={showError}

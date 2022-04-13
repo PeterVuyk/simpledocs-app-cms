@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { ButtonGroup } from '@mui/material';
 import calculationsRepository from '../../firebase/database/calculationsRepository';
 import CalculationList from './CalculationList';
 import PageHeading from '../../layout/PageHeading';

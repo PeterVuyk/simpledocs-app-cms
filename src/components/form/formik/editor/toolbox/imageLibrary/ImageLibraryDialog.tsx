@@ -5,23 +5,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import CategoryList from './CategoryList';
 import ImageViewer from './ImageViewer';
 import { ContentType } from '../../../../../../model/ContentType';
 import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
 import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
 import DialogTransition from '../../../../../dialog/DialogTransition';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      flexDirection: 'row',
-      display: 'flex',
-    },
-  })
-);
 
 interface Props {
   onCloseDialog: () => void;
@@ -30,7 +20,6 @@ interface Props {
 
 const ImageLibraryDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
   const [currentCategory, setCurrentCategory] = useState<string>('');
-  const classes = useStyles();
 
   return (
     <Dialog
@@ -46,7 +35,7 @@ const ImageLibraryDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
         <HelpAction documentationType={DOCUMENTATION_IMAGE_LIBRARY} />
       </DialogTitle>
       <DialogContent>
-        <div className={classes.container}>
+        <div style={{ flexDirection: 'row', display: 'flex' }}>
           <CategoryList
             currentCategory={currentCategory}
             setCurrentCategory={setCurrentCategory}

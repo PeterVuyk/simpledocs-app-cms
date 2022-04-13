@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import { Tooltip } from '@material-ui/core';
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
+import { Tooltip } from '@mui/material';
 import { PageInfo } from '../../../model/Page';
 import CopyPageDialog from './CopyPageDialog';
 
@@ -13,7 +13,7 @@ const CopyPageAction: FC<Props> = ({ bookType, page }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   return (
     <>
-      <Tooltip title="Kopieer pagina">
+      <Tooltip disableInteractive title="Kopieer pagina">
         <FilterNoneIcon
           style={{
             cursor: 'pointer',

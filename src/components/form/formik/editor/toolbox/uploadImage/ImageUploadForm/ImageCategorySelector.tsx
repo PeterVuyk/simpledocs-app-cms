@@ -1,21 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import Autocomplete, {
-  createFilterOptions,
-} from '@material-ui/lab/Autocomplete';
-import { CircularProgress, TextField } from '@material-ui/core';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { CircularProgress, TextField } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ImageLibraryCategory } from '../../../../../../../model/imageLibrary/ImageLibraryCategory';
 import getImageLibraryCategories from '../../../../../../../firebase/storage/getImageLibraryCategories';
 import logger from '../../../../../../../helper/logger';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    categorySelector: {
-      marginBottom: theme.spacing(1),
-    },
-  })
-);
 
 const filter = createFilterOptions<ImageLibraryCategory>();
 
@@ -30,7 +19,6 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
   );
   const [field, meta] = useField('category');
   const formikProps = useFormikContext();
-  const classes = useStyles();
 
   useEffect(() => {
     getImageLibraryCategories()
@@ -105,18 +93,18 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
         // Regular option
         return option.category;
       }}
-      renderOption={(option) => {
+      renderOption={(props, option) => {
         if (option.inputValue !== undefined) {
           return option.category;
         }
         return option.category;
       }}
       freeSolo
-      className={classes.categorySelector}
+      sx={{ marginBottom: (theme) => theme.spacing(1) }}
       renderInput={(params) => (
         <TextField
           {...params}
-          className={classes.categorySelector}
+          sx={{ marginBottom: (theme) => theme.spacing(1) }}
           label="Categorie"
           variant="outlined"
           name="category"

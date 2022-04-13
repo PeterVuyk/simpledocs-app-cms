@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { ButtonGroup } from '@mui/material';
 import PageHeading from '../../layout/PageHeading';
 import decisionTreeRepository from '../../firebase/database/decisionTreeRepository';
 import ArtifactsList from './artifacts/ArtifactsList';

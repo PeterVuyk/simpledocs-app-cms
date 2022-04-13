@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { ButtonGroup } from '@mui/material';
 import AddBookSettingsDialog from './AddBookSettingsDialog';
 import UpdateTabTitlesMenu from './updateTabTitles/UpdateTabTitlesMenu';
 

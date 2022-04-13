@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ButtonGroup, Tooltip } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import StyleIcon from '@material-ui/icons/Style';
-import { CloudUpload } from '@material-ui/icons';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
-import LinkIcon from '@material-ui/icons/Link';
+import { ButtonGroup, Tooltip } from '@mui/material';
+import Button from '@mui/material/Button';
+import StyleIcon from '@mui/icons-material/Style';
+import { CloudUpload } from '@mui/icons-material';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import LinkIcon from '@mui/icons-material/Link';
 import TemplateMenu from './TemplateMenu';
 import logger from '../../../../../helper/logger';
 import {
@@ -56,9 +56,10 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
 
   return (
     <ButtonGroup>
-      <Tooltip title="Aanmaken link pagina">
+      <Tooltip disableInteractive title="Aanmaken link pagina">
         <Button
           variant="contained"
+          color="inherit"
           onClick={() => setShowCreateLinkDialog(true)}
         >
           <LinkIcon />
@@ -70,9 +71,10 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
           contentType={contentType}
         />
       )}
-      <Tooltip title="Afbeeldingen bibliotheek">
+      <Tooltip disableInteractive title="Afbeeldingen bibliotheek">
         <Button
           variant="contained"
+          color="inherit"
           onClick={() => setShowImageLibraryDialog(true)}
         >
           <PhotoLibraryIcon />
@@ -84,12 +86,12 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
           contentType={contentType}
         />
       )}
-      <Tooltip title="Afbeelding uploaden">
+      <Tooltip disableInteractive title="Afbeelding uploaden">
         <Button
           variant="contained"
+          color="inherit"
           onClick={() => setShowImageUploadDialog(true)}
         >
-          {/*  TODO: Later change icon to 'FileUpload' when updating MUI */}
           <CloudUpload />
         </Button>
       </Tooltip>
@@ -108,8 +110,8 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
           )}
         />
       )}
-      <Tooltip title="Template gebruiken">
-        <Button variant="contained" onClick={openTemplateMenu}>
+      <Tooltip disableInteractive title="Template gebruiken">
+        <Button variant="contained" color="inherit" onClick={openTemplateMenu}>
           <StyleIcon />
         </Button>
       </Tooltip>
