@@ -13,7 +13,7 @@ const SortBookPages: FC<Props> = ({ bookType, onReloadPages }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   return (
     <>
-      <Tooltip disableInteractive title="Pagina's sorteren">
+      <Tooltip disableInteractive title="Paginavolgorde">
         <Button
           variant="contained"
           color="inherit"

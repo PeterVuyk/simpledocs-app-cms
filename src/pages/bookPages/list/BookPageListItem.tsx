@@ -194,12 +194,6 @@ const BookPageListItem: FC<Props> = ({
       <TableCell>{page.title}</TableCell>
       <TableCell>{getChapterDivision(page.chapterDivision)}</TableCell>
       <TableCell>
-        {page.pageIndex
-          .toString()
-          .replace(/(.{2})/g, '$1•')
-          .trim()}
-      </TableCell>
-      <TableCell>
         <img
           style={{ width: 45 }}
           src={`${page.iconFile}`}

@@ -80,7 +80,7 @@ const SortBookPagesDialog: FC<Props> = ({
           notify({
             notificationType: 'success',
             notificationOpen: true,
-            notificationMessage: `De pagina volgorde is bijgewerkt.`,
+            notificationMessage: `De paginavolgorde is bijgewerkt.`,
           })
         )
       )
@@ -110,9 +110,7 @@ const SortBookPagesDialog: FC<Props> = ({
       keepMounted
       onClose={() => !submitting && handleClose()}
     >
-      <DialogTitle id="alert-dialog-slide-title">
-        {`Volgorde pagina's wijzigen`}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-slide-title">Paginavolgorde</DialogTitle>
       <DialogContent>
         <DialogContentText style={{ whiteSpace: 'pre-line' }} id="description">
           {`Wijzig hier de volgorde van de pagina's door het slepen van de items. Voor alle pagina's die een positie opschuift wordt een 'concept pagina' aangemaakt. Na het publiceren worden de gedane aanpassingen doorgevoerd.`}

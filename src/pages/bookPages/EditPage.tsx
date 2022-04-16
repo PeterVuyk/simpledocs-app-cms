@@ -77,13 +77,14 @@ const EditPage: FC = () => {
 
   const handleSubmit = async (
     values: FormikValues,
-    contentType: ContentType
+    contentType: ContentType,
+    pageIndex: number
   ): Promise<void> => {
     const content = await getSubmittedContent(values, contentType);
     await bookRepository
       .updatePage(aggregatePath, {
         id: `${page?.id?.replaceAll('-draft', '')}-draft`,
-        pageIndex: values.pageIndex,
+        pageIndex,
         chapter: values.chapter,
         chapterDivision: values.chapterDivision,
         title: values.title,

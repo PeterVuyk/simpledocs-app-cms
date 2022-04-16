@@ -40,9 +40,6 @@ const BookPagesList: FC<Props> = ({
               <strong>Hoofdstukindeling</strong>
             </TableCell>
             <TableCell>
-              <strong>Index</strong>
-            </TableCell>
-            <TableCell>
               <strong>Illustratie</strong>
             </TableCell>
             <TableCell>
@@ -78,7 +75,7 @@ const BookPagesList: FC<Props> = ({
             ))}
           {pages && pages.length === 0 && (
             <TableRow key="no-result">
-              <TableCell component="th" scope="row" colSpan={8}>
+              <TableCell component="th" scope="row" colSpan={7}>
                 Geen resultaten.
               </TableCell>
             </TableRow>

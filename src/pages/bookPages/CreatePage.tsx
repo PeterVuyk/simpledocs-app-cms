@@ -64,12 +64,13 @@ const CreatePage: FC = () => {
 
   const handleSubmit = async (
     values: FormikValues,
-    contentType: ContentType
+    contentType: ContentType,
+    pageIndex: number
   ): Promise<void> => {
     const content = await getSubmittedContent(values, contentType);
     bookRepository
       .createPage(aggregatePath, {
-        pageIndex: -Date.now(),
+        pageIndex,
         chapter: values.chapter,
         chapterDivision: values.chapterDivision,
         title: values.title,

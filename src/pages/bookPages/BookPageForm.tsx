@@ -21,7 +21,6 @@ import validateYupMarkdownContent from '../../components/form/formik/validators/
 import validateYupHtmlContent from '../../components/form/formik/validators/validateYupHtmlContent';
 import useAppConfiguration from '../../configuration/useAppConfiguration';
 import validateBookChapter from '../../components/form/formik/validators/validateBookChapter';
-import validatePageIndex from '../../components/form/formik/validators/validatePageIndex';
 import validateYupDecisionTreeContent from '../../components/form/formik/validators/validateYupDecisionTreeContent';
 import validateYupCalculationsContent from '../../components/form/formik/validators/validateYupCalculationsContent';
 import useCmsConfiguration from '../../configuration/useCmsConfiguration';
@@ -32,7 +31,11 @@ import {
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface Props {
-  onSubmit: (values: FormikValues, contentType: ContentType) => Promise<void>;
+  onSubmit: (
+    values: FormikValues,
+    contentType: ContentType,
+    pageIndex: number
+  ) => Promise<void>;
   page?: Page;
   bookType: string;
 }
@@ -47,7 +50,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
   const { getPageHierarchy } = useAppConfiguration();
 
   const handleSubmitForm = (values: FormikValues) => {
-    return onSubmit(values, contentTypeToggle);
+    return onSubmit(values, contentTypeToggle, page?.pageIndex ?? -Date.now());
   };
 
   const initialFormState = () => {
@@ -61,7 +64,6 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
       chapter: '',
       title: '',
       subTitle: '',
-      pageIndex: '',
       chapterDivision: '',
       markdownContent: '',
       decisionTreeContent: '',
@@ -76,7 +78,6 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
     chapter: validateBookChapter(page, bookType),
     title: Yup.string().required('Titel is een verplicht veld.'),
     subTitle: Yup.string(),
-    pageIndex: validatePageIndex(page, bookType),
     chapterDivision: Yup.string().required(
       'Hoofdstukindeling is een verplicht veld.'
     ),
@@ -119,8 +120,21 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
             justifyContent="flex-start"
             direction="row"
           >
-            <Grid container item xs={12} sm={6} spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <Grid container item xs={12} sm={5} spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  disabled={isSubmitting}
+                  showError={showError}
+                  required
+                  multiline
+                  minRows={1}
+                  maxRows={3}
+                  id="title"
+                  label="Titel"
+                  name="title"
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   required
                   disabled={isSubmitting}
@@ -129,28 +143,6 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                   label="Hoofdstuk"
                   name="chapter"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  disabled={isSubmitting}
-                  type="number"
-                  showError={showError}
-                  InputProps={{ inputProps: { min: 0 } }}
-                  required
-                  id="pageIndex"
-                  label="Pagina index"
-                  name="pageIndex"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  disabled={isSubmitting}
-                  showError={showError}
-                  required
-                  id="title"
-                  label="Titel"
-                  name="title"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -208,7 +200,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                 />
               </Grid>
             </Grid>
-            <Grid container item sm={6} spacing={0}>
+            <Grid container item sm={7} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18 }}>
                 {isSubmitting && <LoadingSpinner showInBlock />}
                 {!isSubmitting && (

@@ -39,6 +39,8 @@ const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
           'Pagina index',
           mapDiff(
             diffWords(
+              //  If the index is < 0, then it is set by timestamp and not reordered by the user yet. So position is undecided.
+              //  Indexes start with 0, for developers logic but not for the CMS users, so we add +1 to avoid explanation.
               publishedPage.pageIndex < 0
                 ? 'Onbepaald'
                 : (publishedPage.pageIndex + 1).toString(),
