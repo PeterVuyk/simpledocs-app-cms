@@ -81,7 +81,7 @@ const EditPage: FC = () => {
   ): Promise<void> => {
     const content = await getSubmittedContent(values, contentType);
     await bookRepository
-      .updatePage(aggregatePath, page?.chapter ?? '', {
+      .updatePage(aggregatePath, {
         id: `${page?.id?.replaceAll('-draft', '')}-draft`,
         pageIndex: values.pageIndex,
         chapter: values.chapter,

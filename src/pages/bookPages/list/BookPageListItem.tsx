@@ -136,7 +136,7 @@ const BookPageListItem: FC<Props> = ({
       case CONTENT_TYPE_DECISION_TREE:
         return 'beslisboom';
       case CONTENT_TYPE_CALCULATIONS:
-        return 'Berekening';
+        return 'berekening';
       case CONTENT_TYPE_HTML:
         return 'html';
       case CONTENT_TYPE_MARKDOWN:

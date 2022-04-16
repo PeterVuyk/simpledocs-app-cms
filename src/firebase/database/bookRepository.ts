@@ -134,11 +134,7 @@ async function getPagesByField(
   });
 }
 
-async function updatePage(
-  bookType: string,
-  chapter: string,
-  page: Page
-): Promise<void> {
+async function updatePage(bookType: string, page: Page): Promise<void> {
   const originalPage = await getPageById(
     bookType,
     page.id?.replace('-draft', '') ?? ''

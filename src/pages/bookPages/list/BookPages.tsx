@@ -12,6 +12,7 @@ import useStatusToggle from '../../../components/hooks/useStatusToggle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UpdateStylesheet from '../stylesheet/UpdateStylesheetButton';
 import useNavigate from '../../../navigation/useNavigate';
+import SortBookPages from '../sort/SortBookPages';
 
 interface Props {
   title: string;
@@ -36,7 +37,7 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
 
   const getAddPagePath = (): string => `/books/${bookType}/add`;
 
-  const handleStylesheetUpdate = () => {
+  const handleReloadPages = () => {
     loadPages();
   };
 
@@ -49,8 +50,14 @@ const BookPages: FC<Props> = ({ title, bookType }) => {
             setEditStatus={setEditStatus}
           />
           {pages && pages.length !== 0 && (
+            <SortBookPages
+              onReloadPages={handleReloadPages}
+              bookType={bookType}
+            />
+          )}
+          {pages && pages.length !== 0 && (
             <UpdateStylesheet
-              onStylesheetUpdate={handleStylesheetUpdate}
+              onStylesheetUpdate={handleReloadPages}
               bookType={bookType}
             />
           )}
