@@ -8,9 +8,9 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { DialogContent } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
+import { Theme } from '@mui/material/styles';
 import { PageInfo } from '../../../model/Page';
 import TextField from '../../form/formik/TextField';
-import validatePageIndex from '../../form/formik/validators/validatePageIndex';
 import validateBookChapter from '../../form/formik/validators/validateBookChapter';
 import Select from '../../form/formik/Select';
 import bookRepository from '../../../firebase/database/bookRepository';
@@ -37,7 +37,7 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const handleSubmitForm = (values: FormikValues) => {
     bookRepository
       .createPage(values.bookType, {
-        pageIndex: values.pageIndex,
+        pageIndex: -Date.now(),
         chapter: values.chapter,
         chapterDivision: page.chapterDivision,
         title: page.title,
@@ -77,14 +77,12 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
   const initialFormState = () => {
     return {
       chapter: page.chapter,
-      pageIndex: page.pageIndex,
       bookType,
     };
   };
 
   const formValidation = Yup.object().shape({
     chapter: validateBookChapter(undefined, undefined),
-    pageIndex: validatePageIndex(undefined, undefined),
     bookType: Yup.string()
       .required('Het opgeven van een boek is verplicht.')
       .test(
@@ -125,13 +123,18 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
             <DialogContent>
               <DialogContentText
                 color="textPrimary"
-                style={{ whiteSpace: 'pre-line' }}
+                sx={{
+                  marginBottom: (theme: Theme) => theme.spacing(2),
+                  whiteSpace: 'pre-line',
+                }}
                 id="alert-dialog-slide-description"
               >
-                Kopieer de pagina en geef een nieuw hoofdstuk en index op. De
-                nieuwe pagina krijgt een nieuw ID toegewezen, Favorieten van
-                gebruikers en verwijzingen in andere pagina&#39;s naar deze
-                pagina blijft verwijzen naar de originele pagina.
+                Kopieer de pagina en geef een nieuw hoofdstuk op. De nieuwe
+                pagina krijgt een nieuw ID toegewezen, Favorieten van gebruikers
+                en verwijzingen in andere pagina&#39;s naar deze pagina blijft
+                verwijzen naar de originele pagina. Na het kopiëren kan je via
+                &#39;Pagina&#39;s sorteren&#39; de positie van de gekopieerde
+                pagina bepalen.
               </DialogContentText>
               <Form>
                 <Grid
@@ -141,23 +144,13 @@ const CopyPageDialog: FC<Props> = ({ bookType, page, onClose }) => {
                   justifyContent="flex-start"
                   direction="row"
                 >
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <TextField
                       showError={showError}
                       required
                       id="chapter"
                       label="Hoofdstuk"
                       name="chapter"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      type="number"
-                      showError={showError}
-                      required
-                      id="pageIndex"
-                      label="Index"
-                      name="pageIndex"
                     />
                   </Grid>
                   <Grid item xs={12}>

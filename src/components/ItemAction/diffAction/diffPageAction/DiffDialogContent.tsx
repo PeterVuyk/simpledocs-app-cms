@@ -39,8 +39,12 @@ const DiffDialogContent: FC<Props> = ({ conceptPage, publishedPage }) => {
           'Pagina index',
           mapDiff(
             diffWords(
-              publishedPage.pageIndex.toString(),
-              conceptPage.pageIndex.toString()
+              publishedPage.pageIndex < 0
+                ? 'Onbepaald'
+                : (publishedPage.pageIndex + 1).toString(),
+              conceptPage.pageIndex < 0
+                ? 'Onbepaald'
+                : (conceptPage.pageIndex + 1).toString()
             )
           )
         )}
