@@ -69,7 +69,7 @@ const CreatePage: FC = () => {
     const content = await getSubmittedContent(values, contentType);
     bookRepository
       .createPage(aggregatePath, {
-        pageIndex: values.pageIndex,
+        pageIndex: -Date.now(),
         chapter: values.chapter,
         chapterDivision: values.chapterDivision,
         title: values.title,

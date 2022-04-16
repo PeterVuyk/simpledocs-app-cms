@@ -22,6 +22,7 @@ import {
   CONTENT_TYPE_MARKDOWN,
   ContentType,
 } from '../../../model/ContentType';
+import MarkForDeletionConfirmationDialog from './MarkForDeletionConfirmationDialog';
 
 interface Props {
   page: PageInfo;
@@ -40,6 +41,10 @@ const BookPageListItem: FC<Props> = ({
 }) => {
   const [showMarkForDeletion, setShowMarkForDeletion] =
     useState<boolean>(false);
+  const [
+    openMarkForDeletionConfirmationDialog,
+    setOpenMarkForDeletionConfirmationDialog,
+  ] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const getChapterDivision = (chapterDivision: string): string => {
@@ -101,6 +106,11 @@ const BookPageListItem: FC<Props> = ({
       );
   };
 
+  const handleUndoMarkForDeletionConfirmation = async () => {
+    setOpenMarkForDeletionConfirmationDialog(false);
+    onLoadPages();
+  };
+
   const undoMarkDeletion = async () => {
     await bookRepository
       .removeMarkForDeletion(bookType, page.id ?? '')
@@ -121,6 +131,33 @@ const BookPageListItem: FC<Props> = ({
           reason
         )
       );
+  };
+
+  const undoMarkDeletionCheck = async () => {
+    bookRepository
+      .getPageById(bookType, page.id!.replace('-draft', ''))
+      .then(async (publishedPage) => {
+        if (publishedPage) {
+          const pageIndexExist = await bookRepository
+            .getPagesByField(bookType, 'pageIndex', publishedPage.pageIndex)
+            .then(
+              (result) =>
+                result.find((somePage) => somePage.id !== publishedPage.id) !==
+                undefined
+            );
+          if (pageIndexExist) {
+            return true;
+          }
+        }
+        return false;
+      })
+      .then((pageIndexExist) => {
+        if (pageIndexExist) {
+          setOpenMarkForDeletionConfirmationDialog(true);
+        } else {
+          undoMarkDeletion();
+        }
+      });
   };
 
   const getEditUrl = () => `/books/${bookTypeSlug}/${page.id}`;
@@ -197,9 +234,17 @@ const BookPageListItem: FC<Props> = ({
           >
             <RestoreFromTrashTwoToneIcon
               style={{ cursor: 'pointer', color: '#099000FF' }}
-              onClick={() => undoMarkDeletion()}
+              onClick={() => undoMarkDeletionCheck()}
             />
           </Tooltip>
+        )}
+        {openMarkForDeletionConfirmationDialog && (
+          <MarkForDeletionConfirmationDialog
+            page={page}
+            bookType={bookType}
+            onSubmit={handleUndoMarkForDeletionConfirmation}
+            onClose={() => setOpenMarkForDeletionConfirmationDialog(false)}
+          />
         )}
         {!page.markedForDeletion && page.id && (
           <DeleteItemAction

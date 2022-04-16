@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Page } from '../../../model/Page';
 import ChapterDivisions, {
   ChapterDivision,
@@ -50,6 +51,9 @@ const DraggableListItem: FC<Props> = ({ submitting, page, index }) => {
           {...provided.dragHandleProps}
           sx={[snapshot.isDragging && { background: '#ddd' }]}
         >
+          <ListItemAvatar>
+            <DragHandleIcon />
+          </ListItemAvatar>
           <ListItemAvatar>
             <img
               style={{ width: 45 }}

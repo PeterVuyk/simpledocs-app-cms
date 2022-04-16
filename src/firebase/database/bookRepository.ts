@@ -121,7 +121,7 @@ async function getPageById(bookType: string, id: string): Promise<Page | null> {
 async function getPagesByField(
   bookType: string,
   fieldName: string,
-  fieldValue: string
+  fieldValue: string | number
 ): Promise<Page[]> {
   const querySnapshot = await database
     .collection('books')
