@@ -202,24 +202,21 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
             </Grid>
             <Grid container item sm={7} spacing={0}>
               <Grid item xs={12} style={{ marginLeft: 18 }}>
-                {isSubmitting && <LoadingSpinner showInBlock />}
-                {!isSubmitting && (
-                  <>
-                    <ContentTypeToggle
-                      contentType={contentTypeToggle}
-                      setContentTypeToggle={setContentTypeToggle}
-                      allowedContentTypes={getAllowedContent()}
-                    />
-                    <ContentEditor
-                      contentTypeToggle={contentTypeToggle}
-                      showError={showError}
-                      formik={formikRef}
-                      initialContentType={page?.contentType}
-                      initialContent={page?.content ?? null}
-                      allowedContentTypes={getAllowedContent()}
-                    />
-                  </>
-                )}
+                <ContentTypeToggle
+                  isSubmitting={isSubmitting}
+                  contentType={contentTypeToggle}
+                  setContentTypeToggle={setContentTypeToggle}
+                  allowedContentTypes={getAllowedContent()}
+                />
+                <ContentEditor
+                  isSubmitting={isSubmitting}
+                  contentTypeToggle={contentTypeToggle}
+                  showError={showError}
+                  formik={formikRef}
+                  initialContentType={page?.contentType}
+                  initialContent={page?.content ?? null}
+                  allowedContentTypes={getAllowedContent()}
+                />
               </Grid>
             </Grid>
           </Grid>

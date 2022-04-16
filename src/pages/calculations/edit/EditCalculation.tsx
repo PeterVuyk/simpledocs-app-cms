@@ -173,6 +173,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                     style={{ marginLeft: 18, marginRight: -18 }}
                   >
                     <ContentTypeToggle
+                      isSubmitting={isSubmitting}
                       contentType={contentTypeToggle}
                       setContentTypeToggle={setContentTypeToggle}
                       allowedContentTypes={[
@@ -181,6 +182,7 @@ const EditCalculation: FC<Props> = ({ calculationType }) => {
                       ]}
                     />
                     <ContentEditor
+                      isSubmitting={isSubmitting}
                       contentTypeToggle={contentTypeToggle}
                       showError={showError}
                       formik={formikRef}

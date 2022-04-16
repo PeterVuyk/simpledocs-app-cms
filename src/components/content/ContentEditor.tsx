@@ -14,6 +14,7 @@ import {
 import DecisionTreeSelector from './DecisionTreeSelector';
 import CalculationsSelector from './CalculationsSelector';
 import VisibleHiddenToggleContainer from '../VisibleHiddenToggleContainer';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface Props {
   contentTypeToggle: ContentType | undefined;
@@ -22,6 +23,7 @@ interface Props {
   initialContent: string | null;
   initialContentType: ContentType | undefined;
   allowedContentTypes: ContentType[];
+  isSubmitting: boolean;
 }
 
 const ContentEditor: FC<Props> = ({
@@ -31,12 +33,14 @@ const ContentEditor: FC<Props> = ({
   initialContentType,
   contentTypeToggle,
   allowedContentTypes,
+  isSubmitting,
 }) => {
   return (
     <>
+      {isSubmitting && <LoadingSpinner showInBlock />}
       {allowedContentTypes.includes(CONTENT_TYPE_HTML) && (
         <VisibleHiddenToggleContainer
-          visible={contentTypeToggle === CONTENT_TYPE_HTML}
+          visible={!isSubmitting && contentTypeToggle === CONTENT_TYPE_HTML}
         >
           <FastField name="htmlContent">
             {(props: FastFieldProps) => (
@@ -56,7 +60,7 @@ const ContentEditor: FC<Props> = ({
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_MARKDOWN) && (
         <VisibleHiddenToggleContainer
-          visible={contentTypeToggle === CONTENT_TYPE_MARKDOWN}
+          visible={!isSubmitting && contentTypeToggle === CONTENT_TYPE_MARKDOWN}
         >
           <FastField name="markdownContent">
             {(props: FastFieldProps) => (
@@ -76,7 +80,9 @@ const ContentEditor: FC<Props> = ({
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_DECISION_TREE) && (
         <VisibleHiddenToggleContainer
-          visible={contentTypeToggle === CONTENT_TYPE_DECISION_TREE}
+          visible={
+            !isSubmitting && contentTypeToggle === CONTENT_TYPE_DECISION_TREE
+          }
         >
           <DecisionTreeSelector
             formik={formik}
@@ -92,7 +98,9 @@ const ContentEditor: FC<Props> = ({
       )}
       {allowedContentTypes.includes(CONTENT_TYPE_CALCULATIONS) && (
         <VisibleHiddenToggleContainer
-          visible={contentTypeToggle === CONTENT_TYPE_CALCULATIONS}
+          visible={
+            !isSubmitting && contentTypeToggle === CONTENT_TYPE_CALCULATIONS
+          }
         >
           <CalculationsSelector
             formik={formik}

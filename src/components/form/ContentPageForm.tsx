@@ -86,34 +86,25 @@ const ContentPageForm: FC<Props> = ({
                 name="title"
               />
             </Grid>
-            {isSubmitting && <LoadingSpinner showInBlock />}
-            {!isSubmitting && (
-              <>
-                <Grid item xs={6}>
-                  <ContentTypeToggle
-                    contentType={contentTypeToggle}
-                    setContentTypeToggle={setContentTypeToggle}
-                    allowedContentTypes={[
-                      CONTENT_TYPE_HTML,
-                      CONTENT_TYPE_MARKDOWN,
-                    ]}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <ContentEditor
-                    contentTypeToggle={contentTypeToggle}
-                    showError={showError}
-                    formik={formikRef}
-                    initialContentType={artifact?.contentType}
-                    initialContent={artifact?.content ?? null}
-                    allowedContentTypes={[
-                      CONTENT_TYPE_HTML,
-                      CONTENT_TYPE_MARKDOWN,
-                    ]}
-                  />
-                </Grid>
-              </>
-            )}
+            <Grid item xs={6}>
+              <ContentTypeToggle
+                isSubmitting={isSubmitting}
+                contentType={contentTypeToggle}
+                setContentTypeToggle={setContentTypeToggle}
+                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ContentEditor
+                isSubmitting={isSubmitting}
+                contentTypeToggle={contentTypeToggle}
+                showError={showError}
+                formik={formikRef}
+                initialContentType={artifact?.contentType}
+                initialContent={artifact?.content ?? null}
+                allowedContentTypes={[CONTENT_TYPE_HTML, CONTENT_TYPE_MARKDOWN]}
+              />
+            </Grid>
           </Grid>
           <Box sx={{ margin: (theme) => theme.spacing(3, 0, 2) }}>
             <SubmitButton

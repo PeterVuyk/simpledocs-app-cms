@@ -14,12 +14,14 @@ interface Props {
   contentType: ContentType | undefined;
   setContentTypeToggle: (contentType: ContentType | undefined) => void;
   allowedContentTypes: ContentType[];
+  isSubmitting: boolean;
 }
 
 const ContentTypeToggle: FC<Props> = ({
   contentType,
   setContentTypeToggle,
   allowedContentTypes,
+  isSubmitting,
 }) => {
   useEffect(() => {
     if (
@@ -35,6 +37,7 @@ const ContentTypeToggle: FC<Props> = ({
       <Box sx={{ marginBottom: (theme) => theme.spacing(1), display: 'flex' }}>
         {allowedContentTypes.includes(CONTENT_TYPE_HTML) && (
           <Button
+            disabled={isSubmitting}
             style={{ flex: 1, borderRadius: 0 }}
             variant={
               contentType === CONTENT_TYPE_HTML ? 'contained' : 'outlined'
@@ -47,6 +50,7 @@ const ContentTypeToggle: FC<Props> = ({
         )}
         {allowedContentTypes.includes(CONTENT_TYPE_MARKDOWN) && (
           <Button
+            disabled={isSubmitting}
             style={{ flex: 1, borderRadius: 0 }}
             variant={
               contentType === CONTENT_TYPE_MARKDOWN ? 'contained' : 'outlined'
@@ -59,6 +63,7 @@ const ContentTypeToggle: FC<Props> = ({
         )}
         {allowedContentTypes.includes(CONTENT_TYPE_DECISION_TREE) && (
           <Button
+            disabled={isSubmitting}
             style={{ flex: 1, borderRadius: 0 }}
             variant={
               contentType === CONTENT_TYPE_DECISION_TREE
@@ -73,6 +78,7 @@ const ContentTypeToggle: FC<Props> = ({
         )}
         {allowedContentTypes.includes(CONTENT_TYPE_CALCULATIONS) && (
           <Button
+            disabled={isSubmitting}
             style={{ flex: 1, borderRadius: 0 }}
             variant={
               contentType === CONTENT_TYPE_CALCULATIONS
