@@ -98,35 +98,34 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     setInitialHtmlContent();
   }, [content, formik, initialFile, modifyHtmlAfterUpload, stylesheet]);
 
-  if (content === null || stylesheet === null) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <div style={{ position: 'relative' }}>
       {getErrorMessage() !== '' && (
         <ErrorTextTypography>{getErrorMessage()}</ErrorTextTypography>
       )}
-      <div style={{ position: 'relative' }}>
-        <Box
-          sx={{
-            margin: (theme: Theme) => theme.spacing(1),
-            position: 'absolute',
-            zIndex: 1000,
-            right: 10,
-            bottom: 30,
-          }}
-        >
-          <BottomToolbox
-            contentType={CONTENT_TYPE_HTML}
-            onUpdateFile={handleUpdateFromStylesheet}
+      {(content === null || stylesheet === null) && <LoadingSpinner />}
+      {(content !== null || stylesheet !== null) && (
+        <div style={{ position: 'relative' }}>
+          <Box
+            sx={{
+              margin: (theme: Theme) => theme.spacing(1),
+              position: 'absolute',
+              zIndex: 1000,
+              right: 10,
+              bottom: 30,
+            }}
+          >
+            <BottomToolbox
+              contentType={CONTENT_TYPE_HTML}
+              onUpdateFile={handleUpdateFromStylesheet}
+            />
+          </Box>
+          <JoditEditorWrapper
+            onChange={handleEditorOnChange}
+            content={content ?? ''}
           />
-        </Box>
-        <JoditEditorWrapper
-          onChange={handleEditorOnChange}
-          content={content ?? ''}
-        />
-      </div>
+        </div>
+      )}
       <FileDropzoneArea
         allowedExtension=".html"
         allowedMimeTypes={['text/html']}
