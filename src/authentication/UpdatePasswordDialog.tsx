@@ -95,7 +95,7 @@ const UpdatePasswordDialog: FC<Props> = ({ oncloseDialog }) => {
               )}
               <TextField
                 showError={showError}
-                sx={{ marginBottom: (theme: Theme) => theme.spacing(2) }}
+                sx={{ marginTop: (theme: Theme) => theme.spacing(2) }}
                 required
                 id="password"
                 label="Wachtwoord"

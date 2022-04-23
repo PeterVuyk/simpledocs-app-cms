@@ -30,11 +30,11 @@ const LinkCodeBlockView: FC<Props> = ({
   const getImageHtmlCode = () => {
     if (contentType === CONTENT_TYPE_MARKDOWN) {
       return pretty(
-        `[${linkInfo.linkText}](https://linkpage.web.app/${linkInfo.bookPageId})`
+        `[${linkInfo.linkText}](https://linkpage.web.app/navigation/${linkInfo.bookPageId})`
       );
     }
     return pretty(
-      `<a href="https://linkpage.web.app/${linkInfo.bookPageId}" class="link-page"><button>${linkInfo.linkText}</button></a>`
+      `<a href="https://linkpage.web.app/navigation/${linkInfo.bookPageId}" class="link-page"><button>${linkInfo.linkText}</button></a>`
     );
   };
 
