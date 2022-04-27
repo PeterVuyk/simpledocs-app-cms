@@ -9,7 +9,7 @@ const ErrorTextTypography: FC<Props> = ({ children }) => {
   return (
     <Typography
       style={{
-        color: '#f44336',
+        color: '#d32f2f',
         fontSize: '0.8rem',
         fontFamily: 'arial',
         fontWeight: 400,

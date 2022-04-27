@@ -1,7 +1,21 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues } from 'formik';
+import { Formik, Form, FormikValues, FastField, Field } from 'formik';
+import { styled } from '@mui/material/styles';
+import {
+  Box,
+  ButtonGroup,
+  InputBase,
+  InputLabel,
+  Tooltip,
+} from '@mui/material';
+import Button from '@mui/material/Button';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import { CloudUpload, Label } from '@mui/icons-material';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { FastFieldProps } from 'formik/dist/FastField';
 import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
@@ -28,7 +42,7 @@ import {
   AGGREGATE_CALCULATIONS,
   AGGREGATE_DECISION_TREE,
 } from '../../model/Aggregate';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import SvgIllustrationSelector from '../../components/form/formik/svgIllustration/SvgIllustrationSelector';
 
 interface Props {
   onSubmit: (
@@ -189,15 +203,17 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FileDropZoneArea
-                  disabled={isSubmitting}
-                  name="iconFile"
-                  formik={formikRef}
-                  showError={showError}
-                  dropzoneText="Klik hier of sleep het svg illustratie bestand hierheen"
-                  allowedMimeTypes={['image/svg+xml']}
-                  initialFile={page?.iconFile ?? null}
-                />
+                <Field name="iconFile">
+                  {(props: FastFieldProps) => (
+                    <SvgIllustrationSelector
+                      meta={props.meta}
+                      formik={formikRef}
+                      page={page}
+                      isSubmitting={isSubmitting}
+                      showError={showError}
+                    />
+                  )}
+                </Field>
               </Grid>
             </Grid>
             <Grid container item sm={7} spacing={0}>
