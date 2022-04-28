@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, InputLabel } from '@mui/material';
 import { Page } from '../../../../model/Page';
@@ -26,6 +26,13 @@ const SvgIllustrationSelector: FC<Props> = ({
   isSubmitting,
   showError,
 }) => {
+  const [icon, setIcon] = useState<string | null>(page?.iconFile ?? null);
+
+  const handleIconChange = (file: string | null) => {
+    formik.current?.setFieldValue('iconFile', file);
+    setIcon(file);
+  };
+
   const getErrorMessage = (): string => {
     if (showError && meta.error) {
       return meta.error;
@@ -59,8 +66,9 @@ const SvgIllustrationSelector: FC<Props> = ({
         >
           Illustratie
         </InputLabel>
-        {page?.iconFile && <ImgIcon src={page?.iconFile} alt="bla" />}
+        {icon && <ImgIcon src={icon} alt="bla" />}
         <SvgIllustrationSelectorToolbox
+          onIconChange={handleIconChange}
           page={page}
           isSubmitting={isSubmitting}
         />

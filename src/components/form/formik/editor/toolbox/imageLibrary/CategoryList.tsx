@@ -8,6 +8,7 @@ import capitalizeFirstLetter from '../../../../../../helper/text/capitalizeFirst
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
+import { IMAGE_LIBRARY_IMAGES } from '../../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
   currentCategory: string;
@@ -19,7 +20,7 @@ const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getImageLibraryCategories()
+    getImageLibraryCategories(IMAGE_LIBRARY_IMAGES)
       .then((result) => {
         setCategories(result);
         setCurrentCategory(result.length === 0 ? '' : result[0]);

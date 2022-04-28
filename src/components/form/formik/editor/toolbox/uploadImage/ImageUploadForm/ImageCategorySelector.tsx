@@ -5,15 +5,21 @@ import { useField, useFormikContext } from 'formik';
 import { ImageLibraryCategory } from '../../../../../../../model/imageLibrary/ImageLibraryCategory';
 import getImageLibraryCategories from '../../../../../../../firebase/storage/getImageLibraryCategories';
 import logger from '../../../../../../../helper/logger';
+import { ImageLibraryType } from '../../../../../../../model/imageLibrary/ImageLibraryType';
 
 const filter = createFilterOptions<ImageLibraryCategory>();
 
 interface Props {
   showError: boolean;
   disabled: boolean;
+  imageLibraryType: ImageLibraryType;
 }
 
-const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
+const ImageCategorySelector: FC<Props> = ({
+  showError,
+  disabled,
+  imageLibraryType,
+}) => {
   const [categories, setCategories] = useState<ImageLibraryCategory[] | null>(
     null
   );
@@ -21,7 +27,7 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
   const formikProps = useFormikContext();
 
   useEffect(() => {
-    getImageLibraryCategories()
+    getImageLibraryCategories(imageLibraryType)
       .then((categoryNames) =>
         categoryNames.map((categoryName) => {
           return { category: categoryName } as ImageLibraryCategory;
@@ -34,7 +40,7 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
           reason
         )
       );
-  }, []);
+  }, [imageLibraryType]);
 
   const getErrorHelperText = () => {
     return showError ? meta.error : '';
@@ -66,20 +72,23 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
       }}
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
+        const { inputValue } = params;
         // Suggest the creation of a new value
-        if (params.inputValue !== '') {
+        const isExisting = options.some(
+          (option) => inputValue === option.category
+        );
+        if (inputValue !== '' && !isExisting) {
           filtered.push({
             inputValue: params.inputValue,
             category: `"${params.inputValue}" toevoegen`,
           });
         }
-
         return filtered;
       }}
       selectOnFocus
       clearOnBlur
       handleHomeEndKeys
-      id="free-solo-with-text-demo"
+      id="category-selector"
       options={categories ?? []}
       getOptionLabel={(option) => {
         // Value selected with enter, right from the input
@@ -93,23 +102,20 @@ const ImageCategorySelector: FC<Props> = ({ showError, disabled }) => {
         // Regular option
         return option.category;
       }}
-      renderOption={(props, option) => {
-        if (option.inputValue !== undefined) {
-          return option.category;
-        }
-        return option.category;
-      }}
+      renderOption={(props, option) => <li {...props}>{option.category}</li>}
       freeSolo
-      sx={{ marginBottom: (theme) => theme.spacing(1) }}
+      sx={{
+        marginBottom: (theme) => theme.spacing(2),
+        marginTop: (theme) => theme.spacing(2),
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
-          sx={{ marginBottom: (theme) => theme.spacing(1) }}
           label="Categorie"
           variant="outlined"
           name="category"
           fullWidth
-          disabled={disabled}
+          // disabled={disabled}
           error={showError && meta?.error !== undefined}
           helperText={getErrorHelperText()}
           InputProps={{

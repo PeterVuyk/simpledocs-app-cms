@@ -3,6 +3,7 @@ import defaultTemplate from './docs/default-template.md';
 import appConfigurations from './docs/app-configurations.md';
 import bookManagement from './docs/book-management.md';
 import imageLibrary from './docs/image-library.md';
+import iconLibrary from './docs/icon-library.md';
 import cmsConfigurations from './docs/cms-configurations.md';
 import contentTypes from './docs/content-types.md';
 import decisionTree from './docs/decision-tree.md';
@@ -41,6 +42,7 @@ import {
   DOCUMENTATION_NOTIFICATIONS_DELIVERY,
   DOCUMENTATION_CMS_COOKIE_STATEMENT,
   DOCUMENTATION_UPDATE_TAB_TITLES,
+  DOCUMENTATION_ICON_LIBRARY,
 } from '../../model/DocumentationType';
 
 function useDocumentation(documentationType: DocumentationType) {
@@ -63,6 +65,10 @@ function useDocumentation(documentationType: DocumentationType) {
         setTooltip('Info afbeeldingen bibliotheek');
         setTitle('Info afbeeldingen bibliotheek');
         return imageLibrary;
+      case DOCUMENTATION_ICON_LIBRARY:
+        setTooltip('Info illustratie bibliotheek');
+        setTitle('Info illustratie bibliotheek');
+        return iconLibrary;
       case DOCUMENTATION_APP_CONFIGURATIONS:
         setTooltip('Info configuratie app');
         setTitle('Info configuratie app');

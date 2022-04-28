@@ -12,6 +12,7 @@ export const DOCUMENTATION_BOOK_MANAGEMENT = 'bookManagement';
 export const DOCUMENTATION_TRANSFORM_BASE64 = 'transformBase64';
 export const DOCUMENTATION_ID_LINK_BOOK_PAGE = 'idLinkBookPage';
 export const DOCUMENTATION_IMAGE_LIBRARY = 'imageLibrary';
+export const DOCUMENTATION_ICON_LIBRARY = 'iconLibrary';
 export const DOCUMENTATION_DIFF_CHANGES = 'diffChanges';
 export const DOCUMENTATION_CMS_DISCLAIMER = 'cmsDisclaimer';
 export const DOCUMENTATION_CMS_COOKIE_STATEMENT = 'cmsCookieStatement';
@@ -30,6 +31,7 @@ export type DocumentationType =
   | 'publications'
   | 'idLinkBookPage'
   | 'imageLibrary'
+  | 'iconLibrary'
   | 'diffChanges'
   | 'styleguide'
   | 'notifications'

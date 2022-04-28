@@ -18,6 +18,8 @@ import ImageUploadDialog from './uploadImage/ImageUploadDialog';
 import ImageLibraryDialog from './imageLibrary/ImageLibraryDialog';
 import CreateLinkPageDialog from './CreateLinkPage/CreateLinkPageDialog';
 import { Artifact } from '../../../../../model/artifacts/Artifact';
+import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../model/DocumentationType';
+import { IMAGE_LIBRARY_IMAGES } from '../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
   onUpdateFile: (file: any) => void;
@@ -99,6 +101,16 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
         <ImageUploadDialog
           contentType={contentType}
           onCloseDialog={() => setShowImageUploadDialog(false)}
+          title="Afbeelding uploaden"
+          documentationType={DOCUMENTATION_IMAGE_LIBRARY}
+          dialogContentText="Voeg een foto of afbeelding toe aan het archief om hier vervolgens vanuit de editor naar te refereren."
+          allowedMimeTypes={[
+            'image/svg+xml',
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+          ]}
+          imageLibraryType={IMAGE_LIBRARY_IMAGES}
         />
       )}
       {artifacts && (

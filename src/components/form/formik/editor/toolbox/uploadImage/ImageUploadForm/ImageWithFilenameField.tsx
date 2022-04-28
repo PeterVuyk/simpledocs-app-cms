@@ -8,9 +8,15 @@ interface Props {
   formik: any;
   showError: boolean;
   disabled: boolean;
+  allowedMimeTypes: string[];
 }
 
-const ImageWithFilenameField: FC<Props> = ({ formik, showError, disabled }) => {
+const ImageWithFilenameField: FC<Props> = ({
+  formik,
+  showError,
+  disabled,
+  allowedMimeTypes,
+}) => {
   const [filenameField] = useField('filename');
 
   const setFilenameOnUpload = (file: File) => {
@@ -37,12 +43,7 @@ const ImageWithFilenameField: FC<Props> = ({ formik, showError, disabled }) => {
         formik={formik}
         showError={showError}
         dropzoneText="Klik hier of sleep de afbeelding hierheen"
-        allowedMimeTypes={[
-          'image/svg+xml',
-          'image/jpeg',
-          'image/jpg',
-          'image/png',
-        ]}
+        allowedMimeTypes={allowedMimeTypes}
         initialFile={null}
         disabled={disabled}
         uploadCallback={setFilenameOnUpload}

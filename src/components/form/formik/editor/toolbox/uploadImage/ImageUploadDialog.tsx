@@ -14,25 +14,45 @@ import uploadFileToImageLibrary from '../../../../../../firebase/storage/uploadF
 import { ImageInfo } from '../../../../../../model/imageLibrary/ImageInfo';
 import getDownloadUrlFromFilePath from '../../../../../../firebase/storage/getDownloadUrlFromFilePath';
 import HelpAction from '../../../../../ItemAction/helpAction/HelpAction';
-import { DOCUMENTATION_IMAGE_LIBRARY } from '../../../../../../model/DocumentationType';
+import { DocumentationType } from '../../../../../../model/DocumentationType';
 import DialogTransition from '../../../../../dialog/DialogTransition';
+import { ImageLibraryType } from '../../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
-  contentType: ContentType;
+  contentType?: ContentType;
   onCloseDialog: () => void;
+  title: string;
+  dialogContentText: string;
+  documentationType: DocumentationType;
+  allowedMimeTypes: string[];
+  imageLibraryType: ImageLibraryType;
+  uploadCallback?: (imageInfo: ImageInfo) => void;
 }
 
-const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
+const ImageUploadDialog: FC<Props> = ({
+  onCloseDialog,
+  contentType,
+  title,
+  dialogContentText,
+  documentationType,
+  allowedMimeTypes,
+  imageLibraryType,
+  uploadCallback,
+}) => {
   const [submitted, setSubmitted] = useState<ImageInfo | null>(null);
   const formikRef = useRef<any>();
   const dispatch = useAppDispatch();
 
   const handleSubmitForm = (values: FormikValues) => {
-    uploadFileToImageLibrary(values as ImageInfo)
+    uploadFileToImageLibrary(values as ImageInfo, imageLibraryType)
       .then(getDownloadUrlFromFilePath)
-      .then((link) =>
-        setSubmitted({ ...values, downloadUrl: link } as ImageInfo)
-      )
+      .then((link) => {
+        const imageInfo = { ...values, downloadUrl: link } as ImageInfo;
+        setSubmitted(imageInfo);
+        if (uploadCallback) {
+          uploadCallback(imageInfo);
+        }
+      })
       .then(() =>
         dispatch(
           notify({
@@ -42,6 +62,11 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
           })
         )
       )
+      .then(() => {
+        if (!contentType) {
+          onCloseDialog();
+        }
+      })
       .catch((error) => {
         logger.errorWithReason(
           'Failed uploading image to storage in imageUploadDialog.handleSubmitForm',
@@ -92,8 +117,8 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
           }
         >
           <DialogTitle id="alert-dialog-slide-title">
-            Afbeelding uploaden&ensp;
-            <HelpAction documentationType={DOCUMENTATION_IMAGE_LIBRARY} />
+            {title}&ensp;
+            <HelpAction documentationType={documentationType} />
           </DialogTitle>
           {!submitted && (
             <ImageUploadForm
@@ -101,9 +126,12 @@ const ImageUploadDialog: FC<Props> = ({ onCloseDialog, contentType }) => {
               onCloseDialog={onCloseDialog}
               dirty={dirty}
               isSubmitting={isSubmitting}
+              dialogContentText={dialogContentText}
+              allowedMimeTypes={allowedMimeTypes}
+              imageLibraryType={imageLibraryType}
             />
           )}
-          {submitted && (
+          {contentType && submitted && (
             <ImageCodeBlockView
               contentType={contentType}
               onCloseDialog={onCloseDialog}

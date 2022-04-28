@@ -1,22 +1,8 @@
 import React, { FC, useRef, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
-import { Formik, Form, FormikValues, FastField, Field } from 'formik';
-import { styled } from '@mui/material/styles';
-import {
-  Box,
-  ButtonGroup,
-  InputBase,
-  InputLabel,
-  Tooltip,
-} from '@mui/material';
-import Button from '@mui/material/Button';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import { CloudUpload, Label } from '@mui/icons-material';
-import GetAppIcon from '@mui/icons-material/GetApp';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { Formik, Form, FormikValues, Field } from 'formik';
 import { FastFieldProps } from 'formik/dist/FastField';
-import FileDropZoneArea from '../../components/form/formik/FileDropzoneArea';
 import TextField from '../../components/form/formik/TextField';
 import Select from '../../components/form/formik/Select';
 import SubmitButton from '../../components/form/formik/SubmitButton';

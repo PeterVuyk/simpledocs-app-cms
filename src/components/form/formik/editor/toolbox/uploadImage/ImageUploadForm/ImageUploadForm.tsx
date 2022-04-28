@@ -10,12 +10,16 @@ import AlertBox from '../../../../../../AlertBox';
 import SubmitButton from '../../../../SubmitButton';
 import ImageCategorySelector from './ImageCategorySelector';
 import ImageWithFilenameField from './ImageWithFilenameField';
+import { ImageLibraryType } from '../../../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
   isSubmitting: boolean;
   dirty: boolean;
   formik: any;
   onCloseDialog: () => void;
+  dialogContentText: string;
+  allowedMimeTypes: string[];
+  imageLibraryType: ImageLibraryType;
 }
 
 const ImageUploadForm: FC<Props> = ({
@@ -23,6 +27,9 @@ const ImageUploadForm: FC<Props> = ({
   dirty,
   formik,
   onCloseDialog,
+  dialogContentText,
+  allowedMimeTypes,
+  imageLibraryType,
 }) => {
   const [showError, setShowError] = useState<boolean>(false);
 
@@ -30,17 +37,21 @@ const ImageUploadForm: FC<Props> = ({
     <Form>
       <DialogContent>
         <DialogContentText style={{ whiteSpace: 'pre-line' }} id="description">
-          Voeg een foto of afbeelding toe aan het archief om hier vervolgens
-          vanuit de editor naar te refereren.
+          {dialogContentText}
         </DialogContentText>
         {isSubmitting && (
           <AlertBox severity="info" message="Een moment geduld..." />
         )}
-        <ImageCategorySelector disabled={isSubmitting} showError={showError} />
+        <ImageCategorySelector
+          disabled={isSubmitting}
+          showError={showError}
+          imageLibraryType={imageLibraryType}
+        />
         <ImageWithFilenameField
           formik={formik}
           showError={showError}
           disabled={isSubmitting}
+          allowedMimeTypes={allowedMimeTypes}
         />
       </DialogContent>
       <DialogActions>
