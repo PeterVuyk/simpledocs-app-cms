@@ -14,24 +14,27 @@ import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
 import DialogTransition from '../../../../../dialog/DialogTransition';
+import { ImageLibraryType } from '../../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
   onCloseDialog: () => void;
   imageInfo: ImageInfo;
   handleLoadImages: () => void;
+  imageLibraryType: ImageLibraryType;
 }
 
 const DeleteImageDialog: FC<Props> = ({
   handleLoadImages,
   onCloseDialog,
   imageInfo,
+  imageLibraryType,
 }) => {
   const [isRemoving, setRemoving] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
     setRemoving(true);
-    deleteImageFromCategory(imageInfo)
+    deleteImageFromCategory(imageInfo, imageLibraryType)
       .then(onCloseDialog)
       .then(handleLoadImages)
       .then(() =>

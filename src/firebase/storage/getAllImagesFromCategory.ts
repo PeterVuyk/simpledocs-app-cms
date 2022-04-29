@@ -1,11 +1,20 @@
 import { ref, listAll, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebaseConnection';
 import { ImageInfo } from '../../model/imageLibrary/ImageInfo';
+import {
+  IMAGE_LIBRARY_IMAGES,
+  ImageLibraryType,
+} from '../../model/imageLibrary/ImageLibraryType';
 
 const getAllImagesFromCategory = async (
-  category: string
+  category: string,
+  imageLibraryType: ImageLibraryType
 ): Promise<Awaited<ImageInfo>[]> => {
-  const categoryRef = ref(storage, `image-library/${category}/`);
+  const categoryRef =
+    imageLibraryType === IMAGE_LIBRARY_IMAGES
+      ? ref(storage, `image-library/${category}/`)
+      : ref(storage, `icon-library/${category}/`);
+
   return listAll(categoryRef).then(({ items }) =>
     Promise.all(
       items.map((item) =>

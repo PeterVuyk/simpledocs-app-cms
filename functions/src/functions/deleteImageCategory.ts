@@ -9,12 +9,17 @@ export const deleteImageCategory = functions
       if (context.auth?.token.email === undefined) {
         return {success: false, message: 'unauthorized to call this function', result: null};
       }
-      return admin.storage().bucket().deleteFiles({prefix: `image-library/${data.category}`})
+      const path = data.imageLibraryType === 'imageLibrary' ? 'image-library' : 'icon-library';
+      return admin.storage().bucket().deleteFiles({prefix: `${path}/${data.category}`})
           .then(() => {
             return {success: true, message: null, result: null};
           })
           .catch((reason) => {
-            functions.logger.info('Failed deleting category', reason);
-            return {success: false, message: 'Failed deleting category', result: null};
+            functions.logger.info(`Failed deleting category ${data.category} for ${data.imageLibraryType}`, reason);
+            return {
+              success: false,
+              message: `Failed deleting category ${data.category} for ${data.imageLibraryType}`,
+              result: null,
+            };
           });
     });

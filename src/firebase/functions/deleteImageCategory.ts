@@ -1,9 +1,13 @@
 import { functions } from '../firebaseConnection';
 import { ApiResponse } from '../../model/ApiResponse';
+import { ImageLibraryType } from '../../model/imageLibrary/ImageLibraryType';
 
-async function deleteImageCategory(category: string): Promise<void> {
+async function deleteImageCategory(
+  category: string,
+  imageLibraryType: ImageLibraryType
+): Promise<void> {
   return functions
-    .httpsCallable('cms-deleteImageCategory')({ category })
+    .httpsCallable('cms-deleteImageCategory')({ category, imageLibraryType })
     .then((value) => value.data as ApiResponse)
     .then((response) => {
       if (!response.success) {

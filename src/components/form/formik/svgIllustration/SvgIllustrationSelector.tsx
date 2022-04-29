@@ -6,6 +6,7 @@ import SvgIllustrationSelectorToolbox from './SvgIllustrationSelectorToolbox';
 import ErrorTextTypography from '../../../text/ErrorTextTypography';
 
 const ImgIcon = styled('img')(() => ({
+  marginTop: 4,
   width: 90,
   display: 'inline',
   verticalAlign: 'middle',

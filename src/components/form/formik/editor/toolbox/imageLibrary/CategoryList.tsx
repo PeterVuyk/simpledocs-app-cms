@@ -8,19 +8,24 @@ import capitalizeFirstLetter from '../../../../../../helper/text/capitalizeFirst
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
-import { IMAGE_LIBRARY_IMAGES } from '../../../../../../model/imageLibrary/ImageLibraryType';
+import { ImageLibraryType } from '../../../../../../model/imageLibrary/ImageLibraryType';
 
 interface Props {
   currentCategory: string;
   setCurrentCategory: (category: string) => void;
+  imageLibraryType: ImageLibraryType;
 }
 
-const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
+const CategoryList: FC<Props> = ({
+  currentCategory,
+  setCurrentCategory,
+  imageLibraryType,
+}) => {
   const [categories, setCategories] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getImageLibraryCategories(IMAGE_LIBRARY_IMAGES)
+    getImageLibraryCategories(imageLibraryType)
       .then((result) => {
         setCategories(result);
         setCurrentCategory(result.length === 0 ? '' : result[0]);
@@ -38,7 +43,7 @@ const CategoryList: FC<Props> = ({ currentCategory, setCurrentCategory }) => {
           })
         );
       });
-  }, [dispatch, setCurrentCategory]);
+  }, [dispatch, imageLibraryType, setCurrentCategory]);
 
   const handleListItemClick = (category: string) => {
     setCurrentCategory(category);

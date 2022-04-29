@@ -14,14 +14,27 @@ import DeleteImageDialog from './DeleteImageDialog';
 import { notify } from '../../../../../../redux/slice/notificationSlice';
 import logger from '../../../../../../helper/logger';
 import { useAppDispatch } from '../../../../../../redux/hooks';
+import {
+  IMAGE_LIBRARY_IMAGES,
+  ImageLibraryType,
+} from '../../../../../../model/imageLibrary/ImageLibraryType';
+import blobToBase64 from '../../../../../../helper/object/blobToBase64';
 
 interface Props {
   onCloseDialog: () => void;
-  contentType: ContentType;
+  contentType?: ContentType;
   category: string;
+  imageLibraryType: ImageLibraryType;
+  clickCallback?: (imageInfo: ImageInfo) => void;
 }
 
-const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
+const ImageViewer: FC<Props> = ({
+  category,
+  onCloseDialog,
+  contentType,
+  imageLibraryType,
+  clickCallback,
+}) => {
   const [imagesInfo, setImagesInfo] = useState<ImageInfo[] | null>([]);
   const [showCodeBlockImageDialog, setShowCodeBlockImageDialog] =
     useState<ImageInfo | null>(null);
@@ -31,7 +44,7 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
 
   const handleLoadImages = useCallback(() => {
     setImagesInfo([]);
-    getAllImagesFromCategory(category)
+    getAllImagesFromCategory(category, imageLibraryType)
       .then((value) => setImagesInfo(value.length === 0 ? null : value))
       .catch((error) => {
         logger.errorWithReason(
@@ -46,7 +59,25 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
           })
         );
       });
-  }, [category, dispatch]);
+  }, [category, dispatch, imageLibraryType]);
+
+  const handleItemClick = (imageInfo: ImageInfo) => {
+    if (!clickCallback || !imageInfo.downloadUrl) {
+      setShowCodeBlockImageDialog(imageInfo);
+      return;
+    }
+
+    // According to the firebase documentation: https://firebase.google.com/docs/storage/web/download-files#download_data_via_url
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = async () => {
+      imageInfo.image = (await blobToBase64(xhr.response as Blob)) as string;
+      clickCallback(imageInfo);
+      onCloseDialog();
+    };
+    xhr.open('GET', imageInfo.downloadUrl ?? '');
+    xhr.send();
+  };
 
   useEffect(() => {
     handleLoadImages();
@@ -66,8 +97,8 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
         <LoadingSpinner color="secondary" />
       )}
       <ImageList
-        cols={3}
-        rowHeight={180}
+        cols={imageLibraryType === IMAGE_LIBRARY_IMAGES ? 3 : 6}
+        rowHeight={imageLibraryType === IMAGE_LIBRARY_IMAGES ? 180 : 90}
         style={{
           padding: 5,
           backgroundColor: '#616161',
@@ -79,8 +110,12 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
           imagesInfo.map((item) => (
             <ImageListItem
               key={item.downloadUrl}
-              style={{ cursor: 'pointer' }}
-              onClick={() => setShowCodeBlockImageDialog(item)}
+              style={{
+                cursor: 'pointer',
+                height: imageLibraryType === IMAGE_LIBRARY_IMAGES ? 250 : 125,
+                width: imageLibraryType === IMAGE_LIBRARY_IMAGES ? 250 : 125,
+              }}
+              onClick={async () => handleItemClick(item)}
             >
               <img src={item.downloadUrl} alt={item.filename} />
               <ImageListItemBar
@@ -101,7 +136,7 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
             </ImageListItem>
           ))}
       </ImageList>
-      {showCodeBlockImageDialog !== null && (
+      {contentType && showCodeBlockImageDialog !== null && (
         <ImageCodeBlockDialog
           imageInfo={showCodeBlockImageDialog}
           contentType={contentType}
@@ -116,6 +151,7 @@ const ImageViewer: FC<Props> = ({ category, onCloseDialog, contentType }) => {
         <DeleteImageDialog
           handleLoadImages={handleLoadImages}
           imageInfo={showDeleteImageDialog}
+          imageLibraryType={imageLibraryType}
           onCloseDialog={() => {
             setShowDeleteImageDialog(null);
           }}

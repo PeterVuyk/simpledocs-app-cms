@@ -86,6 +86,9 @@ const BottomToolbox: FC<Props> = ({ contentType, onUpdateFile }) => {
         <ImageLibraryDialog
           onCloseDialog={() => setShowImageLibraryDialog(false)}
           contentType={contentType}
+          imageLibraryType={IMAGE_LIBRARY_IMAGES}
+          documentationType={DOCUMENTATION_IMAGE_LIBRARY}
+          title="Afbeeldingen bibliotheek"
         />
       )}
       <Tooltip disableInteractive title="Afbeelding uploaden">

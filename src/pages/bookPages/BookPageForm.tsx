@@ -86,7 +86,7 @@ const BookPageForm: FC<Props> = ({ onSubmit, page, bookType }) => {
     decisionTreeContent: validateYupDecisionTreeContent(contentTypeToggle),
     calculationsContent: validateYupCalculationsContent(contentTypeToggle),
     iconFile: Yup.mixed().required(
-      'Het uploaden van een illustratie is verplicht.'
+      'Het kiezen van een illustratie is verplicht.'
     ),
   });
 

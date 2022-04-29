@@ -9,6 +9,7 @@ import ImageUploadDialog from '../editor/toolbox/uploadImage/ImageUploadDialog';
 import { DOCUMENTATION_ICON_LIBRARY } from '../../../../model/DocumentationType';
 import { IMAGE_LIBRARY_ICONS } from '../../../../model/imageLibrary/ImageLibraryType';
 import { ImageInfo } from '../../../../model/imageLibrary/ImageInfo';
+import ImageLibraryDialog from '../editor/toolbox/imageLibrary/ImageLibraryDialog';
 
 interface Props {
   page: Page | undefined;
@@ -22,6 +23,8 @@ const SvgIllustrationSelectorToolbox: FC<Props> = ({
   onIconChange,
 }) => {
   const [showImageUploadDialog, setShowImageUploadDialog] =
+    useState<boolean>(false);
+  const [showImageLibraryDialog, setShowImageLibraryDialog] =
     useState<boolean>(false);
 
   const handleFileUpload = (imageInfo: ImageInfo) => {
@@ -42,16 +45,25 @@ const SvgIllustrationSelectorToolbox: FC<Props> = ({
           <DeleteTwoToneIcon style={{ cursor: 'pointer' }} />
         </Button>
       </Tooltip>
-      <Tooltip disableInteractive title="Afbeeldingen bibliotheek">
+      <Tooltip disableInteractive title="Illustratie bibliotheek">
         <Button
           variant="contained"
           color="inherit"
-          onClick={() => console.log('TODO: add open library functionality')}
+          onClick={() => setShowImageLibraryDialog(true)}
           disabled={isSubmitting}
         >
           <PhotoLibraryIcon />
         </Button>
       </Tooltip>
+      {showImageLibraryDialog && (
+        <ImageLibraryDialog
+          onCloseDialog={() => setShowImageLibraryDialog(false)}
+          documentationType={DOCUMENTATION_ICON_LIBRARY}
+          title="Illustratie bibliotheek"
+          imageLibraryType={IMAGE_LIBRARY_ICONS}
+          clickCallback={handleFileUpload}
+        />
+      )}
       <Tooltip disableInteractive title="Illustratie uploaden">
         <Button
           variant="contained"
