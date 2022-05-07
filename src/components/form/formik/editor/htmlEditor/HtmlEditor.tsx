@@ -9,10 +9,11 @@ import LoadingSpinner from '../../../../LoadingSpinner';
 import artifactsRepository from '../../../../../firebase/database/artifactsRepository';
 import { ARTIFACT_TYPE_TEMPLATE } from '../../../../../model/artifacts/ArtifactType';
 import base64Helper from '../../../../../helper/base64Helper';
-import useStylesheet from '../../../../hooks/useStylesheet';
 import { CONTENT_TYPE_HTML } from '../../../../../model/ContentType';
 import useHtmlModifier from '../../../../hooks/useHtmlModifier';
 import JoditEditorWrapper from './JoditEditorWrapper';
+import getStylesheet from '../../../../hooks/getStylesheet';
+import { Artifact } from '../../../../../model/artifacts/Artifact';
 
 interface Props {
   meta: any;
@@ -23,8 +24,8 @@ interface Props {
 
 const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   const [content, setContent] = useState<string | null>(null);
+  const [stylesheet, setStylesheet] = useState<Artifact | null>(null);
   const currentContent = useRef<string>('');
-  const stylesheet = useStylesheet();
   const { modifyHtmlAfterUpload } = useHtmlModifier();
   const formikProps = useFormikContext();
 
@@ -35,11 +36,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
     return '';
   };
 
-  const handleUpdateFromStylesheet = (file: string) => {
+  const handleUpdateFromStylesheet = async (file: string) => {
     if (currentContent.current === file) {
       return;
     }
-    const html = modifyHtmlAfterUpload(file);
+    const html = await modifyHtmlAfterUpload(file);
     formikProps.setFieldValue('htmlContent', html);
     setContent(html);
   };
@@ -49,11 +50,11 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
   };
 
   const handleUpdateFileFromBase64 = useCallback(
-    (file: string | null) => {
+    async (file: string | null) => {
       let html = file
         ? base64Helper.getBodyFromBase64(file, CONTENT_TYPE_HTML)
         : '';
-      html = modifyHtmlAfterUpload(html);
+      html = await modifyHtmlAfterUpload(html);
       formik.current?.setFieldValue('htmlContent', html);
       currentContent.current = html;
       setContent(html);
@@ -73,12 +74,13 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       return;
     }
     async function setInitialHtmlContent() {
-      if (stylesheet === undefined) {
+      setStylesheet((await getStylesheet()) ?? null);
+      if (stylesheet === null) {
         return;
       }
       let html = initialFile;
       if (html) {
-        html = modifyHtmlAfterUpload(html);
+        html = await modifyHtmlAfterUpload(html);
       } else {
         // Use the 'default' template.
         html = await artifactsRepository
@@ -96,7 +98,7 @@ const HtmlEditor: FC<Props> = ({ formik, initialFile, showError, meta }) => {
       setContent(html);
     }
     setInitialHtmlContent();
-  }, [content, formik, initialFile, modifyHtmlAfterUpload, stylesheet]);
+  }, [content, formik, initialFile, modifyHtmlAfterUpload]);
 
   return (
     <div style={{ position: 'relative' }}>

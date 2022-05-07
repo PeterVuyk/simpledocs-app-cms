@@ -55,7 +55,6 @@ const updateContentIdWithContentFromArtifacts = async (
         await artifactsRepository
           .getArtifactById(step.contentId)
           .then((artifact) => {
-            step.contentId = undefined;
             step.content = artifact.content;
             step.contentType = artifact.contentType;
           });

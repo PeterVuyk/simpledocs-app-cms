@@ -35,7 +35,8 @@ const UpdateStylesheetButton: FC<Props> = ({
     for (const page of pagesToEdit) {
       if (page.isDraft) {
         page.content = modifyHtmlForStorage(
-          modifyHtmlAfterUpload(page.content)
+          // eslint-disable-next-line no-await-in-loop
+          await modifyHtmlAfterUpload(page.content)
         );
         updatedPages.push(page);
         continue;
@@ -48,7 +49,8 @@ const UpdateStylesheetButton: FC<Props> = ({
       draftPage.isDraft = true;
       draftPage.id += '-draft';
       draftPage.content = modifyHtmlForStorage(
-        modifyHtmlAfterUpload(draftPage.content)
+        // eslint-disable-next-line no-await-in-loop
+        await modifyHtmlAfterUpload(draftPage.content)
       );
       page.markedForDeletion = true;
       updatedPages.push(page);

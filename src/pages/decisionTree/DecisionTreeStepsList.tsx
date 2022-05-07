@@ -6,7 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { EDIT_STATUS_DRAFT, EditStatus } from '../../model/EditStatus';
+import {
+  EDIT_STATUS_DRAFT,
+  EDIT_STATUS_PUBLISHED,
+  EditStatus,
+} from '../../model/EditStatus';
 import DownloadContentAction from '../../components/ItemAction/DownloadContentAction';
 import ViewContentAction from '../../components/ItemAction/ViewContentAction';
 import { DecisionTree } from '../../model/DecisionTree/DecisionTree';
@@ -80,19 +84,21 @@ const DecisionTreeStepsList: FC<Props> = ({ decisionTrees, editStatus }) => {
                   <TableCell>{step.lineLabel}</TableCell>
                   <TableCell>
                     {editStatus === EDIT_STATUS_DRAFT && step.contentId}&nbsp;
-                    {step.content && step.contentType && (
-                      <>
-                        <DownloadContentAction
-                          contentType={step.contentType}
-                          content={step.content}
-                          fileName={tree.title}
-                        />
-                        <ViewContentAction
-                          content={step.content}
-                          contentType={step.contentType}
-                        />
-                      </>
-                    )}
+                    {editStatus === EDIT_STATUS_PUBLISHED &&
+                      step.content &&
+                      step.contentType && (
+                        <>
+                          <DownloadContentAction
+                            contentType={step.contentType}
+                            content={step.content}
+                            fileName={tree.title}
+                          />
+                          <ViewContentAction
+                            content={step.content}
+                            contentType={step.contentType}
+                          />
+                        </>
+                      )}
                   </TableCell>
                 </TableRow>
               ));
